@@ -38,7 +38,8 @@ jobs:
           fetch-depth: 1
 
       - name: Install Pnpm
-        run: corepack enable
+        # HACK to solve problems with corepack replaced: run: corepack enable
+        run: npm install -g pnpm@9.15.2
 
       - name: Check skip CI
         shell: bash
