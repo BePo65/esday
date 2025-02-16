@@ -29,8 +29,8 @@ jobs:
 
       - name: Install Pnpm
         run: |
+          # HACK as by default corepack v0.29.4 is used (2025-02-16)
           npm install -g corepack@0.31.0
-          corepack --version
           corepack enable
 
       - name: Setup Node.js
