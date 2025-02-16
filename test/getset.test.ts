@@ -1,5 +1,6 @@
+import type { EsDay } from '~/core'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { type EsDay, esday } from '~/core'
+import { esday } from '~/core'
 
 describe('get', () => {
   const testYear = 2024

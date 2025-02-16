@@ -14,7 +14,7 @@ const UNIT_FIELD_MAP = {
 } as const
 
 type DateUnit = keyof typeof UNIT_FIELD_MAP
-type DateField<T extends DateUnit > = typeof UNIT_FIELD_MAP[T]
+type DateField<T extends DateUnit> = typeof UNIT_FIELD_MAP[T]
 
 export const prettyUnits = Object.keys(UNIT_FIELD_MAP) as (keyof typeof UNIT_FIELD_MAP)[]
 

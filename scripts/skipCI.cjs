@@ -22,15 +22,15 @@ async function main() {
 
   const shouldNotSkipCI
     = !changedFiles.length
-    || changedFiles.some(
-      file =>
-        !SKIP_FOLDERS.some(
-          folder =>
-            file.startsWith(`${folder}/`)
-            || file === folder
-            || file.endsWith('.md'),
-        ),
-    )
+      || changedFiles.some(
+        file =>
+          !SKIP_FOLDERS.some(
+            folder =>
+              file.startsWith(`${folder}/`)
+              || file === folder
+              || file.endsWith('.md'),
+          ),
+      )
 
   // eslint-disable-next-line no-console
   console.log(shouldNotSkipCI ? 'false' : 'true')

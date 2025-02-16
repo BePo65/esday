@@ -1,5 +1,6 @@
+import type { Options } from 'tsup'
 // tsup.config.ts
-import { defineConfig, type Options } from 'tsup'
+import { defineConfig } from 'tsup'
 
 function generateConfig(jsx: boolean): Options {
   return {
