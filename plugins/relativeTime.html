@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plugins - RelativeTime</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+    <base href="/esday/" />
+    <link rel="stylesheet" href="esday.css">
+    <link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+    <header>
+        <img class="header-symbol" src="assets/esday.png" alt="ESday project icon" />
+        <h1 class="header-title">Plugins - RelativeTime</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="core/index.html">Core</a>
+            <a href="plugins/index.html">Plugins</a>
+            <a href="locales/index.html">Locales</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>RelativeTime</h1>
+<p>RelativeTime adds the <code>fromNow</code>,  <code>toNow</code>, <code>from</code> and the <code>to</code> methods to EsDay to format a date as a relative time string (e.g. '3 hours ago').</p>
+<p>The <code>fromNow</code> method returns a string of a time relative to 'now' (e.g. '4 years ago').<br>The <code>toNow</code> method returns the opposite value of <code>fromNow</code> (e.g. 'in 4 years').<br>The <code>from</code>  method returns a string of a time relative to a given date (e.g. '3 hours ago').<br>The <code>to</code> method returns the opposite value of <code>from</code> (e.g. 'in 3 hours').</p>
+<h2>Usage</h2>
+<h3>Dependencies</h3>
+<p>RelativeTime requires the plugin Locale and at least 1 registered and activated locale.</p>
+<h3>Method signatures</h3>
+<pre><code class="language-typescript">esday().fromNow(withoutSuffix?: boolean): string
+esday().toNow(withoutSuffix?: boolean): string
+esday().from(referenceDate: DateType, withoutSuffix?: boolean): string
+esday().to(referenceDate: DateType, withoutSuffix?: boolean): string
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>withoutSuffix</td>
+<td>generate relative time without 'in' / 'ago'</td>
+</tr>
+<tr>
+<td>referenceDate</td>
+<td>date to refer to (instead of 'now')</td>
+</tr>
+</tbody></table>
+<p>Passing true as <code>withoutSuffix</code>, the methods return the value without the suffix (e.g. '4 years' instead of 'in 4 years').</p>
+<p>The returned strings are defined by the current locale. <code>future</code> and <code>past</code> define the corresponding suffixes to use (default to 'in' / 'ago').</p>
+<p>Time is rounded to the nearest second.</p>
+<p>The breakdown of which string is displayed for each length of time is outlined in the table below<br>('key' is the key in the definition of <code>relativeTime</code> in the current locale):</p>
+<table>
+<thead>
+<tr>
+<th>Range</th>
+<th>Key</th>
+<th>Sample Output</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0 to 44 seconds</td>
+<td>s</td>
+<td>a few seconds ago</td>
+</tr>
+<tr>
+<td>45 to 89 seconds</td>
+<td>m</td>
+<td>a minute ago</td>
+</tr>
+<tr>
+<td>90 seconds to 44 minutes</td>
+<td>mm</td>
+<td>2 minutes ago ... 44 minutes ago</td>
+</tr>
+<tr>
+<td>45 to 89 minutes</td>
+<td>h</td>
+<td>an hour ago</td>
+</tr>
+<tr>
+<td>90 minutes to 21 hours</td>
+<td>hh</td>
+<td>2 hours ago ... 21 hours ago</td>
+</tr>
+<tr>
+<td>22 to 35 hours</td>
+<td>d</td>
+<td>a day ago</td>
+</tr>
+<tr>
+<td>36 hours to 25 days</td>
+<td>dd</td>
+<td>2 days ago ... 25 days ago</td>
+</tr>
+<tr>
+<td>26 to 45 days</td>
+<td>M</td>
+<td>a month ago</td>
+</tr>
+<tr>
+<td>45 to 319 days</td>
+<td>MM</td>
+<td>2 months ago ... 10 months ago</td>
+</tr>
+<tr>
+<td>320 to 547 days (1.5 years)</td>
+<td>y</td>
+<td>a year ago</td>
+</tr>
+<tr>
+<td>548 days+</td>
+<td>yy</td>
+<td>2 years ago ... 20 years ago</td>
+</tr>
+</tbody></table>
+<p>The used thresholds can be overwritten, when activating the plugin by using an object with a property named <code>thresholds</code> as second parameter.</p>
+<p>The default threshold list looks like this;</p>
+<pre><code class="language-typescript">[
+    { key: 's', thresholdValue: 44, thresholdUnit: C.SECOND },
+    { key: 'ss', thresholdValue: 43, thresholdUnit: C.SECOND },
+    { key: 'm', thresholdValue: 89, thresholdUnit: C.SECOND },
+    { key: 'mm', thresholdValue: 44, thresholdUnit: C.MIN },
+    { key: 'h', thresholdValue: 89, thresholdUnit: C.MIN },
+    { key: 'hh', thresholdValue: 21, thresholdUnit: C.HOUR },
+    { key: 'd', thresholdValue: 35, thresholdUnit: C.HOUR },
+    { key: 'dd', thresholdValue: 25, thresholdUnit: C.DAY },
+    { key: 'M', thresholdValue: 45, thresholdUnit: C.DAY },
+    { key: 'MM', thresholdValue: 10, thresholdUnit: C.MONTH },
+    { key: 'y', thresholdValue: 17, thresholdUnit: C.MONTH },
+    { key: 'yy', thresholdUnit: C.YEAR },
+  ]
+</code></pre>
+<h2>Examples</h2>
+<pre><code class="language-typescript">import { localePlugin, relativeTimePlugin } from 'esday/plugins'
+import localeEn from 'esday/locales/en'
+
+esday.extend(localePlugin)
+esday.extend(relativeTimePlugin)
+
+esday.registerLocale(localeEn)
+
+esday([2007, 0, 29]).fromNow()
+// Returns '4 years ago'
+
+esday([2007, 0, 29]).fromNow(true)
+// Returns '4 years'
+
+const dateA = esday([2007, 0, 28]);
+const dateB = esday([2007, 0, 29]);
+dateA.to(dateB)
+// Returns 'in a day'
+
+const startDate = esday([2007, 0, 5]);
+const endDate = esday([2007, 0, 10]);
+endDate.to(startDate, true)
+// Returns '5 days'
+</code></pre>
+<p>Overwrite threshold list:</p>
+<pre><code>import { localePlugin, relativeTimePlugin } from 'esday/plugins'
+import localeEn from 'esday/locales/en'
+
+esday.extend(localePlugin)
+esday.registerLocale(localeEn)
+const options = {
+  thresholds: [
+    { key: 's', thresholdValue: 44, thresholdUnit: C.SECOND },
+    { key: 'ss', thresholdValue: 43, thresholdUnit: C.SECOND },
+    { key: 'm', thresholdValue: 89, thresholdUnit: C.SECOND },
+    { key: 'mm', thresholdValue: 44, thresholdUnit: C.MIN },
+    { key: 'h', thresholdValue: 89, thresholdUnit: C.MIN },
+    { key: 'hh', thresholdValue: 21, thresholdUnit: C.HOUR },
+    { key: 'd', thresholdValue: 1, thresholdUnit: C.DAY }, // modified threshold
+    { key: 'dd', thresholdValue: 25, thresholdUnit: C.DAY },
+    { key: 'M', thresholdValue: 45, thresholdUnit: C.DAY },
+    { key: 'MM', thresholdValue: 10, thresholdUnit: C.MONTH },
+    { key: 'y', thresholdValue: 17, thresholdUnit: C.MONTH },
+    { key: 'yy', thresholdUnit: C.YEAR },
+  ] as Threshold[],
+}
+esday.extend(relativeTimePlugin, options)
+</code></pre>
+
+    </div>
+</body>
+</html>
