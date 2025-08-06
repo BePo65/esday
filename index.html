@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESday</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+    <base href="/esday/" />
+    <link rel="stylesheet" href="esday.css">
+    <link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+    <header>
+        <img class="header-symbol" src="assets/esday.png" alt="ESday project icon" />
+        <h1 class="header-title">ESday</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="core/index.html">Core</a>
+            <a href="plugins/index.html">Plugins</a>
+            <a href="locales/index.html">Locales</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>EsDay</h1>
+<p>EsDay is a JavaScript library inspired by <a href="https://github.com/iamkun/dayjs">Day.js</a>.</p>
+<p>EsDay has an API largely similar to <a href="https://momentjs.com/docs/">Moment.js</a> (v2.30.1) and Day.js (v1.11.13), but it is written in TypeScript and fully supports es modules. When there are differences between Moment.js and Day.js, the functionality of Moment.js is usually preferred.</p>
+<h2>Core functions</h2>
+<p>The EsDay core module has many integrated functions. Details see documentation of <a href="./core/index.html">Core</a>.</p>
+<h2>Locales</h2>
+<p>EsDay supports many locales. A list of the supported locales can be found in the <a href="./locales/index.html">details page</a>.</p>
+<h2>Plugins</h2>
+<p>EsDay is extensible by plugins. A list of all available plugins can be found in the <a href="./plugins/index.html">plugin documentation</a>.</p>
+<h2>Differences to Day.js</h2>
+<ul>
+<li><strong>Locale</strong>: Locale  is a Plugin; no default locale! Dayjs uses 'en-US' as default.</li>
+<li><strong>'Start of Week'</strong>: Default 'Start of Week' is 1 ('Monday') as defined by ISO 8601. Dayjs uses 0 ('Sunday') as (as defined by the dafault locale 'en-US').</li>
+<li><strong>'Start of Year'</strong>: Default 'Start of Year' is 4 (Jan 4th must be in the 1st week of the year) as defined by ISO 8601. Dayjs uses 1 (Jan 1st) as (as defined by the dafault locale 'en-US').</li>
+<li><strong>Invalid Date</strong>: conforms to Moment.js and uses <code>Invalid date</code> instead of <code>Invalid Date</code>.</li>
+</ul>
+<h2>Differences to Moment.js</h2>
+<p>Esday uses <a href="mailto:moment@2.30.1">moment@2.30.1</a> as api reference.</p>
+<ul>
+<li><strong>toString</strong>: conforms to Day.js and uses Date.toUTCString() (returning the date in RFC 7231 format 'ddd, DD MMM YYYY HH:mm:ss [GMT]') while moment uses the format 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ'.</li>
+<li><strong>toISOString</strong>: conforms to Day.js and returns 'Invalid date' when called on an invalid date. In that case moment returns null (see <a href="https://github.com/moment/moment/pull/3710">moment pr#3710</a>).</li>
+</ul>
+
+    </div>
+</body>
+</html>
