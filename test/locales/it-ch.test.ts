@@ -1,13 +1,11 @@
 /**
  * Test for locale 'Italian (Switzerland) [it-CH]'
- *
- * This is a minimal test for a locale without preParse / postFormat.
- * This file should aso be used as a template for tests for
- * other locales without preParse / postFormat.
  */
 
+import type { EsDay } from 'esday'
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/it-ch'
+import type { CalendarSpecValFunction } from '~/plugins/locale'
 
 describe('locale it-CH', () => {
   it('should have the correct name', () => {
@@ -16,7 +14,11 @@ describe('locale it-CH', () => {
 
   it('should have 7 weekday names', () => {
     expect(locale.weekdays).toBeDefined()
-    expect(locale.weekdays?.length).toBe(7)
+    if (Array.isArray(locale.weekdays)) {
+      expect(locale.weekdays.length).toBe(7)
+    } else {
+      expect(locale.weekdays).toBeTypeOf('function')
+    }
   })
 
   it('should have 7 short weekday names', () => {
@@ -70,10 +72,26 @@ describe('locale it-CH', () => {
     expect(Object.keys(locale.formats ?? {})).toHaveLength(10)
   })
 
+  it('should have an object named "calendar"', () => {
+    expect(locale.calendar).toBeDefined()
+    expect(locale.calendar).toBeTypeOf('object')
+    expect(Object.keys(locale.calendar ?? {}).length).toBe(6)
+  })
+
+  it.each([
+    { day: 0, expected: '[la scorsa] dddd [alle] LT' },
+    { day: 1, expected: '[lo scorso] dddd [alle] LT' },
+  ])('should format lastWeek with calendar for day "$day"', ({ day, expected }) => {
+    const referenceDate = { day: () => day } as EsDay
+    const lastWeek = locale.calendar.lastWeek as CalendarSpecValFunction
+
+    expect(lastWeek.call(referenceDate)).toBe(expected)
+  })
+
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()
     expect(locale.relativeTime).toBeTypeOf('object')
-    expect(Object.keys(locale.relativeTime ?? {}).length).toBeGreaterThan(0)
+    expect(Object.keys(locale.relativeTime ?? {}).length).toBe(16)
   })
 
   it('should have a method named "meridiem"', () => {

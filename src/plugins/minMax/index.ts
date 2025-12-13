@@ -18,10 +18,8 @@ const minMaxPlugin: EsDayPlugin<{}> = (_, _dayClass, dayFactory) => {
       return dayFactory()
     }
     if (dates.length === 1 && isArray(dates[0]) && dates[0].length > 0) {
-      // biome-ignore lint/style/noParameterAssign: <explanation>
       dates = dates[0]
     }
-    // biome-ignore lint/style/noParameterAssign: <explanation>
     dates = dates.filter((date) => date) // Remove falsy values
     let result = dates[0]
     for (let i = 1; i < dates.length; i++) {

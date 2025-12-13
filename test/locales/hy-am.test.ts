@@ -1,9 +1,5 @@
 /**
  * Test for locale 'Armenian [hy-AM]'
- *
- * This is a minimal test for a locale without preParse / postFormat.
- * This file should aso be used as a template for tests for
- * other locales without preParse / postFormat.
  */
 
 import { describe, expect, it } from 'vitest'
@@ -16,7 +12,11 @@ describe('locale hy-AM', () => {
 
   it('should have 7 weekday names', () => {
     expect(locale.weekdays).toBeDefined()
-    expect(locale.weekdays?.length).toBe(7)
+    if (Array.isArray(locale.weekdays)) {
+      expect(locale.weekdays.length).toBe(7)
+    } else {
+      expect(locale.weekdays).toBeTypeOf('function')
+    }
   })
 
   it('should have 7 short weekday names', () => {
@@ -34,7 +34,7 @@ describe('locale hy-AM', () => {
     if (Array.isArray(locale.months)) {
       expect(locale.months.length).toBe(12)
     } else {
-      expect(locale.months).toBeTypeOf('function')
+      expect(locale.months).toBeTypeOf('object')
     }
   })
 
@@ -50,6 +50,7 @@ describe('locale hy-AM', () => {
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(2)).toBe('2')
   })
 
   it('should have numeric property named weekStart', () => {
@@ -70,14 +71,24 @@ describe('locale hy-AM', () => {
     expect(Object.keys(locale.formats ?? {})).toHaveLength(10)
   })
 
+  it('should have an object named "calendar"', () => {
+    expect(locale.calendar).toBeDefined()
+    expect(locale.calendar).toBeTypeOf('object')
+    expect(Object.keys(locale.calendar ?? {}).length).toBe(6)
+  })
+
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()
     expect(locale.relativeTime).toBeTypeOf('object')
-    expect(Object.keys(locale.relativeTime ?? {}).length).toBeGreaterThan(0)
+    expect(Object.keys(locale.relativeTime ?? {}).length).toBe(16)
   })
 
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(3, 0, false)).toBe('գիշերվա')
+    expect(locale.meridiem(11, 0, true)).toBe('առավոտվա')
+    expect(locale.meridiem(16, 0, false)).toBe('ցերեկվա')
+    expect(locale.meridiem(21, 0, true)).toBe('երեկոյան')
   })
 })

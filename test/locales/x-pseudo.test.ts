@@ -1,9 +1,5 @@
 /**
  * Test for locale 'Pseudo [x-pseudo]'
- *
- * This is a minimal test for a locale without preParse / postFormat.
- * This file should aso be used as a template for tests for
- * other locales without preParse / postFormat.
  */
 
 import { describe, expect, it } from 'vitest'
@@ -16,7 +12,11 @@ describe('locale x-pseudo', () => {
 
   it('should have 7 weekday names', () => {
     expect(locale.weekdays).toBeDefined()
-    expect(locale.weekdays?.length).toBe(7)
+    if (Array.isArray(locale.weekdays)) {
+      expect(locale.weekdays.length).toBe(7)
+    } else {
+      expect(locale.weekdays).toBeTypeOf('function')
+    }
   })
 
   it('should have 7 short weekday names', () => {
@@ -52,6 +52,19 @@ describe('locale x-pseudo', () => {
     expect(locale.ordinal).toBeTypeOf('function')
   })
 
+  it.each([
+    { value: 0, expected: '0th' },
+    { value: 1, expected: '1st' },
+    { value: 2, expected: '2nd' },
+    { value: 3, expected: '3rd' },
+    { value: 4, expected: '4th' },
+    { value: 5, expected: '5th' },
+    { value: 14, expected: '14th' },
+    { value: 99, expected: '99th' },
+  ])('should convert $value to ordinal number', ({ value, expected }) => {
+    expect(locale.ordinal(value)).toBe(expected)
+  })
+
   it('should have numeric property named weekStart', () => {
     expect(locale.weekStart).toBeDefined()
     expect(locale.weekStart).toBeTypeOf('number')
@@ -70,14 +83,24 @@ describe('locale x-pseudo', () => {
     expect(Object.keys(locale.formats ?? {})).toHaveLength(10)
   })
 
+  it('should have an object named "calendar"', () => {
+    expect(locale.calendar).toBeDefined()
+    expect(locale.calendar).toBeTypeOf('object')
+    expect(Object.keys(locale.calendar ?? {}).length).toBe(6)
+  })
+
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()
     expect(locale.relativeTime).toBeTypeOf('object')
-    expect(Object.keys(locale.relativeTime ?? {}).length).toBeGreaterThan(0)
+    expect(Object.keys(locale.relativeTime ?? {}).length).toBe(16)
   })
 
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(10, 0, false)).toBe('AM')
+    expect(locale.meridiem(10, 0, true)).toBe('am')
+    expect(locale.meridiem(20, 0, false)).toBe('PM')
+    expect(locale.meridiem(20, 0, true)).toBe('pm')
   })
 })

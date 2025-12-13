@@ -2,14 +2,14 @@
  * Finnish [fi]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { Locale, RelativeTimeElementFunction } from '~/plugins/locale'
 
-function relativeTimeFormatter(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
+  token: string,
   isFuture: boolean,
-): string {
+) => {
   const pastWords = {
     s: 'muutama sekunti',
     ss: '%d sekuntia',
@@ -19,6 +19,8 @@ function relativeTimeFormatter(
     hh: '%d tuntia',
     d: 'päivä',
     dd: '%d päivää',
+    w: 'viikon',
+    ww: '%d viikkoa',
     M: 'kuukausi',
     MM: '%d kuukautta',
     y: 'vuosi',
@@ -46,6 +48,8 @@ function relativeTimeFormatter(
     hh: '%d tunnin',
     d: 'päivän',
     dd: '%d päivän',
+    w: 'viikko',
+    ww: '%d viikon',
     M: 'kuukauden',
     MM: '%d kuukauden',
     y: 'vuoden',
@@ -67,7 +71,7 @@ function relativeTimeFormatter(
   const words = isFuture && !withoutSuffix ? futureWords : pastWords
   const numbers = isFuture && !withoutSuffix ? futureNumbers : pastNumbers
 
-  const result = words[range as keyof typeof words]
+  const result = words[token as keyof typeof words]
   if (+timeValue < 10) {
     return result.replace('%d', numbers[+timeValue])
   }
@@ -130,6 +134,14 @@ const localeFi: Readonly<Locale> = {
     lll: 'D. MMM YYYY, [klo] HH.mm',
     llll: 'ddd, D. MMM YYYY, [klo] HH.mm',
   },
+  calendar: {
+    sameDay: '[tänään] [klo] LT',
+    nextDay: '[huomenna] [klo] LT',
+    nextWeek: 'dddd [klo] LT',
+    lastDay: '[eilen] [klo] LT',
+    lastWeek: '[viime] dddd[na] [klo] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s päästä',
     past: '%s sitten',
@@ -141,6 +153,8 @@ const localeFi: Readonly<Locale> = {
     hh: relativeTimeFormatter,
     d: relativeTimeFormatter,
     dd: relativeTimeFormatter,
+    w: relativeTimeFormatter,
+    ww: relativeTimeFormatter,
     M: relativeTimeFormatter,
     MM: relativeTimeFormatter,
     y: relativeTimeFormatter,

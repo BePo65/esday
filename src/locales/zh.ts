@@ -1,8 +1,19 @@
 /**
  * Chinese [zh]
+ *
+ * This locale requires the week plugin, when the calendar property
+ * is used (e.g. in the calendar plugin).
  */
 
+import type { EsDay } from 'esday'
 import type { Locale } from '~/plugins/locale'
+
+declare module 'esday' {
+  interface EsDay {
+    week(): number
+    week(newWeek: number): EsDay
+  }
+}
 
 const localeZh: Readonly<Locale> = {
   name: 'zh',
@@ -37,12 +48,20 @@ const localeZh: Readonly<Locale> = {
     '11月',
     '12月',
   ],
-  ordinal: (number, period) => {
-    switch (period) {
+  ordinal: (number: number, period?: string) => {
+    const p = period ?? ''
+    switch (p) {
+      case 'd':
+      case 'D':
+      case 'DDD':
+        return `${number}日`
+      case 'M':
+        return `${number}月`
+      case 'w':
       case 'W':
         return `${number}周`
       default:
-        return `${number}日`
+        return number.toString()
     }
   },
   weekStart: 1, // Monday is the first day of the week.
@@ -59,6 +78,24 @@ const localeZh: Readonly<Locale> = {
     lll: 'YYYY年M月D日 HH:mm',
     llll: 'YYYY年M月D日dddd HH:mm',
   },
+  calendar: {
+    sameDay: '[今天]LT',
+    nextDay: '[明天]LT',
+    nextWeek(this: EsDay, refDate?: EsDay) {
+      if (refDate?.week?.() !== this.week?.()) {
+        return '[下]dddLT'
+      }
+      return '[本]dddLT'
+    },
+    lastDay: '[昨天]LT',
+    lastWeek(this: EsDay, refDate?: EsDay) {
+      if (this.week?.() !== refDate?.week?.()) {
+        return '[上]dddLT'
+      }
+      return '[本]dddLT'
+    },
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s后',
     past: '%s前',
@@ -70,6 +107,8 @@ const localeZh: Readonly<Locale> = {
     hh: '%d 小时',
     d: '1 天',
     dd: '%d 天',
+    w: '1 周',
+    ww: '%d 周',
     M: '1 个月',
     MM: '%d 个月',
     y: '1 年',

@@ -1,49 +1,60 @@
-import type { EsDay, EsDayFactory, EsDayPlugin, FormattingTokenDefinitions, UnitType } from 'esday'
-import { C, prettyUnit } from '~/common'
+/**
+ * quarterOfYear plugin
+ *
+ * This plugin adds 'quarter' and the formatting token 'Q' to EsDay.
+ */
+
+import type { EsDay, EsDayPlugin, FormattingTokenDefinitions } from 'esday'
+import { C, isObject, normalizeUnitWithPlurals } from '~/common'
+import type {
+  UnitsObjectTypeAddSub,
+  UnitsObjectTypeSet,
+  UnitType,
+  UnitTypeAddSub,
+  UnitTypeGetSet,
+} from '~/types'
 
 declare module 'esday' {
   interface EsDay {
-    /**
-     * overloads for getter / setter of locale of instance
-     * quarter(): number
-     * quarter(quarterNumber: number): EsDay
-     */
-    quarter: <T extends number | undefined = undefined>(
-      quarterNumber?: T,
-    ) => T extends number ? EsDay : number
+    quarter(): number
+    quarter(quarterNumber: number): EsDay
+    quarters(): number
+    quarters(quarterNumber: number): EsDay
   }
 }
 
-const quarterOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory: EsDayFactory) => {
+const quarterOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   const proto = dayClass.prototype
 
-  proto.quarter = function <T extends number | undefined = undefined>(
-    quarterNumber?: T,
-  ): T extends number ? EsDay : number {
-    // Setter
-    if (quarterNumber !== undefined) {
-      // biome-ignore lint/suspicious/noExplicitAny: required to enable getter/setter function
-      return this.month((this.month() % 3) + (quarterNumber - 1) * 3) as any
+  // @ts-expect-error function is compatible with its overload
+  proto.quarter = function (quarterNumber?: number) {
+    if (quarterNumber === undefined) {
+      // Getter
+      return Math.ceil((this.month() + 1) / 3)
     }
 
-    // Getter
-    // biome-ignore lint/suspicious/noExplicitAny: required to enable getter/setter function
-    return Math.ceil((this.month() + 1) / 3) as any
+    // Setter
+    return this.month((this.month() % 3) + (quarterNumber - 1) * 3)
   }
 
+  proto.quarters = proto.quarter
+
   const oldAdd = proto.add
-  proto.add = function (number: number, units: UnitType) {
-    const unit = prettyUnit(units)
-    if (unit === C.QUARTER) {
-      return this.add(number * 3, C.MONTH)
+  proto.add = function (value: number | UnitsObjectTypeAddSub, unit?: UnitTypeAddSub) {
+    if (!isObject(value) && unit !== undefined) {
+      const unitLong = normalizeUnitWithPlurals(unit)
+      if (unitLong === C.QUARTER) {
+        return this.add(value * 3, C.MONTH)
+      }
     }
 
-    return oldAdd.call(this, number, units)
+    // @ts-expect-error it's compatible with the overload
+    return oldAdd.call(this, value, unit)
   }
 
   const oldStartOf = proto.startOf
   proto.startOf = function (units: UnitType) {
-    const unit = prettyUnit(units)
+    const unit = normalizeUnitWithPlurals(units)
     if (unit === C.QUARTER) {
       const quarter = this.quarter() - 1
       return this.month(quarter * 3)
@@ -55,7 +66,7 @@ const quarterOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory: EsDayFact
 
   const oldEndOf = proto.endOf
   proto.endOf = function (units: UnitType) {
-    const unit = prettyUnit(units)
+    const unit = normalizeUnitWithPlurals(units)
     if (unit === C.QUARTER) {
       const quarter = this.quarter() - 1
       return this.month(quarter * 3 + 2)
@@ -63,6 +74,30 @@ const quarterOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory: EsDayFact
         .endOf(C.DAY)
     }
     return oldEndOf.call(this, units)
+  }
+
+  const oldGet = proto.get
+  proto.get = function (unit: UnitTypeGetSet) {
+    const normalizedUnit = normalizeUnitWithPlurals(unit)
+    if (normalizedUnit === C.QUARTER) {
+      return this.quarter()
+    }
+    return oldGet.call(this, unit)
+  }
+
+  const old$set = proto['$set']
+  proto['$set'] = function (unit: UnitTypeGetSet | UnitsObjectTypeSet, values: number[]) {
+    if (isObject(unit)) {
+      // UnitsObjectTypeSet is implemented in plugin ObjectSupport
+      // therefore we ignore the request here.
+      return this.clone()
+    }
+
+    const normalizedUnit = normalizeUnitWithPlurals(unit)
+    if (normalizedUnit === C.QUARTER) {
+      return this.quarter(values[0])
+    }
+    return old$set.call(this, unit, values)
   }
 
   // Add 'Q' for quarter to formatting tokens

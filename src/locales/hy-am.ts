@@ -2,27 +2,47 @@
  * Armenian [hy-AM]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { Locale, MonthNames, MonthNamesStandaloneFormat } from '~/plugins/locale'
+
+const monthFormat: MonthNames = [
+  'հունվարի',
+  'փետրվարի',
+  'մարտի',
+  'ապրիլի',
+  'մայիսի',
+  'հունիսի',
+  'հուլիսի',
+  'օգոստոսի',
+  'սեպտեմբերի',
+  'հոկտեմբերի',
+  'նոյեմբերի',
+  'դեկտեմբերի',
+]
+const monthStandalone: MonthNames = [
+  'հունվար',
+  'փետրվար',
+  'մարտ',
+  'ապրիլ',
+  'մայիս',
+  'հունիս',
+  'հուլիս',
+  'օգոստոս',
+  'սեպտեմբեր',
+  'հոկտեմբեր',
+  'նոյեմբեր',
+  'դեկտեմբեր',
+]
+const months: MonthNamesStandaloneFormat = {
+  standalone: monthStandalone,
+  format: monthFormat,
+}
 
 const localeHyAm: Readonly<Locale> = {
   name: 'hy-AM',
   weekdays: ['կիրակի', 'երկուշաբթի', 'երեքշաբթի', 'չորեքշաբթի', 'հինգշաբթի', 'ուրբաթ', 'շաբաթ'],
   weekdaysShort: ['կրկ', 'երկ', 'երք', 'չրք', 'հնգ', 'ուրբ', 'շբթ'],
   weekdaysMin: ['կրկ', 'երկ', 'երք', 'չրք', 'հնգ', 'ուրբ', 'շբթ'],
-  months: [
-    'հունվարի',
-    'փետրվարի',
-    'մարտի',
-    'ապրիլի',
-    'մայիսի',
-    'հունիսի',
-    'հուլիսի',
-    'օգոստոսի',
-    'սեպտեմբերի',
-    'հոկտեմբերի',
-    'նոյեմբերի',
-    'դեկտեմբերի',
-  ],
+  months,
   monthsShort: ['հնվ', 'փտր', 'մրտ', 'ապր', 'մյս', 'հնս', 'հլս', 'օգս', 'սպտ', 'հկտ', 'նմբ', 'դկտ'],
   ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
@@ -39,6 +59,14 @@ const localeHyAm: Readonly<Locale> = {
     lll: 'D MMMM YYYY թ., HH:mm',
     llll: 'dddd, D MMMM YYYY թ., HH:mm',
   },
+  calendar: {
+    sameDay: '[այսօր] LT',
+    nextDay: '[վաղը] LT',
+    lastDay: '[երեկ] LT',
+    nextWeek: 'dddd [օրը ժամը] LT',
+    lastWeek: '[անցած] dddd [օրը ժամը] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s հետո',
     past: '%s առաջ',
@@ -50,6 +78,8 @@ const localeHyAm: Readonly<Locale> = {
     hh: '%d ժամ',
     d: 'օր',
     dd: '%d օր',
+    w: 'շաբաթից',
+    ww: '%d շաբաթից',
     M: 'ամիս',
     MM: '%d ամիս',
     y: 'տարի',

@@ -57,6 +57,28 @@ const localeBg: Readonly<Locale> = {
     lll: 'D MMMM YYYY H:mm',
     llll: 'dddd, D MMMM YYYY H:mm',
   },
+  calendar: {
+    sameDay: '[Днес в] LT',
+    nextDay: '[Утре в] LT',
+    nextWeek: 'dddd [в] LT',
+    lastDay: '[Вчера в] LT',
+    lastWeek() {
+      switch (this.day()) {
+        case 0:
+        case 3:
+        case 6:
+          return '[Миналата] dddd [в] LT'
+        case 1:
+        case 2:
+        case 4:
+        case 5:
+          return '[Миналия] dddd [в] LT'
+        default:
+          return ''
+      }
+    },
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'след %s',
     past: 'преди %s',
@@ -68,6 +90,8 @@ const localeBg: Readonly<Locale> = {
     hh: '%d часа',
     d: 'ден',
     dd: '%d дена',
+    w: 'седмица',
+    ww: '%d седмици',
     M: 'месец',
     MM: '%d месеца',
     y: 'година',

@@ -52,6 +52,14 @@ const localeSd: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd، D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[اڄ] LT',
+    nextDay: '[سڀاڻي] LT',
+    nextWeek: 'dddd [اڳين هفتي تي] LT',
+    lastDay: '[ڪالهه] LT',
+    lastWeek: '[گزريل هفتي] dddd [تي] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s پوء',
     past: '%s اڳ',
@@ -63,6 +71,8 @@ const localeSd: Readonly<Locale> = {
     hh: '%d ڪلاڪ',
     d: 'هڪ ڏينهن',
     dd: '%d ڏينهن',
+    w: 'هڪ هفتو',
+    ww: '%d هفتو',
     M: 'هڪ مهينو',
     MM: '%d مهينا',
     y: 'هڪ سال',

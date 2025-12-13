@@ -47,6 +47,14 @@ const localeLv: Locale = {
     lll: 'YYYY. [gada] D. MMMM, HH:mm',
     llll: 'YYYY. [gada] D. MMMM, dddd, HH:mm',
   },
+  calendar: {
+    sameDay: '[Šodien pulksten] LT',
+    nextDay: '[Rīt pulksten] LT',
+    nextWeek: 'dddd [pulksten] LT',
+    lastDay: '[Vakar pulksten] LT',
+    lastWeek: '[Pagājušā] dddd [pulksten] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'pēc %s',
     past: 'pirms %s',
@@ -58,6 +66,8 @@ const localeLv: Locale = {
     hh: '%d stundām',
     d: 'dienas',
     dd: '%d dienām',
+    w: 'nedēļas',
+    ww: '%d nedēļām',
     M: 'mēneša',
     MM: '%d mēnešiem',
     y: 'gada',

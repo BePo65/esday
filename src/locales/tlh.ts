@@ -2,7 +2,7 @@
  * Klingon [tlh]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { Locale, RelativeTimeElementFunction } from '~/plugins/locale'
 
 const numbersNouns = ['pagh', 'wa’', 'cha’', 'wej', 'loS', 'vagh', 'jav', 'Soch', 'chorgh', 'Hut']
 
@@ -10,17 +10,17 @@ function numberAsNoun(n: number) {
   const hundred = Math.floor((n % 1000) / 100)
   const ten = Math.floor((n % 100) / 10)
   const one = n % 10
-  let word = ''
+  let noun = ''
   if (hundred > 0) {
-    word += `${numbersNouns[hundred]}vatlh`
+    noun += `${numbersNouns[hundred]}vatlh`
   }
   if (ten > 0) {
-    word += `${word !== '' ? ' ' : ''}${numbersNouns[ten]}maH`
+    noun += `${noun !== '' ? ' ' : ''}${numbersNouns[ten]}maH`
   }
   if (one > 0) {
-    word += (word !== '' ? ' ' : '') + numbersNouns[one]
+    noun += (noun !== '' ? ' ' : '') + numbersNouns[one]
   }
-  return word === '' ? 'pagh' : word
+  return noun === '' ? 'pagh' : noun
 }
 
 function translateFuture(timeValue: string | number) {
@@ -50,14 +50,14 @@ function translatePast(timeValue: string | number) {
 }
 
 // eslint-disable-next-line unused-imports/no-unused-vars
-function relativeTimeFormatter(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   _withoutSuffix: boolean,
-  range: string,
+  token: string,
   _isFuture: boolean,
-): string {
+) => {
   const numberNoun = numberAsNoun(+timeValue)
-  switch (range) {
+  switch (token) {
     case 'ss':
       return `${numberNoun} lup`
     case 'mm':
@@ -66,6 +66,8 @@ function relativeTimeFormatter(
       return `${numberNoun} rep`
     case 'dd':
       return `${numberNoun} jaj`
+    case 'ww':
+      return `${numberNoun} puj`
     case 'MM':
       return `${numberNoun} jar`
     case 'yy':
@@ -123,6 +125,14 @@ const localeTlh: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[DaHjaj] LT',
+    nextDay: '[wa’leS] LT',
+    nextWeek: 'LLL',
+    lastDay: '[wa’Hu’] LT',
+    lastWeek: 'LLL',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: translateFuture,
     past: translatePast,
@@ -134,6 +144,8 @@ const localeTlh: Readonly<Locale> = {
     hh: relativeTimeFormatter,
     d: 'wa’ jaj',
     dd: relativeTimeFormatter,
+    w: 'wa’ hogh',
+    ww: relativeTimeFormatter,
     M: 'wa’ jar',
     MM: relativeTimeFormatter,
     y: 'wa’ DIS',

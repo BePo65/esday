@@ -2,27 +2,48 @@
  * Occitan, lengadocian dialecte [oc-LNC]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { Locale, MonthNames, MonthNamesStandaloneFormat } from '~/plugins/locale'
+
+const monthFormat: MonthNames = [
+  'de genièr',
+  'de febrièr',
+  'de març',
+  `d'abril`,
+  'de mai',
+  'de junh',
+  'de julhet',
+  `d'agost`,
+  'de setembre',
+  `d'octòbre`,
+  'de novembre',
+  'de decembre',
+]
+const monthStandalone: MonthNames = [
+  'genièr',
+  'febrièr',
+  'març',
+  'abril',
+  'mai',
+  'junh',
+  'julhet',
+  'agost',
+  'setembre',
+  'octòbre',
+  'novembre',
+  'decembre',
+]
+const months: MonthNamesStandaloneFormat = {
+  standalone: monthStandalone,
+  format: monthFormat,
+  isFormat: /D[oD]?(\s)+MMMM/,
+}
 
 const localeOcLnc: Readonly<Locale> = {
   name: 'oc-LNC',
   weekdays: ['dimenge', 'diluns', 'dimars', 'dimècres', 'dijòus', 'divendres', 'dissabte'],
   weekdaysShort: ['Dg', 'Dl', 'Dm', 'Dc', 'Dj', 'Dv', 'Ds'],
   weekdaysMin: ['dg', 'dl', 'dm', 'dc', 'dj', 'dv', 'ds'],
-  months: [
-    'genièr',
-    'febrièr',
-    'març',
-    'abrial',
-    'mai',
-    'junh',
-    'julhet',
-    'agost',
-    'setembre',
-    'octòbre',
-    'novembre',
-    'decembre',
-  ],
+  months,
   monthsShort: [
     'gen',
     'feb',
@@ -52,6 +73,14 @@ const localeOcLnc: Readonly<Locale> = {
     lll: 'D MMMM [de] YYYY [a] H:mm',
     llll: 'dddd D MMMM [de] YYYY [a] H:mm',
   },
+  calendar: {
+    sameDay: '[uèi a] LT',
+    nextDay: '[deman a] LT',
+    nextWeek: 'dddd [a] LT',
+    lastDay: '[ièr a] LT',
+    lastWeek: 'dddd [passat a] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: "d'aquí %s",
     past: 'fa %s',
@@ -63,6 +92,8 @@ const localeOcLnc: Readonly<Locale> = {
     hh: '%d oras',
     d: 'un jorn',
     dd: '%d jorns',
+    w: 'un setmana',
+    ww: '%d setmanas',
     M: 'un mes',
     MM: '%d meses',
     y: 'un an',

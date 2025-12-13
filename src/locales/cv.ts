@@ -39,6 +39,14 @@ const localeCv: Readonly<Locale> = {
     lll: 'YYYY [ҫулхи] MMMM [уйӑхӗн] D[-мӗшӗ], HH:mm',
     llll: 'dddd, YYYY [ҫулхи] MMMM [уйӑхӗн] D[-мӗшӗ], HH:mm',
   },
+  calendar: {
+    sameDay: '[Паян] LT [сехетре]',
+    nextDay: '[Ыран] LT [сехетре]',
+    lastDay: '[Ӗнер] LT [сехетре]',
+    nextWeek: '[Ҫитес] dddd LT [сехетре]',
+    lastWeek: '[Иртнӗ] dddd LT [сехетре]',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'в %s',
     past: '%s каялла',
@@ -50,6 +58,8 @@ const localeCv: Readonly<Locale> = {
     hh: '%d сехет',
     d: 'пӗр кун',
     dd: '%d кун',
+    w: 'пӗр Эрне',
+    ww: '%d эрне',
     M: 'пӗр уйӑх',
     MM: '%d уйӑх',
     y: 'пӗр ҫул',

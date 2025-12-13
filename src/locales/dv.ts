@@ -52,6 +52,14 @@ const localeDv: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[މިއަދު] LT',
+    nextDay: '[މާދަމާ] LT',
+    nextWeek: 'dddd LT',
+    lastDay: '[އިއްޔެ] LT',
+    lastWeek: '[ފާއިތުވި] dddd LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'ތެރޭގައި %s',
     past: 'ކުރިން %s',
@@ -63,6 +71,8 @@ const localeDv: Readonly<Locale> = {
     hh: 'ގަޑިއިރު %d',
     d: 'ދުވަހެއް',
     dd: 'ދުވަސް %d',
+    w: 'ހަފްތާ',
+    ww: 'ހަފްތާ %d',
     M: 'މަހެއް',
     MM: 'މަސް %d',
     y: 'އަހަރެއް',

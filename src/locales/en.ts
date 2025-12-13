@@ -8,6 +8,8 @@ import type { Locale } from '~/plugins/locale'
 const localeEn: Readonly<Locale> = {
   name: 'en',
   weekdays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+  weekdaysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+  weekdaysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
   months: [
     'January',
     'February',
@@ -22,13 +24,11 @@ const localeEn: Readonly<Locale> = {
     'November',
     'December',
   ],
-  weekdaysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-  weekdaysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
   monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   ordinal: (n) => {
-    const s = ['th', 'st', 'nd', 'rd']
+    const suffices = ['th', 'st', 'nd', 'rd']
     const v = n % 100
-    return `${n}${s[(v - 20) % 10] || s[v] || s[0]}`
+    return `${n}${suffices[(v - 20) % 10] || suffices[v] || suffices[0]}`
   },
   weekStart: 0, // Sunday is the first day of the week.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.
@@ -36,13 +36,21 @@ const localeEn: Readonly<Locale> = {
     LT: 'h:mm A',
     LTS: 'h:mm:ss A',
     L: 'MM/DD/YYYY',
-    LL: 'D [de] MMMM [de] YYYY',
-    LLL: 'D [de] MMMM [de] YYYY h:mm A',
-    LLLL: 'dddd, D [de] MMMM [de] YYYY h:mm A',
+    LL: 'MMMM D, YYYY',
+    LLL: 'MMMM D, YYYY h:mm A',
+    LLLL: 'dddd, MMMM D, YYYY h:mm A',
     l: 'MM/DD/YYYY',
-    ll: 'D [de] MMMM [de] YYYY',
-    lll: 'D [de] MMMM [de] YYYY h:mm A',
-    llll: 'dddd, D [de] MMMM [de] YYYY h:mm A',
+    ll: 'MMM D, YYYY',
+    lll: 'MMM D, YYYY h:mm A',
+    llll: 'ddd, MMM D, YYYY h:mm A',
+  },
+  calendar: {
+    sameDay: '[Today at] LT',
+    nextDay: '[Tomorrow at] LT',
+    nextWeek: 'dddd [at] LT',
+    lastDay: '[Yesterday at] LT',
+    lastWeek: '[Last] dddd [at] LT',
+    sameElse: 'L',
   },
   relativeTime: {
     future: 'in %s',
@@ -55,6 +63,8 @@ const localeEn: Readonly<Locale> = {
     hh: '%d hours',
     d: 'a day',
     dd: '%d days',
+    w: 'a week',
+    ww: '%d weeks',
     M: 'a month',
     MM: '%d months',
     y: 'a year',

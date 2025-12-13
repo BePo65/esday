@@ -3,7 +3,12 @@
  */
 
 import type { EsDay } from 'esday'
-import type { Locale, MonthNames, MonthNamesFunction } from '~/plugins/locale'
+import type {
+  Locale,
+  MonthNames,
+  MonthNamesFunction,
+  RelativeTimeElementFunction,
+} from '~/plugins/locale'
 
 const monthFormat: MonthNames = [
   'stycznia',
@@ -49,13 +54,13 @@ months.standalone = monthStandalone
 function usePlural(timeValue: number) {
   return timeValue % 10 < 5 && timeValue % 10 > 1 && ~~(timeValue / 10) % 10 !== 1
 }
-function relativeTimeWithPlural(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
-): string {
-  const result = `${timeValue} `
-  switch (range) {
+  token: string,
+) => {
+  const result = `${timeValue}`
+  switch (token) {
     case 'ss':
       return `${result} ${usePlural(+timeValue) ? 'sekundy' : 'sekund'}`
     case 'm':
@@ -66,6 +71,8 @@ function relativeTimeWithPlural(
       return withoutSuffix ? 'godzina' : 'godzinę'
     case 'hh':
       return `${result} ${usePlural(+timeValue) ? 'godziny' : 'godzin'}`
+    case 'ww':
+      return `${result} ${usePlural(+timeValue) ? 'tygodnie' : 'tygodni'}`
     case 'MM':
       return `${result} ${usePlural(+timeValue) ? 'miesiące' : 'miesięcy'}`
     case 'yy':
@@ -97,21 +104,56 @@ const localePl: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[Dziś o] LT',
+    nextDay: '[Jutro o] LT',
+    nextWeek(this: EsDay) {
+      switch (this.day()) {
+        case 0:
+          return '[W niedzielę o] LT'
+        case 2:
+          return '[We wtorek o] LT'
+        case 3:
+          return '[W środę o] LT'
+        case 6:
+          return '[W sobotę o] LT'
+
+        default:
+          return '[W] dddd [o] LT'
+      }
+    },
+    lastDay: '[Wczoraj o] LT',
+    lastWeek(this: EsDay) {
+      switch (this.day()) {
+        case 0:
+          return '[W zeszłą niedzielę o] LT'
+        case 3:
+          return '[W zeszłą środę o] LT'
+        case 6:
+          return '[W zeszłą sobotę o] LT'
+        default:
+          return '[W zeszły] dddd [o] LT'
+      }
+    },
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'za %s',
     past: '%s temu',
     s: 'kilka sekund',
-    ss: relativeTimeWithPlural,
-    m: relativeTimeWithPlural,
-    mm: relativeTimeWithPlural,
-    h: relativeTimeWithPlural,
-    hh: relativeTimeWithPlural,
+    ss: relativeTimeFormatter,
+    m: relativeTimeFormatter,
+    mm: relativeTimeFormatter,
+    h: relativeTimeFormatter,
+    hh: relativeTimeFormatter,
     d: '1 dzień',
     dd: '%d dni',
+    w: 'tydzień',
+    ww: relativeTimeFormatter,
     M: 'miesiąc',
-    MM: relativeTimeWithPlural,
+    MM: relativeTimeFormatter,
     y: 'rok',
-    yy: relativeTimeWithPlural,
+    yy: relativeTimeFormatter,
   },
   meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Polish doesn't have AM/PM, so return default values

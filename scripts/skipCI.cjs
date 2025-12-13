@@ -1,6 +1,7 @@
+'use strict'
 const { execSync } = require('node:child_process')
 
-const SKIP_FOLDERS = ['.changeset', '.github', '.vscode', '.husky', 'scripts/skipCI.cjs']
+const SKIP_FOLDERS = ['.changeset', '.github', '.vscode', '.husky', 'scripts/skipCI.cjs', 'docs']
 
 async function main() {
   execSync('git fetch origin main')

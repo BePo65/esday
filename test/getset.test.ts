@@ -1,365 +1,211 @@
-import { beforeEach, describe, expect, it } from 'vitest'
-import { C } from '~/common'
-import type { EsDay } from '~/core'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { esday } from '~/core'
+import type { UnitsObjectTypeSet } from '~/types'
 import { expectSame, expectSameResult } from './util'
 
 describe('get', () => {
-  const testYear = 2024
-  const testMonth = 1
-  const testDay = 3
-  const testHour = 13
-  const testMinute = 14
-  const testSecond = 15
-  const testMillisecond = 678
-  const testDate = esday([
-    testYear,
-    testMonth,
-    testDay,
-    testHour,
-    testMinute,
-    testSecond,
-    testMillisecond,
-  ])
+  const fakeTimeAsString = '2024-07-17T13:24:46.234'
+
+  beforeEach(() => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(fakeTimeAsString))
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
 
   it('year', () => {
-    expect(testDate.year()).toBe(testYear)
-    expect(testDate.get('year')).toBe(testYear)
-    expect(testDate.get('y')).toBe(testYear)
+    expectSame((esday) => esday().year())
+    expectSame((esday) => esday().get('y'))
+    expectSame((esday) => esday().get('year'))
+    expectSame((esday) => esday().get('years'))
   })
 
   it('month', () => {
-    expect(testDate.month()).toBe(testMonth)
-    expect(testDate.get('month')).toBe(testMonth)
-    expect(testDate.get('M')).toBe(testMonth)
+    expectSame((esday) => esday().month())
+    expectSame((esday) => esday().get('M'))
+    expectSame((esday) => esday().get('month'))
+    expectSame((esday) => esday().get('months'))
   })
 
   it('day of month', () => {
-    expect(testDate.date()).toBe(testDay)
-    expect(testDate.get('date')).toBe(testDay)
-    expect(testDate.get('D')).toBe(testDay)
+    expectSame((esday) => esday().date())
+    expectSame((esday) => esday().get('D'))
+    expectSame((esday) => esday().get('date'))
+    expectSame((esday) => esday().get('dates'))
   })
+
   it.each([
     { sourceString: '2024-02-03T13:14:15.678', expected: 6 },
     { sourceString: '2024-11-06T00:00:00', expected: 3 },
     { sourceString: '2024-11-14T00:00:00', expected: 4 },
-  ])('day of week for "$sourceString"', ({ sourceString, expected }) => {
-    expect(esday(sourceString).day()).toBe(expected)
-    expect(esday(sourceString).get('day')).toBe(expected)
-    expectSame((esday) => esday(sourceString).get(C.DATE_OF_WEEK))
+  ])('day of week for "$sourceString"', ({ sourceString }) => {
     expectSame((esday) => esday(sourceString).day())
+    expectSame((esday) => esday(sourceString).get('d'))
+    expectSame((esday) => esday(sourceString).get('day'))
+    expectSame((esday) => esday(sourceString).get('days'))
   })
 
   it('hour', () => {
-    expect(testDate.hour()).toBe(testHour)
-    expect(testDate.get('hour')).toBe(testHour)
-    expect(testDate.get('h')).toBe(testHour)
+    expectSame((esday) => esday().hour())
+    expectSame((esday) => esday().get('h'))
+    expectSame((esday) => esday().get('hour'))
+    expectSame((esday) => esday().get('hours'))
   })
 
   it('minute', () => {
-    expect(testDate.minute()).toBe(testMinute)
-    expect(testDate.get('minute')).toBe(testMinute)
-    expect(testDate.get('m')).toBe(testMinute)
+    expectSame((esday) => esday().minute())
+    expectSame((esday) => esday().get('m'))
+    expectSame((esday) => esday().get('minute'))
+    expectSame((esday) => esday().get('minutes'))
   })
 
   it('second', () => {
-    expect(testDate.second()).toBe(testSecond)
-    expect(testDate.get('second')).toBe(testSecond)
-    expect(testDate.get('s')).toBe(testSecond)
+    expectSame((esday) => esday().second())
+    expectSame((esday) => esday().get('s'))
+    expectSame((esday) => esday().get('second'))
+    expectSame((esday) => esday().get('seconds'))
   })
 
   it('millisecond', () => {
-    expect(testDate.millisecond()).toBe(testMillisecond)
-    expect(testDate.get('millisecond')).toBe(testMillisecond)
-    expect(testDate.get('ms')).toBe(testMillisecond)
+    expectSame((esday) => esday().millisecond())
+    expectSame((esday) => esday().get('ms'))
+    expectSame((esday) => esday().get('millisecond'))
+    expectSame((esday) => esday().get('milliseconds'))
+  })
+
+  it('quarter without plugin quarter returns NaN', () => {
+    expect(esday().get('Q')).toBeNaN()
+    expect(esday().get('quarter')).toBeNaN()
+    expect(esday().get('quarters')).toBeNaN()
+  })
+
+  it('week without plugin week returns NaN', () => {
+    expect(esday().get('w')).toBeNaN()
+    expect(esday().get('week')).toBeNaN()
+    expect(esday().get('weeks')).toBeNaN()
   })
 })
 
 describe('set', () => {
-  const testYear = 2024
-  const testMonth = 1
-  const testDay = 3
-  const testHour = 13
-  const testMinute = 14
-  const testSecond = 15
-  const testMillisecond = 678
-  let testDate: EsDay
+  const fakeTimeAsString = '2024-07-17T13:24:46.234'
 
   beforeEach(() => {
-    testDate = esday([
-      testYear,
-      testMonth,
-      testDay,
-      testHour,
-      testMinute,
-      testSecond,
-      testMillisecond,
-    ])
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(fakeTimeAsString))
   })
 
-  describe('year', () => {
-    const resultDateAsIso = esday([
-      2025,
-      testMonth,
-      testDay,
-      testHour,
-      testMinute,
-      testSecond,
-      testMillisecond,
-    ]).toISOString()
-
-    it('using method', () => {
-      const modifiedDate = testDate.year(2025)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
-
-    it('using setter - long form', () => {
-      const modifiedDate = testDate.set('year', 2025)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
-
-    it('using setter - short form', () => {
-      const modifiedDate = testDate.set('y', 2025)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
-  describe('month', () => {
-    const resultDateAsIso = esday([
-      testYear,
-      5,
-      testDay,
-      testHour,
-      testMinute,
-      testSecond,
-      testMillisecond,
-    ]).toISOString()
+  it('year', () => {
+    const newYear = 2025
 
-    it('using method', () => {
-      const modifiedDate = testDate.month(5)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
-
-    it('using setter - long form', () => {
-      const modifiedDate = testDate.set('month', 5)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
-
-    it('using setter - short form', () => {
-      const modifiedDate = testDate.set('M', 5)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
-
-    it.each([
-      { sourceString: '2024-03-15T17:16:15', newMonth: 7 },
-      { sourceString: '2023-01-31T23:59:59', newMonth: 1 },
-      { sourceString: '2023-01-31T23:59:59', newMonth: 2 },
-    ])('set month of "$sourceString" to "$newMonth"', ({ sourceString, newMonth }) => {
-      expectSameResult((esday) => esday(sourceString).month(newMonth - 1))
-    })
+    expectSameResult((esday) => esday().year(newYear))
+    expectSameResult((esday) => esday().set('y', newYear))
+    expectSameResult((esday) => esday().set('year', newYear))
+    expectSameResult((esday) => esday().set('years', newYear))
   })
 
-  describe('day of month', () => {
-    const resultDateAsIso = esday([
-      testYear,
-      testMonth,
-      23,
-      testHour,
-      testMinute,
-      testSecond,
-      testMillisecond,
-    ]).toISOString()
+  it('month', () => {
+    const newMonth = 5 // June
 
-    it('using method', () => {
-      const modifiedDate = testDate.date(23)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
-
-    it('using setter - long form', () => {
-      const modifiedDate = testDate.set('date', 23)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
-
-    it('using setter - short form', () => {
-      const modifiedDate = testDate.set('D', 23)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
+    expectSameResult((esday) => esday().month(newMonth))
+    expectSameResult((esday) => esday().set('M', newMonth))
+    expectSameResult((esday) => esday().set('month', newMonth))
+    expectSameResult((esday) => esday().set('months', newMonth))
   })
 
-  describe('day of week', () => {
-    const resultDateAsIso = esday([
-      testYear,
-      0,
-      30,
-      testHour,
-      testMinute,
-      testSecond,
-      testMillisecond,
-    ]).toISOString()
+  it('day of month', () => {
+    const newDayOfMonth = 25
 
-    it('using method', () => {
-      const modifiedDate = testDate.day(2)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
-
-    it('using setter - long form', () => {
-      const modifiedDate = testDate.set('day', 2)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
-
-    it('using setter - short form', () => {
-      const modifiedDate = testDate.set('d', 2)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
+    expectSameResult((esday) => esday().date(newDayOfMonth))
+    expectSameResult((esday) => esday().set('D', newDayOfMonth))
+    expectSameResult((esday) => esday().set('date', newDayOfMonth))
+    expectSameResult((esday) => esday().set('dates', newDayOfMonth))
   })
 
-  describe('hour', () => {
-    const resultDateAsIso = esday([
-      testYear,
-      testMonth,
-      testDay,
-      21,
-      testMinute,
-      testSecond,
-      testMillisecond,
-    ]).toISOString()
-
-    it('using method', () => {
-      const modifiedDate = testDate.hour(21)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
-
-    it('using setter - long form', () => {
-      const modifiedDate = testDate.set('hour', 21)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
-
-    it('using setter - short form', () => {
-      const modifiedDate = testDate.set('h', 21)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
+  it.each([
+    { sourceString: '2024-11-06T00:00:00', newDayOfWeek: 3 },
+    { sourceString: '2024-11-14T00:00:00', newDayOfWeek: 4 },
+    { sourceString: '2024-02-03T13:14:15.678', newDayOfWeek: 6 },
+  ])('day of week for "$sourceString" to "$newDayOfWeek"', ({ sourceString, newDayOfWeek }) => {
+    expectSameResult((esday) => esday(sourceString).day(newDayOfWeek))
+    expectSameResult((esday) => esday(sourceString).set('d', newDayOfWeek))
+    expectSameResult((esday) => esday(sourceString).set('day', newDayOfWeek))
+    expectSameResult((esday) => esday(sourceString).set('days', newDayOfWeek))
   })
 
-  describe('minute', () => {
-    const resultDateAsIso = esday([
-      testYear,
-      testMonth,
-      testDay,
-      testHour,
-      43,
-      testSecond,
-      testMillisecond,
-    ]).toISOString()
+  it('hour', () => {
+    const newHour = 4
 
-    it('using method', () => {
-      const modifiedDate = testDate.minute(43)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
-
-    it('using setter - long form', () => {
-      const modifiedDate = testDate.set('minute', 43)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
-
-    it('using setter - short form', () => {
-      const modifiedDate = testDate.set('m', 43)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
+    expectSameResult((esday) => esday().hour(newHour))
+    expectSameResult((esday) => esday().set('h', newHour))
+    expectSameResult((esday) => esday().set('hour', newHour))
+    expectSameResult((esday) => esday().set('hours', newHour))
   })
 
-  describe('second', () => {
-    const resultDateAsIso = esday([
-      testYear,
-      testMonth,
-      testDay,
-      testHour,
-      testMinute,
-      54,
-      testMillisecond,
-    ]).toISOString()
+  it('minute', () => {
+    const newMinute = 43
 
-    it('using method', () => {
-      const modifiedDate = testDate.second(54)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
-
-    it('using setter - long form', () => {
-      const modifiedDate = testDate.set('s', 54)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
-
-    it('using setter - short form', () => {
-      const modifiedDate = testDate.set('s', 54)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
+    expectSameResult((esday) => esday().minute(newMinute))
+    expectSameResult((esday) => esday().set('m', newMinute))
+    expectSameResult((esday) => esday().set('minute', newMinute))
+    expectSameResult((esday) => esday().set('minutes', newMinute))
   })
 
-  describe('millisecond', () => {
-    const resultDateAsIso = esday([
-      testYear,
-      testMonth,
-      testDay,
-      testHour,
-      testMinute,
-      testSecond,
-      273,
-    ]).toISOString()
+  it('second', () => {
+    const newSecond = 25
 
-    it('using method', () => {
-      const modifiedDate = testDate.millisecond(273)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
-
-    it('using setter - long form', () => {
-      const modifiedDate = testDate.set('millisecond', 273)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
-
-    it('using setter - short form', () => {
-      const modifiedDate = testDate.set('ms', 273)
-
-      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
-    })
+    expectSameResult((esday) => esday().second(newSecond))
+    expectSameResult((esday) => esday().set('s', newSecond))
+    expectSameResult((esday) => esday().set('second', newSecond))
+    expectSameResult((esday) => esday().set('seconds', newSecond))
   })
 
-  describe('returns new instance', () => {
-    it('year', () => {
-      const base = esday('2024-11-20T18:22:37.456Z')
-      const year = base.year()
-      const another = base.set('year', year + 1)
+  it('millisecond', () => {
+    const newMillisecond = 25
 
-      expect(base.valueOf()).not.toBe(another.valueOf())
-    })
+    expectSameResult((esday) => esday().millisecond(newMillisecond))
+    expectSameResult((esday) => esday().set('ms', newMillisecond))
+    expectSameResult((esday) => esday().set('millisecond', newMillisecond))
+    expectSameResult((esday) => esday().set('milliseconds', newMillisecond))
+  })
 
-    it('month', () => {
-      const base = esday('2024-11-20T18:22:37.456Z')
-      const month = base.month()
-      const another = base.set('month', month + 1)
+  it('to year returns new instance', () => {
+    const base = esday('2024-11-20T18:22:37.456Z')
+    const year = base.year()
+    const another = base.set('year', year + 1)
 
-      expect(base.valueOf()).not.toBe(another.valueOf())
-    })
+    expect(base.valueOf()).not.toBe(another.valueOf())
+  })
+
+  it('to month returns new instance', () => {
+    const base = esday('2024-11-20T18:22:37.456Z')
+    const month = base.month()
+    const another = base.set('month', month + 1)
+
+    expect(base.valueOf()).not.toBe(another.valueOf())
+  })
+
+  it('quarter without plugin quarter returns "now"', () => {
+    expect(esday().set('Q', 3).format().slice(0, -6)).toBe('2024-07-17T13:24:46')
+    expect(esday().set('quarter', 3).format().slice(0, -6)).toBe('2024-07-17T13:24:46')
+    expect(esday().set('quarters', 3).format().slice(0, -6)).toBe('2024-07-17T13:24:46')
+  })
+
+  it('week without plugin week returns "now"', () => {
+    expect(esday().set('w', 12).format().slice(0, -6)).toBe('2024-07-17T13:24:46')
+    expect(esday().set('week', 12).format().slice(0, -6)).toBe('2024-07-17T13:24:46')
+    expect(esday().set('weeks', 12).format().slice(0, -6)).toBe('2024-07-17T13:24:46')
+  })
+
+  it('set using an object without plugin ObjectSupport', () => {
+    const value = { years: 1, months: 2, days: 3 } as UnitsObjectTypeSet
+    const expected = '2024-07-17T13:24:46'
+
+    expect(esday().set(value).format().slice(0, -6)).toBe(expected)
   })
 })

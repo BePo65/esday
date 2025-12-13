@@ -52,6 +52,14 @@ const localeUr: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd، D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[آج بوقت] LT',
+    nextDay: '[کل بوقت] LT',
+    nextWeek: 'dddd [بوقت] LT',
+    lastDay: '[گذشتہ روز بوقت] LT',
+    lastWeek: '[گذشتہ] dddd [بوقت] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s بعد',
     past: '%s قبل',
@@ -63,6 +71,8 @@ const localeUr: Readonly<Locale> = {
     hh: '%d گھنٹے',
     d: 'ایک دن',
     dd: '%d دن',
+    w: 'ایک ہفتہ',
+    ww: '%d ہفتے',
     M: 'ایک ماہ',
     MM: '%d ماہ',
     y: 'ایک سال',

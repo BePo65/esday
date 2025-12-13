@@ -7,36 +7,36 @@ type ReadonlyTuple<T, N extends number, R extends readonly T[] = []> = R['length
 
 declare module 'esday' {
   interface EsDay {
-    /**
-     * overloads for getter / setter of locale of instance
-     * locale(): string
-     * locale(localeName: string): EsDay
-     */
-    locale: <T extends string | undefined = undefined>(
-      localeName?: T,
-    ) => T extends string ? EsDay : string
-
+    locale(): string
+    locale(localeName: string): EsDay
     localeObject: () => Locale
   }
 
   interface EsDayFactory {
-    /**
-     * overloads for getter / setter of locale of prototype
-     * locale(): string
-     * locale(localeName: string): EsDay
-     */
-    locale: <T extends string | undefined = undefined>(
-      localeName?: T,
-    ) => T extends string ? EsDayFactory : string
+    locale(): string
+    locale(localeName: string): EsDay
 
-    /**
-     * register locale
-     */
+    // add locale to list of available Locales
     registerLocale: (locale: Locale, newName?: string) => EsDayFactory
+
+    // remove locale from list of available Locales
+    unregisterLocale: (localeName: string) => EsDayFactory
+
+    // get locale object from list of available Locales
+    getLocale: (localeName: string) => Locale
+
+    // update locale object in list of available Locales
+    updateLocale: (localeName: string, newLocale: Partial<Locale>) => EsDayFactory
   }
 }
 
 export type DayNames<T = string> = ReadonlyTuple<T, 7>
+export interface DayNamesStandaloneFormat<T = DayNames<string>> {
+  format: T // for use as standalone day name
+  standalone: T // for use in a format method
+  isFormat: RegExp
+}
+
 export type MonthNames<T = string> = ReadonlyTuple<T, 12>
 export interface MonthNamesStandaloneFormat<T = MonthNames<string>> {
   format: T // for use as standalone month name
@@ -61,12 +61,17 @@ export type LocaleFormatKeys =
   | 'lll'
   | 'llll'
 
-export type RelativeTimeElementFunction = (
-  timeValue: string | number,
-  withoutSuffix: boolean,
-  token: string,
-  isFuture: boolean,
-) => string
+export type CalendarSpecValFunction = (this: EsDay, refDate?: EsDay) => string
+export type CalendarSpecVal = string | CalendarSpecValFunction
+export interface Calendar {
+  sameDay: CalendarSpecVal
+  nextDay: CalendarSpecVal
+  nextWeek: CalendarSpecVal
+  lastDay: CalendarSpecVal
+  lastWeek: CalendarSpecVal
+  sameElse: CalendarSpecVal
+}
+export type CalendarPartial = Partial<Calendar>
 
 export type RelativeTimeKeys =
   | 'future'
@@ -79,10 +84,19 @@ export type RelativeTimeKeys =
   | 'hh'
   | 'd'
   | 'dd'
+  | 'w'
+  | 'ww'
   | 'M'
   | 'MM'
   | 'y'
   | 'yy'
+
+export type RelativeTimeElementFunction = (
+  timeValue: string | number,
+  withoutSuffix: boolean,
+  token: RelativeTimeKeys,
+  isFuture: boolean,
+) => string
 
 // Type definition of locale (usually a literal object)
 export interface Locale {
@@ -94,7 +108,7 @@ export interface Locale {
    * Array of full day names
    * @example ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
    */
-  readonly weekdays: DayNames
+  readonly weekdays: DayNames | DayNamesStandaloneFormat
   /**
    * Array of short versions of day names
    * @example ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -107,10 +121,11 @@ export interface Locale {
   readonly weekdaysMin: DayNames
   readonly months: MonthNames | MonthNamesStandaloneFormat | MonthNamesFunction
   readonly monthsShort: MonthNames | MonthNamesStandaloneFormat | MonthNamesFunction
-  readonly ordinal: (number: number, period?: 'W') => string
+  readonly ordinal: (number: number, period?: string) => string
   readonly weekStart: number
   readonly yearStart: number
   readonly formats: Record<LocaleFormatKeys, string>
+  readonly calendar: Calendar
   readonly relativeTime: Record<RelativeTimeKeys, string | RelativeTimeElementFunction>
   readonly meridiem: (hour: number, minute: number, isLowercase: boolean) => string
   readonly preParse?: (dateString: string) => string

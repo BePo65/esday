@@ -18,6 +18,7 @@ const suffixes = {
   4: "'üncü",
   100: "'üncü",
   6: "'ncı",
+  40: "'ncı",
   9: "'uncu",
   10: "'uncu",
   30: "'uncu",
@@ -48,15 +49,15 @@ const localeTr: Readonly<Locale> = {
   ordinal: (n: number) => {
     if (n === 0) {
       // special case for zero
-      return `${n}''ıncı`
+      return `${n}'ıncı`
     }
-    const a = n % 10
-    const b = (n % 100) - a
-    const c = n >= 100 ? 100 : null
+    const one = n % 10
+    const ten = (n % 100) - one
+    const cutoffNumber = n >= 100 ? 100 : null
     const suffix =
-      suffixes[a as keyof typeof suffixes] ||
-      suffixes[b as keyof typeof suffixes] ||
-      suffixes[c as keyof typeof suffixes]
+      suffixes[one as keyof typeof suffixes] ||
+      suffixes[ten as keyof typeof suffixes] ||
+      suffixes[cutoffNumber as keyof typeof suffixes]
     return `${n}${suffix}`
   },
   weekStart: 1, // Monday is the first day of the week.
@@ -73,6 +74,14 @@ const localeTr: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[bugün saat] LT',
+    nextDay: '[yarın saat] LT',
+    nextWeek: '[gelecek] dddd [saat] LT',
+    lastDay: '[dün] LT',
+    lastWeek: '[geçen] dddd [saat] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s sonra',
     past: '%s önce',
@@ -84,6 +93,8 @@ const localeTr: Readonly<Locale> = {
     hh: '%d saat',
     d: 'bir gün',
     dd: '%d gün',
+    w: 'bir hafta',
+    ww: '%d hafta',
     M: 'bir ay',
     MM: '%d ay',
     y: 'bir yıl',

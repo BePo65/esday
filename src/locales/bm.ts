@@ -39,6 +39,14 @@ const localeBm: Readonly<Locale> = {
     lll: 'MMMM [tile] D [san] YYYY [lɛrɛ] HH:mm',
     llll: 'dddd MMMM [tile] D [san] YYYY [lɛrɛ] HH:mm',
   },
+  calendar: {
+    sameDay: '[Bi lɛrɛ] LT',
+    nextDay: '[Sini lɛrɛ] LT',
+    nextWeek: 'dddd [don lɛrɛ] LT',
+    lastDay: '[Kunu lɛrɛ] LT',
+    lastWeek: 'dddd [tɛmɛnen lɛrɛ] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s kɔnɔ',
     past: 'a bɛ %s bɔ',
@@ -50,6 +58,8 @@ const localeBm: Readonly<Locale> = {
     hh: 'lɛrɛ %d',
     d: 'tile kelen',
     dd: 'tile %d',
+    w: 'dɔgɔkun kelen',
+    ww: 'dɔgɔkunw %d',
     M: 'kalo kelen',
     MM: 'kalo %d',
     y: 'san kelen',

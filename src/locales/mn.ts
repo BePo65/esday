@@ -3,6 +3,40 @@
  */
 import type { Locale } from '~/plugins/locale'
 
+function relativeTimeFormatter(
+  timeValue: string | number,
+  withoutSuffix: boolean,
+  token: string,
+  _isFuture: boolean,
+): string {
+  switch (token) {
+    case 's':
+      return withoutSuffix ? 'хэдхэн секунд' : 'хэдхэн секундын'
+    case 'ss':
+      return timeValue + (withoutSuffix ? ' секунд' : ' секундын')
+    case 'm':
+    case 'mm':
+      return timeValue + (withoutSuffix ? ' минут' : ' минутын')
+    case 'h':
+    case 'hh':
+      return timeValue + (withoutSuffix ? ' цаг' : ' цагийн')
+    case 'd':
+    case 'dd':
+      return timeValue + (withoutSuffix ? ' өдөр' : ' өдрийн')
+    case 'w':
+    case 'ww':
+      return timeValue + (withoutSuffix ? ' долоо' : ' хоногийн')
+    case 'M':
+    case 'MM':
+      return timeValue + (withoutSuffix ? ' сар' : ' сарын')
+    case 'y':
+    case 'yy':
+      return timeValue + (withoutSuffix ? ' жил' : ' жилийн')
+    default:
+      return timeValue.toString()
+  }
+}
+
 const localeMn: Readonly<Locale> = {
   name: 'mn',
   weekdays: ['Ням', 'Даваа', 'Мягмар', 'Лхагва', 'Пүрэв', 'Баасан', 'Бямба'],
@@ -51,21 +85,31 @@ const localeMn: Readonly<Locale> = {
     lll: 'YYYY оны MMMMын D HH:mm',
     llll: 'dddd, YYYY оны MMMMын D HH:mm',
   },
+  calendar: {
+    sameDay: '[Өнөөдөр] LT',
+    nextDay: '[Маргааш] LT',
+    nextWeek: '[Ирэх] dddd LT',
+    lastDay: '[Өчигдөр] LT',
+    lastWeek: '[Өнгөрсөн] dddd LT',
+    sameElse: 'L',
+  },
   relativeTime: {
-    future: '%s',
-    past: '%s',
-    s: 'саяхан',
-    ss: '%d секунд',
-    m: 'м',
-    mm: '%d м',
-    h: '1 ц',
-    hh: '%d ц',
-    d: '1 ө',
-    dd: '%d ө',
-    M: '1 с',
-    MM: '%d с',
-    y: '1 ж',
-    yy: '%d ж',
+    future: '%s дараа',
+    past: '%s өмнө',
+    s: relativeTimeFormatter,
+    ss: relativeTimeFormatter,
+    m: relativeTimeFormatter,
+    mm: relativeTimeFormatter,
+    h: relativeTimeFormatter,
+    hh: relativeTimeFormatter,
+    d: relativeTimeFormatter,
+    dd: relativeTimeFormatter,
+    w: relativeTimeFormatter,
+    ww: relativeTimeFormatter,
+    M: relativeTimeFormatter,
+    MM: relativeTimeFormatter,
+    y: relativeTimeFormatter,
+    yy: relativeTimeFormatter,
   },
   // eslint-disable-next-line  unused-imports/no-unused-vars
   meridiem: (hour: number, _minute: number, _isLowercase: boolean) => {

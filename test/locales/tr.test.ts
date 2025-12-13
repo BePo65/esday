@@ -1,9 +1,5 @@
 /**
  * Test for locale 'Turkish [tr]'
- *
- * This is a minimal test for a locale without preParse / postFormat.
- * This file should aso be used as a template for tests for
- * other locales without preParse / postFormat.
  */
 
 import { describe, expect, it } from 'vitest'
@@ -16,7 +12,11 @@ describe('locale tr', () => {
 
   it('should have 7 weekday names', () => {
     expect(locale.weekdays).toBeDefined()
-    expect(locale.weekdays?.length).toBe(7)
+    if (Array.isArray(locale.weekdays)) {
+      expect(locale.weekdays.length).toBe(7)
+    } else {
+      expect(locale.weekdays).toBeTypeOf('function')
+    }
   })
 
   it('should have 7 short weekday names', () => {
@@ -52,6 +52,31 @@ describe('locale tr', () => {
     expect(locale.ordinal).toBeTypeOf('function')
   })
 
+  it.each([
+    { value: 0, expected: "0'ıncı" },
+    { value: 1, expected: "1'inci" },
+    { value: 2, expected: "2'nci" },
+    { value: 3, expected: "3'üncü" },
+    { value: 4, expected: "4'üncü" },
+    { value: 5, expected: "5'inci" },
+    { value: 6, expected: "6'ncı" },
+    { value: 7, expected: "7'nci" },
+    { value: 8, expected: "8'inci" },
+    { value: 9, expected: "9'uncu" },
+    { value: 10, expected: "10'uncu" },
+    { value: 20, expected: "20'nci" },
+    { value: 30, expected: "30'uncu" },
+    { value: 40, expected: "40'ncı" },
+    { value: 50, expected: "50'nci" },
+    { value: 60, expected: "60'ıncı" },
+    { value: 70, expected: "70'inci" },
+    { value: 80, expected: "80'inci" },
+    { value: 90, expected: "90'ıncı" },
+    { value: 100, expected: "100'üncü" },
+  ])('should format "$value" as ordinal', ({ value, expected }) => {
+    expect(locale.ordinal(value)).toBe(expected)
+  })
+
   it('should have numeric property named weekStart', () => {
     expect(locale.weekStart).toBeDefined()
     expect(locale.weekStart).toBeTypeOf('number')
@@ -70,14 +95,24 @@ describe('locale tr', () => {
     expect(Object.keys(locale.formats ?? {})).toHaveLength(10)
   })
 
+  it('should have an object named "calendar"', () => {
+    expect(locale.calendar).toBeDefined()
+    expect(locale.calendar).toBeTypeOf('object')
+    expect(Object.keys(locale.calendar ?? {}).length).toBe(6)
+  })
+
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()
     expect(locale.relativeTime).toBeTypeOf('object')
-    expect(Object.keys(locale.relativeTime ?? {}).length).toBeGreaterThan(0)
+    expect(Object.keys(locale.relativeTime ?? {}).length).toBe(16)
   })
 
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(10, 0, false)).toBe('ÖÖ')
+    expect(locale.meridiem(10, 0, true)).toBe('öö')
+    expect(locale.meridiem(20, 0, false)).toBe('ÖS')
+    expect(locale.meridiem(20, 0, true)).toBe('ös')
   })
 })

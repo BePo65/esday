@@ -55,6 +55,14 @@ const localeFr: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[Aujourd’hui à] LT',
+    nextDay: '[Demain à] LT',
+    nextWeek: 'dddd [à] LT',
+    lastDay: '[Hier à] LT',
+    lastWeek: 'dddd [dernier à] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'dans %s',
     past: 'il y a %s',
@@ -66,6 +74,8 @@ const localeFr: Readonly<Locale> = {
     hh: '%d heures',
     d: 'un jour',
     dd: '%d jours',
+    w: 'une semaine',
+    ww: '%d semaines',
     M: 'un mois',
     MM: '%d mois',
     y: 'un an',

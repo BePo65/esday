@@ -52,6 +52,14 @@ const localeRo: Readonly<Locale> = {
     lll: 'D MMMM YYYY H:mm',
     llll: 'dddd, D MMMM YYYY H:mm',
   },
+  calendar: {
+    sameDay: '[azi la] LT',
+    nextDay: '[mâine la] LT',
+    nextWeek: 'dddd [la] LT',
+    lastDay: '[ieri la] LT',
+    lastWeek: '[fosta] dddd [la] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'peste %s',
     past: 'acum %s',
@@ -63,6 +71,8 @@ const localeRo: Readonly<Locale> = {
     hh: '%d ore',
     d: 'o zi',
     dd: '%d zile',
+    w: 'o săptămână',
+    ww: '%d săptămâni',
     M: 'o lună',
     MM: '%d luni',
     y: 'un an',

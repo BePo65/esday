@@ -2,6 +2,7 @@
  * Bosnian [bs]
  */
 
+import type { EsDay } from 'esday'
 import type { Locale } from '~/plugins/locale'
 
 const localeBs: Readonly<Locale> = {
@@ -52,6 +53,45 @@ const localeBs: Readonly<Locale> = {
     lll: 'D. MMMM YYYY H:mm',
     llll: 'dddd, D. MMMM YYYY H:mm',
   },
+  calendar: {
+    sameDay: '[danas u] LT',
+    nextDay: '[sutra u] LT',
+    nextWeek(this: EsDay) {
+      switch (this.day()) {
+        case 0:
+          return '[u] [nedjelju] [u] LT'
+        case 3:
+          return '[u] [srijedu] [u] LT'
+        case 6:
+          return '[u] [subotu] [u] LT'
+        case 1:
+        case 2:
+        case 4:
+        case 5:
+          return '[u] dddd [u] LT'
+        default:
+          return ''
+      }
+    },
+    lastDay: '[jučer u] LT',
+    lastWeek(this: EsDay) {
+      switch (this.day()) {
+        case 0:
+        case 3:
+          return '[prošlu] dddd [u] LT'
+        case 6:
+          return '[prošle] [subote] [u] LT'
+        case 1:
+        case 2:
+        case 4:
+        case 5:
+          return '[prošli] dddd [u] LT'
+        default:
+          return ''
+      }
+    },
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'za %s',
     past: 'prije %s',
@@ -63,6 +103,8 @@ const localeBs: Readonly<Locale> = {
     hh: '%d sati',
     d: 'dan',
     dd: '%d dana',
+    w: 'sedmica',
+    ww: '%d sedmice',
     M: 'mjesec',
     MM: '%d mjeseci',
     y: 'godina',

@@ -1,10 +1,10 @@
 import { esday } from 'esday'
-import moment from 'moment'
-import type { ParsedElements, TokenDefinitions } from '~/plugins'
-
+import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
-import { advancedParsePlugin } from '~/plugins'
+
+import advancedParsePlugin from '~/plugins/advancedParse'
+import type { ParsedElements, TokenDefinitions } from '~/plugins/advancedParse/types'
 import { expectSame, expectSameResult } from '../util'
 
 esday.extend(advancedParsePlugin)
@@ -74,6 +74,18 @@ describe('advancedParse plugin - local mode', () => {
     })
 
     it.each([
+      { formatString: 'D', sourceString: '8' },
+      { formatString: 'D', sourceString: '08' },
+      { formatString: 'D', sourceString: '11' },
+    ])(
+      'parse day of month "$sourceString" with "$formatString"',
+      ({ sourceString, formatString }) => {
+        expectSameResult((esday) => esday(sourceString, formatString))
+        expect(esday(sourceString, formatString).isValid()).toBeTruthy()
+      },
+    )
+
+    it.each([
       { formatString: 'S', sourceString: '0', expectedMS: 0 },
       { formatString: 'S', sourceString: '3', expectedMS: 300 },
       { formatString: 'S', sourceString: '14', expectedMS: 140 },
@@ -101,10 +113,21 @@ describe('advancedParse plugin - local mode', () => {
     )
 
     it.each([
-      { formatString: 'MM-YYYY-DD HH:mm:ss.SSS', sourceString: '08-2023-14 21:43:12.123' },
-      { formatString: 'MM-YYYY-DD HH:mm:ss.SSS', sourceString: '8-2023-4 1:3:2.3' },
-      { formatString: 'M-YY-D H:m:s.SS', sourceString: '08-2023-14 21:43:12.123' },
+      {
+        formatString: 'MM-YYYY-DD HH:mm:ss.SSS',
+        sourceString: '08-2023-14 21:43:12.123',
+      },
+      {
+        formatString: 'MM-YYYY-DD HH:mm:ss.SSS',
+        sourceString: '8-2023-4 1:3:2.3',
+      },
+      {
+        formatString: 'M-YY-D H:m:s.SS',
+        sourceString: '08-2023-14 21:43:12.123',
+      },
       { formatString: 'M-YY-D H:m:s.SS', sourceString: '8-23-4 1:3:2.3' },
+      { formatString: 'YYYY', sourceString: '2025' },
+      { formatString: 'YYYY DD', sourceString: '2025 14' },
       { formatString: 'Q YYYY', sourceString: '1 2023' },
       { formatString: 'Q YYYY', sourceString: '2 2023' },
       { formatString: 'Q YYYY', sourceString: '3 2023' },
@@ -186,30 +209,60 @@ describe('advancedParse plugin - local mode', () => {
     })
 
     it.each([
-      { formatString: 'YYYY-MM-DD HH:mm:ss.SSS Z', sourceString: '2018-05-02 01:02:03.004 +01:00' },
-      { formatString: 'YYYY-MM-DD HH:mm:ss.SSS Z', sourceString: '2018-05-02 11:21:32.432 +01:30' },
-      { formatString: 'YYYY-MM-DD HH:mm:ss.SSS Z', sourceString: '2018-05-02 01:02:03.004 +0100' },
-      { formatString: 'YYYY-MM-DD HH:mm:ss.SSS Z', sourceString: '2018-05-02 10:02:03.004 -04:00' },
+      {
+        formatString: 'YYYY-MM-DD HH:mm:ss.SSS Z',
+        sourceString: '2018-05-02 01:02:03.004 +01:00',
+      },
+      {
+        formatString: 'YYYY-MM-DD HH:mm:ss.SSS Z',
+        sourceString: '2018-05-02 11:21:32.432 +01:30',
+      },
+      {
+        formatString: 'YYYY-MM-DD HH:mm:ss.SSS Z',
+        sourceString: '2018-05-02 01:02:03.004 +0100',
+      },
+      {
+        formatString: 'YYYY-MM-DD HH:mm:ss.SSS Z',
+        sourceString: '2018-05-02 10:02:03.004 -04:00',
+      },
       {
         formatString: 'YYYY-MM-DD HH:mm:ss.SSS ZZ',
         sourceString: '2018-05-02 11:21:32.432 +03:00',
       },
-      { formatString: 'YYYY-MM-DD HH:mm:ss.SSS ZZ', sourceString: '2018-05-02 01:02:03.004 +0100' },
+      {
+        formatString: 'YYYY-MM-DD HH:mm:ss.SSS ZZ',
+        sourceString: '2018-05-02 01:02:03.004 +0100',
+      },
       {
         formatString: 'YYYY-MM-DD HH:mm:ss.SSS ZZ',
         sourceString: '2018-05-02 01:02:03.004 -01:00',
       },
-      { formatString: 'YYYY-MM-DD HH:mm:ss.SSS ZZ', sourceString: '2018-05-02 01:02:03.004 -0100' },
-      { formatString: 'D.M.YY H:m:s.S ZZ', sourceString: '2.5.18 1:2:3.4 -0100' },
+      {
+        formatString: 'YYYY-MM-DD HH:mm:ss.SSS ZZ',
+        sourceString: '2018-05-02 01:02:03.004 -0100',
+      },
+      {
+        formatString: 'D.M.YY H:m:s.S ZZ',
+        sourceString: '2.5.18 1:2:3.4 -0100',
+      },
       { formatString: 'YYYY-MM-DD ZZ', sourceString: '2018-05-02 +03:00' },
       { formatString: 'YYYY-MM-DD ZZ', sourceString: '2018-05-02 -0100' },
       { formatString: 'YYYY-MM ZZ', sourceString: '2018-05 +03:00' },
       { formatString: 'YYYY-MM ZZ', sourceString: '2018-05 -0100' },
       { formatString: 'YYYY ZZ', sourceString: '2018 +01:00' },
       { formatString: 'YYYY ZZ', sourceString: '2018 -0800' },
-      { formatString: 'YYYY-MM-DD[T]HH:mm:ssZZ', sourceString: '2020-12-01T20:00:00+09' },
-      { formatString: 'YYYY-MM-DD[T]HH:mm:ssZZ', sourceString: '2020-12-01T20:00:00-03' },
-      { formatString: 'YYYY-MM-DDTHH:mm:ss.SSSZ', sourceString: '2021-01-26T15:38:43.000Z' },
+      {
+        formatString: 'YYYY-MM-DD[T]HH:mm:ssZZ',
+        sourceString: '2020-12-01T20:00:00+09',
+      },
+      {
+        formatString: 'YYYY-MM-DD[T]HH:mm:ssZZ',
+        sourceString: '2020-12-01T20:00:00-03',
+      },
+      {
+        formatString: 'YYYY-MM-DDTHH:mm:ss.SSSZ',
+        sourceString: '2021-01-26T15:38:43.000Z',
+      },
     ])('parse offset in "$sourceString" with "$formatString"', ({ sourceString, formatString }) => {
       expectSameResult((esday) => esday(sourceString, formatString))
       expect(esday(sourceString, formatString).isValid()).toBeTruthy()
@@ -219,7 +272,10 @@ describe('advancedParse plugin - local mode', () => {
       { formatString: 'Q YYYY', sourceString: '02 2023' },
       { formatString: 'Q YYYY', sourceString: '54 2023' },
       { formatString: 'YYYY-MM-DD', sourceString: '1970-00-00' },
-      { formatString: 'DD-MM-YYYY HH:mm:ss', sourceString: '35/22/2010 99:88:77' },
+      {
+        formatString: 'DD-MM-YYYY HH:mm:ss',
+        sourceString: '35/22/2010 99:88:77',
+      },
     ])(
       'parse invalid date "$sourceString" with format "$formatString"',
       ({ sourceString, formatString }) => {
@@ -269,15 +325,27 @@ describe('advancedParse plugin - local mode', () => {
         formatString: ['YYYY-MM-DD HH:mm:ss', 'YYYY', 'YYYY-MM-DD'],
         sourceString: '2012-11-28 20:21:15',
       },
-      { name: 'single entry', formatString: ['YYYY-MM-DD'], sourceString: '2012-11-28 20:21:15' },
+      {
+        name: 'single entry',
+        formatString: ['YYYY-MM-DD'],
+        sourceString: '2012-11-28 20:21:15',
+      },
     ])('parse "$sourceString" with array - "$name"', ({ formatString, sourceString }) => {
       expectSameResult((esday) => esday(sourceString, formatString))
       expect(esday(sourceString, formatString).isValid()).toBeTruthy()
     })
 
     it.each([
-      { name: 'empty format', formatString: [''], sourceString: '2012-11-28 20:21:15' },
-      { name: 'no entry', formatString: [], sourceString: '2012-11-28 20:21:15' },
+      {
+        name: 'empty format',
+        formatString: [''],
+        sourceString: '2012-11-28 20:21:15',
+      },
+      {
+        name: 'no entry',
+        formatString: [],
+        sourceString: '2012-11-28 20:21:15',
+      },
     ])('parse "$sourceString" with invalid array - "$name"', ({ formatString, sourceString }) => {
       expectSameResult((esday) => esday(sourceString, formatString))
       expect(esday(sourceString, formatString).isValid()).toBeFalsy()
@@ -297,7 +365,10 @@ describe('advancedParse plugin - local mode', () => {
     })
 
     it.each([
-      { formatString: 'MM-YYYY-DD HH:mm:ss.SSS', sourceString: '08-2023-14 21:43:12.123' },
+      {
+        formatString: 'MM-YYYY-DD HH:mm:ss.SSS',
+        sourceString: '08-2023-14 21:43:12.123',
+      },
       { formatString: 'M-YY-D H:m:s.SS', sourceString: '8-23-14 21:43:12.13' },
       { formatString: 'M', sourceString: '8' },
       { formatString: 'Q YYYY', sourceString: '1 2023' },
@@ -327,8 +398,14 @@ describe('advancedParse plugin - local mode', () => {
     )
 
     it.each([
-      { formatString: 'MM/YYYY/DD HH mm.ss SSS', sourceString: '08/2023/14 21 43.12 123' },
-      { formatString: 'MM-YYYY_DD HH,mm(ss)SSS', sourceString: '08-2023_14 21,43(12)123' },
+      {
+        formatString: 'MM/YYYY/DD HH mm.ss SSS',
+        sourceString: '08/2023/14 21 43.12 123',
+      },
+      {
+        formatString: 'MM-YYYY_DD HH,mm(ss)SSS',
+        sourceString: '08-2023_14 21,43(12)123',
+      },
     ])(
       'parse strict "$sourceString" with format "$formatString" (various separator characters)',
       ({ sourceString, formatString }) => {
@@ -347,9 +424,18 @@ describe('advancedParse plugin - local mode', () => {
     })
 
     it.each([
-      { formatString: 'MM-YYYY-DD HH:mm:ss.SSS', sourceString: '8-2023-4 1:3:2.3' },
-      { formatString: 'M-YY-D H:m:s.SS', sourceString: '08-2023-14 21:43:12.123' },
-      { formatString: 'M-YY-D H:m:s.SS', sourceString: '08-2023-14 21:43:12.13' },
+      {
+        formatString: 'MM-YYYY-DD HH:mm:ss.SSS',
+        sourceString: '8-2023-4 1:3:2.3',
+      },
+      {
+        formatString: 'M-YY-D H:m:s.SS',
+        sourceString: '08-2023-14 21:43:12.123',
+      },
+      {
+        formatString: 'M-YY-D H:m:s.SS',
+        sourceString: '08-2023-14 21:43:12.13',
+      },
       { formatString: 'M-YY-D H:m:s.SS', sourceString: '8-23-4 1:3:2.3' },
       { formatString: 'Q YYYY', sourceString: '1 23' },
       { formatString: 'Q YYYY', sourceString: '02 23' },
@@ -394,30 +480,60 @@ describe('advancedParse plugin - local mode', () => {
     )
 
     it.each([
-      { formatString: 'YYYY-MM-DD HH:mm:ss.SSS Z', sourceString: '2018-05-02 01:02:03.004 +01:00' },
-      { formatString: 'YYYY-MM-DD HH:mm:ss.SSS Z', sourceString: '2018-05-02 11:21:32.432 +01:30' },
-      { formatString: 'YYYY-MM-DD HH:mm:ss.SSS Z', sourceString: '2018-05-02 01:02:03.004 +0100' },
-      { formatString: 'YYYY-MM-DD HH:mm:ss.SSS Z', sourceString: '2018-05-02 10:02:03.004 -04:00' },
+      {
+        formatString: 'YYYY-MM-DD HH:mm:ss.SSS Z',
+        sourceString: '2018-05-02 01:02:03.004 +01:00',
+      },
+      {
+        formatString: 'YYYY-MM-DD HH:mm:ss.SSS Z',
+        sourceString: '2018-05-02 11:21:32.432 +01:30',
+      },
+      {
+        formatString: 'YYYY-MM-DD HH:mm:ss.SSS Z',
+        sourceString: '2018-05-02 01:02:03.004 +0100',
+      },
+      {
+        formatString: 'YYYY-MM-DD HH:mm:ss.SSS Z',
+        sourceString: '2018-05-02 10:02:03.004 -04:00',
+      },
       {
         formatString: 'YYYY-MM-DD HH:mm:ss.SSS ZZ',
         sourceString: '2018-05-02 11:21:32.432 +03:00',
       },
-      { formatString: 'YYYY-MM-DD HH:mm:ss.SSS ZZ', sourceString: '2018-05-02 01:02:03.004 +0100' },
+      {
+        formatString: 'YYYY-MM-DD HH:mm:ss.SSS ZZ',
+        sourceString: '2018-05-02 01:02:03.004 +0100',
+      },
       {
         formatString: 'YYYY-MM-DD HH:mm:ss.SSS ZZ',
         sourceString: '2018-05-02 01:02:03.004 -01:00',
       },
-      { formatString: 'YYYY-MM-DD HH:mm:ss.SSS ZZ', sourceString: '2018-05-02 01:02:03.004 -0100' },
-      { formatString: 'D.M.YY H:m:s.S ZZ', sourceString: '2.5.18 1:2:3.4 -0100' },
+      {
+        formatString: 'YYYY-MM-DD HH:mm:ss.SSS ZZ',
+        sourceString: '2018-05-02 01:02:03.004 -0100',
+      },
+      {
+        formatString: 'D.M.YY H:m:s.S ZZ',
+        sourceString: '2.5.18 1:2:3.4 -0100',
+      },
       { formatString: 'YYYY-MM-DD ZZ', sourceString: '2018-05-02 +03:00' },
       { formatString: 'YYYY-MM-DD ZZ', sourceString: '2018-05-02 -0100' },
       { formatString: 'YYYY-MM ZZ', sourceString: '2018-05 +03:00' },
       { formatString: 'YYYY-MM ZZ', sourceString: '2018-05 -0100' },
       { formatString: 'YYYY ZZ', sourceString: '2018 +01:00' },
       { formatString: 'YYYY ZZ', sourceString: '2018 -0800' },
-      { formatString: 'YYYY-MM-DD[T]HH:mm:ssZZ', sourceString: '2020-12-01T20:00:00+09' },
-      { formatString: 'YYYY-MM-DD[T]HH:mm:ssZZ', sourceString: '2020-12-01T20:00:00-03' },
-      { formatString: 'YYYY-MM-DD[T]HH:mm:ss.SSSZ', sourceString: '2021-01-26T15:38:43.000Z' },
+      {
+        formatString: 'YYYY-MM-DD[T]HH:mm:ssZZ',
+        sourceString: '2020-12-01T20:00:00+09',
+      },
+      {
+        formatString: 'YYYY-MM-DD[T]HH:mm:ssZZ',
+        sourceString: '2020-12-01T20:00:00-03',
+      },
+      {
+        formatString: 'YYYY-MM-DD[T]HH:mm:ss.SSSZ',
+        sourceString: '2021-01-26T15:38:43.000Z',
+      },
     ])('parse offset in "$sourceString" with "$formatString"', ({ sourceString, formatString }) => {
       expectSameResult((esday) => esday(sourceString, formatString, true))
       expect(esday(sourceString, formatString, true).isValid()).toBeTruthy()
@@ -442,9 +558,21 @@ describe('advancedParse plugin - local mode', () => {
     })
 
     it.each([
-      { name: 'missing token', formatString: ['YYYY-MM-DD'], sourceString: '2012-11-28 20:21:15' },
-      { name: 'empty format', formatString: [''], sourceString: '2012-11-28 20:21:15' },
-      { name: 'no entry', formatString: [], sourceString: '2012-11-28 20:21:15' },
+      {
+        name: 'missing token',
+        formatString: ['YYYY-MM-DD'],
+        sourceString: '2012-11-28 20:21:15',
+      },
+      {
+        name: 'empty format',
+        formatString: [''],
+        sourceString: '2012-11-28 20:21:15',
+      },
+      {
+        name: 'no entry',
+        formatString: [],
+        sourceString: '2012-11-28 20:21:15',
+      },
     ])('parse "$sourceString" with invalid array - "$name"', ({ formatString, sourceString }) => {
       const parsedEsDay = esday(sourceString, formatString, true)
       const parsedMoment = moment(sourceString, formatString, true)

@@ -52,6 +52,14 @@ const localeGu: Readonly<Locale> = {
     lll: 'D MMMM YYYY, A h:mm વાગ્યે',
     llll: 'dddd, D MMMM YYYY, A h:mm વાગ્યે',
   },
+  calendar: {
+    sameDay: '[આજ] LT',
+    nextDay: '[કાલે] LT',
+    nextWeek: 'dddd, LT',
+    lastDay: '[ગઇકાલે] LT',
+    lastWeek: '[પાછલા] dddd, LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s મા',
     past: '%s પેહલા',
@@ -63,6 +71,8 @@ const localeGu: Readonly<Locale> = {
     hh: '%d કલાક',
     d: 'એક દિવસ',
     dd: '%d દિવસ',
+    w: 'એક અઠવાડિયું',
+    ww: '%d અઠવાડિયા',
     M: 'એક મહિનો',
     MM: '%d મહિનો',
     y: 'એક વર્ષ',

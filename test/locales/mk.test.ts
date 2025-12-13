@@ -1,13 +1,11 @@
 /**
  * Test for locale 'Macedonian [mk]'
- *
- * This is a minimal test for a locale without preParse / postFormat.
- * This file should aso be used as a template for tests for
- * other locales without preParse / postFormat.
  */
 
+import type { EsDay } from 'esday'
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/mk'
+import type { CalendarSpecValFunction } from '~/plugins/locale'
 
 describe('locale mk', () => {
   it('should have the correct name', () => {
@@ -16,7 +14,11 @@ describe('locale mk', () => {
 
   it('should have 7 weekday names', () => {
     expect(locale.weekdays).toBeDefined()
-    expect(locale.weekdays?.length).toBe(7)
+    if (Array.isArray(locale.weekdays)) {
+      expect(locale.weekdays.length).toBe(7)
+    } else {
+      expect(locale.weekdays).toBeTypeOf('function')
+    }
   })
 
   it('should have 7 short weekday names', () => {
@@ -50,6 +52,23 @@ describe('locale mk', () => {
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(2)).toBe('2')
+  })
+
+  it.each([
+    { weekday: 0, expected: '[Изминатата] dddd [во] LT' },
+    { weekday: 1, expected: '[Изминатиот] dddd [во] LT' },
+    { weekday: 2, expected: '[Изминатиот] dddd [во] LT' },
+    { weekday: 3, expected: '[Изминатата] dddd [во] LT' },
+    { weekday: 4, expected: '[Изминатиот] dddd [во] LT' },
+    { weekday: 5, expected: '[Изминатиот] dddd [во] LT' },
+    { weekday: 6, expected: '[Изминатата] dddd [во] LT' },
+    { weekday: 7, expected: '' },
+  ])('should format lastWeek with calendar for weekday "$weekday"', ({ weekday, expected }) => {
+    const referenceDate = { day: () => weekday } as EsDay
+    const lastWeek = locale.calendar.lastWeek as CalendarSpecValFunction
+
+    expect(lastWeek.call(referenceDate)).toBe(expected)
   })
 
   it('should have numeric property named weekStart', () => {
@@ -70,14 +89,24 @@ describe('locale mk', () => {
     expect(Object.keys(locale.formats ?? {})).toHaveLength(10)
   })
 
+  it('should have an object named "calendar"', () => {
+    expect(locale.calendar).toBeDefined()
+    expect(locale.calendar).toBeTypeOf('object')
+    expect(Object.keys(locale.calendar ?? {}).length).toBe(6)
+  })
+
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()
     expect(locale.relativeTime).toBeTypeOf('object')
-    expect(Object.keys(locale.relativeTime ?? {}).length).toBeGreaterThan(0)
+    expect(Object.keys(locale.relativeTime ?? {}).length).toBe(16)
   })
 
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(10, 0, false)).toBe('AM')
+    expect(locale.meridiem(10, 0, true)).toBe('am')
+    expect(locale.meridiem(20, 0, false)).toBe('PM')
+    expect(locale.meridiem(20, 0, true)).toBe('pm')
   })
 })

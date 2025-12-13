@@ -60,6 +60,14 @@ const localeEu: Readonly<Locale> = {
     lll: 'YYYY[ko] MMM D[a] HH:mm',
     llll: 'ddd, YYYY[ko] MMM D[a] HH:mm',
   },
+  calendar: {
+    sameDay: '[gaur] LT[etan]',
+    nextDay: '[bihar] LT[etan]',
+    nextWeek: 'dddd LT[etan]',
+    lastDay: '[atzo] LT[etan]',
+    lastWeek: '[aurreko] dddd LT[etan]',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s barru',
     past: 'duela %s',
@@ -71,6 +79,8 @@ const localeEu: Readonly<Locale> = {
     hh: '%d ordu',
     d: 'egun bat',
     dd: '%d egun',
+    w: 'astebete',
+    ww: '%d aste',
     M: 'hilabete bat',
     MM: '%d hilabete',
     y: 'urte bat',

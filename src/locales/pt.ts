@@ -2,6 +2,7 @@
  * Portuguese [pt]
  */
 
+import type { EsDay } from 'esday'
 import type { Locale } from '~/plugins/locale'
 
 const localePt: Readonly<Locale> = {
@@ -47,6 +48,18 @@ const localePt: Readonly<Locale> = {
     lll: 'D [de] MMMM [de] YYYY [às] HH:mm',
     llll: 'dddd, D [de] MMMM [de] YYYY [às] HH:mm',
   },
+  calendar: {
+    sameDay: '[Hoje às] LT',
+    nextDay: '[Amanhã às] LT',
+    nextWeek: 'dddd [às] LT',
+    lastDay: '[Ontem às] LT',
+    lastWeek(this: EsDay) {
+      return this.day() === 0 || this.day() === 6
+        ? '[Último] dddd [às] LT' // Saturday + Sunday
+        : '[Última] dddd [às] LT' // Monday - Friday
+    },
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'em %s',
     past: 'há %s',
@@ -58,6 +71,8 @@ const localePt: Readonly<Locale> = {
     hh: '%d horas',
     d: 'um dia',
     dd: '%d dias',
+    w: 'uma semana',
+    ww: '%d semanas',
     M: 'um mês',
     MM: '%d meses',
     y: 'um ano',

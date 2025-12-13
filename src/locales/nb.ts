@@ -52,6 +52,14 @@ const localeNb: Readonly<Locale> = {
     lll: 'D. MMMM YYYY [kl.] HH:mm',
     llll: 'dddd D. MMMM YYYY [kl.] HH:mm',
   },
+  calendar: {
+    sameDay: '[i dag kl.] LT',
+    nextDay: '[i morgen kl.] LT',
+    nextWeek: 'dddd [kl.] LT',
+    lastDay: '[i går kl.] LT',
+    lastWeek: '[forrige] dddd [kl.] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'om %s',
     past: '%s siden',
@@ -63,6 +71,8 @@ const localeNb: Readonly<Locale> = {
     hh: '%d timer',
     d: 'en dag',
     dd: '%d dager',
+    w: 'en uke',
+    ww: '%d uker',
     M: 'en måned',
     MM: '%d måneder',
     y: 'ett år',

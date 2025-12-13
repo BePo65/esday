@@ -2,14 +2,53 @@
  * Konkani Latin script [gom-LATN]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type {
+  Locale,
+  MonthNames,
+  MonthNamesStandaloneFormat,
+  RelativeTimeElementFunction,
+} from '~/plugins/locale'
 
-function processRelativeTime(
+const monthFormat: MonthNames = [
+  'Janerachea',
+  'Febrerachea',
+  'Marsachea',
+  'Abrilachea',
+  'Maiachea',
+  'Junachea',
+  'Julaiachea',
+  'Agostachea',
+  'Setembrachea',
+  'Otubrachea',
+  'Novembrachea',
+  'Dezembrachea',
+]
+const monthStandalone: MonthNames = [
+  'Janer',
+  'Febrer',
+  'Mars',
+  'Abril',
+  'Mai',
+  'Jun',
+  'Julai',
+  'Agost',
+  'Setembr',
+  'Otubr',
+  'Novembr',
+  'Dezembr',
+]
+const months: MonthNamesStandaloneFormat = {
+  standalone: monthStandalone,
+  format: monthFormat,
+  isFormat: /MMMM(\s)+D[oD]?/,
+}
+
+const processRelativeTime: RelativeTimeElementFunction = (
   timeValue: string | number,
   _withoutSuffix: boolean,
-  range: string,
+  token: string,
   isFuture: boolean,
-) {
+) => {
   const relativeTimeFormatStrings = {
     s: ['thoddea sekondamni', 'thodde sekond'],
     ss: [`${timeValue} sekondamni`, `${timeValue} sekond`],
@@ -19,14 +58,16 @@ function processRelativeTime(
     hh: [`${timeValue} voramni`, `${timeValue} voram`],
     d: ['eka disan', 'ek dis'],
     dd: [`${timeValue} disamni`, `${timeValue} dis`],
+    w: ['eka saptakant', 'ek saptaka'],
+    ww: [`${timeValue} saptakanta`, `${timeValue} saptakam`],
     M: ['eka mhoinean', 'ek mhoino'],
     MM: [`${timeValue} mhoineamni`, `${timeValue} mhoine`],
     y: ['eka vorsan', 'ek voros'],
     yy: [`${timeValue} vorsamni`, `${timeValue} vorsam`],
   }
   return isFuture
-    ? relativeTimeFormatStrings[range as keyof typeof relativeTimeFormatStrings][0]
-    : relativeTimeFormatStrings[range as keyof typeof relativeTimeFormatStrings][1]
+    ? relativeTimeFormatStrings[token as keyof typeof relativeTimeFormatStrings][0]
+    : relativeTimeFormatStrings[token as keyof typeof relativeTimeFormatStrings][1]
 }
 
 const localeGomLatn: Readonly<Locale> = {
@@ -34,20 +75,7 @@ const localeGomLatn: Readonly<Locale> = {
   weekdays: ['Aitar', 'Somar', 'Mongllar', 'Budvar', 'Brestar', 'Sukrar', "Son'var"],
   weekdaysShort: ['Ait.', 'Som.', 'Mon.', 'Bud.', 'Bre.', 'Suk.', 'Son.'],
   weekdaysMin: ['Ai', 'Sm', 'Mo', 'Bu', 'Br', 'Su', 'Sn'],
-  months: [
-    'Janer',
-    'Febrer',
-    'Mars',
-    'Abril',
-    'Mai',
-    'Jun',
-    'Julai',
-    'Agost',
-    'Setembr',
-    'Otubr',
-    'Novembr',
-    'Dezembr',
-  ],
+  months,
   monthsShort: [
     'Jan.',
     'Feb.',
@@ -77,6 +105,14 @@ const localeGomLatn: Readonly<Locale> = {
     lll: 'D MMMM YYYY A h:mm [vazta]',
     llll: 'ddd, D MMM YYYY, A h:mm [vazta]',
   },
+  calendar: {
+    sameDay: '[Aiz] LT',
+    nextDay: '[Faleam] LT',
+    nextWeek: '[Fuddlo] dddd[,] LT',
+    lastDay: '[Kal] LT',
+    lastWeek: '[Fattlo] dddd[,] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s',
     past: '%s adim',
@@ -88,6 +124,8 @@ const localeGomLatn: Readonly<Locale> = {
     hh: processRelativeTime,
     d: processRelativeTime,
     dd: processRelativeTime,
+    w: processRelativeTime,
+    ww: processRelativeTime,
     M: processRelativeTime,
     MM: processRelativeTime,
     y: processRelativeTime,

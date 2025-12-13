@@ -25,9 +25,9 @@ const localeSv: Readonly<Locale> = {
   ],
   monthsShort: ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'],
   ordinal: (n) => {
-    const b = n % 10
-    const o = b === 1 || b === 2 ? 'a' : 'e'
-    return `[${n}${o}]`
+    const lastDigit = n % 10
+    const extension = lastDigit === 1 || lastDigit === 2 ? 'a' : 'e'
+    return `${n}${extension}`
   },
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
@@ -43,6 +43,14 @@ const localeSv: Readonly<Locale> = {
     lll: 'D MMM YYYY HH:mm',
     llll: 'ddd D MMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[Idag] LT',
+    nextDay: '[Imorgon] LT',
+    lastDay: '[Igår] LT',
+    nextWeek: '[På] dddd LT',
+    lastWeek: '[I] dddd[s] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'om %s',
     past: 'för %s sedan',
@@ -54,6 +62,8 @@ const localeSv: Readonly<Locale> = {
     hh: '%d timmar',
     d: 'en dag',
     dd: '%d dagar',
+    w: 'en vecka',
+    ww: '%d veckor',
     M: 'en månad',
     MM: '%d månader',
     y: 'ett år',

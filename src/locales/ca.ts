@@ -2,42 +2,64 @@
  * Catalan [ca]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { EsDay } from 'esday'
+import type { Locale, MonthNames, MonthNamesStandaloneFormat } from '~/plugins/locale'
+
+const monthFormat: MonthNames = [
+  'de gener',
+  'de febrer',
+  'de març',
+  `d'abril`,
+  'de maig',
+  'de juny',
+  'de juliol',
+  `d'agost`,
+  'de setembre',
+  `d'octubre`,
+  'de novembre',
+  'de desembre',
+]
+const monthStandalone: MonthNames = [
+  'gener',
+  'febrer',
+  'març',
+  'abril',
+  'maig',
+  'juny',
+  'juliol',
+  'agost',
+  'setembre',
+  'octubre',
+  'novembre',
+  'desembre',
+]
+const months: MonthNamesStandaloneFormat = {
+  standalone: monthStandalone,
+  format: monthFormat,
+  isFormat: /D[oD]?(\s)+MMMM/,
+}
 
 const localeCa: Readonly<Locale> = {
   name: 'ca',
-  weekdays: ['Diumenge', 'Dilluns', 'Dimarts', 'Dimecres', 'Dijous', 'Divendres', 'Dissabte'],
-  weekdaysShort: ['Dg.', 'Dl.', 'Dt.', 'Dc.', 'Dj.', 'Dv.', 'Ds.'],
-  weekdaysMin: ['Dg', 'Dl', 'Dt', 'Dc', 'Dj', 'Dv', 'Ds'],
-  months: [
-    'Gener',
-    'Febrer',
-    'Març',
-    'Abril',
-    'Maig',
-    'Juny',
-    'Juliol',
-    'Agost',
-    'Setembre',
-    'Octubre',
-    'Novembre',
-    'Desembre',
-  ],
+  weekdays: ['diumenge', 'dilluns', 'dimarts', 'dimecres', 'dijous', 'divendres', 'dissabte'],
+  weekdaysShort: ['dg.', 'dl.', 'dt.', 'dc.', 'dj.', 'dv.', 'ds.'],
+  weekdaysMin: ['dg', 'dl', 'dt', 'dc', 'dj', 'dv', 'ds'],
+  months,
   monthsShort: [
-    'Gen.',
-    'Febr.',
-    'Març',
-    'Abr.',
-    'Maig',
-    'Juny',
-    'Jul.',
-    'Ag.',
-    'Set.',
-    'Oct.',
-    'Nov.',
-    'Des.',
+    'gen.',
+    'febr.',
+    'març',
+    'abr.',
+    'maig',
+    'juny',
+    'jul.',
+    'ag.',
+    'set.',
+    'oct.',
+    'nov.',
+    'des.',
   ],
-  ordinal: (n) => {
+  ordinal: (n: number) => {
     let ord: string
 
     if (n === 1 || n === 3) ord = 'r'
@@ -53,13 +75,31 @@ const localeCa: Readonly<Locale> = {
     LT: 'H:mm',
     LTS: 'H:mm:ss',
     L: 'DD/MM/YYYY',
-    LL: 'D MMMM [de] YYYY',
-    LLL: 'D MMMM [de] YYYY [a les] H:mm',
-    LLLL: 'dddd D MMMM [de] YYYY [a les] H:mm',
+    LL: 'D [de] MMMM [de] YYYY',
+    LLL: 'D [de] MMMM [de] YYYY [a les] H:mm',
+    LLLL: 'dddd D [de] MMMM [de] YYYY [a les] H:mm',
     l: 'DD/MM/YYYY',
     ll: 'D MMM YYYY',
     lll: 'D MMM YYYY, H:mm',
     llll: 'ddd D MMM YYYY, H:mm',
+  },
+  calendar: {
+    sameDay(this: EsDay) {
+      return `[avui a ${this.hour() !== 1 ? 'les' : 'la'}] LT`
+    },
+    nextDay() {
+      return `[demà a ${this.hour() !== 1 ? 'les' : 'la'}] LT`
+    },
+    nextWeek() {
+      return `dddd [a ${this.hour() !== 1 ? 'les' : 'la'}] LT`
+    },
+    lastDay() {
+      return `[ahir a ${this.hour() !== 1 ? 'les' : 'la'}] LT`
+    },
+    lastWeek() {
+      return `[el] dddd [passat a ${this.hour() !== 1 ? 'les' : 'la'}] LT`
+    },
+    sameElse: 'L',
   },
   relativeTime: {
     future: "d'aquí %s",
@@ -72,6 +112,8 @@ const localeCa: Readonly<Locale> = {
     hh: '%d hores',
     d: 'un dia',
     dd: '%d dies',
+    w: 'una setmana',
+    ww: '%d setmanes',
     M: 'un mes',
     MM: '%d mesos',
     y: 'un any',

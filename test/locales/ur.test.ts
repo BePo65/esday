@@ -1,9 +1,5 @@
 /**
  * Test for locale 'Urdu [ur]'
- *
- * This is a minimal test for a locale with preParse / postFormat.
- * This file should aso be used as a template for tests for
- * other locales with preParse / postFormat.
  */
 
 import { describe, expect, it } from 'vitest'
@@ -16,7 +12,11 @@ describe('locale ur', () => {
 
   it('should have 7 weekday names', () => {
     expect(locale.weekdays).toBeDefined()
-    expect(locale.weekdays?.length).toBe(7)
+    if (Array.isArray(locale.weekdays)) {
+      expect(locale.weekdays.length).toBe(7)
+    } else {
+      expect(locale.weekdays).toBeTypeOf('function')
+    }
   })
 
   it('should have 7 short weekday names', () => {
@@ -50,6 +50,7 @@ describe('locale ur', () => {
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(2)).toBe('2')
   })
 
   it('should have numeric property named weekStart', () => {
@@ -70,24 +71,36 @@ describe('locale ur', () => {
     expect(Object.keys(locale.formats ?? {})).toHaveLength(10)
   })
 
+  it('should have an object named "calendar"', () => {
+    expect(locale.calendar).toBeDefined()
+    expect(locale.calendar).toBeTypeOf('object')
+    expect(Object.keys(locale.calendar ?? {}).length).toBe(6)
+  })
+
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()
     expect(locale.relativeTime).toBeTypeOf('object')
-    expect(Object.keys(locale.relativeTime ?? {}).length).toBeGreaterThan(0)
+    expect(Object.keys(locale.relativeTime ?? {}).length).toBe(16)
   })
 
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(10, 0, false)).toBe('صبح')
+    expect(locale.meridiem(10, 0, true)).toBe('صبح')
+    expect(locale.meridiem(20, 0, false)).toBe('شام')
+    expect(locale.meridiem(20, 0, true)).toBe('شام')
   })
 
   it('should have a method named "preParse"', () => {
     expect(locale.preParse).toBeDefined()
     expect(locale.preParse).toBeTypeOf('function')
+    expect(locale.preParse?.('123،456')).toBe('123,456')
   })
 
   it('should have a method named "postFormat"', () => {
     expect(locale.postFormat).toBeDefined()
     expect(locale.postFormat).toBeTypeOf('function')
+    expect(locale.postFormat?.('123,456')).toBe('123،456')
   })
 })

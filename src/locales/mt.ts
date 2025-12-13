@@ -39,6 +39,14 @@ const localeMt: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[Illum fil-]LT',
+    nextDay: '[Għada fil-]LT',
+    nextWeek: 'dddd [fil-]LT',
+    lastDay: '[Il-bieraħ fil-]LT',
+    lastWeek: 'dddd [li għadda] [fil-]LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'f’ %s',
     past: '%s ilu',
@@ -50,6 +58,8 @@ const localeMt: Readonly<Locale> = {
     hh: '%d siegħat',
     d: 'ġurnata',
     dd: '%d ġranet',
+    w: 'ġimgħa',
+    ww: '%d ġimgħat',
     M: 'xahar',
     MM: '%d xhur',
     y: 'sena',

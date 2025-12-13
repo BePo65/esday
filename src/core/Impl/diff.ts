@@ -1,9 +1,11 @@
-import { C, isUndefined, prettyUnit } from '~/common'
+import { C, isUndefined, normalizeUnitWithPlurals } from '~/common'
 import type { EsDay } from '~/core'
-import type { UnitType } from '~/types'
+import type { UnitTypeAddSub } from '~/types'
 
 /**
- * get difference between 2 dates as months
+ * get difference between 2 dates as months.
+ * As implemented by moment.js, the algorithm is optimized to ensure that two months
+ * with the same date are always a whole number apart.
  * @param a - date 1
  * @param b - date 2
  * @returns b - a in months
@@ -34,29 +36,24 @@ function monthDiff(a: EsDay, b: EsDay): number {
  * @returns n without fractional part
  */
 function absFloor(n: number): number {
-  return n < 0 ? Math.ceil(n) || 0 : Math.floor(n)
+  return n < 0 ? Math.ceil(n) : Math.floor(n)
 }
 
-/**
- * Get the utcOffset of date in minutes.
- * Use the utcOffset method from the utc plugin if that is loaded;
- * otherwise get it from the javascript Date object of date.
- * @param date - EsDay instance to inspect
- * @returns utcOffset of date in minutes
- */
-function utcOffset(date: EsDay): number {
-  const defaultOffset = -Math.round(date['$d'].getTimezoneOffset()) || 0
-  return 'utcOffset' in date ? date.utcOffset() : defaultOffset
-}
-
-export function diffImpl(that: EsDay, date: EsDay, units?: UnitType, asFloat = false): number {
+export function diffImpl(
+  that: EsDay,
+  date: EsDay,
+  units?: UnitTypeAddSub,
+  asFloat = false,
+): number {
   const diffInMs = that.valueOf() - date.valueOf()
   const diffInMonths = monthDiff(that, date)
-  const zoneDelta = (utcOffset(that) - utcOffset(date)) * C.MILLISECONDS_A_MINUTE
+  const zoneDelta = (that.utcOffset() - date.utcOffset()) * C.MILLISECONDS_A_MINUTE
   let result: number
 
-  if (!isUndefined(units)) {
-    const unit = prettyUnit(units)
+  if (isUndefined(units)) {
+    result = diffInMs // milliseconds
+  } else {
+    const unit = normalizeUnitWithPlurals(units)
     switch (unit) {
       case C.YEAR:
         result = diffInMonths / 12
@@ -86,8 +83,6 @@ export function diffImpl(that: EsDay, date: EsDay, units?: UnitType, asFloat = f
         result = diffInMs // milliseconds
         break
     }
-  } else {
-    result = diffInMs // milliseconds
   }
 
   return asFloat ? result : absFloor(result)

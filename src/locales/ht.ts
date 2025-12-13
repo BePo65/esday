@@ -52,6 +52,14 @@ const localeHt: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[Jodi a nan] LT',
+    nextDay: '[Demen nan] LT',
+    nextWeek: 'dddd [nan] LT',
+    lastDay: '[Yè nan] LT',
+    lastWeek: '[Dènye] ddd [nan] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'nan %s',
     past: 'sa gen %s',
@@ -63,6 +71,8 @@ const localeHt: Readonly<Locale> = {
     hh: '%d zè',
     d: 'yon jou',
     dd: '%d jou',
+    w: 'yon semèn',
+    ww: '%d semèn',
     M: 'yon mwa',
     MM: '%d mwa',
     y: 'yon ane',

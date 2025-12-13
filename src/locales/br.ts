@@ -2,13 +2,14 @@
  * Breton [br]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { EsDay } from 'esday'
+import type { Locale, RelativeTimeElementFunction } from '~/plugins/locale'
 
-function lastNumber(number: number): number {
-  if (number > 9) {
-    return lastNumber(number % 10)
+function lastNumber(timeValue: number): number {
+  if (timeValue > 9) {
+    return lastNumber(timeValue % 10)
   }
-  return number
+  return timeValue
 }
 
 function softMutation(text: string): string {
@@ -20,20 +21,20 @@ function softMutation(text: string): string {
   return mutationTable[text.charAt(0)] + text.substring(1)
 }
 
-function mutation(text: string, number: number): string {
-  if (number === 2) {
+function mutation(text: string, timeValue: number): string {
+  if (timeValue === 2) {
     return softMutation(text)
   }
   return text
 }
 
-function relativeTimeWithMutation(number: number, _withoutSuffix: boolean, key: string): string {
+function relativeTimeWithMutation(timeValue: number, _withoutSuffix: boolean, key: string): string {
   const format: Record<string, string> = {
     mm: 'munutenn',
     MM: 'miz',
     dd: 'devezh',
   }
-  return `${number} ${mutation(format[key], number)}`
+  return `${timeValue} ${mutation(format[key], timeValue)}`
 }
 
 function specialMutationForYears(number: number): string {
@@ -59,25 +60,28 @@ const relativeTimeFormatStrings = {
   hh: '%d eur',
   d: 'un devezh',
   dd: relativeTimeWithMutation,
+  w: 'ur sizhun',
+  ww: '%d izhun',
   M: 'ur miz',
   MM: relativeTimeWithMutation,
   y: 'ur bloaz',
   yy: specialMutationForYears,
 }
-function relativeTimeFormatter(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
-): string {
-  const l = relativeTimeFormatStrings[range as keyof typeof relativeTimeFormatStrings]
-  if (typeof l === 'function') {
-    return (l as (number: number, withoutSuffix: boolean, key: string) => string)(
+  token: string,
+  _isFuture: boolean,
+) => {
+  const format = relativeTimeFormatStrings[token as keyof typeof relativeTimeFormatStrings]
+  if (typeof format === 'function') {
+    return (format as (timeValue: number, withoutSuffix: boolean, key: string) => string)(
       Number(timeValue),
       withoutSuffix,
-      range,
+      token,
     )
   }
-  return l.replace('%d', timeValue.toString())
+  return format.replace('%d', timeValue.toString())
 }
 
 const localeBr: Readonly<Locale> = {
@@ -128,6 +132,45 @@ const localeBr: Readonly<Locale> = {
     lll: 'D [a viz] MMMM YYYY h[e]mm A',
     llll: 'dddd, D [a viz] MMMM YYYY h[e]mm A',
   },
+  calendar: {
+    sameDay: '[danas u] LT',
+    nextDay: '[sutra u] LT',
+    nextWeek() {
+      switch (this.day()) {
+        case 0:
+          return '[u] [nedjelju] [u] LT'
+        case 3:
+          return '[u] [srijedu] [u] LT'
+        case 6:
+          return '[u] [subotu] [u] LT'
+        case 1:
+        case 2:
+        case 4:
+        case 5:
+          return '[u] dddd [u] LT'
+        default:
+          return ''
+      }
+    },
+    lastDay: '[jučer u] LT',
+    lastWeek(this: EsDay) {
+      switch (this.day()) {
+        case 0:
+        case 3:
+          return '[prošlu] dddd [u] LT'
+        case 6:
+          return '[prošle] [subote] [u] LT'
+        case 1:
+        case 2:
+        case 4:
+        case 5:
+          return '[prošli] dddd [u] LT'
+        default:
+          return ''
+      }
+    },
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'a-benn %s',
     past: '%s ʼzo',
@@ -139,6 +182,8 @@ const localeBr: Readonly<Locale> = {
     hh: relativeTimeFormatter,
     d: relativeTimeFormatter,
     dd: relativeTimeFormatter,
+    w: relativeTimeFormatter,
+    ww: relativeTimeFormatter,
     M: relativeTimeFormatter,
     MM: relativeTimeFormatter,
     y: relativeTimeFormatter,

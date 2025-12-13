@@ -32,6 +32,57 @@ const englishToArabicNumbersMap = {
   0: '٠',
 }
 
+// select which plural form to use
+const pluralForm = (value: number): number =>
+  value === 0
+    ? 0
+    : value === 1
+      ? 1
+      : value === 2
+        ? 2
+        : value % 100 >= 3 && value % 100 <= 10
+          ? 3
+          : value % 100 >= 11
+            ? 4
+            : 5
+
+// list of 7 forms of plurals for different units
+const plurals = {
+  s: ['أقل من ثانية', 'ثانية واحدة', ['ثانيتان', 'ثانيتين'], '%d ثوان', '%d ثانية', '%d ثانية'],
+  m: ['أقل من دقيقة', 'دقيقة واحدة', ['دقيقتان', 'دقيقتين'], '%d دقائق', '%d دقيقة', '%d دقيقة'],
+  h: ['أقل من ساعة', 'ساعة واحدة', ['ساعتان', 'ساعتين'], '%d ساعات', '%d ساعة', '%d ساعة'],
+  d: ['أقل من يوم', 'يوم واحد', ['يومان', 'يومين'], '%d أيام', '%d يومًا', '%d يوم'],
+  w: [
+    'أقل من اسبوع',
+    'أسبوع واحد',
+    ['أسبوعان', 'في أسبوعين'],
+    '%d أسابيع',
+    '%d أسبوعًا',
+    '%d أسبوع',
+  ],
+  M: ['أقل من شهر', 'شهر واحد', ['شهران', 'شهرين'], '%d أشهر', '%d شهرا', '%d شهر'],
+  y: ['أقل من عام', 'عام واحد', ['عامان', 'عامين'], '%d أعوام', '%d عامًا', '%d عام'],
+}
+
+const pluralize =
+  (unit: keyof typeof plurals) =>
+  (
+    timeValue: string | number,
+    withoutSuffix: boolean,
+    _token: string,
+    _isFuture: boolean,
+  ): string => {
+    const timeValueAsNumber = Number(timeValue)
+    const pluralFormToUse = pluralForm(timeValueAsNumber)
+    let plural = plurals[unit][pluralForm(timeValueAsNumber)]
+    if (pluralFormToUse === 2) {
+      plural = plural[withoutSuffix ? 0 : 1]
+    } else {
+      plural = plural as string
+    }
+    return plural.replace(/%d/i, `${timeValue}`)
+  }
+
 const locale: Readonly<Locale> = {
   name: 'ar',
   weekdays: ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],
@@ -80,21 +131,31 @@ const locale: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[اليوم عند الساعة] LT',
+    nextDay: '[غدًا عند الساعة] LT',
+    nextWeek: 'dddd [عند الساعة] LT',
+    lastDay: '[أمس عند الساعة] LT',
+    lastWeek: 'dddd [عند الساعة] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'بعد %s',
     past: 'منذ %s',
-    s: 'ثانية واحدة',
-    ss: '%d ثانية',
-    m: 'دقيقة واحدة',
-    mm: '%d دقائق',
-    h: 'ساعة واحدة',
-    hh: '%d ساعات',
-    d: 'يوم واحد',
-    dd: '%d أيام',
-    M: 'شهر واحد',
-    MM: '%d أشهر',
-    y: 'عام واحد',
-    yy: '%d أعوام',
+    s: pluralize('s'),
+    ss: pluralize('s'),
+    m: pluralize('m'),
+    mm: pluralize('m'),
+    h: pluralize('h'),
+    hh: pluralize('h'),
+    d: pluralize('d'),
+    dd: pluralize('d'),
+    w: pluralize('w'),
+    ww: pluralize('w'),
+    M: pluralize('M'),
+    MM: pluralize('M'),
+    y: pluralize('y'),
+    yy: pluralize('y'),
   },
   // eslint-disable-next-line  unused-imports/no-unused-vars
   meridiem: (hour: number, _minute: number, _isLowercase: boolean) => (hour > 12 ? 'م' : 'ص'),

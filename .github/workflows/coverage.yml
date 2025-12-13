@@ -1,0 +1,63 @@
+name: "Report Coverage"
+
+# Prevent that corepack looks for latest version of pnpm
+# HACK to work around issue nodejs/corepack#625
+env:
+  COREPACK_DEFAULT_TO_LATEST: 0
+
+on:
+  workflow_run:
+    workflows: ["Test (Vitest)"]
+    types:
+      - completed
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: "Install Pnpm"
+        run: corepack enable
+
+      - name: "Setup Node.js"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - name: "Install dependencies"
+        run: pnpm install
+
+      - name: "Run tests"
+        run: npx vitest run --coverage.enabled --coverage.reporter=json --coverage.reporter=json-summary
+
+      - name: "rename coverage directory"
+        run: |
+          mv coverage coverage-main
+
+      - name: "Download coverage artifacts of pull request"
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-pull-request
+          path: coverage
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: "Download vitest configuration of pull request"
+        uses: actions/download-artifact@v4
+        with:
+          name: pull-request-vitest.config.ts
+          path: configs
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: "Report coverage"
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          json-summary-compare-path: coverage-main/coverage-summary.json
+          vite-config-path: configs/vitest.config.ts

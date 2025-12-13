@@ -39,6 +39,14 @@ const localeAm: Readonly<Locale> = {
     lll: 'MMMM D ፣ YYYY HH:mm',
     llll: 'dddd ፣ MMMM D ፣ YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[Today at] LT',
+    nextDay: '[Tomorrow at] LT',
+    nextWeek: 'dddd [at] LT',
+    lastDay: '[Yesterday at] LT',
+    lastWeek: '[Last] dddd [at] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'በ%s',
     past: '%s በፊት',
@@ -50,6 +58,8 @@ const localeAm: Readonly<Locale> = {
     hh: '%d ሰዓታት',
     d: 'አንድ ቀን',
     dd: '%d ቀናት',
+    w: 'አንድ ሳምንት',
+    ww: '%d ሳምንታት',
     M: 'አንድ ወር',
     MM: '%d ወራት',
     y: 'አንድ ዓመት',

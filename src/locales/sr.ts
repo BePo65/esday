@@ -3,25 +3,62 @@
  * Serbian [sr]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { EsDay } from 'esday'
+import type { Locale, RelativeTimeElementFunction } from '~/plugins/locale'
 
-function plural(timeValue: number, wordKey: string[]) {
+const calendar = {
+  sameDay: '[danas u] LT',
+  nextDay: '[sutra u] LT',
+  nextWeek(this: EsDay) {
+    switch (this.day()) {
+      case 0:
+        return '[u] [nedelju] [u] LT'
+      case 3:
+        return '[u] [sredu] [u] LT'
+      case 6:
+        return '[u] [subotu] [u] LT'
+      case 1:
+      case 2:
+      case 4:
+      case 5:
+        return '[u] dddd [u] LT'
+      default:
+        return ''
+    }
+  },
+  lastDay: '[juče u] LT',
+  lastWeek(this: EsDay) {
+    const lastWeekDays = [
+      '[prošle] [nedelje] [u] LT',
+      '[prošlog] [ponedeljka] [u] LT',
+      '[prošlog] [utorka] [u] LT',
+      '[prošle] [srede] [u] LT',
+      '[prošlog] [četvrtka] [u] LT',
+      '[prošlog] [petka] [u] LT',
+      '[prošle] [subote] [u] LT',
+    ]
+    return lastWeekDays[this.day()]
+  },
+  sameElse: 'L',
+}
+
+function plural(timeValue: number, formats: string[]) {
   if (
     timeValue % 10 >= 1 &&
     timeValue % 10 <= 4 &&
     (timeValue % 100 < 10 || timeValue % 100 >= 20)
   ) {
-    return timeValue % 10 === 1 ? wordKey[0] : wordKey[1]
+    return timeValue % 10 === 1 ? formats[0] : formats[1]
   }
-  return wordKey[2]
+  return formats[2]
 }
-function relativeTimeFormatter(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
+  token: string,
   isFuture: boolean,
-): string {
-  const formats = {
+) => {
+  const formatsAll = {
     ss: ['sekunda', 'sekunde', 'sekundi'],
     m: ['jedan minut', 'jednog minuta'],
     mm: ['%d minut', '%d minuta', '%d minuta'],
@@ -29,25 +66,29 @@ function relativeTimeFormatter(
     hh: ['%d sat', '%d sata', '%d sati'],
     d: ['jedan dan', 'jednog dana'],
     dd: ['%d dan', '%d dana', '%d dana'],
+    w: ['јedan nedeљu', 'јednoq nedeљa'],
+    ww: ['%d dan', '%d dana', '%d dana'],
     M: ['jedan mesec', 'jednog meseca'],
     MM: ['%d mesec', '%d meseca', '%d meseci'],
     y: ['jednu godinu', 'jedne godine'],
     yy: ['%d godinu', '%d godine', '%d godina'],
   }
 
-  const wordKey = formats[range as keyof typeof formats]
+  const formatsForToken = formatsAll[token as keyof typeof formatsAll]
 
-  if (range.length === 1) {
+  if (token.length === 1) {
     // Nominativ
-    if (range === 'y' && withoutSuffix) return 'jedna godina'
-    return isFuture || withoutSuffix ? wordKey[0] : wordKey[1]
+    if (token === 'y' && withoutSuffix) return 'jedna godina'
+    return isFuture || withoutSuffix ? formatsForToken[0] : formatsForToken[1]
   }
 
-  const word = plural(+timeValue, wordKey)
+  const format = plural(+timeValue, formatsForToken)
   // Nominativ
-  if (range === 'yy' && withoutSuffix && word === '%d godinu') return `${timeValue} godina`
+  if (token === 'yy' && withoutSuffix && format === '%d godinu') {
+    return `${timeValue} godina`
+  }
 
-  return word.replace('%d', timeValue.toString())
+  return format.replace('%d', timeValue.toString())
 }
 
 const localeSr: Readonly<Locale> = {
@@ -98,6 +139,7 @@ const localeSr: Readonly<Locale> = {
     lll: 'D. MMMM YYYY. H:mm',
     llll: 'dddd, D. MMMM YYYY. H:mm',
   },
+  calendar,
   relativeTime: {
     future: 'za %s',
     past: 'pre %s',
@@ -109,6 +151,8 @@ const localeSr: Readonly<Locale> = {
     hh: relativeTimeFormatter,
     d: relativeTimeFormatter,
     dd: relativeTimeFormatter,
+    w: relativeTimeFormatter,
+    ww: relativeTimeFormatter,
     M: relativeTimeFormatter,
     MM: relativeTimeFormatter,
     y: relativeTimeFormatter,

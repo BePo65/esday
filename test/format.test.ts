@@ -1,5 +1,6 @@
 import type { EsDay, FormattingTokenDefinitions } from 'esday'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { C } from '~/common'
 import { esday } from '~/core'
 
 describe('format', () => {
@@ -20,7 +21,7 @@ describe('format', () => {
   })
 
   it.each(['', 'otherString'])('invalid date created from "%s"', (value) => {
-    expect(esday(value).format()).toBe('Invalid Date')
+    expect(esday(value).format()).toBe(C.INVALID_DATE_STRING)
   })
 
   it.each([
@@ -120,7 +121,10 @@ describe('format', () => {
     { formatString: 'YYYY-MM-DD HH', expected: '2023-12-17 03' },
     { formatString: 'YYYY-MM-DD HH:mm', expected: '2023-12-17 03:24' },
     { formatString: 'YYYY-MM-DD HH:mm:ss', expected: '2023-12-17 03:24:46' },
-    { formatString: 'YYYY-MM-DD HH:mm:ss.SSS', expected: '2023-12-17 03:24:46.234' },
+    {
+      formatString: 'YYYY-MM-DD HH:mm:ss.SSS',
+      expected: '2023-12-17 03:24:46.234',
+    },
     { formatString: 'YY-M-D / HH:mm:ss', expected: '23-12-17 / 03:24:46' },
   ])('date and time as "$formatString"', ({ formatString, expected }) => {
     expect(esday().format(formatString)).toBe(expected)
@@ -136,7 +140,11 @@ describe('format', () => {
 
 describe('extend formatting token definitions', () => {
   it.each([
-    { formatString: 'YYYY PP', sourceString: '2024 3', expected: '2024 [special token PP] 2024' },
+    {
+      formatString: 'YYYY PP',
+      sourceString: '2024 3',
+      expected: '2024 [special token PP] 2024',
+    },
   ])(
     'add new token to list of tokens - test with "$sourceString" with format "$formatString"',
     ({ sourceString, formatString, expected }) => {

@@ -35,11 +35,12 @@ const englishToMarathiNumbersMap = {
 function relativeTimeFormatter(
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
+  token: string,
+  _isFuture: boolean,
 ): string {
   let output = ''
   if (withoutSuffix) {
-    switch (range) {
+    switch (token) {
       case 's':
         output = 'काही सेकंद'
         break
@@ -64,6 +65,12 @@ function relativeTimeFormatter(
       case 'dd':
         output = '%d दिवस'
         break
+      case 'w':
+        output = 'एक आठवडा'
+        break
+      case 'ww':
+        output = '%d आठवडा'
+        break
       case 'M':
         output = 'एक महिना'
         break
@@ -78,7 +85,7 @@ function relativeTimeFormatter(
         break
     }
   } else {
-    switch (range) {
+    switch (token) {
       case 's':
         output = 'काही सेकंदां'
         break
@@ -102,6 +109,12 @@ function relativeTimeFormatter(
         break
       case 'dd':
         output = '%d दिवसां'
+        break
+      case 'w':
+        output = 'एका आठवड्यात'
+        break
+      case 'ww':
+        output = '%d आठवडे'
         break
       case 'M':
         output = 'एका महिन्या'
@@ -168,6 +181,14 @@ const localeMr: Readonly<Locale> = {
     lll: 'D MMMM YYYY, A h:mm वाजता',
     llll: 'dddd, D MMMM YYYY, A h:mm वाजता',
   },
+  calendar: {
+    sameDay: '[आज] LT',
+    nextDay: '[उद्या] LT',
+    nextWeek: 'dddd, LT',
+    lastDay: '[काल] LT',
+    lastWeek: '[मागील] dddd, LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%sमध्ये',
     past: '%sपूर्वी',
@@ -179,6 +200,8 @@ const localeMr: Readonly<Locale> = {
     hh: relativeTimeFormatter,
     d: relativeTimeFormatter,
     dd: relativeTimeFormatter,
+    w: relativeTimeFormatter,
+    ww: relativeTimeFormatter,
     M: relativeTimeFormatter,
     MM: relativeTimeFormatter,
     y: relativeTimeFormatter,

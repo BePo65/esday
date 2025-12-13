@@ -1,0 +1,133 @@
+import { describe, expect, it } from 'vitest'
+import type { UnitType, UnitTypePlurals } from '~/common/units'
+import {
+  normalizeUnit,
+  normalizeUnitWithPlurals,
+  normalizeUnitWithPluralsToPlural,
+} from '~/common/units'
+
+describe('normalizeUnit', () => {
+  it.each([
+    { unit: 'y', expected: 'year' },
+    { unit: 'year', expected: 'year' },
+    { unit: 'years', expected: undefined },
+    { unit: 'Q', expected: 'quarter' },
+    { unit: 'quarter', expected: 'quarter' },
+    { unit: 'quarters', expected: undefined },
+    { unit: 'M', expected: 'month' },
+    { unit: 'month', expected: 'month' },
+    { unit: 'months', expected: undefined },
+    { unit: 'w', expected: 'week' },
+    { unit: 'week', expected: 'week' },
+    { unit: 'weeks', expected: undefined },
+    { unit: 'W', expected: 'isoWeek' },
+    { unit: 'isoWeek', expected: 'isoWeek' },
+    { unit: 'isoWeeks', expected: undefined },
+    { unit: 'D', expected: 'date' },
+    { unit: 'date', expected: 'date' },
+    { unit: 'dates', expected: undefined },
+    { unit: 'd', expected: 'day' },
+    { unit: 'day', expected: 'day' },
+    { unit: 'days', expected: undefined },
+    { unit: 'h', expected: 'hour' },
+    { unit: 'hour', expected: 'hour' },
+    { unit: 'hours', expected: undefined },
+    { unit: 'm', expected: 'minute' },
+    { unit: 'minute', expected: 'minute' },
+    { unit: 'minutes', expected: undefined },
+    { unit: 's', expected: 'second' },
+    { unit: 'second', expected: 'second' },
+    { unit: 'seconds', expected: undefined },
+    { unit: 'ms', expected: 'millisecond' },
+    { unit: 'millisecond', expected: 'millisecond' },
+    { unit: 'milliseconds', expected: undefined },
+    { unit: 'i-am-no-unit', expected: undefined },
+    { unit: 123, expected: undefined },
+  ])('should return the normalized form "$expected" for unit "$unit"', ({ unit, expected }) => {
+    expect(normalizeUnit(unit as UnitType)).toBe(expected)
+  })
+})
+
+describe('normalizeUnitWithPlurals', () => {
+  it.each([
+    { unit: 'y', expected: 'year' },
+    { unit: 'year', expected: 'year' },
+    { unit: 'years', expected: 'year' },
+    { unit: 'Q', expected: 'quarter' },
+    { unit: 'quarter', expected: 'quarter' },
+    { unit: 'quarters', expected: 'quarter' },
+    { unit: 'M', expected: 'month' },
+    { unit: 'month', expected: 'month' },
+    { unit: 'months', expected: 'month' },
+    { unit: 'w', expected: 'week' },
+    { unit: 'week', expected: 'week' },
+    { unit: 'weeks', expected: 'week' },
+    { unit: 'W', expected: 'isoWeek' },
+    { unit: 'isoWeek', expected: 'isoWeek' },
+    { unit: 'isoWeeks', expected: 'isoWeek' },
+    { unit: 'D', expected: 'date' },
+    { unit: 'date', expected: 'date' },
+    { unit: 'dates', expected: 'date' },
+    { unit: 'd', expected: 'day' },
+    { unit: 'day', expected: 'day' },
+    { unit: 'days', expected: 'day' },
+    { unit: 'h', expected: 'hour' },
+    { unit: 'hour', expected: 'hour' },
+    { unit: 'hours', expected: 'hour' },
+    { unit: 'm', expected: 'minute' },
+    { unit: 'minute', expected: 'minute' },
+    { unit: 'minutes', expected: 'minute' },
+    { unit: 's', expected: 'second' },
+    { unit: 'second', expected: 'second' },
+    { unit: 'seconds', expected: 'second' },
+    { unit: 'ms', expected: 'millisecond' },
+    { unit: 'millisecond', expected: 'millisecond' },
+    { unit: 'milliseconds', expected: 'millisecond' },
+    { unit: 'i-am-no-unit', expected: undefined },
+    { unit: 123, expected: undefined },
+  ])('should return the normalized form "$expected" for unit "$unit"', ({ unit, expected }) => {
+    expect(normalizeUnitWithPlurals(unit as UnitTypePlurals)).toBe(expected)
+  })
+})
+
+describe('normalizeUnitWithPluralsToPlural', () => {
+  it.each([
+    { unit: 'y', expected: 'years' },
+    { unit: 'year', expected: 'years' },
+    { unit: 'years', expected: 'years' },
+    { unit: 'Q', expected: 'quarters' },
+    { unit: 'quarter', expected: 'quarters' },
+    { unit: 'quarters', expected: 'quarters' },
+    { unit: 'M', expected: 'months' },
+    { unit: 'month', expected: 'months' },
+    { unit: 'months', expected: 'months' },
+    { unit: 'w', expected: 'weeks' },
+    { unit: 'week', expected: 'weeks' },
+    { unit: 'weeks', expected: 'weeks' },
+    { unit: 'W', expected: 'isoWeeks' },
+    { unit: 'isoWeek', expected: 'isoWeeks' },
+    { unit: 'isoWeeks', expected: 'isoWeeks' },
+    { unit: 'D', expected: 'dates' },
+    { unit: 'date', expected: 'dates' },
+    { unit: 'dates', expected: 'dates' },
+    { unit: 'd', expected: 'days' },
+    { unit: 'day', expected: 'days' },
+    { unit: 'days', expected: 'days' },
+    { unit: 'h', expected: 'hours' },
+    { unit: 'hour', expected: 'hours' },
+    { unit: 'hours', expected: 'hours' },
+    { unit: 'm', expected: 'minutes' },
+    { unit: 'minute', expected: 'minutes' },
+    { unit: 'minutes', expected: 'minutes' },
+    { unit: 's', expected: 'seconds' },
+    { unit: 'second', expected: 'seconds' },
+    { unit: 'seconds', expected: 'seconds' },
+    { unit: 'ms', expected: 'milliseconds' },
+    { unit: 'millisecond', expected: 'milliseconds' },
+    { unit: 'milliseconds', expected: 'milliseconds' },
+    { unit: 'i-am-no-unit', expected: undefined },
+    { unit: 123, expected: undefined },
+  ])('should return the normalized form "$expected" for unit "$unit"', ({ unit, expected }) => {
+    expect(normalizeUnitWithPluralsToPlural(unit as UnitTypePlurals)).toBe(expected)
+  })
+})

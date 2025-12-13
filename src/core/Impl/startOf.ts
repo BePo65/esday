@@ -1,7 +1,6 @@
 import type { EsDay } from 'esday'
-import type { UnitQuarter, UnitWeek } from '~/common'
-import { C, prettyUnit } from '~/common'
-import type { UnitType } from '~/types'
+import { C, normalizeUnit } from '~/common'
+import type { UnitType, UnitTypeCore } from '~/types'
 
 export function startOfImpl(that: EsDay, unit: UnitType, reverse = false) {
   const result = that.clone()
@@ -9,7 +8,7 @@ export function startOfImpl(that: EsDay, unit: UnitType, reverse = false) {
   // for performance , $set can change inst itself
   const setterFunc = result['$set']
 
-  const instanceFactorySet = (method: Exclude<UnitType, UnitWeek | UnitQuarter>, slice: number) => {
+  const instanceFactorySet = (method: UnitTypeCore, slice: number) => {
     const argumentStart = [0, 0, 0, 0]
     const argumentEnd = [23, 59, 59, 999]
     const argument = reverse ? argumentEnd.slice(slice) : argumentStart.slice(slice)
@@ -21,10 +20,8 @@ export function startOfImpl(that: EsDay, unit: UnitType, reverse = false) {
   }
 
   const $month = result.month()
-  const $date = result.date()
-  const $dayOfWeek = result.day()
 
-  switch (prettyUnit(unit)) {
+  switch (normalizeUnit(unit)) {
     case C.YEAR:
       reverse ? instanceFactory(31, 11) : instanceFactory(1, 0)
       instanceFactorySet(C.HOUR, 0)
@@ -33,17 +30,8 @@ export function startOfImpl(that: EsDay, unit: UnitType, reverse = false) {
       reverse ? instanceFactory(0, $month + 1) : instanceFactory(1, $month)
       instanceFactorySet(C.HOUR, 0)
       break
-    case C.WEEK: {
-      // default start of week is Monday (according to ISO 8601)
-      const weekStart = C.INDEX_MONDAY
-      const diff = ($dayOfWeek < weekStart ? $dayOfWeek + 7 : $dayOfWeek) - weekStart
-      const newDate = reverse ? $date + (6 - diff) : $date - diff
-      setterFunc.call(result, C.DATE_OF_WEEK, [newDate])
-      instanceFactorySet(C.HOUR, 0)
-      break
-    }
     case C.DAY:
-    case C.DATE_OF_WEEK:
+    case C.DAY_OF_MONTH:
       instanceFactorySet(C.HOUR, 0)
       break
     case C.HOUR:
@@ -54,6 +42,9 @@ export function startOfImpl(that: EsDay, unit: UnitType, reverse = false) {
       break
     case C.SECOND:
       instanceFactorySet(C.MS, 3)
+      break
+    default:
+      // unknown units are ignored
       break
   }
 

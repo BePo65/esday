@@ -60,6 +60,14 @@ const localeSe: Readonly<Locale> = {
     lll: 'MMMM D. [b.] YYYY [ti.] HH:mm',
     llll: 'dddd, MMMM D. [b.] YYYY [ti.] HH:mm',
   },
+  calendar: {
+    sameDay: '[otne ti] LT',
+    nextDay: '[ihttin ti] LT',
+    nextWeek: 'dddd [ti] LT',
+    lastDay: '[ikte ti] LT',
+    lastWeek: '[ovddit] dddd [ti] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s geažes',
     past: 'maŋit %s',
@@ -71,6 +79,8 @@ const localeSe: Readonly<Locale> = {
     hh: '%d diimmut',
     d: 'okta beaivi',
     dd: '%d beaivvit',
+    w: 'okta vahkku',
+    ww: '%d vahkkut',
     M: 'okta mánnu',
     MM: '%d mánut',
     y: 'okta jahki',

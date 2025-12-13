@@ -69,6 +69,14 @@ const localeKu: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[ئه‌مرۆ كاتژمێر] LT',
+    nextDay: '[به‌یانی كاتژمێر] LT',
+    nextWeek: 'dddd [كاتژمێر] LT',
+    lastDay: '[دوێنێ كاتژمێر] LT',
+    lastWeek: 'dddd [كاتژمێر] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'لە %s',
     past: 'لەمەوپێش %s',
@@ -80,6 +88,8 @@ const localeKu: Readonly<Locale> = {
     hh: '%d کاتژمێر',
     d: 'یەک ڕۆژ',
     dd: '%d ڕۆژ',
+    w: 'یەک هەفتە',
+    ww: '%d هەفتەیەک',
     M: 'یەک مانگ',
     MM: '%d مانگ',
     y: 'یەک ساڵ',

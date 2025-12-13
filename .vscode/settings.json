@@ -1,15 +1,12 @@
 {
-  // Disable the default formatter, use biome instead
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "biomejs.biome",
-
-  // Auto fix
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
     "source.fixAll.biome": "explicit",
-    "source.fixAll.stylelint": "always"
+    "source.fixAll.stylelint": "always",
+    "source.organizeImports.biome": "explicit"
   },
-
-  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "typescript.tsdk": "node_modules/typescript/lib",
   "[typescript]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
@@ -19,5 +16,22 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
-  "cSpell.words": ["funcs"]
+  "cSpell.words": ["funcs"],
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[graphql]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "editor.formatOnPaste": true,
+  "emmet.showExpandedAbbreviation": "never"
 }

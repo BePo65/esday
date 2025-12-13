@@ -2,32 +2,77 @@
  * Slovak [sk]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { EsDay } from 'esday'
+import type { Locale, RelativeTimeElementFunction } from '~/plugins/locale'
+
+const calendar = {
+  sameDay: '[dnes o] LT',
+  nextDay: '[zajtra o] LT',
+  nextWeek(this: EsDay) {
+    switch (this.day()) {
+      case 0:
+        return '[v nedeľu o] LT'
+      case 1:
+      case 2:
+        return '[v] dddd [o] LT'
+      case 3:
+        return '[v stredu o] LT'
+      case 4:
+        return '[vo štvrtok o] LT'
+      case 5:
+        return '[v piatok o] LT'
+      case 6:
+        return '[v sobotu o] LT'
+      default:
+        return ''
+    }
+  },
+  lastDay: '[včera o] LT',
+  lastWeek(this: EsDay) {
+    switch (this.day()) {
+      case 0:
+        return '[minulú nedeľu o] LT'
+      case 1:
+      case 2:
+        return '[minulý] dddd [o] LT'
+      case 3:
+        return '[minulú stredu o] LT'
+      case 4:
+      case 5:
+        return '[minulý] dddd [o] LT'
+      case 6:
+        return '[minulú sobotu o] LT'
+      default:
+        return ''
+    }
+  },
+  sameElse: 'L',
+}
 
 function usePlural(timeValue: number) {
   return timeValue > 1 && timeValue < 5 && ~~(timeValue / 10) !== 1
 }
 
-function relativeTimeWithPlural(
+const relativeTimeWithPlural: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
   range: string,
   isFuture: boolean,
-): string {
+) => {
   const result = `${timeValue} `
   switch (range) {
     case 's': // a few seconds / in a few seconds / a few seconds ago
       return withoutSuffix || isFuture ? 'pár sekúnd' : 'pár sekundami'
     case 'ss': // 9 seconds / in 9 seconds / 9 seconds ago
       if (withoutSuffix || isFuture) {
-        return result + (usePlural(+timeValue) ? 'sekundy' : 'sekúnd')
+        return `${result}${usePlural(+timeValue) ? 'sekundy' : 'sekúnd'}`
       }
       return `${result}sekundami`
     case 'm': // a minute / in a minute / a minute ago
       return withoutSuffix ? 'minúta' : isFuture ? 'minútu' : 'minútou'
     case 'mm': // 9 minutes / in 9 minutes / 9 minutes ago
       if (withoutSuffix || isFuture) {
-        return result + (usePlural(+timeValue) ? 'minúty' : 'minút')
+        return `${result}${usePlural(+timeValue) ? 'minúty' : 'minút'}`
       }
       return `${result}minútami`
     case 'h': // an hour / in an hour / an hour ago
@@ -44,6 +89,13 @@ function relativeTimeWithPlural(
         return result + (usePlural(+timeValue) ? 'dni' : 'dní')
       }
       return `${result}dňami`
+    case 'w': // a day / in a day / a day ago
+      return withoutSuffix || isFuture ? 'týždeň' : 'týždňom'
+    case 'ww': // 9 days / in 9 days / 9 days ago
+      if (withoutSuffix || isFuture) {
+        return result + (usePlural(+timeValue) ? 'týždňov' : 'týždňov')
+      }
+      return `${result}týždňami`
     case 'M': // a month / in a month / a month ago
       return withoutSuffix || isFuture ? 'mesiac' : 'mesiacom'
     case 'MM': // 9 months / in 9 months / 9 months ago
@@ -98,6 +150,7 @@ const localeSk: Readonly<Locale> = {
     lll: 'D. MMMM YYYY H:mm',
     llll: 'dddd D. MMMM YYYY H:mm',
   },
+  calendar,
   relativeTime: {
     future: 'za %s', // Should be `o %s` (change when moment/moment#5408 is fixed)
     past: 'pred %s',
@@ -109,6 +162,8 @@ const localeSk: Readonly<Locale> = {
     hh: relativeTimeWithPlural,
     d: relativeTimeWithPlural,
     dd: relativeTimeWithPlural,
+    w: relativeTimeWithPlural,
+    ww: relativeTimeWithPlural,
     M: relativeTimeWithPlural,
     MM: relativeTimeWithPlural,
     y: relativeTimeWithPlural,

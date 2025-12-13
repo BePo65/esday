@@ -88,6 +88,14 @@ const localeTa: Readonly<Locale> = {
     lll: 'D MMMM YYYY, HH:mm',
     llll: 'dddd, D MMMM YYYY, HH:mm',
   },
+  calendar: {
+    sameDay: '[இன்று] LT',
+    nextDay: '[நாளை] LT',
+    nextWeek: 'dddd, LT',
+    lastDay: '[நேற்று] LT',
+    lastWeek: '[கடந்த வாரம்] dddd, LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s இல்',
     past: '%s முன்',
@@ -99,6 +107,8 @@ const localeTa: Readonly<Locale> = {
     hh: '%d மணி நேரம்',
     d: 'ஒரு நாள்',
     dd: '%d நாட்கள்',
+    w: 'ஒரு வாரம்',
+    ww: '%d வாரங்கள்',
     M: 'ஒரு மாதம்',
     MM: '%d மாதங்கள்',
     y: 'ஒரு வருடம்',
@@ -107,24 +117,24 @@ const localeTa: Readonly<Locale> = {
   // eslint-disable-next-line unused-imports/no-unused-vars
   meridiem: (hour: number, _minute: number, _isLowercase: boolean) => {
     if (hour < 2) {
-      return ' யாமம்'
+      return 'யாமம்'
     }
     if (hour < 6) {
-      return ' வைகறை' // வைகறை
+      return 'வைகறை' // வைகறை
     }
     if (hour < 10) {
-      return ' காலை' // காலை
+      return 'காலை' // காலை
     }
     if (hour < 14) {
-      return ' நண்பகல்' // நண்பகல்
+      return 'நண்பகல்' // நண்பகல்
     }
     if (hour < 18) {
-      return ' எற்பாடு' // எற்பாடு
+      return 'எற்பாடு' // எற்பாடு
     }
     if (hour < 22) {
-      return ' மாலை' // மாலை
+      return 'மாலை' // மாலை
     }
-    return ' யாமம்'
+    return 'யாமம்'
   },
   preParse: (dateString: string) =>
     dateString.replace(

@@ -60,6 +60,14 @@ const localeGa: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[Inniu ag] LT',
+    nextDay: '[Amárach ag] LT',
+    nextWeek: 'dddd [ag] LT',
+    lastDay: '[Inné ag] LT',
+    lastWeek: 'dddd [seo caite] [ag] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'i %s',
     past: '%s ó shin',
@@ -71,6 +79,8 @@ const localeGa: Readonly<Locale> = {
     hh: '%d uair an chloig',
     d: 'lá',
     dd: '%d lá',
+    w: 'seachtain ',
+    ww: '%d seachtainí',
     M: 'mí',
     MM: '%d mí',
     y: 'bliain',

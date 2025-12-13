@@ -2,7 +2,7 @@
  * German [de]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { Locale, RelativeTimeElementFunction } from '~/plugins/locale'
 
 const relativeTimeFormatStrings = {
   s: 'ein paar Sekunden',
@@ -13,15 +13,22 @@ const relativeTimeFormatStrings = {
   hh: '%d Stunden',
   d: ['ein Tag', 'einem Tag'],
   dd: ['%d Tage', '%d Tagen'],
+  w: ['eine Woche', 'einer Woche'],
+  ww: ['%d Wochen', '%d Wochen'],
   M: ['ein Monat', 'einem Monat'],
   MM: ['%d Monate', '%d Monaten'],
   y: ['ein Jahr', 'einem Jahr'],
   yy: ['%d Jahre', '%d Jahren'],
 }
 
-function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolean, range: string) {
+const relativeTimeFormatter: RelativeTimeElementFunction = (
+  timeValue: string | number,
+  withoutSuffix: boolean,
+  token: string,
+  _isFuture: boolean,
+) => {
   let result = ''
-  const l = relativeTimeFormatStrings[range as keyof typeof relativeTimeFormatStrings]
+  const l = relativeTimeFormatStrings[token as keyof typeof relativeTimeFormatStrings]
   if (Array.isArray(l)) {
     result = l[withoutSuffix ? 0 : 1]
   } else {
@@ -71,13 +78,21 @@ const localeDe: Readonly<Locale> = {
     LT: 'HH:mm',
     LTS: 'HH:mm:ss',
     L: 'DD.MM.YYYY',
-    LL: 'D. MMMM YYYY',
-    LLL: 'D. MMMM YYYY HH:mm',
-    LLLL: 'dddd, D. MMMM YYYY HH:mm',
+    LL: 'Do MMMM YYYY',
+    LLL: 'Do MMMM YYYY HH:mm',
+    LLLL: 'dddd, Do MMMM YYYY HH:mm',
     l: 'DD.MM.YYYY',
-    ll: 'D. MMMM YYYY',
-    lll: 'D. MMMM YYYY HH:mm',
-    llll: 'dddd, D. MMMM YYYY HH:mm',
+    ll: 'Do MMM YYYY',
+    lll: 'Do MMM YYYY HH:mm',
+    llll: 'ddd, Do MMM YYYY HH:mm',
+  },
+  calendar: {
+    sameDay: '[heute um] LT [Uhr]',
+    sameElse: 'L',
+    nextDay: '[morgen um] LT [Uhr]',
+    nextWeek: 'dddd [um] LT [Uhr]',
+    lastDay: '[gestern um] LT [Uhr]',
+    lastWeek: '[letzten] dddd [um] LT [Uhr]',
   },
   relativeTime: {
     future: 'in %s',
@@ -90,6 +105,8 @@ const localeDe: Readonly<Locale> = {
     hh: relativeTimeFormatter,
     d: relativeTimeFormatter,
     dd: relativeTimeFormatter,
+    w: relativeTimeFormatter,
+    ww: relativeTimeFormatter,
     M: relativeTimeFormatter,
     MM: relativeTimeFormatter,
     y: relativeTimeFormatter,

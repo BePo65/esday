@@ -1,8 +1,7 @@
 import { esday } from 'esday'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { expectSame } from '../util'
-
 import advancedFormatPlugin from '~/plugins/advancedFormat'
+import { expectSame } from '../util'
 
 esday.extend(advancedFormatPlugin)
 
@@ -44,15 +43,51 @@ describe('advancedFormat plugin', () => {
   )
 
   it.each([
-    { sourceString: '2024-08-14T21:43:12.123', formatString: 'd', expected: '3' },
-    { sourceString: '2024-08-14T21:43:12.123', formatString: 'S', expected: '1' },
-    { sourceString: '2024-08-14T21:43:12.123', formatString: 'SS', expected: '12' },
-    { sourceString: '2024-08-14T21:43:12.123Z', formatString: 'x', expected: '1723671792123' },
-    { sourceString: '2024-08-14T21:43:12.123Z', formatString: 'X', expected: '1723671792' },
-    { sourceString: '2024-08-14T01:43:12.123', formatString: 'k', expected: '1' },
-    { sourceString: '2024-08-14T00:43:12.123', formatString: 'k', expected: '24' },
-    { sourceString: '2024-08-14T14:43:12.123', formatString: 'kk', expected: '14' },
-    { sourceString: '2024-08-14T00:43:12.123', formatString: 'kk', expected: '24' },
+    {
+      sourceString: '2024-08-14T21:43:12.123',
+      formatString: 'd',
+      expected: '3',
+    },
+    {
+      sourceString: '2024-08-14T21:43:12.123',
+      formatString: 'S',
+      expected: '1',
+    },
+    {
+      sourceString: '2024-08-14T21:43:12.123',
+      formatString: 'SS',
+      expected: '12',
+    },
+    {
+      sourceString: '2024-08-14T21:43:12.123Z',
+      formatString: 'x',
+      expected: '1723671792123',
+    },
+    {
+      sourceString: '2024-08-14T21:43:12.123Z',
+      formatString: 'X',
+      expected: '1723671792',
+    },
+    {
+      sourceString: '2024-08-14T01:43:12.123',
+      formatString: 'k',
+      expected: '1',
+    },
+    {
+      sourceString: '2024-08-14T00:43:12.123',
+      formatString: 'k',
+      expected: '24',
+    },
+    {
+      sourceString: '2024-08-14T14:43:12.123',
+      formatString: 'kk',
+      expected: '14',
+    },
+    {
+      sourceString: '2024-08-14T00:43:12.123',
+      formatString: 'kk',
+      expected: '24',
+    },
   ])(
     'formats date using added token "$formatString"',
     ({ sourceString, formatString, expected }) => {

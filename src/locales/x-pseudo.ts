@@ -1,5 +1,6 @@
 /**
  * Pseudo [x-pseudo]
+ * This locale is for testing purposes to identify presets
  */
 
 import type { Locale } from '~/plugins/locale'
@@ -73,6 +74,14 @@ const localeXpseudo: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[T~ódá~ý át] LT',
+    nextDay: '[T~ómó~rró~w át] LT',
+    nextWeek: 'dddd [át] LT',
+    lastDay: '[Ý~ést~érdá~ý át] LT',
+    lastWeek: '[L~ást] dddd [át] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'í~ñ %s',
     past: '%s á~gó',
@@ -84,6 +93,8 @@ const localeXpseudo: Readonly<Locale> = {
     hh: '%d h~óúrs',
     d: 'á ~dáý',
     dd: '%d d~áýs',
+    w: 'á ~wéék',
+    ww: '%d w~ééks',
     M: 'á ~móñ~th',
     MM: '%d m~óñt~hs',
     y: 'á ~ýéár',

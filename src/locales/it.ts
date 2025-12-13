@@ -2,7 +2,32 @@
  * Italian [it]
  */
 
+import type { EsDay } from 'esday'
 import type { Locale } from '~/plugins/locale'
+
+const calendar = {
+  sameDay(this: EsDay) {
+    return `[Oggi a${this.hour() > 1 ? 'lle ' : this.hour() === 0 ? ' ' : "ll'"}]LT`
+  },
+  nextDay(this: EsDay) {
+    return `[Domani a${this.hour() > 1 ? 'lle ' : this.hour() === 0 ? ' ' : "ll'"}]LT`
+  },
+  nextWeek(this: EsDay) {
+    return `dddd [a${this.hour() > 1 ? 'lle ' : this.hour() === 0 ? ' ' : "ll'"}]LT`
+  },
+  lastDay(this: EsDay) {
+    return `[Ieri a${this.hour() > 1 ? 'lle ' : this.hour() === 0 ? ' ' : "ll'"}]LT`
+  },
+  lastWeek(this: EsDay) {
+    switch (this.day()) {
+      case 0:
+        return `[La scorsa] dddd [a${this.hour() > 1 ? 'lle ' : this.hour() === 0 ? ' ' : "ll'"}]LT`
+      default:
+        return `[Lo scorso] dddd [a${this.hour() > 1 ? 'lle ' : this.hour() === 0 ? ' ' : "ll'"}]LT`
+    }
+  },
+  sameElse: 'L',
+}
 
 const localeIt: Readonly<Locale> = {
   name: 'it',
@@ -39,6 +64,7 @@ const localeIt: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd D MMMM YYYY HH:mm',
   },
+  calendar,
   relativeTime: {
     future: 'tra %s',
     past: '%s fa',
@@ -50,6 +76,8 @@ const localeIt: Readonly<Locale> = {
     hh: '%d ore',
     d: 'un giorno',
     dd: '%d giorni',
+    w: 'una settimana',
+    ww: '%d settimane',
     M: 'un mese',
     MM: '%d mesi',
     y: 'un anno',

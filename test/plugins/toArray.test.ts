@@ -1,5 +1,5 @@
 import { esday } from 'esday'
-import moment from 'moment'
+import moment from 'moment/min/moment-with-locales'
 import { describe, expect, it } from 'vitest'
 import toArrayPlugin from '~/plugins/toArray'
 

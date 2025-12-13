@@ -1,4 +1,5 @@
 import type { EsDayPlugin } from 'esday'
+import { C } from '~/common'
 
 declare module 'esday' {
   interface EsDay {
@@ -8,7 +9,7 @@ declare module 'esday' {
 
 const isTodayPlugin: EsDayPlugin<{}> = (_, dayClass) => {
   dayClass.prototype.isToday = function () {
-    return this.isSame(new Date(), 'day')
+    return this.isSame(new Date(), C.DAY)
   }
 }
 

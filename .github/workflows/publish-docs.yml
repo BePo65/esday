@@ -1,0 +1,50 @@
+name: publish-docs-to-github-pages
+
+# Prevent that corepack looks for latest version of pnpm
+# HACK to work around issue nodejs/corepack#625
+env:
+  COREPACK_DEFAULT_TO_LATEST: 0
+
+on:
+  push:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  publish:
+    permissions:
+      contents: write
+
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Install Pnpm
+        run: corepack enable
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: run build:ghpages
+        run: pnpm run build:ghpages
+
+      - name: Publish current workdir (which contains generated content) to GitHub Pages
+        uses: rayluo/github-pages-overwriter@v1.3
+        with:
+          # You can use whatever directory your project uses, for example "wwwroot".
+          # Such a directory does *not* have to already exist in your repo,
+          # it could be an output directory created dynamically by your static website builder.
+          source-directory: gh_pages
+
+          # Optional. Default value "gh_pages".
+          # It specifies the temporary branch which hosts the static website.
+          # Each build will OVERWRITE this branch.
+          target-branch: gh_pages

@@ -39,6 +39,14 @@ const localeUz: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'D MMMM YYYY, dddd HH:mm',
   },
+  calendar: {
+    sameDay: '[Бугун соат] LT [да]',
+    nextDay: '[Эртага] LT [да]',
+    nextWeek: 'dddd [куни соат] LT [да]',
+    lastDay: '[Кеча соат] LT [да]',
+    lastWeek: '[Утган] dddd [куни соат] LT [да]',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'Якин %s ичида',
     past: '%s олдин',
@@ -50,6 +58,8 @@ const localeUz: Readonly<Locale> = {
     hh: '%d соат',
     d: 'бир кун',
     dd: '%d кун',
+    w: 'бир хафта',
+    ww: '%d хафта',
     M: 'бир ой',
     MM: '%d ой',
     y: 'бир йил',

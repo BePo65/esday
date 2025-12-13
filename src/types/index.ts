@@ -1,3 +1,24 @@
+export type {
+  LongUnit,
+  PrettyUnitAsPlural,
+  PrettyUnitAsSingular,
+  PrettyUnitFromPlurals,
+  ShortUnit,
+  UnitDate,
+  UnitDay,
+  UnitHour,
+  UnitIsoWeek,
+  UnitMin,
+  UnitMonth,
+  UnitMs,
+  UnitQuarter,
+  UnitSecond,
+  UnitType,
+  UnitTypeAddSub,
+  UnitTypeCore,
+  UnitTypeGetSet,
+  UnitWeek,
+  UnitYear,
+} from '~/common/units'
 export * from './core'
-export type { SimpleType, SimpleObject } from './util-types'
-export type { PrettyUnit, PrettyUnitType, UnitType } from '~/common/units'
+export type { SimpleObject, SimpleType } from './util-types'

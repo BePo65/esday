@@ -39,6 +39,14 @@ const localeYo: Readonly<Locale> = {
     lll: 'D MMMM YYYY h:mm A',
     llll: 'dddd, D MMMM YYYY h:mm A',
   },
+  calendar: {
+    sameDay: '[Ònì ni] LT',
+    nextDay: '[Ọ̀la ni] LT',
+    nextWeek: "dddd [Ọsẹ̀ tón'bọ] [ni] LT",
+    lastDay: '[Àna ni] LT',
+    lastWeek: 'dddd [Ọsẹ̀ tólọ́] [ni] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'ní %s',
     past: '%s kọjá',
@@ -50,6 +58,8 @@ const localeYo: Readonly<Locale> = {
     hh: 'wákati %d',
     d: 'ọjọ́ kan',
     dd: 'ọjọ́ %d',
+    w: 'ọsẹ kan',
+    ww: 'ọsẹ %d',
     M: 'osù kan',
     MM: 'osù %d',
     y: 'ọdún kan',

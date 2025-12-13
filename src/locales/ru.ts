@@ -1,9 +1,50 @@
 /**
  * Russian [ru]
+ *
+ * This locale requires the week plugin, when the calendar property
+ * is used (e.g. in the calendar plugin).
  */
 
 import type { EsDay } from 'esday'
-import type { Locale, MonthNames, MonthNamesFunction } from '~/plugins/locale'
+import type {
+  DayNames,
+  DayNamesStandaloneFormat,
+  Locale,
+  MonthNames,
+  MonthNamesStandaloneFormat,
+  RelativeTimeElementFunction,
+} from '~/plugins/locale'
+
+declare module 'esday' {
+  interface EsDay {
+    week(): number
+    week(newWeek: number): EsDay
+  }
+}
+
+const dayNamesFormat: DayNames = [
+  'воскресенье',
+  'понедельник',
+  'вторник',
+  'среду',
+  'четверг',
+  'пятницу',
+  'субботу',
+]
+const dayNamesStandalone: DayNames = [
+  'воскресенье',
+  'понедельник',
+  'вторник',
+  'среда',
+  'четверг',
+  'пятница',
+  'суббота',
+]
+const weekdays: DayNamesStandaloneFormat = {
+  standalone: dayNamesStandalone,
+  format: dayNamesFormat,
+  isFormat: /\[ ?[Вв] ?(?:прошлую|следующую|эту)? ?] ?dddd/,
+}
 
 const monthFormat: MonthNames = [
   'января',
@@ -33,6 +74,10 @@ const monthStandalone: MonthNames = [
   'ноябрь',
   'декабрь',
 ]
+const months: MonthNamesStandaloneFormat = {
+  standalone: monthStandalone,
+  format: monthFormat,
+}
 
 const monthShortFormat: MonthNames = [
   'янв.',
@@ -62,26 +107,61 @@ const monthShortStandalone: MonthNames = [
   'нояб.',
   'дек.',
 ]
-
-const MONTHS_IN_FORMAT = /D[oD]?(?:\[[^[\]]*\]|\s)+MMMM?/
-
-const months: MonthNamesFunction = (esdayInstance: EsDay, format: string) => {
-  if (MONTHS_IN_FORMAT.test(format)) {
-    return monthFormat[esdayInstance.month()]
-  }
-  return monthStandalone[esdayInstance.month()]
+const monthsShort: MonthNamesStandaloneFormat = {
+  standalone: monthShortStandalone,
+  format: monthShortFormat,
 }
-months.format = monthFormat
-months.standalone = monthStandalone
 
-const monthsShort: MonthNamesFunction = (esdayInstance: EsDay, format: string) => {
-  if (MONTHS_IN_FORMAT.test(format)) {
-    return monthShortFormat[esdayInstance.month()]
-  }
-  return monthShortStandalone[esdayInstance.month()]
+const calendar = {
+  sameDay: '[Сегодня, в] LT',
+  nextDay: '[Завтра, в] LT',
+  nextWeek(this: EsDay, refDate?: EsDay) {
+    if (refDate?.week?.() !== this.week?.()) {
+      switch (this.day()) {
+        case 0:
+          return '[В следующее] dddd, [в] LT'
+        case 1:
+        case 2:
+        case 4:
+          return '[В следующий] dddd, [в] LT'
+        case 3:
+        case 5:
+        case 6:
+          return '[В следующую] dddd, [в] LT'
+        default:
+          return ''
+      }
+    }
+    if (this.day() === 2) {
+      return '[Во] dddd, [в] LT'
+    }
+    return '[В] dddd, [в] LT'
+  },
+  lastDay: '[Вчера, в] LT',
+  lastWeek(this: EsDay, refDate?: EsDay) {
+    if (refDate?.week?.() !== this.week?.()) {
+      switch (this.day()) {
+        case 0:
+          return '[В прошлое] dddd, [в] LT'
+        case 1:
+        case 2:
+        case 4:
+          return '[В прошлый] dddd, [в] LT'
+        case 3:
+        case 5:
+        case 6:
+          return '[В прошлую] dddd, [в] LT'
+        default:
+          return ''
+      }
+    }
+    if (this.day() === 2) {
+      return '[Во] dddd, [в] LT'
+    }
+    return '[В] dddd, [в] LT'
+  },
+  sameElse: 'L',
 }
-monthsShort.format = monthShortFormat
-monthsShort.standalone = monthShortStandalone
 
 function plural(timeStrings: string[], timeValue: number) {
   const forms = timeStrings
@@ -91,28 +171,31 @@ function plural(timeStrings: string[], timeValue: number) {
       ? forms[1]
       : forms[2]
 }
-function relativeTimeWithPlural(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
-): string {
+  token: string,
+  _isFuture: boolean,
+) => {
   const format = {
+    ss: withoutSuffix ? ['секунда', 'секунды', 'секунд'] : ['секунду', 'секунды', 'секунд'],
     mm: withoutSuffix ? ['минута', 'минуты', 'минут'] : ['минуту', 'минуты', 'минут'],
     hh: ['час', 'часа', 'часов'],
     dd: ['день', 'дня', 'дней'],
+    ww: ['неделя', 'недели', 'недель'],
     MM: ['месяц', 'месяца', 'месяцев'],
     yy: ['год', 'года', 'лет'],
   }
-  if (range === 'm') {
+  if (token === 'm') {
     return withoutSuffix ? 'минута' : 'минуту'
   }
 
-  return `${timeValue} ${plural(format[range as keyof typeof format], +timeValue)}`
+  return `${timeValue} ${plural(format[token as keyof typeof format], +timeValue)}`
 }
 
 const localeRu: Readonly<Locale> = {
   name: 'ru',
-  weekdays: ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'],
+  weekdays,
   weekdaysShort: ['вск', 'пнд', 'втр', 'срд', 'чтв', 'птн', 'сбт'],
   weekdaysMin: ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'],
   months,
@@ -132,21 +215,24 @@ const localeRu: Readonly<Locale> = {
     lll: 'D MMMM YYYY г., H:mm',
     llll: 'dddd, D MMMM YYYY г., H:mm',
   },
+  calendar,
   relativeTime: {
     future: 'через %s',
     past: '%s назад',
     s: 'несколько секунд',
-    ss: relativeTimeWithPlural,
-    m: relativeTimeWithPlural,
-    mm: relativeTimeWithPlural,
+    ss: relativeTimeFormatter,
+    m: relativeTimeFormatter,
+    mm: relativeTimeFormatter,
     h: 'час',
-    hh: relativeTimeWithPlural,
+    hh: relativeTimeFormatter,
     d: 'день',
-    dd: relativeTimeWithPlural,
+    dd: relativeTimeFormatter,
+    w: 'неделя',
+    ww: relativeTimeFormatter,
     M: 'месяц',
-    MM: relativeTimeWithPlural,
+    MM: relativeTimeFormatter,
     y: 'год',
-    yy: relativeTimeWithPlural,
+    yy: relativeTimeFormatter,
   },
   // eslint-disable-next-line  unused-imports/no-unused-vars
   meridiem: (hour: number, _minute: number, _isLowercase: boolean) => {

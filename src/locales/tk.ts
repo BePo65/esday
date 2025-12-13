@@ -18,6 +18,7 @@ const suffixes = {
   4: "'ünji",
   100: "'ünji",
   6: "'njy",
+  40: "'njy",
   9: "'unjy",
   10: "'unjy",
   30: "'unjy",
@@ -50,13 +51,13 @@ const localeTk: Readonly<Locale> = {
       // special case for zero
       return `${n}'unjy`
     }
-    const a = n % 10
-    const b = (n % 100) - a
-    const c = n >= 100 ? 100 : null
+    const one = n % 10
+    const ten = (n % 100) - one
+    const cutoffNumber = n >= 100 ? 100 : null
     const suffix =
-      suffixes[a as keyof typeof suffixes] ||
-      suffixes[b as keyof typeof suffixes] ||
-      suffixes[c as keyof typeof suffixes]
+      suffixes[one as keyof typeof suffixes] ||
+      suffixes[ten as keyof typeof suffixes] ||
+      suffixes[cutoffNumber as keyof typeof suffixes]
     return `${n}${suffix}`
   },
   weekStart: 1, // Monday is the first day of the week.
@@ -73,6 +74,14 @@ const localeTk: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[bugün sagat] LT',
+    nextDay: '[ertir sagat] LT',
+    nextWeek: '[indiki] dddd [sagat] LT',
+    lastDay: '[düýn] LT',
+    lastWeek: '[geçen] dddd [sagat] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s soň',
     past: '%s öň',
@@ -84,6 +93,8 @@ const localeTk: Readonly<Locale> = {
     hh: '%d sagat',
     d: 'bir gün',
     dd: '%d gün',
+    w: 'bir hepde',
+    ww: '%d hepde',
     M: 'bir aý',
     MM: '%d aý',
     y: 'bir ýyl',

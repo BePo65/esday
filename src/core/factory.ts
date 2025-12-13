@@ -4,7 +4,7 @@ import type { SimpleObject, SimpleType } from '~/types/util-types'
 import { EsDay } from './EsDay'
 import { addFormatTokenDefinitions } from './Impl/format'
 
-// @ts-ignore plugin declare may cause ts-type-checke error, but it's ok
+// @ts-expect-error plugin declare may cause ts-type-checke error, but it's ok
 const esday: EsDayFactory = (
   d?: DateType,
   ...others: (SimpleType | string[] | { [key: string]: SimpleType })[]
@@ -34,7 +34,7 @@ esday.extend = (plugin, option) => {
   if (!plugin.$i) {
     // install plugin only once
     // biome-ignore lint/suspicious/noExplicitAny: generic method to install any plugin
-    plugin(option as any, EsDay, esday)
+    plugin((option || {}) as any, EsDay, esday)
     // @ts-expect-error plugin
     plugin.$i = true
   }

@@ -1,4 +1,4 @@
-import type { SimpleType } from 'esday'
+import type { EsDay, SimpleType } from 'esday'
 
 declare module 'esday' {
   interface EsDayFactory {
@@ -12,7 +12,8 @@ declare module 'esday' {
 export interface ParsedElements {
   year?: number
   month?: number
-  day?: number
+  day?: number // day-of-week
+  date?: number // day-of-month
   hours?: number
   minutes?: number
   seconds?: number
@@ -51,14 +52,17 @@ export interface ParsedResultRaw {
 export type Parser = (input: string, isStrict: boolean, options: ParseOptions) => ParsedResultRaw
 
 /**
- * Fix created 'parsedDate' using the 'parsedElements'.
- * E.g. convert meridiem time (12h) to iso time (24h)
+ * Fix a created 'parsedDate' using the 'parsedElements'; can be used
+ * e.g. to convert meridiem time (12h) to iso time (24h).
+ * Must be called in the context of an EsDay instance.
+ * @param this - context for this function (required by the makeParser function)
  * @param parsedDate - the date created from 'parsedElements'
  * @param parsedElements - object containing the components of a parsed date
  * @param options - parsing options e.g. containing the locale to use
  * @returns updated parsed date
  */
 export type PostParser = (
+  this: EsDay,
   parsedDate: Date,
   parsedElements: ParsedElements,
   options: ParseOptions,

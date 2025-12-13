@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{page-title}}</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+    <base href="/esday/" />
+    <link rel="stylesheet" href="esday.css">
+    <link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+    <header>
+        <img class="header-symbol" src="assets/esday.png" alt="ESday project icon" />
+        <h1 class="header-title">{{header}}</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="core/index.html">Core</a>
+            <a href="plugins/index.html">Plugins</a>
+            <a href="locales/index.html">Locales</a>
+        </nav>
+    </header>
+    <div class="container">
+{{content}}
+    </div>
+</body>
+</html>

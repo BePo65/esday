@@ -47,6 +47,14 @@ const localeFo: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd D. MMMM, YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[Í dag kl.] LT',
+    nextDay: '[Í morgin kl.] LT',
+    nextWeek: 'dddd [kl.] LT',
+    lastDay: '[Í gjár kl.] LT',
+    lastWeek: '[síðstu] dddd [kl] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'um %s',
     past: '%s síðani',
@@ -58,6 +66,8 @@ const localeFo: Readonly<Locale> = {
     hh: '%d tímar',
     d: 'ein dagur',
     dd: '%d dagar',
+    w: 'eina viku',
+    ww: '%d vikum',
     M: 'ein mánaður',
     MM: '%d mánaðir',
     y: 'eitt ár',

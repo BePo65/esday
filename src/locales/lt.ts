@@ -2,48 +2,7 @@
  * Lithuanian [lt]
  */
 
-import type { EsDay } from 'esday'
-import type { Locale, MonthNames, MonthNamesFunction } from '~/plugins/locale'
-
-const monthFormat: MonthNames = [
-  'sausio',
-  'vasario',
-  'kovo',
-  'balandžio',
-  'gegužės',
-  'birželio',
-  'liepos',
-  'rugpjūčio',
-  'rugsėjo',
-  'spalio',
-  'lapkričio',
-  'gruodžio',
-]
-const monthStandalone: MonthNames = [
-  'sausis',
-  'vasaris',
-  'kovas',
-  'balandis',
-  'gegužė',
-  'birželis',
-  'liepa',
-  'rugpjūtis',
-  'rugsėjis',
-  'spalis',
-  'lapkritis',
-  'gruodis',
-]
-
-const MONTHS_IN_FORMAT = /D[oD]?(?:\[[^[\]]*\]|\s)+MMMM?|MMMM?(?:\[[^[\]]*\]|\s)+D[oD]?/
-
-const months: MonthNamesFunction = (esdayInstance: EsDay, format: string) => {
-  if (MONTHS_IN_FORMAT.test(format)) {
-    return monthFormat[esdayInstance.month()]
-  }
-  return monthStandalone[esdayInstance.month()]
-}
-months.format = monthFormat
-months.standalone = monthStandalone
+import type { Locale } from '~/plugins/locale'
 
 const localeLt: Locale = {
   name: 'lt',
@@ -58,8 +17,21 @@ const localeLt: Locale = {
   ],
   weekdaysShort: ['sek', 'pir', 'ant', 'tre', 'ket', 'pen', 'šeš'],
   weekdaysMin: ['s', 'p', 'a', 't', 'k', 'pn', 'š'],
-  months,
-  monthsShort: ['sau', 'vas', 'kov', 'bal', 'geg', 'bir', 'lie', 'rgp', 'rgs', 'spa', 'lap', 'grd'],
+  months: [
+    'gennaio',
+    'febbraio',
+    'marzo',
+    'aprile',
+    'maggio',
+    'giugno',
+    'luglio',
+    'agosto',
+    'settembre',
+    'ottobre',
+    'novembre',
+    'dicembre',
+  ],
+  monthsShort: ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic'],
   ordinal: (n) => `${n}-oji`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
@@ -75,6 +47,14 @@ const localeLt: Locale = {
     lll: 'YYYY [m.] MMMM D [d.], HH:mm [val.]',
     llll: 'YYYY [m.] MMMM D [d.], ddd, HH:mm [val.]',
   },
+  calendar: {
+    sameDay: '[Šiandien] LT',
+    nextDay: '[Rytoj] LT',
+    nextWeek: 'dddd LT',
+    lastDay: '[Vakar] LT',
+    lastWeek: '[Praėjusį] dddd LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'už %s',
     past: 'prieš %s',
@@ -86,6 +66,8 @@ const localeLt: Locale = {
     hh: '%d valandas',
     d: 'dieną',
     dd: '%d dienas',
+    w: 'savaitę',
+    ww: '%d savaites',
     M: 'mėnesį',
     MM: '%d mėnesius',
     y: 'metus',

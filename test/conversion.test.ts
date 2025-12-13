@@ -14,11 +14,11 @@ describe('conversion', () => {
   })
 
   it('to unix timestamp (milliseconds)', () => {
-    expect(esday().valueOf()).toBe(1702783486234)
+    expect(esday().valueOf()).toBe(1_702_783_486_234)
   })
 
   it('to unix timestamp (seconds)', () => {
-    expect(esday().unix()).toBe(1702783486)
+    expect(esday().unix()).toBe(1_702_783_486)
   })
 
   it('toDate', () => {

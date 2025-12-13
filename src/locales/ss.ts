@@ -47,6 +47,14 @@ const localeSs: Readonly<Locale> = {
     lll: 'D MMMM YYYY h:mm A',
     llll: 'dddd, D MMMM YYYY h:mm A',
   },
+  calendar: {
+    sameDay: '[Namuhla nga] LT',
+    nextDay: '[Kusasa nga] LT',
+    nextWeek: 'dddd [nga] LT',
+    lastDay: '[Itolo nga] LT',
+    lastWeek: 'dddd [leliphelile] [nga] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'nga %s',
     past: 'wenteka nga %s',
@@ -58,6 +66,8 @@ const localeSs: Readonly<Locale> = {
     hh: '%d emahora',
     d: 'lilanga',
     dd: '%d emalanga',
+    w: 'linye',
+    ww: '%d emaviki',
     M: 'inyanga',
     MM: '%d tinyanga',
     y: 'umnyaka',

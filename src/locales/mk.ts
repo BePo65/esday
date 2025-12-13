@@ -1,6 +1,7 @@
 /*
  * Macedonian [mk]
  */
+import type { EsDay } from 'esday'
 import type { Locale } from '~/plugins/locale'
 
 const localeMk: Readonly<Locale> = {
@@ -38,6 +39,28 @@ const localeMk: Readonly<Locale> = {
     lll: 'D MMMM YYYY H:mm',
     llll: 'dddd, D MMMM YYYY H:mm',
   },
+  calendar: {
+    sameDay: '[Денес во] LT',
+    nextDay: '[Утре во] LT',
+    nextWeek: '[Во] dddd [во] LT',
+    lastDay: '[Вчера во] LT',
+    lastWeek(this: EsDay) {
+      switch (this.day()) {
+        case 0:
+        case 3:
+        case 6:
+          return '[Изминатата] dddd [во] LT'
+        case 1:
+        case 2:
+        case 4:
+        case 5:
+          return '[Изминатиот] dddd [во] LT'
+        default:
+          return ''
+      }
+    },
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'после %s',
     past: 'пред %s',
@@ -49,6 +72,8 @@ const localeMk: Readonly<Locale> = {
     hh: '%d часа',
     d: 'ден',
     dd: '%d дена',
+    w: 'недела',
+    ww: '%d недели',
     M: 'месец',
     MM: '%d месеци',
     y: 'година',

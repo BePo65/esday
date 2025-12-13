@@ -2,7 +2,7 @@
  * Hebrew [he]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { Locale, RelativeTimeElementFunction } from '~/plugins/locale'
 
 const relativeTimeFormatStrings = {
   s: 'מספר שניות',
@@ -15,6 +15,9 @@ const relativeTimeFormatStrings = {
   d: 'יום',
   dd: '%d ימים',
   dd2: 'יומיים',
+  w: 'שבוע',
+  ww: '%d שבועות',
+  ww2: 'בשבועיים',
   M: 'חודש',
   MM: '%d חודשים',
   MM2: 'חודשיים',
@@ -22,16 +25,17 @@ const relativeTimeFormatStrings = {
   yy: '%d שנים',
   yy2: 'שנתיים',
 }
-function relativeTimeFormatter(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   _withoutSuffix: boolean,
-  range: string,
-): string {
-  const formatStringsIndex = (range +
+  token: string,
+  _isFuture: boolean,
+) => {
+  const formatStringsIndex = (token +
     (+timeValue === 2 ? '2' : '')) as keyof typeof relativeTimeFormatStrings
   const text =
-    relativeTimeFormatStrings[formatStringsIndex] ||
-    relativeTimeFormatStrings[range as keyof typeof relativeTimeFormatStrings]
+    relativeTimeFormatStrings[formatStringsIndex] ??
+    relativeTimeFormatStrings[token as keyof typeof relativeTimeFormatStrings]
   return text.replace('%d', timeValue.toString())
 }
 
@@ -70,6 +74,14 @@ const localeHe: Readonly<Locale> = {
     lll: 'D MMM YYYY HH:mm',
     llll: 'ddd, D MMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[היום ב־]LT',
+    nextDay: '[מחר ב־]LT',
+    nextWeek: 'dddd [בשעה] LT',
+    lastDay: '[אתמול ב־]LT',
+    lastWeek: '[ביום] dddd [האחרון בשעה] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'בעוד %s',
     past: 'לפני %s',
@@ -81,6 +93,8 @@ const localeHe: Readonly<Locale> = {
     hh: relativeTimeFormatter,
     d: relativeTimeFormatter,
     dd: relativeTimeFormatter,
+    w: relativeTimeFormatter,
+    ww: relativeTimeFormatter,
     M: relativeTimeFormatter,
     MM: relativeTimeFormatter,
     y: relativeTimeFormatter,

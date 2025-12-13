@@ -4,25 +4,49 @@
  * when utc mode is enabled, get and set methods will use UTC time
  *
  * new esday parameters in '$conf':
- *   utc              utc mode (true / false)
- *   offset           utcOffset (constant value, no DST handling)
- *   timezoneOffset   timezone offset (with DST handling)
+ *   utc          utc mode (true / false)
+ *   offset       utcOffset (constant value, no DST handling)
+ *   tzOffset     timezone offset (with DST handling)
  */
 
 import type { EsDay } from 'esday'
-import type { UnitDay } from '~/common'
+import type { UnitForGetDate, UnitForSetDate } from '~/common'
 import {
   C,
-  getUnitInDate,
+  createInstanceFromExist,
   getUnitInDateUTC,
+  isObject,
   isUndefined,
-  prettyUnit,
+  normalizeUnitWithPlurals,
   setUnitInDateUTC,
 } from '~/common'
-import type { DateType, EsDayPlugin, SimpleType } from '~/types'
+import type { UnitTypeAddSub, UnitTypeGetSet } from '~/common/units'
+import type {
+  DateType,
+  EsDayPlugin,
+  SimpleType,
+  UnitsObjectTypeAddSub,
+  UnitsObjectTypeSet,
+} from '~/types'
 
 const REGEX_VALID_OFFSET_FORMAT = /[+-]\d\d(?::?\d\d)?/g
 const REGEX_OFFSET_HOURS_MINUTES_FORMAT = /[+-]|\d\d/g
+
+declare module 'esday' {
+  interface EsDay {
+    utc: (keepLocalTime?: boolean) => EsDay
+    local: () => EsDay
+    isUTC: () => boolean
+  }
+
+  interface EsDayFactory {
+    utc: (
+      date?: DateType,
+      ...others: (SimpleType | string[] | { [key: string]: SimpleType })[]
+    ) => EsDay
+  }
+}
+
 function offsetFromString(value = '') {
   const offset = value.match(REGEX_VALID_OFFSET_FORMAT)
 
@@ -30,9 +54,10 @@ function offsetFromString(value = '') {
     return Number.NaN
   }
 
-  const [indicator, hoursOffset, minutesOffset] = `${offset[0]}`.match(
-    REGEX_OFFSET_HOURS_MINUTES_FORMAT,
-  ) || ['-', 0, 0]
+  const [indicator, hoursOffset, minutesOffset] = Object.assign(
+    ['-', 0, 0],
+    `${offset[0]}`.match(REGEX_OFFSET_HOURS_MINUTES_FORMAT),
+  )
   const totalOffsetInMinutes = +hoursOffset * 60 + +minutesOffset
 
   if (totalOffsetInMinutes === 0) {
@@ -42,20 +67,94 @@ function offsetFromString(value = '') {
   return indicator === '+' ? totalOffsetInMinutes : -totalOffsetInMinutes
 }
 
-declare module 'esday' {
-  interface EsDay {
-    utc: (keepLocalTime?: boolean) => EsDay
-    local: () => EsDay
-    isUTC: () => boolean
-    utcOffset(): number
-    utcOffset(offset: number | string, keepLocalTime?: boolean): EsDay
+function utcOffsetGetImpl(that: EsDay, defaultValue = Number.NaN) {
+  if (that['$conf'].utc) {
+    return 0
+  }
+  if (that['$conf'].offset !== undefined) {
+    return Number(that['$conf'].offset)
+  }
+  return defaultValue
+}
+
+function utcOffsetSetImpl(that: EsDay, offset: number | string, keepLocalTime?: boolean) {
+  let offsetAsNumber: number
+
+  if (typeof offset === 'string') {
+    offsetAsNumber = offsetFromString(offset)
+    if (Number.isNaN(offsetAsNumber)) {
+      return that
+    }
+  } else {
+    offsetAsNumber = offset
   }
 
-  interface EsDayFactory {
-    utc: (
-      date?: DateType,
-      ...others: (SimpleType | string[] | { [key: string]: SimpleType })[]
-    ) => EsDay
+  const offsetAsMinutes = Math.abs(offsetAsNumber) <= 16 ? offsetAsNumber * 60 : offsetAsNumber
+
+  if (keepLocalTime) {
+    // change point in time using offset and return new instance
+    const localTimezoneOffset = that['$conf'].utc
+      ? that.toDate().getTimezoneOffset()
+      : -1 * that.utcOffset()
+
+    let instance = that
+    if (that['$conf'].utc) {
+      instance = instance.add(localTimezoneOffset, C.MIN)
+      instance['$conf'].utc = offsetAsMinutes === 0
+    }
+
+    instance['$conf'].offset = offsetAsMinutes
+    instance['$conf'].tzOffset = localTimezoneOffset
+    return instance
+  }
+
+  if (offsetAsNumber !== 0) {
+    const localTimezoneOffset = that['$conf'].utc
+      ? that.toDate().getTimezoneOffset()
+      : -1 * that.utcOffset()
+
+    // switch away from utc mode
+    const instance = that.local().add(offsetAsMinutes + localTimezoneOffset, C.MIN)
+    instance['$conf'].offset = offsetAsMinutes
+    instance['$conf'].tzOffset = localTimezoneOffset
+    return instance
+  }
+  return that.utc()
+}
+
+function addUtc(that: EsDay, value: number, units: UnitTypeAddSub) {
+  const $d = that['$d']
+  const unit = normalizeUnitWithPlurals(units)
+
+  const instanceFactorySet = (multiplier: number) => {
+    const newInstance = that.clone()
+    newInstance['$d'].setUTCDate($d.getUTCDate() + Math.round(multiplier * value))
+    return newInstance
+  }
+
+  switch (normalizeUnitWithPlurals(unit)) {
+    case C.YEAR:
+      return that.set('year', that.get('year') + value)
+    case C.MONTH:
+      return that.set('month', that.get('month') + value)
+    case C.WEEK:
+      return instanceFactorySet(7)
+    case C.DAY:
+    case C.DAY_OF_MONTH:
+      return instanceFactorySet(1)
+    case C.HOUR:
+    case C.MIN:
+    case C.SECOND:
+    case C.MS: {
+      // set multiplier to convert value to add to milliseconds (default '1')
+      // @ts-expect-error default 1
+      const step = { minute: 60 * 1000, hour: 60 * 60 * 1000, second: 1000 }[unit] || 1
+      const nextTimeStamp = $d.getTime() + value * step
+      return createInstanceFromExist(new Date(nextTimeStamp), that)
+    }
+    default:
+      // ignore unsupported units
+      return that.clone()
   }
 }
 
@@ -70,13 +169,14 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   }
 
   const proto = dayClass.prototype
+
   // convert a date to utc
   proto.utc = function (keepLocalTime?: boolean) {
     const inst = this.clone()
     inst['$d'] = this.toDate()
     inst['$conf'].utc = true
     if (keepLocalTime) {
-      // TODO maybe the generated time does not exits in the current timezone; see momentjs
+      // TODO maybe the generated time does not exits in the current timezone; see moment.js
       return inst.add(this.utcOffset(), C.MIN)
     }
     return inst
@@ -99,12 +199,15 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     return C.INVALID_DATE_STRING
   }
 
-  // biome-ignore lint/suspicious/noExplicitAny: did not find a conditional return type a a replacement for 'any'
-  proto.utcOffset = function (offset?: number | string, keepLocalTime?: boolean): any {
+  // @ts-expect-error function is compatible with its overload
+  proto.utcOffset = function (offset?: number | string, keepLocalTime?: boolean) {
     if (offset === undefined) {
+      // Getter
       const defaultOffset = -Math.round(this['$d'].getTimezoneOffset())
       return utcOffsetGetImpl(this, defaultOffset)
     }
+
+    // Setter
     return utcOffsetSetImpl(this, offset, keepLocalTime)
   }
 
@@ -142,15 +245,16 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       return oldDateFromDateComponents(Y, M, D, h, m, s, ms, offsetMs)
     }
 
-    const parsedYearOrDefault = Y === undefined ? new Date().getFullYear() : Y
+    const parsedYearOrDefault = Y ?? new Date().getFullYear()
+    const parsedMonthOrDefault = M ?? (Y !== undefined ? 1 : new Date().getMonth() + 1)
     const dateComponents = {
       Y: parsedYearOrDefault,
-      M: (M || 1) - 1,
-      D: D || 1,
-      h: h || 0,
-      m: m || 0,
-      s: s || 0,
-      ms: ms || 0,
+      M: parsedMonthOrDefault - 1,
+      D: D ?? 1,
+      h: h ?? 0,
+      m: m ?? 0,
+      s: s ?? 0,
+      ms: ms ?? 0,
     }
 
     const yearWithoutCentury = Math.abs(parsedYearOrDefault) < 100
@@ -183,85 +287,85 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
 
     if (overflowed) {
       result = C.INVALID_DATE
-    } else {
-      if (!isUndefined(offsetMs)) {
-        result.setUTCMilliseconds(result.getUTCMilliseconds() - offsetMs)
-      }
+    } else if (!isUndefined(offsetMs)) {
+      result.setUTCMilliseconds(result.getUTCMilliseconds() - offsetMs)
     }
 
     return result
   }
 
-  proto.get = function (unit) {
-    const utc = !!this['$conf'].utc
-    return utc ? getUnitInDateUTC(this['$d'], unit) : getUnitInDate(this['$d'], unit)
+  const oldGet = proto.get
+  proto.get = function (unit: UnitTypeGetSet) {
+    const normalizedUnit = normalizeUnitWithPlurals(unit)
+    if (normalizedUnit === C.QUARTER || normalizedUnit === C.WEEK) {
+      // Units 'quarter' and 'weeks' are implemented in the corresponding plugins
+      return Number.NaN
+    }
+
+    if (this['$conf'].utc) {
+      return getUnitInDateUTC(this['$d'], unit as UnitForGetDate)
+    }
+
+    return oldGet.call(this, unit)
   }
 
   const old$set = proto['$set']
-  proto['$set'] = function (unit, values) {
+  proto['$set'] = function (unit: UnitTypeGetSet | UnitsObjectTypeSet, values: number[]) {
     const utc = !!this['$conf'].utc
     if (utc) {
+      if (isObject(unit)) {
+        // UnitsObjectTypeSet is implemented in plugin ObjectSupport
+        // therefore we ignore the request here.
+        return this.clone()
+      }
+
       const $date = this['$d']
-      if (prettyUnit(unit) === C.DAY) {
-        setUnitInDateUTC($date, C.DATE_OF_WEEK, this.date() + (values[0] - this.day()))
-      } else {
-        setUnitInDateUTC($date, unit as Exclude<typeof unit, UnitDay>, values)
+      const normalizedUnit = normalizeUnitWithPlurals(unit)
+      if (normalizedUnit === C.DAY) {
+        // change date to the given day of week as setUnitInDate does not have a setDay() method
+        setUnitInDateUTC($date, C.DAY_OF_MONTH, this.date() + (values[0] - this.day()))
+      } else if (normalizedUnit !== C.QUARTER && normalizedUnit !== C.WEEK) {
+        // Units 'quarter' and 'weeks' are implemented in the corresponding plugins
+        const typedUnit = normalizedUnit as UnitForSetDate
+        setUnitInDateUTC($date, typedUnit, values)
       }
 
       return this
     }
     return old$set.call(this, unit, values)
   }
-}
 
-function utcOffsetGetImpl(that: EsDay, defaultValue = Number.NaN) {
-  if (that['$conf'].utc) {
-    return 0
-  }
-  if (that['$conf'].offset !== undefined) {
-    return Number(that['$conf'].offset)
-  }
-  return defaultValue
-}
-
-function utcOffsetSetImpl(that: EsDay, offset: number | string, keepLocalTime?: boolean) {
-  let offsetAsNumber: number
-
-  if (typeof offset === 'string') {
-    offsetAsNumber = offsetFromString(offset)
-    if (Number.isNaN(offsetAsNumber)) {
-      return that
+  const oldAdd = proto.add
+  proto.add = function (value: number | UnitsObjectTypeAddSub, unit?: UnitTypeAddSub) {
+    if (isObject(value) || unit === undefined) {
+      // using UnitsObjectTypeAddSub is implemented in plugin ObjectSupport
+      // therefore we ignore the request here.
+      return this.clone()
     }
-  } else {
-    offsetAsNumber = offset
+
+    if (this['$conf'].utc) {
+      return addUtc(this, value, unit)
+    }
+
+    // @ts-expect-error always requires 3 args, as  UnitsObjectTypeAddSub is covered by plugin ObjectSupport
+    return oldAdd.call(this, value, unit)
   }
 
-  const offsetAsMinutes = Math.abs(offsetAsNumber) <= 16 ? offsetAsNumber * 60 : offsetAsNumber
+  const oldSubtract = proto.subtract
+  proto.subtract = function (value: number | UnitsObjectTypeAddSub, unit?: UnitTypeAddSub) {
+    if (isObject(value) || unit === undefined) {
+      // using UnitsObjectTypeAddSub is implemented in plugin ObjectSupport
+      // therefore we ignore the request here.
+      return this.clone()
+    }
 
-  if (keepLocalTime) {
-    // change point in time using offset and return new instance
-    const localTimezoneOffset = that['$conf'].utc
-      ? that.toDate().getTimezoneOffset()
-      : -1 * that.utcOffset()
-    const instance = that.add(localTimezoneOffset, C.MIN)
-    instance['$conf'].offset = offsetAsMinutes
-    instance['$conf'].tzOffset = localTimezoneOffset
-    instance['$conf'].utc = offsetAsMinutes === 0
-    return instance
+    if (this['$conf'].utc) {
+      return addUtc(this, -value, unit)
+    }
+
+    // @ts-expect-error always requires 3 args, as  UnitsObjectTypeAddSub is covered by plugin ObjectSupport
+    return oldSubtract.call(this, value, unit)
   }
-
-  if (offsetAsNumber !== 0) {
-    const localTimezoneOffset = that['$conf'].utc
-      ? that.toDate().getTimezoneOffset()
-      : -1 * that.utcOffset()
-
-    // switch away from utc mode
-    const instance = that.local().add(offsetAsMinutes + localTimezoneOffset, C.MIN)
-    instance['$conf'].offset = offsetAsMinutes
-    instance['$conf'].tzOffset = localTimezoneOffset
-    return instance
-  }
-  return that.utc()
 }
 
 export default utcPlugin

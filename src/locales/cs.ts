@@ -2,20 +2,104 @@
  * Czech [cs]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { EsDay } from 'esday'
+import type {
+  Locale,
+  MonthNames,
+  MonthNamesStandaloneFormat,
+  RelativeTimeElementFunction,
+} from '~/plugins/locale'
 
-function usePlural(timeValue: number): boolean {
-  return timeValue > 1 && timeValue < 5 && ~~(timeValue / 10) !== 1
+const monthFormat: MonthNames = [
+  'ledna',
+  'února',
+  'března',
+  'dubna',
+  'května',
+  'června',
+  'července',
+  'srpna',
+  'září',
+  'října',
+  'listopadu',
+  'prosince',
+]
+const monthStandalone: MonthNames = [
+  'leden',
+  'únor',
+  'březen',
+  'duben',
+  'květen',
+  'červen',
+  'červenec',
+  'srpen',
+  'září',
+  'říjen',
+  'listopad',
+  'prosinec',
+]
+const months: MonthNamesStandaloneFormat = {
+  standalone: monthStandalone,
+  format: monthFormat,
+  isFormat: /DD?[o.]?(\[[^[\]]*\]|\s)+MMMM/,
 }
 
-function relativeTimeFormatter(
+const calendar = {
+  sameDay: '[dnes v] LT',
+  nextDay: '[zítra v] LT',
+  nextWeek(this: EsDay) {
+    switch (this.day()) {
+      case 0:
+        return '[v neděli v] LT'
+      case 1:
+      case 2:
+        return '[v] dddd [v] LT'
+      case 3:
+        return '[ve středu v] LT'
+      case 4:
+        return '[ve čtvrtek v] LT'
+      case 5:
+        return '[v pátek v] LT'
+      case 6:
+        return '[v sobotu v] LT'
+      default:
+        return ''
+    }
+  },
+  lastDay: '[včera v] LT',
+  lastWeek(this: EsDay) {
+    switch (this.day()) {
+      case 0:
+        return '[minulou neděli v] LT'
+      case 1:
+      case 2:
+        return '[minulé] dddd [v] LT'
+      case 3:
+        return '[minulou středu v] LT'
+      case 4:
+      case 5:
+        return '[minulý] dddd [v] LT'
+      case 6:
+        return '[minulou sobotu v] LT'
+      default:
+        return ''
+    }
+  },
+  sameElse: 'L',
+}
+
+function usePlural(timeValue: number): boolean {
+  return timeValue > 1 && timeValue < 5
+}
+
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
+  token: string,
   isFuture: boolean,
-): string {
+) => {
   const result = `${timeValue} `
-  switch (range) {
+  switch (token) {
     case 's': // a few seconds / in a few seconds / a few seconds ago
       return withoutSuffix || isFuture ? 'pár sekund' : 'pár sekundami'
     case 'ss': // 9 seconds / in 9 seconds / 9 seconds ago
@@ -44,6 +128,13 @@ function relativeTimeFormatter(
         return result + (usePlural(+timeValue) ? 'dny' : 'dní')
       }
       return `${result}dny`
+    case 'w': // a day / in a day / a day ago
+      return withoutSuffix || isFuture ? 'týden' : 'týdnem'
+    case 'ww': // 9 days / in 9 days / 9 days ago
+      if (withoutSuffix || isFuture) {
+        return result + (usePlural(+timeValue) ? 'týdny' : 'týdnů')
+      }
+      return `${result}týdny`
     case 'M': // a month / in a month / a month ago
       return withoutSuffix || isFuture ? 'měsíc' : 'měsícem'
     case 'MM': // 9 months / in 9 months / 9 months ago
@@ -68,20 +159,7 @@ const localeCs: Readonly<Locale> = {
   weekdays: ['neděle', 'pondělí', 'úterý', 'středa', 'čtvrtek', 'pátek', 'sobota'],
   weekdaysShort: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
   weekdaysMin: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
-  months: [
-    'leden',
-    'únor',
-    'březen',
-    'duben',
-    'květen',
-    'červen',
-    'červenec',
-    'srpen',
-    'září',
-    'říjen',
-    'listopad',
-    'prosinec',
-  ],
+  months,
   monthsShort: ['led', 'úno', 'bře', 'dub', 'kvě', 'čvn', 'čvc', 'srp', 'zář', 'říj', 'lis', 'pro'],
   ordinal: (n) => `${n}.`,
   weekStart: 1, // Monday is the first day of the week.
@@ -90,14 +168,15 @@ const localeCs: Readonly<Locale> = {
     LT: 'H:mm',
     LTS: 'H:mm:ss',
     L: 'DD.MM.YYYY',
-    LL: 'D. MMMM YYYY',
-    LLL: 'D. MMMM YYYY H:mm',
-    LLLL: 'dddd D. MMMM YYYY H:mm',
-    l: 'D. M. YYYY',
-    ll: 'D. MMMM YYYY',
-    lll: 'D. MMMM YYYY H:mm',
-    llll: 'dddd D. MMMM YYYY H:mm',
+    LL: 'Do MMMM YYYY',
+    LLL: 'Do MMMM YYYY H:mm',
+    LLLL: 'dddd Do MMMM YYYY H:mm',
+    l: 'Do M. YYYY',
+    ll: 'Do MMMM YYYY',
+    lll: 'Do MMMM YYYY H:mm',
+    llll: 'dddd Do MMMM YYYY H:mm',
   },
+  calendar,
   relativeTime: {
     future: 'za %s',
     past: 'před %s',
@@ -109,6 +188,8 @@ const localeCs: Readonly<Locale> = {
     hh: relativeTimeFormatter,
     d: relativeTimeFormatter,
     dd: relativeTimeFormatter,
+    w: relativeTimeFormatter,
+    ww: relativeTimeFormatter,
     M: relativeTimeFormatter,
     MM: relativeTimeFormatter,
     y: relativeTimeFormatter,

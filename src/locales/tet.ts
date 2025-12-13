@@ -36,7 +36,7 @@ const localeTet: Readonly<Locale> = {
             : numberTens === 3
               ? 'rd'
               : 'th'
-    return `${n} ${output}`
+    return `${n}${output}`
   },
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
@@ -52,6 +52,14 @@ const localeTet: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[Ohin iha] LT',
+    nextDay: '[Aban iha] LT',
+    nextWeek: 'dddd [iha] LT',
+    lastDay: '[Horiseik iha] LT',
+    lastWeek: 'dddd [semana kotuk] [iha] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'iha %s',
     past: '%s liuba',
@@ -63,6 +71,8 @@ const localeTet: Readonly<Locale> = {
     hh: 'oras %d',
     d: 'loron ida',
     dd: 'loron %d',
+    w: 'semana ida',
+    ww: 'semana %d',
     M: 'fulan ida',
     MM: 'fulan %d',
     y: 'tinan ida',

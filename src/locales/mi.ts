@@ -51,7 +51,14 @@ const localeMi: Readonly<Locale> = {
     lll: 'D MMMM YYYY [i] HH:mm',
     llll: 'dddd, D MMMM YYYY [i] HH:mm',
   },
-
+  calendar: {
+    sameDay: '[i teie mahana, i] LT',
+    nextDay: '[apopo i] LT',
+    nextWeek: 'dddd [i] LT',
+    lastDay: '[inanahi i] LT',
+    lastWeek: 'dddd [whakamutunga i] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'i roto i %s',
     past: '%s i mua',
@@ -63,6 +70,8 @@ const localeMi: Readonly<Locale> = {
     hh: '%d haora',
     d: 'he ra',
     dd: '%d ra',
+    w: 'he wiki',
+    ww: '%d wiki',
     M: 'he marama',
     MM: '%d marama',
     y: 'he tau',

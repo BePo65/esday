@@ -44,14 +44,14 @@ describe('parse', () => {
   })
 
   it('parses number (unix timestamp as milliseconds)', () => {
-    const timestamp = 1722173696234
+    const timestamp = 1_722_173_696_234
     const resultTimeAsString = '2024-07-28T13:34:56.234Z'
 
     expect(esday(timestamp).valueOf()).toBe(new Date(resultTimeAsString).valueOf())
   })
 
   it('parses number (unix timestamp as seconds)', () => {
-    const timestamp = 1722173696
+    const timestamp = 1_722_173_696
     const resultTimeAsString = '2024-07-28T13:34:56Z'
     const resultAsTimestamp = Math.floor(new Date(resultTimeAsString).valueOf() / 1000)
 

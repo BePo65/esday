@@ -1,20 +1,8 @@
 import type { EsDay, FormattingTokenDefinitions } from 'esday'
-import { C, isUndefined, padStart, padZoneStr } from '~/common'
+import { C, padStart, padZoneStr } from '~/common'
 
 const formattingSeparatorsRegex = '\\[([^\\]]+)\\]'
 let formattingTokensRegex: RegExp
-
-/**
- * Get the utcOffset of date.
- * Use the utcOffset method from the utc plugin if that is loaded;
- * otherwise get it from the javascript Date object of date.
- * @param date - EsDay instance to inspect
- * @returns utcOffset of date
- */
-function utcOffset(date: EsDay): number {
-  const defaultOffset = -Math.round(date['$d'].getTimezoneOffset()) || 0
-  return 'utcOffset' in date ? date.utcOffset() : defaultOffset
-}
 
 export const formatTokensDefinitions: FormattingTokenDefinitions = {
   YY: (sourceDate: EsDay) => padStart(sourceDate.year(), 2, '0').slice(-2),
@@ -30,13 +18,13 @@ export const formatTokensDefinitions: FormattingTokenDefinitions = {
   s: (sourceDate: EsDay) => String(sourceDate.second()),
   ss: (sourceDate: EsDay) => padStart(sourceDate.second(), 2, '0'),
   SSS: (sourceDate: EsDay) => padStart(sourceDate.millisecond(), 3, '0'),
-  Z: (sourceDate: EsDay) => padZoneStr(utcOffset(sourceDate)),
+  Z: (sourceDate: EsDay) => padZoneStr(sourceDate.utcOffset()),
 }
 
-// Get regex from list of supported tokens
 /**
  * Compare 2 tokens for sorting.
  * Longer token and upper case token are sorted to the top.
+ * As we sort here object keys, a and b can never be equal.
  * @param a - token 1
  * @param b - token 2
  * @returns -1 (a<b), 0 (a==b), 1 (a>b)
@@ -53,13 +41,11 @@ function compareTokens(a: string, b: string) {
   if (a < b) {
     return 1
   }
-  if (a > b) {
-    return -1
-  }
 
-  // are equal
-  return 0
+  // as a can never be equal to b, '-1' is the only possible value
+  return -1
 }
+// Get regex from list of supported tokens
 export function formattingTokensRegexFromDefinitions() {
   // we have to sort the keys to always catch the longest matches
   const tokenKeys = Object.keys(formatTokensDefinitions).sort(compareTokens)
@@ -88,16 +74,12 @@ export function formatImpl(that: EsDay, formatStr?: string) {
   if (!that.isValid()) return C.INVALID_DATE_STRING
 
   const activeFormatString = formatStr || C.FORMAT_DEFAULT
-  const unknownTokenOutput = '??'
 
   const matches = (match: string) => {
     const formatter = formatTokensDefinitions[match]
-    return !isUndefined(formatter) ? formatter(that) : unknownTokenOutput
+    return formatter(that, formatStr)
   }
 
   // replace format tokens with corresponding values
-  return activeFormatString.replace(
-    formattingTokensRegex,
-    (match, $1) => $1 || matches(match) || unknownTokenOutput,
-  )
+  return activeFormatString.replace(formattingTokensRegex, (match, $1) => $1 || matches(match))
 }

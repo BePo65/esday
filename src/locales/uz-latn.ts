@@ -22,6 +22,15 @@ const months = [
   'nwwanbir',
   'dwjnbir',
 ]
+
+const calendar = {
+  sameDay: '[Bugun soat] LT [da]',
+  nextDay: '[Ertaga] LT [da]',
+  nextWeek: 'dddd [kuni soat] LT [da]',
+  lastDay: '[Kecha soat] LT [da]',
+  lastWeek: "[O'tgan] dddd [kuni soat] LT [da]",
+  sameElse: 'L',
+}
 const relativeTime = {
   future: 'Yaqin %s ichida',
   past: 'Bir necha %s oldin',
@@ -33,6 +42,8 @@ const relativeTime = {
   hh: '%d soat',
   d: 'bir kun',
   dd: '%d kun',
+  w: 'bir hafta',
+  ww: '%d hafta',
   M: 'bir oy',
   MM: '%d oy',
   y: 'bir yil',
@@ -46,6 +57,7 @@ setLocaleProperty(localeUzLatn, 'weekdaysShort', weekdays)
 setLocaleProperty(localeUzLatn, 'weekdaysMin', weekdays)
 setLocaleProperty(localeUzLatn, 'months', months)
 setLocaleProperty(localeUzLatn, 'monthsShort', months)
+setLocaleProperty(localeUzLatn, 'calendar', calendar)
 setLocaleProperty(localeUzLatn, 'relativeTime', relativeTime)
 
 export default localeUzLatn

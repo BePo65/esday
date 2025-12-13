@@ -67,6 +67,14 @@ const localeMy: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[ယနေ.] LT [မှာ]',
+    nextDay: '[မနက်ဖြန်] LT [မှာ]',
+    nextWeek: 'dddd LT [မှာ]',
+    lastDay: '[မနေ.က] LT [မှာ]',
+    lastWeek: '[ပြီးခဲ့သော] dddd LT [မှာ]',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'လာမည့် %s မှာ',
     past: 'လွန်ခဲ့သော %s က',
@@ -78,6 +86,8 @@ const localeMy: Readonly<Locale> = {
     hh: '%d နာရီ',
     d: 'တစ်ရက်',
     dd: '%d ရက်',
+    w: 'တစ်ပတ်',
+    ww: '%d ပတ်',
     M: 'တစ်လ',
     MM: '%d လ',
     y: 'တစ်နှစ်',
@@ -90,7 +100,7 @@ const localeMy: Readonly<Locale> = {
   },
   preParse: (dateString: string) =>
     dateString.replace(
-      /[١٢٣٤٥٦٧٨٩٠]/g,
+      /[၁၂၃၄၅၆၇၈၉၀]/g,
       (match) => burmeseToEnglishNumbersMap[match as keyof typeof burmeseToEnglishNumbersMap],
     ),
   postFormat: (formattedDate: string) =>

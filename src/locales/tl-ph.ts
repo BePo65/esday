@@ -39,6 +39,14 @@ const localeTlPh: Readonly<Locale> = {
     lll: 'MMMM D, YYYY HH:mm',
     llll: 'dddd, MMMM DD, YYYY HH:mm',
   },
+  calendar: {
+    sameDay: 'LT [ngayong araw]',
+    nextDay: '[Bukas ng] LT',
+    nextWeek: 'LT [sa susunod na] dddd',
+    lastDay: 'LT [kahapon]',
+    lastWeek: 'LT [noong nakaraang] dddd',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'sa loob ng %s',
     past: '%s ang nakalipas',
@@ -50,6 +58,8 @@ const localeTlPh: Readonly<Locale> = {
     hh: '%d oras',
     d: 'isang araw',
     dd: '%d araw',
+    w: 'isang linggo',
+    ww: '%d linggo',
     M: 'isang buwan',
     MM: '%d buwan',
     y: 'isang taon',

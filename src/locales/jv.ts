@@ -39,6 +39,14 @@ const localeJv: Locale = {
     lll: 'D MMMM YYYY [pukul] HH.mm',
     llll: 'dddd, D MMMM YYYY [pukul] HH.mm',
   },
+  calendar: {
+    sameDay: '[Dinten puniko pukul] LT',
+    nextDay: '[Mbenjang pukul] LT',
+    nextWeek: 'dddd [pukul] LT',
+    lastDay: '[Kala wingi pukul] LT',
+    lastWeek: 'dddd [kepengker pukul] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'wonten ing %s',
     past: '%s ingkang kepengker',
@@ -50,6 +58,8 @@ const localeJv: Locale = {
     hh: '%d jam',
     d: 'sedinten',
     dd: '%d dinten',
+    w: 'seminggu',
+    ww: '%d minggu',
     M: 'sewulan',
     MM: '%d wulan',
     y: 'setaun',

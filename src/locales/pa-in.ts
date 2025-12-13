@@ -69,6 +69,14 @@ const localePaIn: Readonly<Locale> = {
     lll: 'D MMMM YYYY, A h:mm ਵਜੇ',
     llll: 'dddd, D MMMM YYYY, A h:mm ਵਜੇ',
   },
+  calendar: {
+    sameDay: '[ਅਜ] LT',
+    nextDay: '[ਕਲ] LT',
+    nextWeek: '[ਅਗਲਾ] dddd, LT',
+    lastDay: '[ਕਲ] LT',
+    lastWeek: '[ਪਿਛਲੇ] dddd, LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'بعد %s',
     past: 'منذ %s',
@@ -80,6 +88,8 @@ const localePaIn: Readonly<Locale> = {
     hh: '%d ساعات',
     d: 'يوم واحد',
     dd: '%d أيام',
+    w: 'أسبوع واحد',
+    ww: '%d أسابيع',
     M: 'شهر واحد',
     MM: '%d أشهر',
     y: 'عام واحد',
@@ -103,7 +113,7 @@ const localePaIn: Readonly<Locale> = {
   },
   preParse: (dateString: string) =>
     dateString.replace(
-      /[੧੨੩੪੫੬੭੮੯੦]/g,
+      /[١٢٣٤٥٦٧٨٩٠]/g,
       (match) => punjabiToEnglishNumbersMap[match as keyof typeof punjabiToEnglishNumbersMap],
     ),
   postFormat: (formattedDate: string) =>

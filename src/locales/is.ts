@@ -2,47 +2,109 @@
  * Icelandic [is]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { Locale, RelativeTimeElementFunction } from '~/plugins/locale'
 
-const relativeTimeFormatStrings = {
-  s: ['nokkrar sekúndur', 'nokkrar sekúndur', 'nokkrum sekúndum'],
-  ss: ['sekúndur', 'sekúndur', 'sekúndum'],
-  m: ['mínúta', 'mínútu', 'mínútu'],
-  mm: ['mínútur', 'mínútur', 'mínútum'],
-  h: ['klukkustund', 'klukkustund', 'klukkustund'],
-  hh: ['klukkustundir', 'klukkustundir', 'klukkustundum'],
-  d: ['dagur', 'dag', 'degi'],
-  dd: ['dagar', 'daga', 'dögum'],
-  M: ['mánuður', 'mánuð', 'mánuði'],
-  MM: ['mánuðir', 'mánuði', 'mánuðum'],
-  y: ['ár', 'ár', 'ári'],
-  yy: ['ár', 'ár', 'árum'],
+function plural(value: number) {
+  if (value % 100 === 11) {
+    return true
+  }
+  if (value % 10 === 1) {
+    return false
+  }
+  return true
 }
 
-function resolveTemplate(
-  key: string,
-  number: number,
-  isFuture: boolean,
-  withoutSuffix: boolean,
-): string {
-  const suffixIndex = isFuture ? 1 : 2
-  const index = withoutSuffix ? 0 : suffixIndex
-  const keyShouldBeSingular = key.length === 2 && number % 10 === 1
-  const correctedKey = keyShouldBeSingular ? key[0] : key
-  const unitText = relativeTimeFormatStrings[correctedKey as keyof typeof relativeTimeFormatStrings]
-  const text = unitText[index]
-  return key.length === 1 ? text : `%d ${text}`
-}
-
-function relativeTimeFormatter(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
+  token: string,
   isFuture: boolean,
-): string {
-  const template = resolveTemplate(range, +timeValue, isFuture, withoutSuffix)
-
-  return template.replace('%d', String(timeValue))
+) => {
+  const timeValueAsNumber = +timeValue
+  const result = `${timeValueAsNumber} `
+  switch (token) {
+    case 's':
+      return withoutSuffix || isFuture ? 'nokkrar sekúndur' : 'nokkrum sekúndum'
+    case 'ss':
+      if (plural(timeValueAsNumber)) {
+        return `${result}${withoutSuffix || isFuture ? 'sekúndur' : 'sekúndum'}`
+      }
+      return `${result}sekúnda`
+    case 'm':
+      return withoutSuffix ? 'mínúta' : 'mínútu'
+    case 'mm':
+      if (plural(timeValueAsNumber)) {
+        return `${result}${withoutSuffix || isFuture ? 'mínútur' : 'mínútum'}`
+      }
+      if (withoutSuffix) {
+        return `${result}mínúta`
+      }
+      return `${result}mínútu`
+    case 'h':
+      return withoutSuffix ? 'klukkustund' : 'klukkustund'
+    case 'hh':
+      if (plural(timeValueAsNumber)) {
+        return result + (withoutSuffix || isFuture ? 'klukkustundir' : 'klukkustundum')
+      }
+      return `${result}klukkustund`
+    case 'd':
+      if (withoutSuffix) {
+        return 'dagur'
+      }
+      return isFuture ? 'dag' : 'degi'
+    case 'dd':
+      if (plural(timeValueAsNumber)) {
+        if (withoutSuffix) {
+          return `${result}dagar`
+        }
+        return `${result}${isFuture ? 'daga' : 'dögum'}`
+      }
+      if (withoutSuffix) {
+        return `${result}dagur`
+      }
+      return `${result}${isFuture ? 'dag' : 'degi'}`
+    case 'w':
+      if (withoutSuffix) {
+        return 'vika'
+      }
+      return isFuture ? 'viku' : 'viku'
+    case 'ww':
+      if (plural(timeValueAsNumber)) {
+        if (withoutSuffix) {
+          return `${result}vikur`
+        }
+        return `${result}${isFuture ? 'vikur' : 'vikum'}`
+      }
+      if (withoutSuffix) {
+        return `${result}vikur`
+      }
+      return `${result}${isFuture ? 'viku' : 'viku'}`
+    case 'M':
+      if (withoutSuffix) {
+        return 'mánuður'
+      }
+      return isFuture ? 'mánuð' : 'mánuði'
+    case 'MM':
+      if (plural(timeValueAsNumber)) {
+        if (withoutSuffix) {
+          return `${result}mánuðir`
+        }
+        return `${result}${isFuture ? 'mánuði' : 'mánuðum'}`
+      }
+      if (withoutSuffix) {
+        return `${result}mánuður`
+      }
+      return `${result}${isFuture ? 'mánuð' : 'mánuði'}`
+    case 'y':
+      return withoutSuffix || isFuture ? 'ár' : 'ári'
+    case 'yy':
+      if (plural(timeValueAsNumber)) {
+        return `${result}${withoutSuffix || isFuture ? 'ár' : 'árum'}`
+      }
+      return `${result}${withoutSuffix || isFuture ? 'ár' : 'ári'}`
+    default:
+      return ''
+  }
 }
 
 const localeIs: Readonly<Locale> = {
@@ -88,6 +150,14 @@ const localeIs: Readonly<Locale> = {
     lll: 'D. MMMM YYYY [kl.] H:mm',
     llll: 'dddd, D. MMMM YYYY [kl.] H:mm',
   },
+  calendar: {
+    sameDay: '[í dag kl.] LT',
+    nextDay: '[á morgun kl.] LT',
+    nextWeek: 'dddd [kl.] LT',
+    lastDay: '[í gær kl.] LT',
+    lastWeek: '[síðasta] dddd [kl.] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'eftir %s',
     past: 'fyrir %s síðan',
@@ -99,6 +169,8 @@ const localeIs: Readonly<Locale> = {
     hh: relativeTimeFormatter,
     d: relativeTimeFormatter,
     dd: relativeTimeFormatter,
+    w: relativeTimeFormatter,
+    ww: relativeTimeFormatter,
     M: relativeTimeFormatter,
     MM: relativeTimeFormatter,
     y: relativeTimeFormatter,

@@ -39,6 +39,14 @@ const localeEo: Readonly<Locale> = {
     lll: 'D[-a de] MMMM, YYYY HH:mm',
     llll: 'dddd, [la] D[-a de] MMMM, YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[Hodiaŭ je] LT',
+    nextDay: '[Morgaŭ je] LT',
+    nextWeek: 'dddd[n je] LT',
+    lastDay: '[Hieraŭ je] LT',
+    lastWeek: '[pasintan] dddd[n je] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'post %s',
     past: 'antaŭ %s',
@@ -50,6 +58,8 @@ const localeEo: Readonly<Locale> = {
     hh: '%d horoj',
     d: 'tago',
     dd: '%d tagoj',
+    w: 'semajno',
+    ww: '%d semajnoj',
     M: 'monato',
     MM: '%d monatoj',
     y: 'jaro',

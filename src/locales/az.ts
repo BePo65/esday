@@ -47,6 +47,14 @@ const localeAz: Readonly<Locale> = {
     lll: 'D MMMM YYYY г., H:mm',
     llll: 'dddd, D MMMM YYYY г., H:mm',
   },
+  calendar: {
+    sameDay: '[bugün saat] LT',
+    nextDay: '[sabah saat] LT',
+    nextWeek: '[gələn həftə] dddd [saat] LT',
+    lastDay: '[dünən] LT',
+    lastWeek: '[keçən həftə] dddd [saat] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s sonra',
     past: '%s əvvəl',
@@ -58,6 +66,8 @@ const localeAz: Readonly<Locale> = {
     hh: '%d saat',
     d: 'bir gün',
     dd: '%d gün',
+    w: 'bir həftə',
+    ww: '%d gün',
     M: 'bir ay',
     MM: '%d ay',
     y: 'bir il',

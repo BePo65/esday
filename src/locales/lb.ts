@@ -2,7 +2,7 @@
  * Luxembourgish [lb]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { Locale, RelativeTimeElementFunction } from '~/plugins/locale'
 
 /**
  * Returns true if the word before the given number loses the '-n' ending.
@@ -36,16 +36,16 @@ function eifelerRuleAppliesToNumber(timeValue: string) {
     }
     return eifelerRuleAppliesToNumber(lastDigit.toString())
   }
-  if (timeAsNumber < 10000) {
+  if (timeAsNumber < 10_000) {
     // 3 or 4 digits --> recursively check first digit
     while (timeAsNumber >= 10) {
       timeAsNumber = timeAsNumber / 10
     }
-    return eifelerRuleAppliesToNumber(timeValue)
+    return eifelerRuleAppliesToNumber(`${timeAsNumber}`)
   }
   // Anything larger than 4 digits: recursively check first n-3 digits
   timeAsNumber = timeAsNumber / 1000
-  return eifelerRuleAppliesToNumber(timeValue)
+  return eifelerRuleAppliesToNumber(`${timeAsNumber}`)
 }
 function processFutureTime(timeValue: string | number) {
   const timeValueAsString = timeValue.toString().trim()
@@ -73,23 +73,25 @@ function processPastTime(timeValue: string | number) {
   }
   return `virun ${timeValue}`
 }
-function relativeTimeFormatter(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
-): string {
+  token: string,
+  _isFuture: boolean,
+) => {
   const format = {
     m: ['eng Minutt', 'enger Minutt'],
     h: ['eng Stonn', 'enger Stonn'],
     d: ['een Dag', 'engem Dag'],
+    w: ['eng Woch', 'enger Woch'],
     M: ['ee Mount', 'engem Mount'],
     y: ['ee Joer', 'engem Joer'],
   }
   return (
     timeValue.toString() +
     (withoutSuffix
-      ? format[range as keyof typeof format][0]
-      : format[range as keyof typeof format][1])
+      ? format[token as keyof typeof format][0]
+      : format[token as keyof typeof format][1])
   )
 }
 
@@ -141,6 +143,23 @@ const localeLb: Readonly<Locale> = {
     lll: 'D. MMMM YYYY H:mm [Auer]',
     llll: 'dddd, D. MMMM YYYY H:mm [Auer]',
   },
+  calendar: {
+    sameDay: '[Haut um] LT',
+    sameElse: 'L',
+    nextDay: '[Muer um] LT',
+    nextWeek: 'dddd [um] LT',
+    lastDay: '[Gëschter um] LT',
+    lastWeek() {
+      // Different date string for 'Dënschdeg' (Tuesday) and 'Donneschdeg' (Thursday) due to phonological rule
+      switch (this.day()) {
+        case 2:
+        case 4:
+          return '[Leschten] dddd [um] LT'
+        default:
+          return '[Leschte] dddd [um] LT'
+      }
+    },
+  },
   relativeTime: {
     future: processFutureTime,
     past: processPastTime,
@@ -152,6 +171,8 @@ const localeLb: Readonly<Locale> = {
     hh: '%d Stonnen',
     d: relativeTimeFormatter,
     dd: '%d Deeg',
+    w: relativeTimeFormatter,
+    ww: '%d Wochen',
     M: relativeTimeFormatter,
     MM: '%d Méint',
     y: relativeTimeFormatter,

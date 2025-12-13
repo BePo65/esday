@@ -4,13 +4,16 @@ LocalizedParse extends the `esday` constructor to support localized formats of i
 
 The locale to use for parsing can be defined as 3rd parameter. If no locale is given, then the current global locale is used (defaults to 'en', which is a duplicate of 'en-US').
 
-## Prerequisites
+## Usage
 
-LocalizedParse requires the AdvancedParse plugin, the Locale plugin and one locale definition to be loaded.
+### Dependencies
+LocalizedParse requires the plugins AdvancedParse and Locale and at least 1 registered and activated locale. For using the 'd', 'dd', 'ddd' or the 'dddd' tokens the plugin Week is required too.
 
-If the Utc plugin is used too, this must be loaded (`extend(..)`) before the AdvancedParse plugin; the LocalizedParse plugin must be loaded after these 2 plugins.
+The plugin AdvancedParse must be loaded using esday.extend(...) before the plugin LocalizedParse. If used, the plugin Week must be loaded after the plugin AdvancedParse.
 
-## Method signatures
+LocalizedParse can be used together with the plugin Utc which must be loaded using esday.extend(...) before the plugin AdvancedParse.
+
+### Method signatures
 ```typescript
 esday(date: string, format: string): EsDay
 esday(date: string, format: string[]): EsDay
@@ -41,16 +44,13 @@ esday.utc(date: string, format: string[], locale: string, strict: boolean): EsDa
 
 If an array of formats is used, `date` will be parsed with the best matching format in this array.
 
-## Parsing tokens
+### Parsing tokens
 | **Token** | **Example**                         | **Description**                                   |
 | --------- | ----------------------------------- | ------------------------------------------------- |
 | h         | 1...12                              | Hours, 12-hour clock                              |
 | hh        | 01...12                             | Hours, 12-hour clock, 2-digits                    |
 | A         | AM PM                               | Post or ante meridiem, upper-case                 |
 | a         | am pm                               | Post or ante meridiem, lower-case                 |
-| dd        | Su...Sa                             | Day of week (minimal form)                        |
-| ddd       | Sun...Sat                           | Day of week (short form)                          |
-| dddd      | Sunday...Saturday                   | Day of week (long form)                           |
 | Do        | 1st...31st                          | Day of Month with ordinal                         |
 | MMM       | Jan...Dec                           | Month name (short form)                           |
 | MMMM      | January...December                  | Month name (long form)                            |
@@ -81,7 +81,7 @@ esday.registerLocale(localeZhCn)
 // set global locale
 esday.locale('zh-cn')
 
-const parsedDate = esday('2024 12月 24日 星期二 8:10:21 早上', 'YYYY MMM Do dddd H:mm:SS A')
+const parsedDate = esday('2024 12月 24日 星期二 8:10:21 早上', 'YYYY MMM Do dddd H:mm:ss A')
 ```
 
 Example with locale given as parameter of esday.
@@ -99,5 +99,5 @@ esday.registerLocale(localeZhCn)
 
 // default global locale is 'en' (i.e. 'en-US')
 
-const parsedDate = esday('2024 12月 24日 星期二 8:10:21 早上', 'YYYY MMM Do dddd H:mm:SS A', 'zh-CN')
+const parsedDate = esday('2024 12月 24日 星期二 8:10:21 早上', 'YYYY MMM Do dddd H:mm:ss A', 'zh-CN')
 ```

@@ -52,6 +52,14 @@ const localeKm: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[ថ្ងៃនេះ ម៉ោង] LT',
+    nextDay: '[ស្អែក ម៉ោង] LT',
+    nextWeek: 'dddd [ម៉ោង] LT',
+    lastDay: '[ម្សិលមិញ ម៉ោង] LT',
+    lastWeek: 'dddd [សប្តាហ៍មុន] [ម៉ោង] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%sទៀត',
     past: '%sមុន',
@@ -63,6 +71,8 @@ const localeKm: Readonly<Locale> = {
     hh: '%d ម៉ោង',
     d: 'មួយថ្ងៃ',
     dd: '%d ថ្ងៃ',
+    w: 'មួយសប្តាហ៍',
+    ww: '%d សប្តាហ៍',
     M: 'មួយខែ',
     MM: '%d ខែ',
     y: 'មួយឆ្នាំ',

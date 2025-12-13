@@ -39,6 +39,14 @@ const localeKn: Readonly<Locale> = {
     lll: 'D MMMM YYYY, A h:mm',
     llll: 'dddd, D MMMM YYYY, A h:mm',
   },
+  calendar: {
+    sameDay: '[ಇಂದು] LT',
+    nextDay: '[ನಾಳೆ] LT',
+    nextWeek: 'dddd, LT',
+    lastDay: '[ನಿನ್ನೆ] LT',
+    lastWeek: '[ಕೊನೆಯ] dddd, LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s ನಂತರ',
     past: '%s ಹಿಂದೆ',
@@ -50,6 +58,8 @@ const localeKn: Readonly<Locale> = {
     hh: '%d ಗಂಟೆ',
     d: 'ಒಂದು ದಿನ',
     dd: '%d ದಿನ',
+    w: 'ಒಂದು ವಾರ',
+    ww: '%d ವಾರಗಳು',
     M: 'ಒಂದು ತಿಂಗಳು',
     MM: '%d ತಿಂಗಳು',
     y: 'ಒಂದು ವರ್ಷ',

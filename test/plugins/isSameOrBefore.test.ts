@@ -1,6 +1,6 @@
 import type { UnitType } from 'esday'
 import { esday } from 'esday'
-import moment from 'moment'
+import moment from 'moment/min/moment-with-locales'
 import { describe, expect, it } from 'vitest'
 import isSameOrBeforePlugin from '~/plugins/isSameOrBefore'
 
@@ -11,8 +11,18 @@ describe('isSameOrBefore plugin', () => {
     { date1: '2025-01-06', date2: '2025-01-06', unit: 'day', expected: true },
     { date1: '2025-01-06', date2: '2025-01-05', unit: 'day', expected: false },
     { date1: '2025-01-05', date2: '2025-01-06', unit: 'day', expected: true },
-    { date1: '2025-01-06T12:00:00', date2: '2025-01-06T11:59:59', unit: 'second', expected: false },
-    { date1: '2025-01-06T11:59:58', date2: '2025-01-06T11:59:59', unit: 'second', expected: true },
+    {
+      date1: '2025-01-06T12:00:00',
+      date2: '2025-01-06T11:59:59',
+      unit: 'second',
+      expected: false,
+    },
+    {
+      date1: '2025-01-06T11:59:58',
+      date2: '2025-01-06T11:59:59',
+      unit: 'second',
+      expected: true,
+    },
   ])(
     'should correctly determine if "$date1" is the same or before "date2"',
     ({ date1, date2, unit, expected }) => {

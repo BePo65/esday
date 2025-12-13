@@ -1,7 +1,45 @@
 /**
  * Montenegrin [me]
  */
+
+import type { EsDay } from 'esday'
 import type { Locale } from '~/plugins/locale'
+
+const calendar = {
+  sameDay: '[danas u] LT',
+  nextDay: '[sjutra u] LT',
+  nextWeek(this: EsDay) {
+    switch (this.day()) {
+      case 0:
+        return '[u] [nedjelju] [u] LT'
+      case 3:
+        return '[u] [srijedu] [u] LT'
+      case 6:
+        return '[u] [subotu] [u] LT'
+      case 1:
+      case 2:
+      case 4:
+      case 5:
+        return '[u] dddd [u] LT'
+      default:
+        return ''
+    }
+  },
+  lastDay: '[juče u] LT',
+  lastWeek(this: EsDay) {
+    const lastWeekDays = [
+      '[prošle] [nedjelje] [u] LT',
+      '[prošlog] [ponedjeljka] [u] LT',
+      '[prošlog] [utorka] [u] LT',
+      '[prošle] [srijede] [u] LT',
+      '[prošlog] [četvrtka] [u] LT',
+      '[prošlog] [petka] [u] LT',
+      '[prošle] [subote] [u] LT',
+    ]
+    return lastWeekDays[this.day()]
+  },
+  sameElse: 'L',
+}
 
 const localeMe: Readonly<Locale> = {
   name: 'me',
@@ -51,6 +89,7 @@ const localeMe: Readonly<Locale> = {
     lll: 'D. MMMM YYYY H:mm',
     llll: 'dddd, D. MMMM YYYY H:mm',
   },
+  calendar,
   relativeTime: {
     future: 'za %s',
     past: 'prije %s',
@@ -62,6 +101,8 @@ const localeMe: Readonly<Locale> = {
     hh: '%d sati',
     d: 'dan',
     dd: '%d dana',
+    w: 'tjedan',
+    ww: '%d sedmicu',
     M: 'mjesec',
     MM: '%d mjeseci',
     y: 'godina',

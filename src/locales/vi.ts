@@ -52,6 +52,14 @@ const localeVi: Readonly<Locale> = {
     lll: 'D MMM YYYY HH:mm',
     llll: 'ddd, D MMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[Hôm nay lúc] LT',
+    nextDay: '[Ngày mai lúc] LT',
+    nextWeek: 'dddd [tuần tới lúc] LT',
+    lastDay: '[Hôm qua lúc] LT',
+    lastWeek: 'dddd [tuần trước lúc] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s tới',
     past: '%s trước',
@@ -63,6 +71,8 @@ const localeVi: Readonly<Locale> = {
     hh: '%d giờ',
     d: 'một ngày',
     dd: '%d ngày',
+    w: 'một tuần',
+    ww: '%d tuần',
     M: 'một tháng',
     MM: '%d tháng',
     y: 'một năm',

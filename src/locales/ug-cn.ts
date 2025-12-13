@@ -52,6 +52,14 @@ const localeUgCn: Readonly<Locale> = {
     lll: 'YYYY-يىلىM-ئاينىڭD-كۈنى، HH:mm',
     llll: 'dddd، YYYY-يىلىM-ئاينىڭD-كۈنى، HH:mm',
   },
+  calendar: {
+    sameDay: '[بۈگۈن سائەت] LT',
+    nextDay: '[ئەتە سائەت] LT',
+    nextWeek: '[كېلەركى] dddd [سائەت] LT',
+    lastDay: '[تۆنۈگۈن] LT',
+    lastWeek: '[ئالدىنقى] dddd [سائەت] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s كېيىن',
     past: '%s بۇرۇن',
@@ -63,6 +71,8 @@ const localeUgCn: Readonly<Locale> = {
     hh: '%d سائەت',
     d: 'بىر كۈن',
     dd: '%d كۈن',
+    w: 'بىر ھەپتە',
+    ww: '%d ھەپتە',
     M: 'بىر ئاي',
     MM: '%d ئاي',
     y: 'بىر يىل',

@@ -1,5 +1,3 @@
-import { C } from '.'
-
 export function isUndefined(value: unknown): value is undefined {
   return value === undefined
 }
@@ -26,5 +24,5 @@ export function isArray(value: any): value is any[] {
 }
 
 export function isValidDate(value: Date): boolean {
-  return value.toString() !== C.INVALID_DATE_STRING
+  return !Number.isNaN(value.valueOf())
 }

@@ -3,7 +3,12 @@
  */
 
 import type { EsDay } from 'esday'
-import type { Locale, MonthNames, MonthNamesFunction } from '~/plugins/locale'
+import type {
+  Locale,
+  MonthNames,
+  MonthNamesFunction,
+  RelativeTimeElementFunction,
+} from '~/plugins/locale'
 
 const monthFormat: MonthNames = [
   'siječnja',
@@ -34,9 +39,8 @@ const monthStandalone: MonthNames = [
   'prosinac',
 ]
 
-const MONTHS_IN_FORMAT = /D[oD]?(?:\[[^[\]]*\]|\s)+MMMM?/
-
-const months: MonthNamesFunction = (esdayInstance: EsDay, format: string): string => {
+const months: MonthNamesFunction = (esdayInstance: EsDay, format: string) => {
+  const MONTHS_IN_FORMAT = /D[oD]?(?:\[[^[\]]*\]|\s)+MMMM?/
   if (MONTHS_IN_FORMAT.test(format)) {
     return monthFormat[esdayInstance.month()]
   }
@@ -45,15 +49,57 @@ const months: MonthNamesFunction = (esdayInstance: EsDay, format: string): strin
 months.format = monthFormat
 months.standalone = monthStandalone
 
-function relativeTimeFormatter(
+const calendar = {
+  sameDay: '[danas u] LT',
+  nextDay: '[sutra u] LT',
+  nextWeek(this: EsDay) {
+    switch (this.day()) {
+      case 0:
+        return '[u] [nedjelju] [u] LT'
+      case 3:
+        return '[u] [srijedu] [u] LT'
+      case 6:
+        return '[u] [subotu] [u] LT'
+      case 1:
+      case 2:
+      case 4:
+      case 5:
+        return '[u] dddd [u] LT'
+      default:
+        return ''
+    }
+  },
+  lastDay: '[jučer u] LT',
+  lastWeek(this: EsDay) {
+    switch (this.day()) {
+      case 0:
+        return '[prošlu] [nedjelju] [u] LT'
+      case 3:
+        return '[prošlu] [srijedu] [u] LT'
+      case 6:
+        return '[prošle] [subote] [u] LT'
+      case 1:
+      case 2:
+      case 4:
+      case 5:
+        return '[prošli] dddd [u] LT'
+      default:
+        return ''
+    }
+  },
+  sameElse: 'L',
+}
+
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
-): string {
+  token: string,
+  _isFuture: boolean,
+) => {
   // function translate(timeValue: string | number, withoutSuffix: boolean, range: string): string {
   let result = `${timeValue} `
   const timeValueAsNumber = +timeValue
-  switch (range) {
+  switch (token) {
     case 'ss':
       if (timeValueAsNumber === 1) {
         result += 'sekunda'
@@ -90,6 +136,15 @@ function relativeTimeFormatter(
         result += 'dan'
       } else {
         result += 'dana'
+      }
+      return result
+    case 'ww':
+      if (timeValueAsNumber === 1) {
+        result += 'tjedan'
+      } else if (timeValueAsNumber === 2 || timeValueAsNumber === 3 || timeValueAsNumber === 4) {
+        result += 'tjedna'
+      } else {
+        result += 'tjedana'
       }
       return result
     case 'MM':
@@ -142,14 +197,15 @@ const localeHr: Readonly<Locale> = {
     LT: 'H:mm',
     LTS: 'H:mm:ss',
     L: 'DD.MM.YYYY',
-    LL: 'D. MMMM YYYY',
-    LLL: 'D. MMMM YYYY H:mm',
-    LLLL: 'dddd, D. MMMM YYYY H:mm',
+    LL: 'Do MMMM YYYY',
+    LLL: 'Do MMMM YYYY H:mm',
+    LLLL: 'dddd, Do MMMM YYYY H:mm',
     l: 'DD.MM.YYYY',
-    ll: 'D. MMMM YYYY',
-    lll: 'D. MMMM YYYY H:mm',
-    llll: 'dddd, D. MMMM YYYY H:mm',
+    ll: 'Do MMM YYYY',
+    lll: 'Do MMM YYYY H:mm',
+    llll: 'ddd, Do MMM YYYY H:mm',
   },
+  calendar,
   relativeTime: {
     future: 'za %s',
     past: 'prije %s',
@@ -161,6 +217,8 @@ const localeHr: Readonly<Locale> = {
     hh: relativeTimeFormatter,
     d: 'dan',
     dd: relativeTimeFormatter,
+    w: 'jednog tjedna',
+    ww: relativeTimeFormatter,
     M: 'mjesec',
     MM: relativeTimeFormatter,
     y: 'godina',

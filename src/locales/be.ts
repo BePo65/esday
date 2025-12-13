@@ -2,27 +2,77 @@
  * Belarusian [be]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type {
+  DayNames,
+  DayNamesStandaloneFormat,
+  Locale,
+  MonthNames,
+  MonthNamesStandaloneFormat,
+} from '~/plugins/locale'
+
+const dayNamesFormat: DayNames = [
+  'нядзелю',
+  'панядзелак',
+  'аўторак',
+  'сераду',
+  'чацвер',
+  'пятніцу',
+  'суботу',
+]
+const dayNamesStandalone: DayNames = [
+  'нядзеля',
+  'панядзелак',
+  'аўторак',
+  'серада',
+  'чацвер',
+  'пятніца',
+  'субота',
+]
+const weekdays: DayNamesStandaloneFormat = {
+  standalone: dayNamesStandalone,
+  format: dayNamesFormat,
+  isFormat: /\[ ?[Ууў] ?(?:мінулую|наступную)? ?\] ?dddd/,
+}
+
+const monthFormat: MonthNames = [
+  'студзеня',
+  'лютага',
+  'сакавіка',
+  'красавіка',
+  'траўня',
+  'чэрвеня',
+  'ліпеня',
+  'жніўня',
+  'верасня',
+  'кастрычніка',
+  'лістапада',
+  'снежня',
+]
+const monthStandalone: MonthNames = [
+  'студзень',
+  'люты',
+  'сакавік',
+  'красавік',
+  'травень',
+  'чэрвень',
+  'ліпень',
+  'жнівень',
+  'верасень',
+  'кастрычнік',
+  'лістапад',
+  'снежань',
+]
+const months: MonthNamesStandaloneFormat = {
+  standalone: monthStandalone,
+  format: monthFormat,
+}
 
 const localeBe: Readonly<Locale> = {
   name: 'be',
-  weekdays: ['нядзелю', 'панядзелак', 'аўторак', 'сераду', 'чацвер', 'пятніцу', 'суботу'],
+  weekdays,
   weekdaysShort: ['нд', 'пн', 'ат', 'ср', 'чц', 'пт', 'сб'],
   weekdaysMin: ['нд', 'пн', 'ат', 'ср', 'чц', 'пт', 'сб'],
-  months: [
-    'студзеня',
-    'лютага',
-    'сакавіка',
-    'красавіка',
-    'траўня',
-    'чэрвеня',
-    'ліпеня',
-    'жніўня',
-    'верасня',
-    'кастрычніка',
-    'лістапада',
-    'снежня',
-  ],
+  months,
   monthsShort: [
     'студ',
     'лют',
@@ -52,6 +102,14 @@ const localeBe: Readonly<Locale> = {
     lll: 'D MMMM YYYY г., HH:mm',
     llll: 'dddd, D MMMM YYYY г., HH:mm',
   },
+  calendar: {
+    sameDay: '[Сёння ў] LT',
+    nextDay: '[Заўтра ў] LT',
+    nextWeek: '[У] dddd [ў] LT',
+    lastDay: '[Учора ў] LT',
+    lastWeek: '[апошні] dddd [ў] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'праз %s',
     past: '%s таму',
@@ -63,6 +121,8 @@ const localeBe: Readonly<Locale> = {
     hh: '%d гадзін',
     d: 'дзень',
     dd: '%d дзён',
+    w: 'тыдзень',
+    ww: '%d тыдні',
     M: 'месяц',
     MM: '%d месяцаў',
     y: 'год',
