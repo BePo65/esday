@@ -1,8 +1,9 @@
 import { esday } from 'esday'
 import moment from 'moment-timezone'
 import { describe, expect, it } from 'vitest'
-import { localePlugin, utcPlugin } from '~/plugins'
+import localePlugin from '~/plugins/locale'
 import timezonePLugin from '~/plugins/timezone'
+import utcPlugin from '~/plugins/utc'
 
 esday.extend(localePlugin).extend(utcPlugin).extend(timezonePLugin)
 
