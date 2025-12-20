@@ -7,8 +7,9 @@ declare module 'esday' {
   }
 
   interface EsDayFactory {
-    tz: ((dateStr: string, timezone: string) => EsDay) & {
-      setDefault: (timezone: string) => void
+    tz: ((dateStr: string, timezone?: string) => EsDay) & {
+      setDefault: (timezone?: string) => void
+      getDefault: () => string
       guess: () => string
     }
   }

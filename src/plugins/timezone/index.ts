@@ -55,8 +55,7 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
       }
     }
     const hour = filled[3]
-    // Workaround for the same behavior in different node version
-    // https://github.com/nodejs/node/issues/33027
+    // we need midnight to be 00:xx:yy
     /* istanbul ignore next */
     const fixedHour = hour === 24 ? 0 : hour
     const utcString = `${filled[0]}-${filled[1]}-${filled[2]} ${fixedHour}:${filled[4]}:${filled[5]}:000`
@@ -70,25 +69,25 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
   // find the right offset a given local time. The o input is our guess, which determines which
   // offset we'll pick in ambiguous cases (e.g. there are two 3 AMs b/c Fallback DST)
   // https://github.com/moment/luxon/blob/master/src/datetime.js#L76
-  const fixOffset = (localTS: number, o0: number, tz: string) => {
+  const fixOffset = (localTS: number, offsetNow: number, tz: string) => {
     // Our UTC time is just a guess because our offset is just a guess
-    let utcGuess = localTS - o0 * 60 * 1000
+    let utcGuess = localTS - offsetNow * 60 * 1000
     // Test whether the zone matches the offset for this ts
-    const o2 = tzOffset(utcGuess, tz)
+    const offsetThen = tzOffset(utcGuess, tz)
     // If so, offset didn't change and we're done
-    if (o0 === o2) {
-      return [utcGuess, o0]
+    if (offsetNow === offsetThen) {
+      return [utcGuess, offsetNow]
     }
     // If not, change the ts by the difference in the offset
-    utcGuess -= (o2 - o0) * 60 * 1000
+    utcGuess -= (offsetThen - offsetNow) * 60 * 1000
     // If that gives us the local time we want, we're done
     const o3 = tzOffset(utcGuess, tz)
-    if (o2 === o3) {
-      return [utcGuess, o2]
+    if (offsetThen === o3) {
+      return [utcGuess, offsetThen]
     }
     // If it's different, we're in a hole time.
     // The offset has changed, but the we don't adjust the time
-    return [localTS - Math.min(o2, o3) * 60 * 1000, Math.max(o2, o3)]
+    return [localTS - Math.min(offsetThen, o3) * 60 * 1000, Math.max(offsetThen, o3)]
   }
 
   dayClass.prototype.tz = function (timezone = defaultTimezone, keepLocalTime = false) {
@@ -108,7 +107,6 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
         .locale(this.locale())
         ['$set'](C.MS, [this.millisecond()])
         .utcOffset(offset, true)
-        .add(oldOffset, C.MIN)
       if (keepLocalTime) {
         const newOffset = ins.utcOffset()
         ins = ins.add(oldOffset - newOffset, C.MIN)
@@ -139,23 +137,28 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
     return endOfWithoutTz.tz(this['$conf']['$timezone'] as string, true)
   }
 
+  // TODO fix wrong offset for date/time in fall back gap
   // @ts-expect-error "implement tz method"
-  esdayFactory.tz = (input: string, timezoneStr: string) => {
+  esdayFactory.tz = (input: string, timezoneStr?: string) => {
     const timezone = timezoneStr || defaultTimezone
-    const previousOffset = tzOffset(+esdayFactory(), timezone)
+    const offsetNow = tzOffset(+esdayFactory(input), timezone)
     if (typeof input !== 'string') {
       return esdayFactory(input).tz(timezone)
     }
     const localTs = esdayFactory.utc(input).valueOf()
-    const [targetTs, targetOffset] = fixOffset(localTs, previousOffset, timezone)
+    const [targetTs, targetOffset] = fixOffset(localTs, offsetNow, timezone)
     const ins = esdayFactory(targetTs).utcOffset(targetOffset)
     ins['$conf'].timezone = timezone
     return ins
   }
 
   esdayFactory.tz.guess = () => Intl.DateTimeFormat().resolvedOptions().timeZone
-  esdayFactory.tz.setDefault = (timezone: string) => {
+
+  esdayFactory.tz.setDefault = (timezone: string = '') => {
     defaultTimezone = timezone
+  }
+  esdayFactory.tz.getDefault = () => {
+    return defaultTimezone
   }
 }
 
