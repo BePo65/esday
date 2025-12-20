@@ -141,9 +141,10 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
   // @ts-expect-error "implement tz method"
   esdayFactory.tz = (input: string, timezoneStr?: string) => {
     const timezone = timezoneStr || defaultTimezone
-    const offsetNow = tzOffset(+esdayFactory(input), timezone)
+    const parsedDate = esdayFactory(input)
+    const offsetNow = tzOffset(parsedDate.valueOf(), timezone)
     if (typeof input !== 'string') {
-      return esdayFactory(input).tz(timezone)
+      return parsedDate.tz(timezone)
     }
     const localTs = esdayFactory.utc(input).valueOf()
     const [targetTs, targetOffset] = fixOffset(localTs, offsetNow, timezone)
