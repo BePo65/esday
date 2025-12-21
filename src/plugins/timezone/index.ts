@@ -40,6 +40,8 @@ const typeToPos = {
   second: 5,
 } as Record<string, number>
 
+const matchOffset = /[+-]\d\d:?(\d\d)?$/
+
 const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
   let defaultTimezone = ''
 
@@ -137,13 +139,12 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
     return endOfWithoutTz.tz(this['$conf']['$timezone'] as string, true)
   }
 
-  // TODO fix wrong offset for date/time in fall back gap
   // @ts-expect-error "implement tz method"
   esdayFactory.tz = (input: string, timezoneStr?: string) => {
     const timezone = timezoneStr || defaultTimezone
     const parsedDate = esdayFactory(input)
     const offsetNow = tzOffset(parsedDate.valueOf(), timezone)
-    if (typeof input !== 'string') {
+    if (typeof input !== 'string' || matchOffset.test(input)) {
       return parsedDate.tz(timezone)
     }
     const localTs = esdayFactory.utc(input).valueOf()
