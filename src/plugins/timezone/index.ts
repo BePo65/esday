@@ -44,6 +44,7 @@ const typeToPos = {
   second: 5,
 } as Record<string, number>
 
+const enParseFormat = 'M/D/YYYY, h:mm:ss A'
 const matchOffset = /([+-]\d\d:?(\d\d)?)$|Z$/
 
 const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
@@ -101,7 +102,9 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
     const oldOffset = this.utcOffset()
     const date = this.toDate()
     const target = date.toLocaleString('en-US', { timeZone: timezone })
-    const diff = Math.round((date.valueOf() - new Date(target).valueOf()) / 1000 / 60)
+    const diff = Math.round(
+      (date.valueOf() - esdayFactory(target, enParseFormat).valueOf()) / 1000 / 60,
+    )
     const offset = -Math.round(date.getTimezoneOffset()) - diff
     const isUTC = !Number(offset)
     let ins: EsDay
