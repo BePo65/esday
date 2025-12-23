@@ -457,7 +457,7 @@ describe('plugin utc', () => {
       expect(newDate).toHaveProperty('valueOf')
     })
 
-    it.each([{ offset: 540 }, { offset: -540 }, { offset: 8 }, { offset: -8 }])(
+    it.each([{ offset: 540 }, { offset: -540 }, { offset: 8 }, { offset: -8 }, { offset: 4.5 }])(
       'using offset "$offset"',
       ({ offset }) => {
         const dateString = '2021-02-28 19:40:10'
@@ -465,6 +465,19 @@ describe('plugin utc', () => {
         expectSameObject((esday) => esday(dateString).utc().utcOffset(offset))
       },
     )
+
+    it('with seconds', () => {
+      const dateString = '2021-02-28 19:40:10'
+      const offset = 90.5
+      const rawOffset = esday(dateString).utc().utcOffset(offset).utcOffset()
+
+      expectSameObject((esday) => esday(dateString).utc().utcOffset(offset))
+      expect(rawOffset).toBe(offset)
+
+      // seconds in utcOffset are ignored when formatting date
+      expectSameValue((esday) => esday(dateString).utc().utcOffset(offset).format('Z'))
+      expect(esday(dateString).utc().utcOffset(offset).format('Z').length).toBe(6)
+    })
 
     it.each([{ offset: 540 }, { offset: -540 }, { offset: 8 }, { offset: -8 }])(
       'using offset "$offset" and keepLocalTime',
