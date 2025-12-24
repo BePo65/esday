@@ -2,13 +2,12 @@ import { afterEach } from 'node:test'
 import { EsDay, type EsDayFactory, esday } from 'esday'
 import moment, { type Moment } from 'moment-timezone'
 import { describe, expect, it } from 'vitest'
-import localePlugin from '~/plugins/locale'
 import timezonePLugin from '~/plugins/timezone'
 import utcPlugin from '~/plugins/utc'
 
-esday.extend(localePlugin).extend(utcPlugin).extend(timezonePLugin)
+esday.extend(utcPlugin).extend(timezonePLugin)
 
-describe('timezone plugin - without utc', () => {
+describe('timezone plugin', () => {
   afterEach(() => {
     esday.tz.setDefault()
     moment.tz.setDefault()
@@ -57,10 +56,95 @@ describe('timezone plugin - without utc', () => {
       formatted: '2025-11-18T11:55:00+08:00',
       comment: 'without DST',
     },
+    {
+      timestamp: '2025-03-10T00:00:00',
+      timezone: 'Europe/London',
+      formatted: '2025-03-10T00:00:00Z',
+      comment: 'dayjs pr#2981 test 1 and pr#2949',
+    },
+    {
+      timestamp: '2025-03-10T00:00:00',
+      timezone: 'Europe/London',
+      formatted: '2025-03-10T00:00:00Z',
+      comment: 'dayjs pr#2981 test 2',
+    },
+    {
+      timestamp: '2022-03-11T14:29:26.319Z',
+      timezone: 'America/Recife',
+      formatted: '2022-03-11T11:29:26-03:00',
+      comment: 'dayjs pr#2912 test 1',
+    },
+    {
+      timestamp: '2012-02-01T13:50:21.01-03:00',
+      timezone: 'America/Recife',
+      formatted: '2012-02-01T13:50:21-03:00',
+      comment: 'dayjs pr#2912 test 2',
+    },
+    {
+      timestamp: '2022-02-03T13:50:21-00:00',
+      timezone: 'America/Recife',
+      formatted: '2022-02-03T10:50:21-03:00',
+      comment: 'dayjs pr#2912 test 3',
+    },
+    {
+      timestamp: '2024-09-30 12:43:00-0400',
+      timezone: 'America/New_York',
+      formatted: '2024-09-30T12:43:00-04:00',
+      comment: 'dayjs pr#2774 test 1',
+    },
+    {
+      timestamp: '2022-03-11T14:29:26.319Z',
+      timezone: 'America/Manaus',
+      formatted: '2022-03-11T10:29:26-04:00',
+      comment: 'dayjs issue#1827 test 1',
+    },
+    {
+      timestamp: '2024-02-19T03:00:00',
+      timezone: 'Europe/London',
+      formatted: '2024-02-19T03:00:00Z',
+      comment: 'is not DST (utcOffset === 0)',
+    },
+    {
+      timestamp: '2022-07-19T03:00:00',
+      timezone: 'Europe/London',
+      formatted: '2022-07-19T03:00:00+01:00',
+      comment: 'is DST (utcOffset === 60)',
+    },
+    {
+      timestamp: '2022-04-19T03:00:00-02:00',
+      timezone: 'GMT',
+      formatted: '2022-04-19T05:00:00Z',
+      comment: 'dayjs pr#2118 test 1a',
+    },
+    {
+      timestamp: '2022-04-19T03:00:00',
+      timezone: 'GMT',
+      formatted: '2022-04-19T03:00:00Z',
+      comment: 'dayjs pr#2118 test 1b',
+    },
+    {
+      timestamp: '2022-01-22 03:00:00-03:00',
+      timezone: 'UTC',
+      formatted: '2022-01-22T06:00:00Z',
+      comment: 'dayjs pr#2118 test 2a',
+    },
+    {
+      timestamp: '2022-01-22',
+      timezone: 'UTC',
+      formatted: '2022-01-22T00:00:00Z',
+      comment: 'dayjs pr#2118 test 2b',
+    },
+    {
+      timestamp: '1900-06-01T12:00:00',
+      timezone: 'Europe/Kiev',
+      formatted: '1900-06-01T12:00:00+02:02',
+      comment: 'dayjs issue#1905',
+    },
   ])('parse "$timestamp" for "$timezone"', ({ timestamp, timezone, formatted }) => {
     expectSameResultTz((esday) => esday.tz(timestamp, timezone))
     expect(esday.tz(timestamp, timezone).isValid()).toBeTruthy()
     expect(esday.tz(timestamp, timezone).format()).toBe(formatted)
+    expect(moment.tz(timestamp, timezone).format()).toBe(formatted)
   })
 
   it.each([
@@ -116,14 +200,15 @@ describe('timezone plugin - without utc', () => {
       timestamp: '2012-11-04 01:00:00-04:00',
       timezone: 'America/New_York',
       formatted: '2012-11-04T01:00:00-04:00',
-      comment: 'with offset - just before fall back DST gap',
+      comment: 'with offset - before fall back to DST',
     },
     {
       timestamp: '2012-11-04 01:00:00-05:00',
       timezone: 'America/New_York',
       formatted: '2012-11-04T01:00:00-05:00',
-      comment: 'with offset - just after fall back DST gap',
+      comment: 'with offset - after fall back to DST',
     },
+
     {
       timestamp: '2012-10-28 01:59:59',
       timezone: 'Europe/Berlin',
@@ -149,16 +234,22 @@ describe('timezone plugin - without utc', () => {
       comment: 'just after fall back DST gap',
     },
     {
-      timestamp: '2012-10-28 02:00:00+02:00',
+      timestamp: '2012-10-28 03:00:01',
       timezone: 'Europe/Berlin',
-      formatted: '2012-10-28T02:00:00+01:00',
-      comment: 'with offset - just before fall back DST gap',
+      formatted: '2012-10-28T03:00:01+01:00',
+      comment: 'just after fall back DST gap',
     },
     {
-      timestamp: '2012-10-28 03:00:00+01:00',
+      timestamp: '2012-10-28 02:00:00+02:00',
       timezone: 'Europe/Berlin',
-      formatted: '2012-10-28T03:00:00+01:00',
-      comment: 'with offset - just after fall back DST gap',
+      formatted: '2012-10-28T02:00:00+02:00',
+      comment: 'with offset - before fall back from DST',
+    },
+    {
+      timestamp: '2012-10-28 02:00:00+01:00',
+      timezone: 'Europe/Berlin',
+      formatted: '2012-10-28T02:00:00+01:00',
+      comment: 'with offset - after fall back to DST',
     },
   ])(
     'parse non existing time around DST gap for "$timestamp" in "$timezone"',
@@ -169,49 +260,6 @@ describe('timezone plugin - without utc', () => {
       expect(esday.tz(timestamp, timezone).format()).toBe(formatted)
     },
   )
-
-  it('debug parse with offset', () => {
-    const timezone = 'America/New_York'
-    const timestamp0 = '2012-11-04 01:00:00'
-    const formatted0 = '2012-11-04T01:00:00-04:00'
-    const timestamp1 = '2012-11-04 01:00:00-04:00'
-    const formatted1 = '2012-11-04T07:00:00+01:00'
-    const timestamp2 = '2012-11-04 01:00:00-05:00'
-    const formatted2 = '2012-11-04T07:00:00+01:00'
-    const timestamp3 = '2012-11-04 01:00:00-08:00'
-    const formatted3 = '2012-11-04T07:00:00+01:00'
-
-    const d0 = esday.tz(timestamp0, timezone)
-    const _d0Details = methodResultsAsJson(timestamp0, d0)
-    const m0 = moment.tz(timestamp0, timezone)
-    const _m0Details = methodResultsAsJson(timestamp0, m0)
-
-    const d1 = esday.tz(timestamp1, timezone)
-    const _d1Details = methodResultsAsJson(timestamp1, d1)
-    const m1 = moment.tz(timestamp1, timezone)
-    const _m1Details = methodResultsAsJson(timestamp1, m1)
-
-    const d2 = esday.tz(timestamp2, timezone)
-    const _d2Details = methodResultsAsJson(timestamp2, d2)
-    const m2 = moment.tz(timestamp2, timezone)
-    const _m2Details = methodResultsAsJson(timestamp2, m2)
-
-    const d3 = esday.tz(timestamp3, timezone)
-    const _d3Details = methodResultsAsJson(timestamp3, d3)
-    const m3 = moment.tz(timestamp3, timezone)
-    const _m3Details = methodResultsAsJson(timestamp3, m3)
-
-    expectSameTimestamp(d0, m0)
-    expect(m0.format()).toBe(formatted0)
-    expectSameTimestamp(d1, m1)
-    expect(m1.format()).toBe(formatted1)
-    expectSameTimestamp(d2, m2)
-    expect(m2.format()).toBe(formatted2)
-    expectSameTimestamp(d3, m3)
-    expect(m3.format()).toBe(formatted3)
-  })
-
-  it.todo('parse tz with default timezone')
 
   it.todo('parse with format')
 
@@ -228,11 +276,52 @@ describe('timezone plugin - without utc', () => {
       timezone: 'Europe/Berlin',
       formatted: '2025-11-09T01:15:00+01:00',
     },
+    {
+      timestamp: '2023-10-02T00:00:00+02:00',
+      timezone: 'Europe/Prague',
+      formatted: '2023-10-02T00:00:00+02:00',
+      comment: 'dayjs issue#2753',
+    },
+    {
+      timestamp: '2021-10-31T15:00:00+00:00',
+      timezone: 'Europe/London',
+      formatted: '2021-10-31T15:00:00Z',
+      comment: 'dayjs issue#1678; is not',
+    },
   ])('convert "$timestamp" to "$timezone"', ({ timestamp, timezone, formatted }) => {
     expectSameResultTz((esday) => esday(timestamp).tz(timezone))
     expect(esday(timestamp).tz(timezone).isValid()).toBeTruthy()
     expect(esday(timestamp).tz(timezone).format()).toBe(formatted)
-    expect(esday(timestamp).tz(timezone).format()).toBe(formatted)
+    expect(moment(timestamp).tz(timezone).format()).toBe(formatted)
+  })
+
+  it.todo('convert with keepLocalTime')
+
+  it.todo('convert with format and strict')
+  it('convert returns new instance', () => {
+    const timestamp = '2025-07-13 17:05'
+    const timezone = 'Asia/Taipei'
+    const base = esday(timestamp)
+    const withTimezone = base.tz(timezone)
+
+    expect(base).toBeInstanceOf(EsDay)
+    expect(withTimezone).toBeInstanceOf(EsDay)
+    expect(base).toBe(base)
+    expect(base).not.toBe(withTimezone)
+    expect(base.valueOf()).toBe(withTimezone.valueOf())
+  })
+
+  it('esday.tz(x).tz(x) works like clone', () => {
+    const timestamp = '2025-07-13 17:05'
+    const timezone = 'Asia/Taipei'
+    const base = esday.tz(timestamp, timezone)
+    const cloned = base.tz(timezone)
+
+    expect(base).toBeInstanceOf(EsDay)
+    expect(cloned).toBeInstanceOf(EsDay)
+    expect(base).toBe(base)
+    expect(base).not.toBe(cloned)
+    expect(base.valueOf()).toBe(cloned.valueOf())
   })
 
   it.each([
@@ -325,8 +414,6 @@ describe('timezone plugin - without utc', () => {
   })
 })
 
-describe.todo('timezone plugin - with utc')
-
 /**
  * Call a given function with esday and moment-timezone and
  * check, if the resulting date objects are the same.
@@ -348,6 +435,8 @@ const expectSameResultTz = (fn: (instance: EsDayFactory) => EsDay | Moment) => {
     expect(d.millisecond()).toBe(m.millisecond())
     expect(d.toDate()).toEqual(m.toDate())
     expect(d.toJSON()).toBe(m.toJSON())
+    expect(d.utcOffset()).toBe(m.utcOffset())
+    expect(d.isUTC()).toBe(m.isUTC())
   } else {
     expect(d.toString().toLowerCase()).toBe(m.toString().toLowerCase())
   }
@@ -386,22 +475,4 @@ const expectSameTimestamp = (d: EsDay, m: Moment) => {
   expect(d.toDate()).toEqual(m.toDate())
   expect(d.toJSON()).toBe(m.toJSON())
   expect(d.format()).toBe(m.format())
-}
-
-const methodResultsAsJson = (timestamp: string, instance: EsDay | Moment) => {
-  let type = 'Moment'
-  if (instance instanceof EsDay) {
-    type = 'EsDay'
-  }
-  const result = { type, source: timestamp }
-  const d = instance
-  Object.defineProperty(result, 'isValid', { value: d.isValid(), enumerable: true })
-  Object.defineProperty(result, 'toISOString', { value: d.toISOString(), enumerable: true })
-  Object.defineProperty(result, 'valueOf', { value: d.valueOf(), enumerable: true })
-  Object.defineProperty(result, 'millisecond', { value: d.millisecond(), enumerable: true })
-  Object.defineProperty(result, 'toDate', { value: d.toDate(), enumerable: true })
-  Object.defineProperty(result, 'toJSON', { value: d.toJSON(), enumerable: true })
-  Object.defineProperty(result, 'format', { value: d.format(), enumerable: true })
-
-  return result
 }
