@@ -44,8 +44,9 @@ const typeToPos = {
   second: 5,
 } as Record<string, number>
 
+// parsing without a format string requires at least a complete date as input string ('1111-11-11')
+const matchOffset = /^(\d{4})[-/](\d{1,2})[-/](\d{0,2}).*(([+-]\d\d:?(\d\d)?)$|Z$)/
 const enParseFormat = 'M/D/YYYY, h:mm:ss A'
-const matchOffset = /([+-]\d\d:?(\d\d)?)$|Z$/
 
 const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
   let defaultTimezone = ''
@@ -106,7 +107,7 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
       (date.valueOf() - esdayFactory(target, enParseFormat).valueOf()) / 1000 / 60,
     )
     const offset = -Math.round(date.getTimezoneOffset()) - diff
-    const isUTC = !Number(offset)
+    const isUTC = offset === 0
     let ins: EsDay
 
     if (isUTC) {
@@ -155,10 +156,12 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
     const offsetNow = tzOffset(parsedDate.valueOf(), timezone)
     if (typeof input !== 'string' || matchOffset.test(input)) {
       const ins = parsedDate.tz(timezone)
-      if (parsedDate['$conf']['utc'] === undefined) {
+      // moment treats GMT as UTC
+      const isGmtOrUtc = ['GMT', 'UTC'].includes(timezone.toUpperCase())
+      if (parsedDate['$conf']['utc'] === undefined && !isGmtOrUtc) {
         delete ins['$conf']['utc']
       } else {
-        ins['$conf']['utc'] = parsedDate['$conf']['utc']
+        ins['$conf']['utc'] = true
       }
       return ins
     }
