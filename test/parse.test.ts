@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { esday } from '~/core'
+import { expectSameResult } from './util'
 
 describe('parse', () => {
   const fakeTimeAsString = '2023-12-17T03:24:46.234Z'
@@ -13,70 +14,83 @@ describe('parse', () => {
     vi.useRealTimers()
   })
 
-  it('parses ISO8601 string with date, time and zone', () => {
-    const time = '2024-04-24T16:27:38.456Z'
-    const resultTimestamp = new Date(time).valueOf()
+  it('parses ISO8601 string with date only', () => {
+    const sourceString = '2024-04-24'
 
-    expect(esday(time).valueOf()).toBe(resultTimestamp)
+    expectSameResult((esday) => esday(sourceString))
+    expect(esday(sourceString).isValid()).toBeTruthy()
+  })
+
+  it('parses ISO8601 string with date and time', () => {
+    const sourceString = '2024-04-24T16:27:38.456'
+
+    expectSameResult((esday) => esday(sourceString))
+    expect(esday(sourceString).isValid()).toBeTruthy()
+  })
+
+  it('parses ISO8601 string with date, time and zone', () => {
+    const sourceString = '2024-04-24T16:27:38.456Z'
+
+    expectSameResult((esday) => esday(sourceString))
+    expect(esday(sourceString).isValid()).toBeTruthy()
   })
 
   it('parses ISO8601 string with unlimited milliseconds', () => {
-    const time = '2024-04-24T06:41:32.999999999Z'
-    const resultTimestamp = new Date(time).valueOf()
+    const sourceString = '2024-04-24T06:41:32.999999999Z'
 
-    expect(esday(time).valueOf()).toBe(resultTimestamp)
+    expectSameResult((esday) => esday(sourceString))
+    expect(esday(sourceString).isValid()).toBeTruthy()
   })
 
   it('parses RFC2822 string with date, time and zone', () => {
-    const time = 'Sun, 11 Feb 2024 09:46:50 GMT+1'
-    const resultTimestamp = new Date(time).valueOf()
+    const sourceString = 'Sun, 11 Feb 2024 09:46:50 GMT+1'
 
-    expect(esday(time).valueOf()).toBe(resultTimestamp)
+    expectSameResult((esday) => esday(sourceString))
+    expect(esday(sourceString).isValid()).toBeTruthy()
   })
 
   it('parses ECMAScript string with date, time and zone', () => {
     // should parse dates formatted in ECMA script format
     // see https://www.ecma-international.org/ecma-262/9.0/index.html#sec-date.prototype.tostring
-    const time = 'Sun Feb 11 2024 09:46:50 GMT+0100 (Mitteleuropäische Normalzeit)'
-    const resultTimestamp = new Date(time).valueOf()
+    const sourceString = 'Sun Feb 11 2024 09:46:50 GMT+0100 (Mitteleuropäische Normalzeit)'
 
-    expect(esday(time).valueOf()).toBe(resultTimestamp)
+    expectSameResult((esday) => esday(sourceString))
+    expect(esday(sourceString).isValid()).toBeTruthy()
   })
 
   it('parses number (unix timestamp as milliseconds)', () => {
-    const timestamp = 1_722_173_696_234
-    const resultTimeAsString = '2024-07-28T13:34:56.234Z'
+    const sourceString = 1_722_173_696_234
 
-    expect(esday(timestamp).valueOf()).toBe(new Date(resultTimeAsString).valueOf())
+    expectSameResult((esday) => esday(sourceString))
+    expect(esday(sourceString).isValid()).toBeTruthy()
   })
 
   it('parses number (unix timestamp as seconds)', () => {
-    const timestamp = 1_722_173_696
-    const resultTimeAsString = '2024-07-28T13:34:56Z'
-    const resultAsTimestamp = Math.floor(new Date(resultTimeAsString).valueOf() / 1000)
+    const sourceString = 1_722_173_696
 
-    expect(esday(timestamp).valueOf()).toBe(resultAsTimestamp)
+    expectSameResult((esday) => esday(sourceString))
+    expect(esday(sourceString).isValid()).toBeTruthy()
   })
 
   it('parses number (special value 0)', () => {
     const timestamp = 0
-    const resultAsTimestamp = new Date(timestamp).valueOf()
 
-    expect(esday(timestamp).valueOf()).toBe(resultAsTimestamp)
+    expectSameResult((esday) => esday(timestamp))
+    expect(esday(timestamp).isValid()).toBeTruthy()
   })
 
   it('parses number (special value 1)', () => {
     const timestamp = 1
-    const resultAsTimestamp = new Date(timestamp).valueOf()
 
-    expect(esday(timestamp).valueOf()).toBe(resultAsTimestamp)
+    expectSameResult((esday) => esday(timestamp))
+    expect(esday(timestamp).isValid()).toBeTruthy()
   })
 
   it('parses Date object', () => {
     const timestamp = new Date('2024-04-24T16:27:38.456Z')
-    const resultAsTimestamp = timestamp.valueOf()
 
-    expect(esday(timestamp).valueOf()).toBe(resultAsTimestamp)
+    expectSameResult((esday) => esday(timestamp))
+    expect(esday(timestamp).isValid()).toBeTruthy()
   })
 
   it('parses EsDay instance', () => {
@@ -84,6 +98,7 @@ describe('parse', () => {
     const timestamp = esday(timestampString)
     const resultAsTimestamp = new Date(timestampString).valueOf()
 
+    expect(esday(timestamp).isValid()).toBeTruthy()
     expect(esday(timestamp).valueOf()).toBe(resultAsTimestamp)
   })
 
@@ -98,6 +113,8 @@ describe('parse', () => {
   ])('parses $dateArray to date', ({ dateArray }) => {
     const parsedDate = esday(dateArray)
 
+    expectSameResult((esday) => esday(dateArray))
+    expect(parsedDate.isValid()).toBeTruthy()
     expect(parsedDate.year()).toBe(dateArray[0] || 0)
     expect(parsedDate.month()).toBe(dateArray[1] || 0)
     expect(parsedDate.date()).toBe(dateArray[2] || 1)
@@ -107,12 +124,27 @@ describe('parse', () => {
     expect(parsedDate.millisecond()).toBe(dateArray[6] || 0)
   })
 
-  it('parses empty elements', () => {
+  it.each([{ value: {} }, { value: [] }])('parses "$value" as empty element', ({ value }) => {
     const nowAsIsoString = new Date(fakeTimeAsString).toISOString()
 
-    expect(esday({}).toISOString()).toBe(nowAsIsoString)
-    expect(esday([]).toISOString()).toBe(nowAsIsoString)
+    expectSameResult((esday) => esday(value))
+    expect(esday(value).isValid()).toBeTruthy()
+    expect(esday(value).toISOString()).toBe(nowAsIsoString)
+  })
+
+  it('parses without input parameter', () => {
+    const nowAsIsoString = new Date(fakeTimeAsString).toISOString()
+
+    expectSameResult((esday) => esday())
+    expect(esday().isValid()).toBeTruthy()
     expect(esday().toISOString()).toBe(nowAsIsoString)
+  })
+
+  it('parses undefined input', () => {
+    const nowAsIsoString = new Date(fakeTimeAsString).toISOString()
+
+    expectSameResult((esday) => esday(undefined))
+    expect(esday(undefined).isValid()).toBeTruthy()
     expect(esday(undefined).toISOString()).toBe(nowAsIsoString)
   })
 
