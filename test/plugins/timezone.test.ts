@@ -1,7 +1,6 @@
-import { afterEach } from 'node:test'
 import { EsDay, type EsDayFactory, esday } from 'esday'
 import moment, { type Moment } from 'moment-timezone'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
 import timezonePLugin from '~/plugins/timezone'
 import utcPlugin from '~/plugins/utc'
 
@@ -15,34 +14,24 @@ describe('timezone plugin', () => {
 
   it.each([
     {
-      timestamp: '2025-03-09 01:15',
+      timestamp: '2025-02-09 11:15:09',
       timezone: 'America/Toronto',
       comment: 'without DST',
     },
     {
-      timestamp: '2025-03-09 02:15',
+      timestamp: '2025-07-18 11:55:00',
       timezone: 'America/Toronto',
       comment: 'with DST',
     },
     {
-      timestamp: '2025-11-18 11:55',
-      timezone: 'America/Toronto',
+      timestamp: '2025-01-30 02:15',
+      timezone: 'Europe/Paris',
       comment: 'without DST',
     },
     {
-      timestamp: '2025-03-30 01:55',
+      timestamp: '2025-07-30 01:55:59',
       timezone: 'Europe/Paris',
-      comment: 'just before start of DST',
-    },
-    {
-      timestamp: '2025-03-30 02:15',
-      timezone: 'Europe/Paris',
-      comment: 'in gap of DST (date/time does not exist)',
-    },
-    {
-      timestamp: '2025-03-30 03:05',
-      timezone: 'Europe/Paris',
-      comment: 'just after start of DST',
+      comment: 'with DST',
     },
     {
       timestamp: '2025-07-13 17:05',
@@ -119,18 +108,36 @@ describe('timezone plugin', () => {
       timezone: 'UTC',
       comment: 'dayjs pr#2118 test 2b',
     },
-    {
-      timestamp: '1900-06-01T12:00:00',
-      timezone: 'Europe/Kiev',
-      comment: 'dayjs issue#1905',
-    },
   ])('parse "$timestamp" for "$timezone"', ({ timestamp, timezone }) => {
     expectSameResultTz((esday) => esday.tz(timestamp, timezone))
     expect(esday.tz(timestamp, timezone).isValid()).toBeTruthy()
     expectSameTz((esday) => esday.tz(timestamp, timezone).format())
   })
 
+  it('parse timezone with seconds in offset', () => {
+    const timestamp = '1900-06-01T12:00:00'
+    const timezone = 'Europe/Kiev'
+
+    expectSameResultTz((esday) => esday.tz(timestamp, timezone))
+    expect(esday.tz(timestamp, timezone).isValid()).toBeTruthy()
+  })
+
   it.each([
+    {
+      timestamp: '2025-03-09 01:59:59',
+      timezone: 'America/Toronto',
+      comment: 'just before spring forward DST gap',
+    },
+    {
+      timestamp: '2025-03-09 02:00:00',
+      timezone: 'America/Toronto',
+      comment: 'start of spring forward DST gap',
+    },
+    {
+      timestamp: '2025-03-09 03:00:00',
+      timezone: 'America/Toronto',
+      comment: 'just after spring forward DST gap',
+    },
     {
       timestamp: '2012-03-11 01:59:59',
       timezone: 'America/New_York',
@@ -154,22 +161,22 @@ describe('timezone plugin', () => {
     {
       timestamp: '2012-11-04 00:59:59',
       timezone: 'America/New_York',
-      comment: 'just before fall back DST gap',
+      comment: 'just before fall back DST overlap',
     },
     {
       timestamp: '2012-11-04 01:00:00',
       timezone: 'America/New_York',
-      comment: 'start of fall back DST gap',
+      comment: 'start of fall back DST overlap',
     },
     {
       timestamp: '2012-11-04 01:59:59',
       timezone: 'America/New_York',
-      comment: 'end of fall back DST gap',
+      comment: 'end of fall back DST overlap',
     },
     {
       timestamp: '2012-11-04 02:00:00',
       timezone: 'America/New_York',
-      comment: 'just after fall back DST gap',
+      comment: 'just after fall back DST overlap',
     },
     {
       timestamp: '2012-11-04 01:00:00-04:00',
@@ -181,31 +188,45 @@ describe('timezone plugin', () => {
       timezone: 'America/New_York',
       comment: 'with offset - after fall back to DST',
     },
-
+    {
+      timestamp: '2022-03-27 01:59:59',
+      timezone: 'Europe/Berlin',
+      comment: 'just before spring forward DST gap',
+    },
+    {
+      timestamp: '2022-03-27 02:15',
+      timezone: 'Europe/Berlin',
+      comment: 'in gap of DST (date/time does not exist)',
+    },
+    {
+      timestamp: '2025-03-27 03:00:00',
+      timezone: 'Europe/Berlin',
+      comment: 'just after spring forward DST',
+    },
     {
       timestamp: '2012-10-28 01:59:59',
       timezone: 'Europe/Berlin',
-      comment: 'just before fall back DST gap',
+      comment: 'just before fall back DST overlap',
     },
     {
       timestamp: '2012-10-28 02:00:00',
       timezone: 'Europe/Berlin',
-      comment: 'start of fall back DST gap',
+      comment: 'start of fall back DST overlap',
     },
     {
       timestamp: '2012-10-28 02:59:59',
       timezone: 'Europe/Berlin',
-      comment: 'end of fall back DST gap',
+      comment: 'end of fall back DST overlap',
     },
     {
       timestamp: '2012-10-28 03:00:00',
       timezone: 'Europe/Berlin',
-      comment: 'just after fall back DST gap',
+      comment: 'just after fall back DST overlap',
     },
     {
       timestamp: '2012-10-28 03:00:01',
       timezone: 'Europe/Berlin',
-      comment: 'just after fall back DST gap',
+      comment: 'after fall back DST overlap',
     },
     {
       timestamp: '2012-10-28 02:00:00+02:00',
@@ -217,12 +238,86 @@ describe('timezone plugin', () => {
       timezone: 'Europe/Berlin',
       comment: 'with offset - after fall back to DST',
     },
+
+    {
+      timestamp: '2025-10-05 01:59:59',
+      timezone: 'Australia/Canberra',
+      comment: 'just before spring forward DST gap',
+    },
+    {
+      timestamp: '2025-10-05 02:00:00',
+      timezone: 'Australia/Canberra',
+      comment: 'start of spring forward DST gap',
+    },
+    {
+      timestamp: '2025-10-05 02:59:59',
+      timezone: 'Australia/Canberra',
+      comment: 'end of spring forward DST gap',
+    },
+    {
+      timestamp: '2025-10-05 03:00:00',
+      timezone: 'Australia/Canberra',
+      comment: 'just after spring forward DST gap',
+    },
+    {
+      timestamp: '2025-04-06 01:59:59',
+      timezone: 'Australia/Canberra',
+      comment: 'just before fall back DST overlap',
+    },
+    {
+      timestamp: '2025-04-06 03:00:00',
+      timezone: 'Australia/Canberra',
+      comment: 'just after fall back DST overlap',
+    },
   ])(
     'parse non existing time around DST gap for "$timestamp" in "$timezone"',
     ({ timestamp, timezone }) => {
       expectSameResultTz((esday) => esday.tz(timestamp, timezone))
       expect(esday.tz(timestamp, timezone).isValid()).toBeTruthy()
       expectSameTz((esday) => esday.tz(timestamp, timezone).format())
+    },
+  )
+
+  it.each([
+    {
+      description: 'start of fall back DST overlap in Canberra',
+      timestamp: '2025-04-06 02:00:00',
+      timezone: 'Australia/Canberra',
+      isoStringEsday: '2025-04-05T16:00:00.000Z',
+      isoStringMoment: '2025-04-05T15:00:00.000Z',
+      valueEsday: 1743868800000,
+      valueMoment: 1743865200000,
+    },
+    {
+      description: 'within fall back DST overlap in Canberra',
+      timestamp: '2025-04-06 02:30:00',
+      timezone: 'Australia/Canberra',
+      isoStringEsday: '2025-04-05T16:30:00.000Z',
+      isoStringMoment: '2025-04-05T15:30:00.000Z',
+      valueEsday: 1743870600000,
+      valueMoment: 1743867000000,
+    },
+    {
+      description: 'end of fall back DST overlap in Canberra',
+      timestamp: '2025-04-06 02:59:59',
+      timezone: 'Australia/Canberra',
+      isoStringEsday: '2025-04-05T16:59:59.000Z',
+      isoStringMoment: '2025-04-05T15:59:59.000Z',
+      valueEsday: 1743872399000,
+      valueMoment: 1743868799000,
+    },
+  ])(
+    'parse special case "$description"',
+    ({ timestamp, timezone, isoStringEsday, isoStringMoment, valueEsday, valueMoment }) => {
+      const d = esday.tz(timestamp, timezone)
+      const m = moment.tz(timestamp, timezone)
+
+      expect(d.isValid()).toBeTruthy()
+      expect(m.isValid()).toBeTruthy()
+      expect(d.toISOString()).toBe(isoStringEsday)
+      expect(m.toISOString()).toBe(isoStringMoment)
+      expect(d.valueOf()).toBe(valueEsday)
+      expect(m.valueOf()).toBe(valueMoment)
     },
   )
 
