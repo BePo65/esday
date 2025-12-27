@@ -153,6 +153,9 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
   esdayFactory.tz = (input: string, timezoneStr?: string) => {
     const timezone = timezoneStr || defaultTimezone
     const parsedDate = esdayFactory(input)
+    if (!parsedDate.isValid()) {
+      return parsedDate
+    }
     const offsetNow = tzOffset(parsedDate.valueOf(), timezone)
     if (typeof input !== 'string' || matchOffset.test(input)) {
       const ins = parsedDate.tz(timezone)
