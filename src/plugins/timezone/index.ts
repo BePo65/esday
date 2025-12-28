@@ -68,10 +68,10 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
     const fixedHour = hour === 24 ? 0 : hour
     const utcString = `${filled[0]}-${filled[1]}-${filled[2]} ${fixedHour}:${filled[4]}:${filled[5]}:000`
     const utcTs = esdayFactory.utc(utcString).valueOf()
-    let asTS = +timestamp
-    const over = asTS % 1000
-    asTS -= over
-    return (utcTs - asTS) / (60 * 1000)
+    let timestampAsEpoch = +timestamp
+    const msOfTimestamp = timestampAsEpoch % 1000
+    timestampAsEpoch -= msOfTimestamp
+    return (utcTs - timestampAsEpoch) / (60 * 1000)
   }
 
   // TODO refactor variable names
@@ -152,27 +152,27 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
   // @ts-expect-error "implement tz method"
   esdayFactory.tz = (input: string, timezoneStr?: string) => {
     const timezone = timezoneStr || defaultTimezone
-    const parsedDate = esdayFactory(input)
-    if (!parsedDate.isValid()) {
-      return parsedDate
+    const parsedInput = esdayFactory(input)
+    if (!parsedInput.isValid()) {
+      return parsedInput
     }
-    const offsetNow = tzOffset(parsedDate.valueOf(), timezone)
+    const offsetParsedInput = tzOffset(parsedInput.valueOf(), timezone)
     if (typeof input !== 'string' || matchOffset.test(input)) {
-      const ins = parsedDate.tz(timezone)
+      const result = parsedInput.tz(timezone)
       // moment treats GMT as UTC
       const isGmtOrUtc = ['GMT', 'UTC'].includes(timezone.toUpperCase())
-      if (parsedDate['$conf']['utc'] === undefined && !isGmtOrUtc) {
-        delete ins['$conf']['utc']
+      if (parsedInput['$conf']['utc'] === undefined && !isGmtOrUtc) {
+        delete result['$conf']['utc']
       } else {
-        ins['$conf']['utc'] = true
+        result['$conf']['utc'] = true
       }
-      return ins
+      return result
     }
-    const localTs = esdayFactory.utc(input).valueOf()
-    const [targetTs, targetOffset] = fixOffset(localTs, offsetNow, timezone)
-    const ins = esdayFactory(targetTs).utcOffset(targetOffset)
-    ins['$conf'].timezone = timezone
-    return ins
+    const parsedAsUtc = esdayFactory.utc(input).valueOf()
+    const [targetTimestamp, targetOffset] = fixOffset(parsedAsUtc, offsetParsedInput, timezone)
+    const result = esdayFactory(targetTimestamp).utcOffset(targetOffset)
+    result['$conf'].timezone = timezone
+    return result
   }
 
   esdayFactory.tz.guess = () => Intl.DateTimeFormat().resolvedOptions().timeZone
