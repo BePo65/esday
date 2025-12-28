@@ -7,7 +7,7 @@
  * This plugin adds 'quarter' and the formatting tokens 'z' and 'Z' to EsDay.
  *
  * This plugin requires the 'utc' plugin.
- * This plugin considers the 'locale' plugin.
+ * This plugin can handle the 'locale' plugin.
  *
  * esday parameters in '$conf' defined in timezone plugin:
  *   timezone    name of the timezone of this instance
