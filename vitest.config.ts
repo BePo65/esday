@@ -1,4 +1,5 @@
 import path from 'node:path'
+import { playwright } from '@vitest/browser-playwright'
 import { configDefaults, defineConfig } from 'vitest/config'
 
 export default defineConfig({
@@ -28,7 +29,7 @@ export default defineConfig({
     browser: {
       headless: true,
       enabled: false,
-      provider: 'playwright',
+      provider: playwright(),
       screenshotFailures: false,
       instances: [{ browser: 'firefox' }, { browser: 'chromium' }, { browser: 'webkit' }],
     },
