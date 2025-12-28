@@ -192,6 +192,13 @@ export class EsDay {
       }
     }
 
+    if (typeof date === 'string') {
+      // restricts milliseconds in an ISO 8601 string to exactly 3 digits;
+      // this is necessary, as webkit rounds fractions of seconds, while
+      // other browser engines take only the first 3 digits.
+      date = date.replace(/(\.\d{3})\d*(?=Z)/, '$1')
+    }
+
     return new Date(date)
   }
 

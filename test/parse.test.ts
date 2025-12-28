@@ -37,6 +37,13 @@ describe('parse', () => {
 
   it('parses ISO8601 string with unlimited milliseconds', () => {
     // This test will fail on webkit, as this browser overflows ms to seconds
+    const sourceString = '2024-04-24T06:41:32.999999999'
+
+    expectSameResult((esday) => esday(sourceString))
+    expect(esday(sourceString).isValid()).toBeTruthy()
+  })
+
+  it('parses ISO8601 string with zone and unlimited milliseconds', () => {
     const sourceString = '2024-04-24T06:41:32.999999999Z'
 
     expectSameResult((esday) => esday(sourceString))
