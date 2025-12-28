@@ -238,7 +238,6 @@ describe('timezone plugin', () => {
       timezone: 'Europe/Berlin',
       comment: 'with offset - after fall back to DST',
     },
-
     {
       timestamp: '2025-10-05 01:59:59',
       timezone: 'Australia/Canberra',
@@ -269,8 +268,23 @@ describe('timezone plugin', () => {
       timezone: 'Australia/Canberra',
       comment: 'just after fall back DST overlap',
     },
+    {
+      timestamp: '2021-03-26 00:30:00',
+      timezone: 'Asia/Amman',
+      comment: 'in gap of DST (date/time does not exist)',
+    },
+    {
+      timestamp: '2021-10-28 23:59:59',
+      timezone: 'Asia/Amman',
+      comment: 'just before fall back DST overlap',
+    },
+    {
+      timestamp: '2021-10-29 01:00:00',
+      timezone: 'Asia/Amman',
+      comment: 'just after fall back DST overlap',
+    },
   ])(
-    'parse non existing time around DST gap for "$timestamp" in "$timezone"',
+    'parse non existing time / overlap with DST for "$timestamp" in "$timezone"',
     ({ timestamp, timezone }) => {
       expectSameResultTz((esday) => esday.tz(timestamp, timezone))
       expect(esday.tz(timestamp, timezone).isValid()).toBeTruthy()
@@ -305,6 +319,15 @@ describe('timezone plugin', () => {
       isoStringMoment: '2025-04-05T15:59:59.000Z',
       valueEsday: 1743872399000,
       valueMoment: 1743868799000,
+    },
+    {
+      description: 'start of fall back DST overlap in Amman',
+      timestamp: '2021-10-29 00:00:00',
+      timezone: 'Asia/Amman',
+      isoStringEsday: '2021-10-28T22:00:00.000Z',
+      isoStringMoment: '2021-10-28T21:00:00.000Z',
+      valueEsday: 1635458400000,
+      valueMoment: 1635454800000,
     },
   ])(
     'parse special case "$description"',
