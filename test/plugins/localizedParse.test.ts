@@ -113,6 +113,7 @@ describe('localizedParse plugin - local mode for "en"', () => {
       sourceString: '2024-02-29 8:10:21 xy',
       formatString: 'YYYY-MM-DD h:mm:ss A',
     },
+    { sourceString: '3/11/2022, 11:29:26 AM', formatString: 'M/D/YYYY, h:mm:ss A' },
     { sourceString: '2024 12 24 4:25 PM', formatString: 'YYYY MM DD LT' },
     { sourceString: '2024 12 24 4:25:36 PM', formatString: 'YYYY MM DD LTS' },
     { sourceString: '12/24/2024', formatString: 'L' },
