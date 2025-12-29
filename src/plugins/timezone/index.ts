@@ -13,7 +13,7 @@
  *   timezone    name of the timezone of this instance
  */
 
-import type { EsDay, EsDayPlugin } from 'esday'
+import type { DateType, EsDay, EsDayPlugin, SimpleType } from 'esday'
 import { C } from '~/common'
 import { getDateTimeFormat } from './getDateTimeFormat'
 
@@ -46,7 +46,6 @@ const typeToPos = {
 
 // parsing without a format string requires at least a complete date as input string ('1111-11-11')
 const matchOffset = /^(\d{4})[-/](\d{1,2})[-/](\d{0,2}).*(([+-]\d\d:?(\d\d)?)$|Z$)/
-const enParseFormat = 'M/D/YYYY, h:mm:ss A'
 
 const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
   let defaultTimezone = ''
@@ -74,58 +73,72 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
     return (utcTs - timestampAsEpoch) / (60 * 1000)
   }
 
-  // TODO refactor variable names
-  // find the right offset a given local time. The o input is our guess, which determines which
-  // offset we'll pick in ambiguous cases (e.g. there are two 3 AMs b/c Fallback DST)
-  // https://github.com/moment/luxon/blob/master/src/datetime.js#L76
-  const fixOffset = (localTS: number, offsetNow: number, tz: string) => {
+  /**
+   * Find the right offset a given local time.
+   * The parameter originalOffset is our guess, which determines which
+   * offset we'll pick in ambiguous cases (e.g. there are two 3 AMs b/c Fallback DST)
+   * Based on dayjs and https://github.com/moment/luxon/blob/master/src/datetime.js#L76
+   * @param originalTimestamp - timestamp to fix the offset if necessary
+   * @param originalOffset - tzOffset of the originalTimestamp
+   * @param tz - timezone to use
+   * @returns array with updated timestamp and fixed offset
+   */
+  const fixOffset = (originalTimestamp: number, originalOffset: number, tz: string) => {
     // Our UTC time is just a guess because our offset is just a guess
-    let utcGuess = localTS - offsetNow * 60 * 1000
+    let utcGuess = originalTimestamp - originalOffset * 60 * 1000
+
     // Test whether the zone matches the offset for this ts
-    const offsetThen = tzOffset(utcGuess, tz)
-    // If so, offset didn't change and we're done
-    if (offsetNow === offsetThen) {
-      return [utcGuess, offsetNow]
+    const offsetGuess1 = tzOffset(utcGuess, tz)
+
+    // If offset didn't change, then we're done
+    if (originalOffset === offsetGuess1) {
+      return [utcGuess, originalOffset]
     }
-    // If not, change the ts by the difference in the offset
-    utcGuess -= (offsetThen - offsetNow) * 60 * 1000
+
+    // If offset of guess is different, then change the timestamp by the differences of the offsets
+    utcGuess -= (offsetGuess1 - originalOffset) * 60 * 1000
+
     // If that gives us the local time we want, we're done
-    const o3 = tzOffset(utcGuess, tz)
-    if (offsetThen === o3) {
-      return [utcGuess, offsetThen]
+    const offsetGuess2 = tzOffset(utcGuess, tz)
+    if (offsetGuess1 === offsetGuess2) {
+      return [utcGuess, offsetGuess1]
     }
-    // If it's different, we're in a hole time.
-    // The offset has changed, but the we don't adjust the time
-    return [localTS - Math.min(offsetThen, o3) * 60 * 1000, Math.max(offsetThen, o3)]
+
+    // If it's still different, we're in a DST gap and we don't adjust the time
+    return [
+      originalTimestamp - Math.min(offsetGuess1, offsetGuess2) * 60 * 1000,
+      Math.max(offsetGuess1, offsetGuess2),
+    ]
   }
 
   dayClass.prototype.tz = function (timezone = defaultTimezone, keepLocalTime = false) {
     const oldOffset = this.utcOffset()
     const date = this.toDate()
     const target = date.toLocaleString('en-US', { timeZone: timezone })
-    const diff = Math.round(
-      (date.valueOf() - esdayFactory(target, enParseFormat).valueOf()) / 1000 / 60,
-    )
+    // Works without plugin AdvancedParse and without available locale 'en-US', as the
+    // spec for 'Date()' does not require support for the format produced by toLocaleString().
+    // However, major engines all try to support toLocaleString("en-US") format.
+    const diff = Math.round((date.valueOf() - esdayFactory(target).valueOf()) / 1000 / 60)
     const offset = -Math.round(date.getTimezoneOffset()) - diff
     const isUTC = offset === 0
-    let ins: EsDay
+    let result: EsDay
 
     if (isUTC) {
       // if utcOffset is 0, turn it to UTC mode
-      ins = this.utcOffset(0, keepLocalTime)
+      result = this.utcOffset(0, keepLocalTime)
     } else {
-      ins = esdayFactory(target)
+      result = esdayFactory(target)
       if (this.locale !== undefined) {
-        ins = ins.locale(this.locale())
+        result = result.locale(this.locale())
       }
-      ins['$set'](C.MS, [this.millisecond()]).utcOffset(offset, true)
+      result['$set'](C.MS, [this.millisecond()]).utcOffset(offset, true)
       if (keepLocalTime) {
-        const newOffset = ins.utcOffset()
-        ins = ins.add(oldOffset - newOffset, C.MIN)
+        const newOffset = result.utcOffset()
+        result = result.add(oldOffset - newOffset, C.MIN)
       }
     }
-    ins['$conf'].timezone = timezone
-    return ins
+    result['$conf'].timezone = timezone
+    return result
   }
 
   const oldStartOf = dayClass.prototype.startOf
@@ -150,9 +163,17 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
   }
 
   // @ts-expect-error "implement tz method"
-  esdayFactory.tz = (input: string, timezoneStr?: string) => {
-    const timezone = timezoneStr || defaultTimezone
-    const parsedInput = esdayFactory(input)
+  esdayFactory.tz = (
+    input: DateType,
+    ...others: (SimpleType | string[] | { [key: string]: SimpleType })[]
+  ) => {
+    let timezone = defaultTimezone
+    if (others.length > 0) {
+      // last parameter is timezone
+      timezone = others.pop() as string
+    }
+
+    const parsedInput = esdayFactory(input, ...others)
     if (!parsedInput.isValid()) {
       return parsedInput
     }
@@ -168,9 +189,9 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
       }
       return result
     }
-    const parsedAsUtc = esdayFactory.utc(input).valueOf()
+    const parsedAsUtc = esdayFactory.utc(input, ...others).valueOf()
     const [targetTimestamp, targetOffset] = fixOffset(parsedAsUtc, offsetParsedInput, timezone)
-    const result = esdayFactory(targetTimestamp).utcOffset(targetOffset)
+    const result = esdayFactory(targetTimestamp, ...others).utcOffset(targetOffset)
     result['$conf'].timezone = timezone
     return result
   }
