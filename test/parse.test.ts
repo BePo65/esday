@@ -66,6 +66,15 @@ describe('parse', () => {
     expect(esday(sourceString).isValid()).toBeTruthy()
   })
 
+  it('parses en-US date and time string', () => {
+    // should parse dates formatted in .toLocaleString("en-US") format
+    // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse#description
+    const sourceString = '3/11/2022, 11:29:26 AM'
+
+    expectSameResult((esday) => esday(sourceString))
+    expect(esday(sourceString).isValid()).toBeTruthy()
+  })
+
   it('parses number (unix timestamp as milliseconds)', () => {
     const sourceString = 1_722_173_696_234
 
