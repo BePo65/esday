@@ -5,9 +5,9 @@ interface esdayTz {
   (date: DateType, timezone: string): EsDay
   (date: DateType, format: string, timezone: string): EsDay
   (date: DateType, format: string, strict: boolean, timezone: string): EsDay
-  (date: DateType, format: string, language: string, timezone: string): EsDay
-  (date: DateType, format: string, language: string, strict: boolean, timezone: string): EsDay
-  (date: DateType, format?: string, language?: string, strict?: boolean, timezone?: string): EsDay
+  (date: DateType, format: string, locale: string, timezone: string): EsDay
+  (date: DateType, format: string, locale: string, strict: boolean, timezone: string): EsDay
+  (date: DateType, format?: string, locale?: string, strict?: boolean, timezone?: string): EsDay
 }
 
 declare module 'esday' {
