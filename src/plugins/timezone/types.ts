@@ -1,7 +1,6 @@
 import type { DateType, EsDay } from 'esday'
 
 interface esdayTz {
-  (timezone: string): EsDay
   (date: DateType): EsDay
   (date: DateType, timezone: string): EsDay
   (date: DateType, format: string, timezone: string): EsDay
@@ -13,7 +12,10 @@ interface esdayTz {
 
 declare module 'esday' {
   interface EsDay {
-    tz: (timezone: string, isLocal?: boolean) => EsDay
+    tz(): string
+    tz(timezone: string): EsDay
+    tz(timezone: string, isLocal: boolean): EsDay
+    tz(timezone?: string, isLocal?: boolean): EsDay
   }
 
   interface EsDayFactory {

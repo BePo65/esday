@@ -111,12 +111,20 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
     ]
   }
 
-  dayClass.prototype.tz = function (timezone = defaultTimezone, keepLocalTime = false) {
+  // @ts-expect-error "implement tz method"
+  dayClass.prototype.tz = function (timezone?: string, keepLocalTime?: boolean) {
+    // Getter for timezone of EsDay instance
+    if (timezone === undefined) {
+      return this['$conf'].timezone
+    }
+
+    // convert EsDay instance to timezone
     const oldOffset = this.utcOffset()
     const date = this.toDate()
     const target = date.toLocaleString('en-US', { timeZone: timezone })
-    // Works without plugin AdvancedParse and without available locale 'en-US', as the
-    // spec for 'Date()' does not require support for the format produced by toLocaleString().
+
+    // 'esdayFactory(target)' works without plugin AdvancedParse and without available locale 'en-US',
+    // as the spec for 'Date()' does not require support for the format produced by toLocaleString().
     // However, major engines all try to support toLocaleString("en-US") format.
     const diff = Math.round((date.valueOf() - esdayFactory(target).valueOf()) / 1000 / 60)
     const offset = -Math.round(date.getTimezoneOffset()) - diff
@@ -125,7 +133,7 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
 
     if (isUTC) {
       // if utcOffset is 0, turn it to UTC mode
-      result = this.utcOffset(0, keepLocalTime)
+      result = this.utcOffset(0, keepLocalTime ?? false)
     } else {
       result = esdayFactory(target)
       if (this.locale !== undefined) {
@@ -167,10 +175,12 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
     input: DateType,
     ...others: (SimpleType | string[] | { [key: string]: SimpleType })[]
   ) => {
+    let originalTimezone: string | undefined
     let timezone = defaultTimezone
     if (others.length > 0) {
       // last parameter is timezone
       timezone = others.pop() as string
+      originalTimezone = timezone
     }
 
     const parsedInput = esdayFactory(input, ...others)
@@ -192,7 +202,7 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
     const parsedAsUtc = esdayFactory.utc(input, ...others).valueOf()
     const [targetTimestamp, targetOffset] = fixOffset(parsedAsUtc, offsetParsedInput, timezone)
     const result = esdayFactory(targetTimestamp, ...others).utcOffset(targetOffset)
-    result['$conf'].timezone = timezone
+    result['$conf'].timezone = originalTimezone
     return result
   }
 

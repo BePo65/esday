@@ -40,18 +40,21 @@ export function getDateTimeFormat(
   let dtf = dtfCache[key]
 
   // If not found, create and cache a new one
+  const formatOptions: Intl.DateTimeFormatOptions = {
+    hour12: false,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    timeZoneName: timeZoneName,
+  }
+  if (timezone?.length > 0) {
+    formatOptions['timeZone'] = timezone
+  }
   if (!dtf) {
-    dtf = new Intl.DateTimeFormat('en-US', {
-      hour12: false,
-      timeZone: timezone,
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      timeZoneName: timeZoneName,
-    })
+    dtf = new Intl.DateTimeFormat('en-US', formatOptions)
     dtfCache[key] = dtf
   }
 
