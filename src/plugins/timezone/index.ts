@@ -4,9 +4,11 @@
  * This plugin adds the 'tz' method to the EsDay class.
  * This plugin adds the 'tz' method/object to the esday class with the methods 'setDefault',  'getDefault' and 'guess'.
  *
- * This plugin adds 'quarter' and the formatting tokens 'z' and 'Z' to EsDay.
+ * This plugin adds the formatting tokens 'z' and 'Z' to EsDay.
  *
  * This plugin requires the 'utc' plugin.
+ * When parsing with a locale then the 'advancedParse' plugin, the 'localizedParse' plugin
+ *   and at least one registered locale.
  * This plugin can handle the 'locale' plugin.
  *
  * esday parameters in '$conf' defined in timezone plugin:
