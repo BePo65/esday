@@ -12,6 +12,9 @@
  *
  * new esday parameters in '$conf.parseOptions':
  *   locale           name of the locale to use when parsing
+ *
+ * This plugin requires the 'advancedParse' plugin and the 'locale' plugin
+ * and at least 1 registered locale.
  */
 
 import type { DateType, EsDay, EsDayFactory, EsDayPlugin } from 'esday'
