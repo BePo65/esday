@@ -122,14 +122,15 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
 
     // convert EsDay instance to timezone
     const oldOffset = this.utcOffset()
-    const date = this.toDate()
-    const target = date.toLocaleString('en-US', { timeZone: timezone })
+    const thisDate = this.toDate()
+    const target = thisDate.toLocaleString('en-US', { timeZone: timezone })
 
     // 'esdayFactory(target)' works without plugin AdvancedParse and without available locale 'en-US',
     // as the spec for 'Date()' does not require support for the format produced by toLocaleString().
     // However, major engines all try to support toLocaleString("en-US") format.
-    const diff = Math.round((date.valueOf() - esdayFactory(target).valueOf()) / 1000 / 60)
-    const offset = -Math.round(date.getTimezoneOffset()) - diff
+    const targetDate = new Date(target)
+    const diff = Math.round((thisDate.valueOf() - targetDate.valueOf()) / 1000 / 60)
+    const offset = -Math.round(thisDate.getTimezoneOffset()) - diff
     const isUTC = offset === 0
     let result: EsDay
 
