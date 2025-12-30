@@ -3,7 +3,7 @@ import moment from 'moment-timezone'
 import { afterEach, describe, expect, it } from 'vitest'
 import timezonePLugin from '~/plugins/timezone'
 import utcPlugin from '~/plugins/utc'
-import { expectSameResultTz, expectSameTimestamp, expectSameTz } from './timezone-util'
+import { expectSameObjectTz, expectSameTimestamp, expectSameValueTz } from './timezone-util'
 
 esday.extend(utcPlugin).extend(timezonePLugin)
 
@@ -110,16 +110,16 @@ describe('timezone plugin without plugins', () => {
       comment: 'dayjs pr#2118 test 2b',
     },
   ])('parse "$timestamp" for "$timezone"', ({ timestamp, timezone }) => {
-    expectSameResultTz((esday) => esday.tz(timestamp, timezone))
+    expectSameObjectTz((esday) => esday.tz(timestamp, timezone))
     expect(esday.tz(timestamp, timezone).isValid()).toBeTruthy()
-    expectSameTz((esday) => esday.tz(timestamp, timezone).format())
+    expectSameValueTz((esday) => esday.tz(timestamp, timezone).format())
   })
 
   it('parse timezone with seconds in offset', () => {
     const timestamp = '1900-06-01T12:00:00'
     const timezone = 'Europe/Kiev'
 
-    expectSameResultTz((esday) => esday.tz(timestamp, timezone))
+    expectSameObjectTz((esday) => esday.tz(timestamp, timezone))
     expect(esday.tz(timestamp, timezone).isValid()).toBeTruthy()
   })
 
@@ -287,9 +287,9 @@ describe('timezone plugin without plugins', () => {
   ])(
     'parse non existing time / overlap with DST for "$timestamp" in "$timezone"',
     ({ timestamp, timezone }) => {
-      expectSameResultTz((esday) => esday.tz(timestamp, timezone))
+      expectSameObjectTz((esday) => esday.tz(timestamp, timezone))
       expect(esday.tz(timestamp, timezone).isValid()).toBeTruthy()
-      expectSameTz((esday) => esday.tz(timestamp, timezone).format())
+      expectSameValueTz((esday) => esday.tz(timestamp, timezone).format())
     },
   )
 
@@ -347,6 +347,29 @@ describe('timezone plugin without plugins', () => {
 
   it.each([
     {
+      timestamp: '2025-07-18 11:55:00',
+      timezone: 'America/Toronto',
+    },
+    {
+      timestamp: '2025-01-30 02:15',
+      timezone: 'Europe/Paris',
+    },
+  ])('get timezone of parsed date / time for "$timezone"', ({ timestamp, timezone }) => {
+    expectSameValueTz((esday) => esday.tz(timestamp, timezone).tz())
+    expect(esday.tz(timestamp, timezone).isValid()).toBeTruthy()
+    expect(moment.tz(timestamp, timezone).isValid()).toBeTruthy()
+  })
+
+  it('get timezone of parsed date / time for undefined timezone', () => {
+    const timestamp = '2025-03-10T00:00:00'
+    const d = esday.tz(timestamp).tz()
+    const m = moment.tz(timestamp).tz()
+
+    expect(d).toBe(m)
+  })
+
+  it.each([
+    {
       timestamp: '2025-11-09 01:15',
       timezone: 'America/Toronto',
     },
@@ -365,9 +388,9 @@ describe('timezone plugin without plugins', () => {
       comment: 'dayjs issue#1678; is not',
     },
   ])('convert "$timestamp" to "$timezone"', ({ timestamp, timezone }) => {
-    expectSameResultTz((esday) => esday(timestamp).tz(timezone))
+    expectSameObjectTz((esday) => esday(timestamp).tz(timezone))
     expect(esday(timestamp).tz(timezone).isValid()).toBeTruthy()
-    expectSameTz((esday) => esday(timestamp).tz(timezone).format())
+    expectSameValueTz((esday) => esday(timestamp).tz(timezone).format())
   })
 
   it.todo('convert with keepLocalTime')
@@ -414,9 +437,9 @@ describe('timezone plugin without plugins', () => {
   ])(
     'update timezone for "$timestamp" from "$timezoneOld" to "$timezoneNew"',
     ({ timestamp, timezoneOld, timezoneNew }) => {
-      expectSameResultTz((esday) => esday.tz(timestamp, timezoneOld).tz(timezoneNew, true))
+      expectSameObjectTz((esday) => esday.tz(timestamp, timezoneOld).tz(timezoneNew, true))
       expect(esday.tz(timestamp, timezoneOld).tz(timezoneNew, true).isValid()).toBeTruthy()
-      expectSameTz((esday) => esday.tz(timestamp, timezoneOld).tz(timezoneNew, true).format())
+      expectSameValueTz((esday) => esday.tz(timestamp, timezoneOld).tz(timezoneNew, true).format())
     },
   )
 
@@ -472,7 +495,16 @@ describe('timezone plugin without plugins', () => {
   })
 
   it('guess', () => {
-    expectSameTz((esday) => esday.tz.guess())
+    expectSameValueTz((esday) => esday.tz.guess())
     expect(esday.tz.guess()).not.toBe('')
+  })
+
+  it('cloning a parsed date / time with a timezone keeps the timezone', () => {
+    const timestamp = '2025-07-13 17:05:33'
+    const timezone = 'America/Recife'
+    const baseDate = esday.tz(timestamp, timezone)
+    const clonedDate = baseDate.clone()
+
+    expect(clonedDate.tz()).toBe(baseDate.tz())
   })
 })

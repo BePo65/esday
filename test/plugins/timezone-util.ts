@@ -12,7 +12,7 @@ import { expect } from 'vitest'
  * expectSameResultTz((esday) => esday().utc().utcOffset(100, true))
  * @param fn function whose return value is to be checked
  */
-export const expectSameResultTz = (fn: (instance: EsDayFactory) => EsDay | Moment) => {
+export const expectSameObjectTz = (fn: (instance: EsDayFactory) => EsDay | Moment) => {
   const d = fn(esday)
   // call fn with moment; type casting avoids error from tsc
   const m = fn(moment as unknown as EsDayFactory)
@@ -39,7 +39,7 @@ export const expectSameResultTz = (fn: (instance: EsDayFactory) => EsDay | Momen
  * @param fn function whose return value is to be checked
  */
 // biome-ignore lint/suspicious/noExplicitAny: this method checks arbitrary methods of esday / moment
-export const expectSameTz = (fn: (instance: EsDayFactory) => any) => {
+export const expectSameValueTz = (fn: (instance: EsDayFactory) => any) => {
   const d = fn(esday)
   // call fn with moment; type casting avoids error from tsc
   const m = fn(moment as unknown as EsDayFactory)
