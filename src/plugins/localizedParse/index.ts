@@ -129,7 +129,7 @@ const addDayOfMonthOrdinal = (esday: EsDayFactory) => {
     const splittedInput = input.match(/^[^\d]*(\d+)[^\d]*$/)
     if (splittedInput !== null) {
       dateValue = +splittedInput[1]
-      const dateAsOrdinal = ordinal?.(dateValue)
+      const dateAsOrdinal = ordinal?.(dateValue, 'd')
 
       if (dateAsOrdinal === undefined || dateAsOrdinal === input) {
         parsedElements.date = dateValue
@@ -298,7 +298,7 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
         delete this['$conf'].parseOptions.locale
       }
 
-      if (Object.keys(this['$conf'].parseOptions).length > 0) {
+      if (Object.keys(this['$conf'].parseOptions).length === 0) {
         delete this['$conf'].parseOptions
       }
     }
