@@ -30,7 +30,7 @@ describe('timezone plugin - with locale', () => {
       locale: 'zh-CN',
     },
     {
-      timestamp: '2024 Dec. 24. 8:10:21 AM mercredi',
+      timestamp: '2024 déc. 24. 8:10:21 AM mercredi',
       timezone: 'Europe/Paris',
       formatString: 'YYYY MMM Do h:mm:ss A',
       locale: 'fr',
@@ -56,7 +56,7 @@ describe('timezone plugin - with locale', () => {
       locale: 'zh-CN',
     },
     {
-      timestamp: '2024 Dec. 24. 8:10:21 AM',
+      timestamp: '2024 déc. 1er 8:10:21 AM',
       timezone: 'Europe/Paris',
       formatString: 'YYYY MMM Do h:mm:ss A',
       locale: 'fr',
@@ -74,11 +74,8 @@ describe('timezone plugin - with locale', () => {
   )
 
   it('parse with format, locale and strict with non-matching format', () => {
-    // HACK const timestamp = '2024 déc. 24. 8:10:21 AM'
-    // const timestamp = '2024 déc. 24 8:10:21 AM'
-    const timestamp = '2024 déc. 1er 8:10:21 AM'
+    const timestamp = '2024 déc. 24. 8:10:21 AM'
     const timezone = 'Europe/Paris'
-    // HACK const formatString = 'YYYY MMM Do h:mm:ss A'
     const formatString = 'YYYY MMM Do h:mm:ss A'
     const locale = 'fr'
     const d = esday.tz(timestamp, formatString, locale, true, timezone)
@@ -86,6 +83,8 @@ describe('timezone plugin - with locale', () => {
 
     expect(d.isValid()).toBeFalsy()
     expect(m.isValid()).toBeFalsy()
+    expect(d.locale()).toBe(locale)
+    expect(m.locale()).toBe(locale)
   })
 
   it('convert keeps the locale', () => {
