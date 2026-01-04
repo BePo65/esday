@@ -37,6 +37,7 @@ const localeFr: Readonly<Locale> = {
     'nov.',
     'déc.',
   ],
+  dayOfMonthOrdinalParse: /\d{1,2}(er|)/,
   ordinal: (n) => {
     const o = n === 1 ? 'er' : ''
     return `${n}${o}`

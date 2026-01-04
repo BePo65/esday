@@ -8,7 +8,7 @@ import localePlugin, { cloneLocale, setLocaleProperty } from '~/plugins/locale'
 
 esday.extend(localePlugin)
 
-const getLocaleName = (inst: EsDay) => inst['$conf']['$locale_name']
+const getLocaleName = (inst: EsDay) => inst['$conf']['localeName']
 
 function createRandomString(length: number): string {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'

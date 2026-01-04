@@ -59,6 +59,7 @@ const localeHe: Readonly<Locale> = {
     'דצמבר',
   ],
   monthsShort: ['ינו', 'פבר', 'מרץ', 'אפר', 'מאי', 'יונ', 'יול', 'אוג', 'ספט', 'אוק', 'נוב', 'דצמ'],
+  dayOfMonthOrdinalParse: /\d{1,2}/,
   ordinal: (n) => `${n}`,
   weekStart: 0, // Sunday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.

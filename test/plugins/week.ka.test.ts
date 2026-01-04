@@ -10,11 +10,11 @@ import weekPlugin from '~/plugins/week'
 import { expectSameResult } from '../util'
 
 esday
-  .extend(localePlugin)
   .extend(advancedParsePlugin)
   .extend(localizedParsePlugin)
   .extend(localizedFormatPlugin)
   .extend(weekPlugin)
+  .extend(localePlugin)
 esday.registerLocale(localeKa)
 
 describe('week plugin - locale "ka"', () => {

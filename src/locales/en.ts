@@ -25,6 +25,7 @@ const localeEn: Readonly<Locale> = {
     'December',
   ],
   monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  dayOfMonthOrdinalParse: /\d{1,2}(st|nd|rd|th)/,
   ordinal: (n) => {
     const suffices = ['th', 'st', 'nd', 'rd']
     const v = n % 100

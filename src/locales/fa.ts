@@ -45,6 +45,7 @@ const locale: Locale = {
     'نوامبر',
     'دسامبر',
   ],
+  dayOfMonthOrdinalParse: /\d{1,2}م/,
   ordinal: (n) => `${n}`,
   weekStart: 6, // Saturday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.

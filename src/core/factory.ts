@@ -24,7 +24,17 @@ const esday: EsDayFactory = (
       conf[`args_${i + 1}`] = o
     }
   })
-  return new EsDay(d, conf)
+  const result = new EsDay(d, conf)
+
+  // remove properties required for parsing only from $conf
+  const resultConf = result['$conf']
+  for (const property in resultConf) {
+    if (property.startsWith('args_')) {
+      delete resultConf[property]
+    }
+  }
+
+  return result
 }
 
 esday.addFormatTokenDefinitions = addFormatTokenDefinitions

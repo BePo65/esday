@@ -24,6 +24,7 @@ const localeTet: Readonly<Locale> = {
     'Dezembru',
   ],
   monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+  dayOfMonthOrdinalParse: /\d{1,2}(st|nd|rd|th)/,
   ordinal: (n: number) => {
     const numberTens = n % 10
     const output =

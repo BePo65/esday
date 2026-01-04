@@ -73,6 +73,7 @@ const localeTa: Readonly<Locale> = {
     'நவம்பர்',
     'டிசம்பர்',
   ],
+  dayOfMonthOrdinalParse: /\d{1,2}வது/,
   ordinal: (n) => `${n} வது`,
   weekStart: 0, // Sunday is the first day of the week.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.

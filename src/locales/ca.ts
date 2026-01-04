@@ -59,6 +59,7 @@ const localeCa: Readonly<Locale> = {
     'nov.',
     'des.',
   ],
+  dayOfMonthOrdinalParse: /\d{1,2}(r|n|t|è|a)/,
   ordinal: (n: number) => {
     let ord: string
 

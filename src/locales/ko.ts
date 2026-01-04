@@ -24,6 +24,7 @@ const localeKo: Readonly<Locale> = {
     '11월',
     '12월',
   ],
+  dayOfMonthOrdinalParse: /\d{1,2}(일|월|주)/,
   ordinal: (n) => `${n}일`,
   weekStart: 0, // Sunday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.

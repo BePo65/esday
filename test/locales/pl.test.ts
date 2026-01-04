@@ -63,6 +63,11 @@ describe('locale pl', () => {
     expect(months.format.length).toBe(12)
   })
 
+  it('should have a property named "dayOfMonthOrdinalParse"', () => {
+    expect(locale.dayOfMonthOrdinalParse).toBeDefined()
+    expect(locale.dayOfMonthOrdinalParse).toBeInstanceOf(RegExp)
+  })
+
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')

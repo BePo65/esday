@@ -48,6 +48,7 @@ const localeKa: Readonly<Locale> = {
     'დეკემბერი',
   ],
   monthsShort: ['იან', 'თებ', 'მარ', 'აპრ', 'მაი', 'ივნ', 'ივლ', 'აგვ', 'სექ', 'ოქტ', 'ნოე', 'დეკ'],
+  dayOfMonthOrdinalParse: /0|1-ლი|მე-\d{1,2}|\d{1,2}-ე/,
   ordinal: (n) => {
     if (n === 0) {
       return `${n}`

@@ -90,6 +90,7 @@ const localeGomLatn: Readonly<Locale> = {
     'Nov.',
     'Dez.',
   ],
+  dayOfMonthOrdinalParse: /\d{1,2}(er)/,
   ordinal: (n) => `${n}`,
   weekStart: 0, // Sunday is the first day of the week.
   yearStart: 4, // The week that contains Jan 3rd is the first week of the year.

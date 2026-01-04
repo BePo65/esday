@@ -24,6 +24,7 @@ const localeSv: Readonly<Locale> = {
     'december',
   ],
   monthsShort: ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'],
+  dayOfMonthOrdinalParse: /\d{1,2}(:e|:a)/,
   ordinal: (n) => {
     const lastDigit = n % 10
     const extension = lastDigit === 1 || lastDigit === 2 ? 'a' : 'e'

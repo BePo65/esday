@@ -200,6 +200,7 @@ const localeRu: Readonly<Locale> = {
   weekdaysMin: ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'],
   months,
   monthsShort,
+  dayOfMonthOrdinalParse: /\d{1,2}-(й|го|я)/,
   ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.

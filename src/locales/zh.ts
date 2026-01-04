@@ -48,6 +48,7 @@ const localeZh: Readonly<Locale> = {
     '11月',
     '12月',
   ],
+  dayOfMonthOrdinalParse: /\d{1,2}(日|月|周)/,
   ordinal: (number: number, period?: string) => {
     const p = period ?? ''
     switch (p) {

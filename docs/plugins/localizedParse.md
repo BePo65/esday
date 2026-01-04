@@ -4,6 +4,8 @@ LocalizedParse extends the `esday` constructor to support localized formats of i
 
 The locale to use for parsing can be defined as 3rd parameter. If no locale is given, then the current global locale is used (defaults to 'en', which is a duplicate of 'en-US').
 
+If used together with the plugin AdvancedParse, then LocalizedParse must be activated after AdvancedParse, as AdvancedParse "terminates" the parsing chain, if we have a parsing format.
+
 ## Usage
 
 ### Dependencies

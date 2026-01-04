@@ -46,6 +46,7 @@ const localeTk: Readonly<Locale> = {
     'Dekabr',
   ],
   monthsShort: ['Ýan', 'Few', 'Mar', 'Apr', 'Maý', 'Iýn', 'Iýl', 'Awg', 'Sen', 'Okt', 'Noý', 'Dek'],
+  dayOfMonthOrdinalParse: /\d{1,2}/,
   ordinal: (n) => {
     if (n === 0) {
       // special case for zero

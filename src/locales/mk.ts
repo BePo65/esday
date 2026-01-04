@@ -24,6 +24,7 @@ const localeMk: Readonly<Locale> = {
     'декември',
   ],
   monthsShort: ['јан', 'фев', 'мар', 'апр', 'мај', 'јун', 'јул', 'авг', 'сеп', 'окт', 'ное', 'дек'],
+  dayOfMonthOrdinalParse: /\d{1,2}-(ев|ен|ти|ви|ри|ми)/,
   ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.

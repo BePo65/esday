@@ -12,11 +12,11 @@ import weekPlugin from '~/plugins/week'
 import { expectSame, expectSameResult } from '../util'
 
 esday
-  .extend(localePlugin)
   .extend(advancedParsePlugin)
   .extend(localizedParsePlugin)
   .extend(localizedFormatPlugin)
   .extend(weekPlugin)
+  .extend(localePlugin)
 esday.registerLocale(localeDe)
 
 // Tests with Monday as start of week

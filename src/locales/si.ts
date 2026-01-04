@@ -11,6 +11,7 @@ const localeSi: Readonly<Locale> = {
   weekdaysMin: ['ඉ', 'ස', 'අ', 'බ', 'බ්‍ර', 'සි', 'සෙ'],
   months: ['දුරුතු', 'නවම්', 'මැදින්', 'බක්', 'වෙසක්', 'පොසොන්', 'ඇසළ', 'නිකිණි', 'බිනර', 'වප්', 'ඉල්', 'උඳුවප්'],
   monthsShort: ['දුරු', 'නව', 'මැදි', 'බක්', 'වෙස', 'පොසො', 'ඇස', 'නිකි', 'බින', 'වප්', 'ඉල්', 'උඳු'],
+  dayOfMonthOrdinalParse: /\d{1,2} වැනි/,
   ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.

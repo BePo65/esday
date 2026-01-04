@@ -24,6 +24,7 @@ const localeBg: Readonly<Locale> = {
     'декември',
   ],
   monthsShort: ['яну', 'фев', 'мар', 'апр', 'май', 'юни', 'юли', 'авг', 'сеп', 'окт', 'ное', 'дек'],
+  dayOfMonthOrdinalParse: /\d{1,2}-(ев|ен|ти|ви|ри|ми)/,
   ordinal: (n) => {
     const last2Digits = n % 100
     if (last2Digits > 10 && last2Digits < 20) {

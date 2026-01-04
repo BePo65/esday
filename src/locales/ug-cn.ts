@@ -37,6 +37,7 @@ const localeUgCn: Readonly<Locale> = {
     'نويابىر',
     'دېكابىر',
   ],
+  dayOfMonthOrdinalParse: /\d{1,2}(-كۈنى|-ئاي|-ھەپتە)/,
   ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.

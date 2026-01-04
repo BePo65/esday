@@ -6,6 +6,8 @@ Locale extends `esday` to support locales by adding the `locale`, the `registerL
 
 The locale to use can be loaded from the corresponding locale file ([list of supported locales](../locales/locales.md)).
 
+If used together with the plugin AdvancedParse, then Locale must be activated after AdvancedParse, as AdvancedParse "terminates" the parsing chain, if we have a parsing format.
+
 **Note**: the name of the locale (e.g. used for setting the locale) is case sensitive.
 
 ## Usage
@@ -70,6 +72,7 @@ Properties of the `Locale` object:
 | weekdaysMin   | DayNames | Array of the short day names (e.g. `['Su', 'Mo', ... ]`)                                                                   |
 | months        | MonthNames \| MonthNamesStandaloneFormat \| MonthNamesFunction | Array of the full month names (e.g. `['January', 'February', ... ]`) |
 | monthsShort   | MonthNames \| MonthNamesStandaloneFormat \| MonthNamesFunction | Array of the short month names (e.g. `['Jan', 'Feb', ... ]`)         |
+| dayOfMonthOrdinalParse | RegExp | Regular expression for parsing the day-of-month as an ordinal number                                                      |
 | ordinal       | function | Get the ordinal form of a number (e.g. `ordinal(1) // returns '1st'`)                                                      |
 | weekStart     | number   | Which is the 1st day of the week - 0=Sunday, 1=Monday etc. (e.g. `1` for Monday)                                           |
 | yearStart     | number   | Which date **must** be part of the 1st week of the year (e.g. `4` for Jan 4th)                                             |

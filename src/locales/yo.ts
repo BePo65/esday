@@ -24,6 +24,7 @@ const localeYo: Readonly<Locale> = {
     'Ọ̀pẹ̀̀',
   ],
   monthsShort: ['Sẹ́r', 'Èrl', 'Ẹrn', 'Ìgb', 'Èbi', 'Òkù', 'Agẹ', 'Ògú', 'Owe', 'Ọ̀wà', 'Bél', 'Ọ̀pẹ̀̀'],
+  dayOfMonthOrdinalParse: /ọjọ́\s\d{1,2}/,
   ordinal: (n) => `ọjọ́ ${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.

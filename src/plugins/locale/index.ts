@@ -6,7 +6,10 @@
  * 'updateLocale' method to the esday factory.
  *
  * esday parameters in '$conf' defined in Locale plugin:
- *   $locale_name  the name of the current locale of an EsDay instance
+ *   localeName  the name of the current locale of an EsDay instance
+ *
+ * The plugin locale must be activated after the plugin advancedParse
+ * esday.extend(advancedParsePlugin).extend(localizedParsePlugin).extend(localePlugin)
  */
 
 import type { DateType, EsDay, EsDayPlugin, UnitType } from 'esday'
@@ -82,6 +85,8 @@ function cloneObject(sourceObject: object): object {
       setObjectProperty(result, key, sourceValue)
     } else if (Array.isArray(sourceValue)) {
       setObjectProperty(result, key, structuredClone(sourceValue))
+    } else if (sourceValue instanceof RegExp) {
+      setObjectProperty(result, key, new RegExp(sourceValue.source, sourceValue.flags))
     } else if (typeof sourceValue === 'object') {
       setObjectProperty(result, key, cloneObject(sourceValue))
     }
@@ -104,10 +109,10 @@ export function cloneLocale(source: Locale): Locale {
 
 function getSetPrivateLocaleName(inst: EsDay, newLocaleName?: string): string {
   if (newLocaleName) {
-    inst['$conf']['$locale_name'] = newLocaleName
+    inst['$conf']['localeName'] = newLocaleName
   }
 
-  return (inst['$conf']['$locale_name'] as string) || $localeGlobal
+  return (inst['$conf']['localeName'] as string) || ''
 }
 
 const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
@@ -139,10 +144,10 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
 
   const oldParse = dayClass.prototype['$parse']
   dayClass.prototype['$parse'] = function (d: Exclude<DateType, EsDay>) {
+    if (getSetPrivateLocaleName(this).length === 0) {
+      getSetPrivateLocaleName(this, $localeGlobal)
+    }
     oldParse.call(this, d)
-
-    // set locale name
-    getSetPrivateLocaleName(this, $localeGlobal)
   }
 
   // change startOf/endOf method

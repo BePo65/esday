@@ -9,11 +9,11 @@ import localizedParsePlugin from '~/plugins/localizedParse'
 import weekPlugin from '~/plugins/week'
 
 esday
-  .extend(localePlugin)
   .extend(advancedParsePlugin)
   .extend(localizedParsePlugin)
   .extend(localizedFormatPlugin)
   .extend(weekPlugin)
+  .extend(localePlugin)
 esday.registerLocale(localeEn)
 
 describe('week plugin - default values', () => {

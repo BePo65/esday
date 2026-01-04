@@ -46,6 +46,7 @@ const localeXpseudo: Readonly<Locale> = {
     '~Ñóv',
     '~Déc',
   ],
+  dayOfMonthOrdinalParse: /\d{1,2}(th|st|nd|rd)/,
   ordinal: (n: number) => {
     const one = n % 10
     const output =

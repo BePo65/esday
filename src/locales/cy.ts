@@ -45,6 +45,7 @@ const localeCy: Readonly<Locale> = {
     'Tach',
     'Rhag',
   ],
+  dayOfMonthOrdinalParse: /\d{1,2}(fed|ain|af|il|ydd|ed|eg)/,
   ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.

@@ -121,6 +121,7 @@ export interface Locale {
   readonly weekdaysMin: DayNames
   readonly months: MonthNames | MonthNamesStandaloneFormat | MonthNamesFunction
   readonly monthsShort: MonthNames | MonthNamesStandaloneFormat | MonthNamesFunction
+  readonly dayOfMonthOrdinalParse: RegExp | [RegExp, RegExp]
   readonly ordinal: (number: number, period?: string) => string
   readonly weekStart: number
   readonly yearStart: number

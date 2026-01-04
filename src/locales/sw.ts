@@ -24,6 +24,7 @@ const localeSw: Readonly<Locale> = {
     'Desemba',
   ],
   monthsShort: ['Jan', 'Feb', 'Mac', 'Apr', 'Mei', 'Jun', 'Jul', 'Ago', 'Sep', 'Okt', 'Nov', 'Des'],
+  dayOfMonthOrdinalParse: /\d{1,2}/,
   ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.

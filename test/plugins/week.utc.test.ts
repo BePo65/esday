@@ -10,7 +10,7 @@ import utcPlugin from '~/plugins/utc'
 import weekPlugin from '~/plugins/week'
 import { expectSame, expectSameResult } from '../util'
 
-esday.extend(utcPlugin).extend(localePlugin).extend(advancedParsePlugin).extend(weekPlugin)
+esday.extend(utcPlugin).extend(advancedParsePlugin).extend(weekPlugin).extend(localePlugin)
 
 esday.registerLocale(localeEn)
 esday.registerLocale(localeDe)

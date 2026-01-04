@@ -65,6 +65,7 @@ const localeBn: Readonly<Locale> = {
     'নভে',
     'ডিসে',
   ],
+  dayOfMonthOrdinalParse: /\d{1,2}/,
   ordinal: (n) => `${n}`, // No special ordinal format
   weekStart: 0, // The file did not contain this information, we will set it to zero as default.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.

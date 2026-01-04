@@ -35,6 +35,7 @@ const localeJa: Readonly<Locale> = {
     '11月',
     '12月',
   ],
+  dayOfMonthOrdinalParse: /\d{1,2}日/,
   ordinal: (n) => `${n}日`,
   weekStart: 0, // Sunday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.

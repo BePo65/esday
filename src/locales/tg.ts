@@ -44,6 +44,7 @@ const localeTg: Readonly<Locale> = {
   weekdaysMin: ['яш', 'дш', 'сш', 'чш', 'пш', 'ҷм', 'шб'],
   months,
   monthsShort: ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'],
+  dayOfMonthOrdinalParse: /\d{1,2}-(ум|юм)/,
   ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.

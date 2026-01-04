@@ -166,6 +166,7 @@ const localeMr: Readonly<Locale> = {
     'नोव्हें.',
     'डिसें.',
   ],
+  dayOfMonthOrdinalParse: /\d{1,2}/,
   ordinal: (n) => `${n}`,
   weekStart: 0, // Sunday is the first day of the week.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.

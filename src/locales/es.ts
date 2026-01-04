@@ -25,6 +25,7 @@ const localeEs: Readonly<Locale> = {
     'diciembre',
   ],
   monthsShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+  dayOfMonthOrdinalParse: /\d{1,2}º/,
   ordinal: (n) => `${n}º`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.

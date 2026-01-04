@@ -54,6 +54,7 @@ const localeKu: Readonly<Locale> = {
   weekdaysMin: ['ی', 'د', 'س', 'چ', 'پ', 'هـ', 'ش'],
   months,
   monthsShort: months,
+  dayOfMonthOrdinalParse: /\d{1,2}/,
   ordinal: (n) => `${n}`,
   weekStart: 6, // Saturday is the first day of the week.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.

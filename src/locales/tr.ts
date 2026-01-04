@@ -46,6 +46,7 @@ const localeTr: Readonly<Locale> = {
     'Aralık',
   ],
   monthsShort: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
+  dayOfMonthOrdinalParse: /\d{1,2}/,
   ordinal: (n: number) => {
     if (n === 0) {
       // special case for zero

@@ -1,7 +1,6 @@
 node_modules
 dist
 # do not put 'gh_pages' in .gitignore or github action to publish docs will fail
-pnpm-lock.yaml
 bun.lockb
 coverage
 /test-results/

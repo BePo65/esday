@@ -10,11 +10,18 @@
  * esday parameters in '$conf' defined in advancedParse plugin:
  *   parseOptions     ParseOptions object containing parsing options
  *
+ * esday parameters in '$conf' defined in Locale plugin:
+ *   localeName  the name of the current locale of an EsDay instance
+ *
  * new esday parameters in '$conf.parseOptions':
  *   locale           name of the locale to use when parsing
  *
- * This plugin requires the 'advancedParse' plugin and the 'locale' plugin
+ * This plugin requires the 'advancedParse' plugin, the 'locale' plugin
  * and at least 1 registered locale.
+ * When using the locale as a parsing parameter, this locale must be registered too.
+ *
+ * The plugin localizedParse must be activated after the plugin advancedParse; e.g.
+ * esday.extend(advancedParsePlugin).extend(localizedParsePlugin).extend(localePlugin)
  */
 
 import type { DateType, EsDay, EsDayFactory, EsDayPlugin } from 'esday'
@@ -26,6 +33,23 @@ import type { Locale, MonthNames, MonthNamesStandaloneFormat } from '../locale'
 const match2 = /\d{2}/
 const match1to2 = /\d\d?/
 const matchWord = /\d*[^-_:/,()\s\d]+/
+const matchDayOfMonthOrdinalDefault = /\d{1,2}/
+
+/**
+ * Update parsing patterns that depend on the locale (e.g. 'Do')
+ * @param patterns - parseTokensDefinitions
+ * @param locale - locale to use
+ */
+const updateParsingPatternsFromLocale = (patterns: TokenDefinitions, locale: Locale) => {
+  const dayOfMonthOrdinalPattern = locale.dayOfMonthOrdinalParse
+  if (Array.isArray(dayOfMonthOrdinalPattern)) {
+    patterns.Do[0] = dayOfMonthOrdinalPattern[0]
+    patterns.Do[1] = dayOfMonthOrdinalPattern[1]
+  } else {
+    patterns.Do[0] = dayOfMonthOrdinalPattern
+    patterns.Do[1] = dayOfMonthOrdinalPattern
+  }
+}
 
 /**
  * Add 'input' to parsedElements as 'hours'.
@@ -33,7 +57,7 @@ const matchWord = /\d*[^-_:/,()\s\d]+/
  * @param input - parsed component of a date, to be transformed and inserted in parsedElements
  * @param options - parsing options e.g. containing the locale to use
  */
-function addHour(parsedElements: ParsedElements, input: string, _parseOptions: ParseOptions) {
+const addHour = (parsedElements: ParsedElements, input: string, _parseOptions: ParseOptions) => {
   parsedElements['hours'] = +input
 }
 
@@ -44,7 +68,11 @@ function addHour(parsedElements: ParsedElements, input: string, _parseOptions: P
  * @param isLowerCase - should this be a lowercase meridiem string?
  * @returns is input an 'afternoon' string for given locale
  */
-function meridiemMatch(locale: Locale, input: string, isLowerCase: boolean): boolean | undefined {
+const meridiemMatch = (
+  locale: Locale,
+  input: string,
+  isLowerCase: boolean,
+): boolean | undefined => {
   let isAfternoon = false
   const { meridiem } = locale
   if (meridiem) {
@@ -67,7 +95,7 @@ function meridiemMatch(locale: Locale, input: string, isLowerCase: boolean): boo
  * @param esday - global esday object (to get locale by its name)
  * @returns function that will add the given value to date&time component as 'afternoon'
  */
-function addAfternoon(isLowerCase: boolean, esday: EsDayFactory) {
+const addAfternoon = (isLowerCase: boolean, esday: EsDayFactory) => {
   return function meridiemUpdater(
     parsedElements: ParsedElements,
     input: string,
@@ -89,7 +117,7 @@ function addAfternoon(isLowerCase: boolean, esday: EsDayFactory) {
  * @param esday - global esday object (to get locale by its name)
  * @returns function that will add the given value to date&time component as 'afternoon'
  */
-function addDayOfMonthOrdinal(esday: EsDayFactory) {
+const addDayOfMonthOrdinal = (esday: EsDayFactory) => {
   return function monthOrdinalUpdater(
     parsedElements: ParsedElements,
     input: string,
@@ -118,7 +146,7 @@ function addDayOfMonthOrdinal(esday: EsDayFactory) {
  * @param esday - global esday object (to get locale by its name)
  * @returns function that will add the given value to date&time component
  */
-function addMonth(property: 'months' | 'monthsShort', esday: EsDayFactory) {
+const addMonth = (property: 'months' | 'monthsShort', esday: EsDayFactory) => {
   return function monthUpdater(
     parsedElements: ParsedElements,
     input: string,
@@ -146,7 +174,7 @@ function addMonth(property: 'months' | 'monthsShort', esday: EsDayFactory) {
  * @param currentLocale - Locale to use
  * @returns format with locale dependent tokens replaced
  */
-function replaceLocaleTokens(format: string, currentLocale: Locale) {
+const replaceLocaleTokens = (format: string, currentLocale: Locale) => {
   const localFormattingTokens = /(\[[^[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g
   function replaceLongDateFormatTokens(input: string) {
     return currentLocale.formats[input as keyof typeof currentLocale.formats] ?? input
@@ -202,7 +230,11 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     hh: [match1to2, match2, addHour],
     a: [matchWord, matchWord, addAfternoon(true, dayFactory), _postParseMeridiem],
     A: [matchWord, matchWord, addAfternoon(false, dayFactory), _postParseMeridiem],
-    Do: [matchWord, matchWord, addDayOfMonthOrdinal(dayFactory)],
+    Do: [
+      matchDayOfMonthOrdinalDefault,
+      matchDayOfMonthOrdinalDefault,
+      addDayOfMonthOrdinal(dayFactory),
+    ],
     MMM: [matchWord, matchWord, addMonth('monthsShort', dayFactory)],
     MMMM: [matchWord, matchWord, addMonth('months', dayFactory)],
   }
@@ -228,7 +260,11 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     const arg2 = this['$conf'].args_2
     if (!isUndefined(arg2) && typeof arg2 === 'string') {
       currentLocale = dayFactory.getLocale(arg2)
+      this['$conf'].localeName = arg2
     }
+
+    // get parsing patterns from locale
+    updateParsingPatternsFromLocale(parseTokensDefinitions, currentLocale)
 
     // create required parseOptions
     const parseOptions: ParseOptions = (this['$conf'].parseOptions as ParseOptions) ?? {}
@@ -255,6 +291,17 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     }
 
     oldParse.call(this, newDate)
+
+    // remove properties required for parsing only from $conf
+    if (this['$conf'].parseOptions !== undefined) {
+      if (this['$conf'].parseOptions?.locale !== undefined) {
+        delete this['$conf'].parseOptions.locale
+      }
+
+      if (Object.keys(this['$conf'].parseOptions).length > 0) {
+        delete this['$conf'].parseOptions
+      }
+    }
   }
 }
 

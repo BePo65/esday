@@ -9,6 +9,8 @@ AdvancedParse requires no other plugin.
 
 AdvancedParse can be used together with the plugin Utc. If used together with the plugin Utc, the plugin Utc must be activated using esday.extend(...) before the plugin AdvancedParse.
 
+If used together with the plugin Locale and/or LocalizedParse, then AdvancedParse must be activated before these plugins, as AdvancedParse "terminates" the parsing chain, if we have a parsing format.
+
 ### Method signatures
 ```typescript
 esday(date: string, format: string): EsDay

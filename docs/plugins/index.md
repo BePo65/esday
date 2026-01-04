@@ -1,6 +1,6 @@
 Currently the following plugins are available:
-- [AdvancedParse](./advancedParse.md) (for parsing arbitrary formatted date and time strings)
 - [AdvancedFormat](./advancedFormat.md) (for formatting using a custom template)
+- [AdvancedParse](./advancedParse.md) (for parsing arbitrary formatted date and time strings)
 - [Calendar](./calendar.md) (Calendar adds .calendar() API - for formatting time relative to a given reference day)
 - [DayOfYear](./dayOfYear.md) (DayOfYear adds .dayOfYear() API - number indicating the day of the year)
 - [Duration](./duration.md) (Duration implements duration objects)

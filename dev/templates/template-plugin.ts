@@ -3,6 +3,8 @@
  *
  * This plugin adds 'method1', 'method2' and formatting and parsing tokens to EsDay
  *
+ * This plugin adds the formatting tokens '?' and '??' to EsDay.
+ *
  * This plugin requires the '<dependency1>' plugin.
  *
  * esday parameters in '$conf' defined in <pluginName> plugin:

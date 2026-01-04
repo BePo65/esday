@@ -44,6 +44,7 @@ const localeHyAm: Readonly<Locale> = {
   weekdaysMin: ['կրկ', 'երկ', 'երք', 'չրք', 'հնգ', 'ուրբ', 'շբթ'],
   months,
   monthsShort: ['հնվ', 'փտր', 'մրտ', 'ապր', 'մյս', 'հնս', 'հլս', 'օգս', 'սպտ', 'հկտ', 'նմբ', 'դկտ'],
+  dayOfMonthOrdinalParse: /\d{1,2}|\d{1,2}-(ին|րդ)/,
   ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.

@@ -39,6 +39,7 @@ const localeKy: Readonly<Locale> = {
   ],
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
+  dayOfMonthOrdinalParse: /\d{1,2}-(чи|чы|чү|чу)/,
   ordinal: (n) => `${n}`,
   formats: {
     LT: 'HH:mm',

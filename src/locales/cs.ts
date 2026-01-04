@@ -161,6 +161,7 @@ const localeCs: Readonly<Locale> = {
   weekdaysMin: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
   months,
   monthsShort: ['led', 'úno', 'bře', 'dub', 'kvě', 'čvn', 'čvc', 'srp', 'zář', 'říj', 'lis', 'pro'],
+  dayOfMonthOrdinalParse: /\d{1,2}\./,
   ordinal: (n) => `${n}.`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
