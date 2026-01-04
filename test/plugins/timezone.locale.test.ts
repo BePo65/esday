@@ -43,6 +43,9 @@ describe('timezone plugin - with locale', () => {
       expectSameObjectTz((esday) => esday.tz(timestamp, formatString, locale, timezone))
       expect(esday.tz(timestamp, formatString, locale, timezone).isValid()).toBeTruthy()
       expectSameValueTz((esday) => esday.tz(timestamp, formatString, locale, timezone).tz())
+      expectSameValueTz((esday) =>
+        esday.tz(timestamp, formatString, locale, timezone).locale().toLowerCase(),
+      )
     },
   )
 
@@ -69,6 +72,9 @@ describe('timezone plugin - with locale', () => {
       expectSameObjectTz((esday) => esday.tz(timestamp, formatString, locale, true, timezone))
       expect(esday.tz(timestamp, formatString, locale, true, timezone).isValid()).toBeTruthy()
       expectSameValueTz((esday) => esday.tz(timestamp, formatString, locale, true, timezone).tz())
+      expectSameValueTz((esday) =>
+        esday.tz(timestamp, formatString, locale, true, timezone).locale().toLowerCase(),
+      )
     },
   )
 
