@@ -49,13 +49,18 @@ describe('timezone plugin - with locale', () => {
     },
   )
 
-  it.todo('parse with format, locale and strict')
   it.each([
     {
       timestamp: '2025 七月 15日 8:10:21 早上',
       timezone: 'Asia/Taipei',
       formatString: 'YYYY MMMM Do h:mm:ss A',
       locale: 'zh-CN',
+    },
+    {
+      timestamp: '2024 déc. 24 8:10:21 AM',
+      timezone: 'Europe/Paris',
+      formatString: 'YYYY MMM Do h:mm:ss A',
+      locale: 'fr',
     },
     {
       timestamp: '2024 déc. 1er 8:10:21 AM',
