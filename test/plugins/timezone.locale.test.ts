@@ -11,12 +11,11 @@ import utcPlugin from '~/plugins/utc'
 import { expectSameObjectTz, expectSameValueTz } from './timezone-util'
 
 esday
-  .extend(localePlugin)
   .extend(utcPlugin)
   .extend(advancedParsePlugin)
   .extend(localizedParsePlugin)
-  .extend(localePlugin)
   .extend(timezonePLugin)
+  .extend(localePlugin)
 
 esday.registerLocale(localeFr)
 esday.registerLocale(localeZhCn)
