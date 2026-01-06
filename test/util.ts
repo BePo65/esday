@@ -26,7 +26,7 @@ export function expectSameValue(fn: (instance: EsDayFactory) => any) {
  * check, if the resulting date objects are the same.
  * To be used in a vitest test file.
  * Example:
- * expectSameResult((esday) => esday().utc().utcOffset(100, true))
+ * expectSameObject((esday) => esday().utc().utcOffset(100, true))
  * @param fn function whose return value is to be checked
  */
 export function expectSameObject(fn: (instance: EsDayFactory) => EsDay | Moment) {
@@ -50,7 +50,7 @@ export function expectSameObject(fn: (instance: EsDayFactory) => EsDay | Moment)
  * check, if the resulting Duration objects are the same.
  * To be used in a vitest test file.
  * Example:
- * expectSameResult((esday) => esday.duration())
+ * expectSameDuration((esday) => esday.duration())
  * @param fn function whose return value is to be checked
  */
 export function expectSameDuration(fn: (instance: EsDayFactory) => Duration | moment.Duration) {

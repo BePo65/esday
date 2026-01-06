@@ -6,10 +6,10 @@ import { expect } from 'vitest'
  * Call a given function with esday and moment-timezone and
  * check, if the resulting date objects are the same.
  * To be used in a vitest test file.
- * This is a clone of 'expectSameResult' using 'moment-timezone'
+ * This is a clone of 'expectSameObject' using 'moment-timezone'
  * instead of 'moment'.
  * Example:
- * expectSameResultTz((esday) => esday().utc().utcOffset(100, true))
+ * expectSameObjectTz((esday) => esday().utc().utcOffset(100, true))
  * @param fn function whose return value is to be checked
  */
 export const expectSameObjectTz = (fn: (instance: EsDayFactory) => EsDay | Moment) => {
@@ -31,7 +31,7 @@ export const expectSameObjectTz = (fn: (instance: EsDayFactory) => EsDay | Momen
  * check, if the resulting values are the same.
  * To be used in a vitest test file.
  * Example:
- * expectSame((esday) => esday().format())
+ * expectSameValueTz((esday) => esday().format())
  * @param fn function whose return value is to be checked
  */
 // biome-ignore lint/suspicious/noExplicitAny: this method checks arbitrary methods of esday / moment
