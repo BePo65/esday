@@ -393,9 +393,44 @@ describe('timezone plugin without plugins', () => {
     expectSameValueTz((esday) => esday(timestamp).tz(timezone).format())
   })
 
-  it.todo('convert with keepLocalTime')
+  it.each([
+    {
+      timestamp: '2025-11-09 01:15',
+      timezone: 'America/Toronto',
+    },
+    {
+      timestamp: '2025-11-09 01:15',
+      timezone: 'Europe/Berlin',
+    },
+    {
+      timestamp: '2023-10-02T00:00:00+02:00',
+      timezone: 'Europe/Prague',
+      comment: 'dayjs issue#2753',
+    },
+  ])('convert with keepLocalTime "$timestamp" to "$timezone"', ({ timestamp, timezone }) => {
+    expectSameObjectTz((esday) => esday(timestamp).tz(timezone, true))
+    expect(esday(timestamp).tz(timezone, true).isValid()).toBeTruthy()
+    expectSameValueTz((esday) => esday(timestamp).tz(timezone, true).format())
+  })
 
-  it.todo('convert with format and strict')
+  it('convert with keepLocalTime for GMT - different than moment.js', () => {
+    const timestamp = '2021-10-31T15:00:00+00:00'
+    const timezone = 'Europe/London'
+    const d = esday(timestamp).tz(timezone, true)
+    const m = moment(timestamp).tz(timezone, true)
+
+    expect(d.isValid()).toBeTruthy()
+    expect(m.isValid()).toBeTruthy()
+    expect(d.valueOf()).toBe(m.valueOf())
+    expect(d.toISOString()).toBe(m.toISOString())
+    expect(d.toDate()).toEqual(m.toDate())
+    expect(d.toJSON()).toBe(m.toJSON())
+    expect(d.utcOffset()).toBe(m.utcOffset())
+
+    // differences to moment.js
+    expect(d.isUTC()).toBeFalsy()
+    expect(m.isUTC()).toBeTruthy()
+  })
 
   it('convert returns new instance', () => {
     const timestamp = '2025-07-13 17:05'
@@ -506,5 +541,132 @@ describe('timezone plugin without plugins', () => {
     const clonedDate = baseDate.clone()
 
     expect(clonedDate.tz()).toBe(baseDate.tz())
+  })
+
+  it('startOf day keeps timezone', () => {
+    const timestamp = '2010-01-01 00:00:00'
+    const timezone = 'America/New_York'
+    const originalStartOf = esday.tz(timestamp, timezone).startOf('day')
+    const startOfDay = esday.tz(timestamp, timezone).startOf('day')
+
+    expect(startOfDay.isValid()).toBeTruthy()
+    expect(startOfDay.valueOf()).toEqual(originalStartOf.valueOf())
+    expectSameObjectTz((esday) => esday.tz(timestamp, timezone).startOf('day'))
+    expectSameValueTz((esday) => esday.tz(timestamp, timezone).startOf('day').tz())
+  })
+
+  it('endOf day keeps timezone', () => {
+    const timestamp = '2009-12-31 23:59:59.999'
+    const timezone = 'America/New_York'
+    const originalEndOf = esday.tz(timestamp, timezone).endOf('day')
+    const endOfDay = esday.tz(timestamp, timezone).endOf('day')
+
+    expect(endOfDay.isValid()).toBeTruthy()
+    expect(endOfDay.valueOf()).toEqual(originalEndOf.valueOf())
+    expectSameObjectTz((esday) => esday.tz(timestamp, timezone).endOf('day'))
+    expectSameValueTz((esday) => esday.tz(timestamp, timezone).endOf('day').tz())
+  })
+
+  it('startOf month keeps timezone - v1', () => {
+    const timestamp = '2010-03-23 14:25:36'
+    const timezone = 'Asia/Taipei'
+
+    expect(esday.tz(timestamp, timezone).startOf('month').isValid()).toBeTruthy()
+    expectSameObjectTz((esday) => esday.tz(timestamp, timezone).startOf('month'))
+    expectSameValueTz((esday) => esday.tz(timestamp, timezone).startOf('month').tz())
+  })
+
+  it.each([
+    {
+      timestamp: '2012-03-23 14:25:36',
+      timezone: 'America/New_York',
+      comment: 'month with DST spring forward',
+    },
+    {
+      timestamp: '2010-07-23 14:25:36',
+      timezone: 'America/New_York',
+      comment: 'without DST effects',
+    },
+    {
+      timestamp: '2012-11-29 14:25:36',
+      timezone: 'America/New_York',
+      comment: 'month with DST fall back',
+    },
+  ])('startOf month keeps timezone for "$timestamp" in "$timezone', ({ timestamp, timezone }) => {
+    expect(esday.tz(timestamp, timezone).startOf('month').isValid()).toBeTruthy()
+    expectSameObjectTz((esday) => esday.tz(timestamp, timezone).startOf('month'))
+    expectSameValueTz((esday) => esday.tz(timestamp, timezone).startOf('month').tz())
+  })
+
+  it.each([
+    {
+      timestamp: '2012-03-02 14:25:36',
+      timezone: 'America/New_York',
+      comment: 'month with DST spring forward',
+    },
+    {
+      timestamp: '2010-07-02 14:25:36',
+      timezone: 'America/New_York',
+      comment: 'without DST effects',
+    },
+    {
+      timestamp: '2012-11-02 14:25:36',
+      timezone: 'America/New_York',
+      comment: 'month with DST fall back',
+    },
+  ])('endOf month keeps timezone for "$timestamp" in "$timezone', ({ timestamp, timezone }) => {
+    expect(esday.tz(timestamp, timezone).endOf('month').isValid()).toBeTruthy()
+    expectSameObjectTz((esday) => esday.tz(timestamp, timezone).endOf('month'))
+    expectSameValueTz((esday) => esday.tz(timestamp, timezone).endOf('month').tz())
+  })
+})
+
+describe('timezone plugin with utc', () => {
+  afterEach(() => {
+    esday.tz.setDefault()
+    moment.tz.setDefault()
+  })
+
+  it.each([
+    {
+      timestamp: '2025-11-09 01:15',
+      timezone: 'America/Toronto',
+    },
+    {
+      timestamp: '2025-11-09 01:15',
+      timezone: 'Europe/Berlin',
+    },
+    {
+      timestamp: '2023-10-02T00:00:00+02:00',
+      timezone: 'Europe/Prague',
+      comment: 'dayjs issue#2753',
+    },
+    {
+      timestamp: '2021-10-31T15:00:00+00:00',
+      timezone: 'Europe/London',
+      comment: 'dayjs issue#1678; is not',
+    },
+  ])('convert "$timestamp" to "$timezone"', ({ timestamp, timezone }) => {
+    expectSameObjectTz((esday) => esday.utc(timestamp).tz(timezone))
+    expect(esday.utc(timestamp).tz(timezone).isValid()).toBeTruthy()
+  })
+
+  it.each([
+    {
+      timestamp: '2025-11-09 01:15',
+      timezone: 'America/Toronto',
+    },
+    {
+      timestamp: '2025-11-09 01:15',
+      timezone: 'Europe/Berlin',
+    },
+    {
+      timestamp: '2023-10-02T00:00:00+02:00',
+      timezone: 'Europe/Prague',
+      comment: 'dayjs issue#2753',
+    },
+  ])('convert with keepLocalTime "$timestamp" to "$timezone"', ({ timestamp, timezone }) => {
+    expectSameObjectTz((esday) => esday.utc(timestamp).tz(timezone, true))
+    expect(esday.utc(timestamp).tz(timezone, true).isValid()).toBeTruthy()
   })
 })
