@@ -154,23 +154,24 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
 
   const oldStartOf = dayClass.prototype.startOf
   dayClass.prototype.startOf = function (units) {
-    if (!this['$conf'] || !this['$conf']['$timezone']) {
+    if (!this['$conf'] || !this['$conf']['timezone']) {
       return oldStartOf.call(this, units)
     }
 
-    const withoutTz = esdayFactory(this.format('YYYY-MM-DD HH:mm:ss:SSS')).locale(this.locale())
+    const withoutTz = esdayFactory(this.format('YYYY-MM-DD HH:mm:ss:SSS'))
     const startOfWithoutTz = oldStartOf.call(withoutTz, units)
-    return startOfWithoutTz.tz(this['$conf']['$timezone'] as string, true)
+    return startOfWithoutTz.tz(this['$conf']['timezone'] as string, true)
   }
+
   const oldEndOf = dayClass.prototype.endOf
   dayClass.prototype.endOf = function (units) {
-    if (!this['$conf'] || !this['$conf']['$timezone']) {
+    if (!this['$conf'] || !this['$conf']['timezone']) {
       return oldEndOf.call(this, units)
     }
 
-    const withoutTz = esdayFactory(this.format('YYYY-MM-DD HH:mm:ss:SSS')).locale(this.locale())
+    const withoutTz = esdayFactory(this.format('YYYY-MM-DD HH:mm:ss:SSS'))
     const endOfWithoutTz = oldEndOf.call(withoutTz, units)
-    return endOfWithoutTz.tz(this['$conf']['$timezone'] as string, true)
+    return endOfWithoutTz.tz(this['$conf']['timezone'] as string, true)
   }
 
   // @ts-expect-error "implement tz method"
