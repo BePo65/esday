@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { esday } from '~/core'
 import objectSupportPlugin from '~/plugins/objectSupport'
 import utcPlugin from '~/plugins/utc'
-import { expectSameResult } from '../util'
+import { expectSameObject } from '../util'
 
 esday.extend(utcPlugin).extend(objectSupportPlugin)
 
@@ -37,7 +37,7 @@ describe('objectSupport plugin with utc - default cases', () => {
     },
   ])('create date from object with short format "$description"', ({ value, expected }) => {
     expect(esday.utc(value).format().slice(0, -1)).toBe(expected)
-    expectSameResult((esday) => esday.utc(value))
+    expectSameObject((esday) => esday.utc(value))
   })
 
   it.each([
@@ -98,7 +98,7 @@ describe('objectSupport plugin with utc - default cases', () => {
     },
   ])('create date from object with long format "$description"', ({ value, expected }) => {
     expect(esday.utc(value).format().slice(0, -1)).toBe(expected)
-    expectSameResult((esday) => esday.utc(value))
+    expectSameObject((esday) => esday.utc(value))
   })
 
   it.each([
@@ -159,7 +159,7 @@ describe('objectSupport plugin with utc - default cases', () => {
     },
   ])('create date from object with plural format "$description"', ({ value, expected }) => {
     expect(esday.utc(value).format().slice(0, -1)).toBe(expected)
-    expectSameResult((esday) => esday.utc(value))
+    expectSameObject((esday) => esday.utc(value))
   })
 
   it.each([
@@ -214,7 +214,7 @@ describe('objectSupport plugin with utc - default cases', () => {
     { value: {}, expected: '2025-07-17T03:24:46', description: 'none' },
   ])('add object ("$description")', ({ value, expected }) => {
     expect(esday.utc().add(value).format().slice(0, -1)).toBe(expected)
-    expectSameResult((esday) => esday.utc().add(value))
+    expectSameObject((esday) => esday.utc().add(value))
   })
 
   it.each([
@@ -248,7 +248,7 @@ describe('objectSupport plugin with utc - default cases', () => {
     { value: {}, expected: '2025-07-17T03:24:46', description: 'none' },
   ])('subtract object ("$description")', ({ value, expected }) => {
     expect(esday.utc().subtract(value).format().slice(0, -1)).toBe(expected)
-    expectSameResult((esday) => esday.utc().subtract(value))
+    expectSameObject((esday) => esday.utc().subtract(value))
   })
 
   it.each([
@@ -296,7 +296,7 @@ describe('objectSupport plugin with utc - default cases', () => {
     { value: {}, expected: '2025-07-17T03:24:46', description: 'none' },
   ])('set object ("$description")', ({ value, expected }) => {
     expect(esday.utc().set(value).format().slice(0, -1)).toBe(expected)
-    expectSameResult((esday) => esday.utc().set(value))
+    expectSameObject((esday) => esday.utc().set(value))
   })
 })
 
@@ -331,6 +331,6 @@ describe('objectSupport plugin with utc - edge cases', () => {
     { value: { D: 14 }, expected: '2025-07-14T00:00:00', description: 'D' },
   ])('create date from object with short format "$description"', ({ value, expected }) => {
     expect(esday.utc(value).format().slice(0, -1)).toBe(expected)
-    expectSameResult((esday) => esday.utc(value))
+    expectSameObject((esday) => esday.utc(value))
   })
 })

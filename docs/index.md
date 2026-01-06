@@ -37,7 +37,7 @@ Esday uses moment@2.30.1 as api reference.
 - **toString**: conforms to Day.js and uses Date.toUTCString() (returning the date in RFC 7231 format 'ddd, DD MMM YYYY HH:mm:ss [GMT]') while moment uses the format 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ'.
 - **toISOString**: conforms to Day.js and returns 'Invalid date' when called on an invalid date. In that case moment returns null (see [moment pr#3710](https://github.com/moment/moment/pull/3710)).
 
-## Using EsDay in an application
+## Demos for using EsDay in an application
 
 Examples of how to use EsDay in an application can be found in the demo apps:
 
@@ -47,3 +47,7 @@ Examples of how to use EsDay in an application can be found in the demo apps:
 | HTML        | [Html](https://github.com/BePo65/esday-demo-html) | [GitHub Pages](https://bepo65.github.io/esday-demo-html/) |
 | Angular     | [Angular](https://github.com/BePo65/esday-demo-angular) | [GitHub Pages](https://bepo65.github.io/esday-demo-angular/) |
 | React       | [React](https://github.com/BePo65/esday-demo-react) | [GitHub Pages](https://bepo65.github.io/esday-demo-react/) |
+
+## Source code
+
+The source code for this project can be found at [g-mero/esday](https://github.com/g-mero/esday)

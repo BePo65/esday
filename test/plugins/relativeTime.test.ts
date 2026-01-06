@@ -12,7 +12,7 @@ import relativeTimePlugin, {
   type ThresholdRelativeTime,
 } from '~/plugins/relativeTime'
 import utcPlugin from '~/plugins/utc'
-import { expectSame } from '../util'
+import { expectSameValue } from '../util'
 
 esday.extend(localePlugin).extend(utcPlugin).extend(relativeTimePlugin)
 esday
@@ -215,25 +215,25 @@ describe('relativeTime plugin - without locale', () => {
   it('should handle basic usage', () => {
     const nowDate = '2023-11-17T03:24:46.234'
 
-    expectSame((esday) => esday(nowDate).fromNow())
-    expectSame((esday) => esday(nowDate).fromNow(true))
-    expectSame((esday) => esday(nowDate).toNow())
-    expectSame((esday) => esday(nowDate).toNow(true))
-    expectSame((esday) => esday(nowDate).from(targeTimeAsString))
-    expectSame((esday) => esday(nowDate).from(targeTimeAsString, true))
-    expectSame((esday) => esday(nowDate).to(targeTimeAsString))
-    expectSame((esday) => esday(nowDate).to(targeTimeAsString, true))
+    expectSameValue((esday) => esday(nowDate).fromNow())
+    expectSameValue((esday) => esday(nowDate).fromNow(true))
+    expectSameValue((esday) => esday(nowDate).toNow())
+    expectSameValue((esday) => esday(nowDate).toNow(true))
+    expectSameValue((esday) => esday(nowDate).from(targeTimeAsString))
+    expectSameValue((esday) => esday(nowDate).from(targeTimeAsString, true))
+    expectSameValue((esday) => esday(nowDate).to(targeTimeAsString))
+    expectSameValue((esday) => esday(nowDate).to(targeTimeAsString, true))
   })
 
   it('should handle invalid input', () => {
-    expectSame((esday) => esday(C.INVALID_DATE).fromNow().toLowerCase())
-    expectSame((esday) => esday(C.INVALID_DATE).toNow().toLowerCase())
-    expectSame((esday) => esday(C.INVALID_DATE).from(targeTimeAsString).toLowerCase())
-    expectSame((esday) => esday(C.INVALID_DATE).to(targeTimeAsString).toLowerCase())
-    expectSame((esday) => esday(C.INVALID_DATE).fromNow(true).toLowerCase())
-    expectSame((esday) => esday(C.INVALID_DATE).toNow(true).toLowerCase())
-    expectSame((esday) => esday(C.INVALID_DATE).from(targeTimeAsString, true).toLowerCase())
-    expectSame((esday) => esday(C.INVALID_DATE).to(targeTimeAsString, true).toLowerCase())
+    expectSameValue((esday) => esday(C.INVALID_DATE).fromNow().toLowerCase())
+    expectSameValue((esday) => esday(C.INVALID_DATE).toNow().toLowerCase())
+    expectSameValue((esday) => esday(C.INVALID_DATE).from(targeTimeAsString).toLowerCase())
+    expectSameValue((esday) => esday(C.INVALID_DATE).to(targeTimeAsString).toLowerCase())
+    expectSameValue((esday) => esday(C.INVALID_DATE).fromNow(true).toLowerCase())
+    expectSameValue((esday) => esday(C.INVALID_DATE).toNow(true).toLowerCase())
+    expectSameValue((esday) => esday(C.INVALID_DATE).from(targeTimeAsString, true).toLowerCase())
+    expectSameValue((esday) => esday(C.INVALID_DATE).to(targeTimeAsString, true).toLowerCase())
   })
 
   it('should accept function as "future"', () => {
@@ -461,7 +461,7 @@ describe('relativeTime plugin - without locale', () => {
   )
 
   it('should accept fractional difference', () => {
-    expectSame((esday) => esday().from(esday().add(36.1, C.HOUR)))
+    expectSameValue((esday) => esday().from(esday().add(36.1, C.HOUR)))
   })
 
   it('should return default thresholds', () => {
@@ -552,7 +552,7 @@ describe('relativeTime plugin - utc', () => {
   ])(
     'fromNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"',
     ({ difference, unit, withoutSuffix, expected }) => {
-      expectSame((esday) => esday.utc().subtract(difference, unit).fromNow(withoutSuffix))
+      expectSameValue((esday) => esday.utc().subtract(difference, unit).fromNow(withoutSuffix))
       expect(esday.utc().subtract(difference, unit).fromNow(withoutSuffix)).toBe(expected)
     },
   )
@@ -573,7 +573,9 @@ describe('relativeTime plugin - utc', () => {
   ])(
     'from "$sourceDate" to "$referenceDate" withoutSuffix="$withoutSuffix"',
     ({ sourceDate, referenceDate, withoutSuffix, expected }) => {
-      expectSame((esday) => esday.utc(sourceDate).from(esday.utc(referenceDate), withoutSuffix))
+      expectSameValue((esday) =>
+        esday.utc(sourceDate).from(esday.utc(referenceDate), withoutSuffix),
+      )
       expect(esday.utc(sourceDate).from(esday.utc(referenceDate), withoutSuffix)).toBe(expected)
     },
   )
@@ -602,7 +604,7 @@ describe('relativeTime plugin - utc', () => {
   ])(
     'toNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"',
     ({ difference, unit, withoutSuffix, expected }) => {
-      expectSame((esday) => esday.utc().subtract(difference, unit).toNow(withoutSuffix))
+      expectSameValue((esday) => esday.utc().subtract(difference, unit).toNow(withoutSuffix))
       expect(esday.utc().subtract(difference, unit).toNow(withoutSuffix)).toBe(expected)
     },
   )
@@ -623,7 +625,7 @@ describe('relativeTime plugin - utc', () => {
   ])(
     'to "$sourceDate" from "$referenceDate" withoutSuffix="$withoutSuffix"',
     ({ sourceDate, referenceDate, withoutSuffix, expected }) => {
-      expectSame((esday) => esday.utc(sourceDate).to(esday.utc(referenceDate), withoutSuffix))
+      expectSameValue((esday) => esday.utc(sourceDate).to(esday.utc(referenceDate), withoutSuffix))
       expect(esday.utc(sourceDate).to(esday.utc(referenceDate), withoutSuffix)).toBe(expected)
     },
   )
@@ -679,7 +681,7 @@ describe('relativeTime plugin - locale en', () => {
   ])(
     'fromNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"',
     ({ difference, unit, withoutSuffix, expected }) => {
-      expectSame((esday) => esday().subtract(difference, unit).fromNow(withoutSuffix))
+      expectSameValue((esday) => esday().subtract(difference, unit).fromNow(withoutSuffix))
       expect(esday().subtract(difference, unit).fromNow(withoutSuffix)).toBe(expected)
     },
   )
@@ -700,7 +702,7 @@ describe('relativeTime plugin - locale en', () => {
   ])(
     'from "$sourceDate" to "$referenceDate" withoutSuffix="$withoutSuffix"',
     ({ sourceDate, referenceDate, withoutSuffix, expected }) => {
-      expectSame((esday) => esday(sourceDate).from(esday(referenceDate), withoutSuffix))
+      expectSameValue((esday) => esday(sourceDate).from(esday(referenceDate), withoutSuffix))
       expect(esday(sourceDate).from(esday(referenceDate), withoutSuffix)).toBe(expected)
     },
   )
@@ -729,7 +731,7 @@ describe('relativeTime plugin - locale en', () => {
   ])(
     'toNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"',
     ({ difference, unit, withoutSuffix, expected }) => {
-      expectSame((esday) => esday().subtract(difference, unit).toNow(withoutSuffix))
+      expectSameValue((esday) => esday().subtract(difference, unit).toNow(withoutSuffix))
       expect(esday().subtract(difference, unit).toNow(withoutSuffix)).toBe(expected)
     },
   )
@@ -750,7 +752,7 @@ describe('relativeTime plugin - locale en', () => {
   ])(
     'to "$sourceDate" from "$referenceDate" withoutSuffix="$withoutSuffix"',
     ({ sourceDate, referenceDate, withoutSuffix, expected }) => {
-      expectSame((esday) => esday(sourceDate).to(esday(referenceDate), withoutSuffix))
+      expectSameValue((esday) => esday(sourceDate).to(esday(referenceDate), withoutSuffix))
       expect(esday(sourceDate).to(esday(referenceDate), withoutSuffix)).toBe(expected)
     },
   )
@@ -804,7 +806,7 @@ describe('relativeTime plugin - locale fr', () => {
   ])(
     'fromNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"',
     ({ difference, unit, withoutSuffix, expected }) => {
-      expectSame((esday) => esday().subtract(difference, unit).fromNow(withoutSuffix))
+      expectSameValue((esday) => esday().subtract(difference, unit).fromNow(withoutSuffix))
       expect(esday().subtract(difference, unit).fromNow(withoutSuffix)).toBe(expected)
     },
   )
@@ -825,7 +827,7 @@ describe('relativeTime plugin - locale fr', () => {
   ])(
     'from "$sourceDate" to "$referenceDate" withoutSuffix="$withoutSuffix"',
     ({ sourceDate, referenceDate, withoutSuffix, expected }) => {
-      expectSame((esday) => esday(sourceDate).from(esday(referenceDate), withoutSuffix))
+      expectSameValue((esday) => esday(sourceDate).from(esday(referenceDate), withoutSuffix))
       expect(esday(sourceDate).from(esday(referenceDate), withoutSuffix)).toBe(expected)
     },
   )
@@ -854,7 +856,7 @@ describe('relativeTime plugin - locale fr', () => {
   ])(
     'toNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"',
     ({ difference, unit, withoutSuffix, expected }) => {
-      expectSame((esday) => esday().subtract(difference, unit).toNow(withoutSuffix))
+      expectSameValue((esday) => esday().subtract(difference, unit).toNow(withoutSuffix))
       expect(esday().subtract(difference, unit).toNow(withoutSuffix)).toBe(expected)
     },
   )
@@ -875,7 +877,7 @@ describe('relativeTime plugin - locale fr', () => {
   ])(
     'to "$sourceDate" from "$referenceDate" withoutSuffix="$withoutSuffix"',
     ({ sourceDate, referenceDate, withoutSuffix, expected }) => {
-      expectSame((esday) => esday(sourceDate).to(esday(referenceDate), withoutSuffix))
+      expectSameValue((esday) => esday(sourceDate).to(esday(referenceDate), withoutSuffix))
       expect(esday(sourceDate).to(esday(referenceDate), withoutSuffix)).toBe(expected)
     },
   )
@@ -911,7 +913,7 @@ describe('relativeTime plugin - locale de', () => {
   ])(
     'fromNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"',
     ({ difference, unit, withoutSuffix, expected }) => {
-      expectSame((esday) => esday().subtract(difference, unit).fromNow(withoutSuffix))
+      expectSameValue((esday) => esday().subtract(difference, unit).fromNow(withoutSuffix))
       expect(esday().subtract(difference, unit).fromNow(withoutSuffix)).toBe(expected)
     },
   )
@@ -963,7 +965,7 @@ describe('relativeTime plugin - locale ar', () => {
   ])(
     'fromNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"',
     ({ difference, unit, withoutSuffix, expected }) => {
-      expectSame((esday) => esday().subtract(difference, unit).fromNow(withoutSuffix))
+      expectSameValue((esday) => esday().subtract(difference, unit).fromNow(withoutSuffix))
       expect(esday().subtract(difference, unit).fromNow(withoutSuffix)).toBe(expected)
     },
   )
@@ -984,7 +986,7 @@ describe('relativeTime plugin - locale ar', () => {
   ])(
     'from "$sourceDate" to "$referenceDate" withoutSuffix="$withoutSuffix"',
     ({ sourceDate, referenceDate, withoutSuffix, expected }) => {
-      expectSame((esday) => esday(sourceDate).from(esday(referenceDate), withoutSuffix))
+      expectSameValue((esday) => esday(sourceDate).from(esday(referenceDate), withoutSuffix))
       expect(esday(sourceDate).from(esday(referenceDate), withoutSuffix)).toBe(expected)
     },
   )
@@ -1013,7 +1015,7 @@ describe('relativeTime plugin - locale ar', () => {
   ])(
     'toNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"',
     ({ difference, unit, withoutSuffix, expected }) => {
-      expectSame((esday) => esday().subtract(difference, unit).toNow(withoutSuffix))
+      expectSameValue((esday) => esday().subtract(difference, unit).toNow(withoutSuffix))
       expect(esday().subtract(difference, unit).toNow(withoutSuffix)).toBe(expected)
     },
   )
@@ -1034,7 +1036,7 @@ describe('relativeTime plugin - locale ar', () => {
   ])(
     'to "$sourceDate" from "$referenceDate" withoutSuffix="$withoutSuffix"',
     ({ sourceDate, referenceDate, withoutSuffix, expected }) => {
-      expectSame((esday) => esday(sourceDate).to(esday(referenceDate), withoutSuffix))
+      expectSameValue((esday) => esday(sourceDate).to(esday(referenceDate), withoutSuffix))
       expect(esday(sourceDate).to(esday(referenceDate), withoutSuffix)).toBe(expected)
     },
   )

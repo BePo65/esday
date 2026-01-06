@@ -14,7 +14,7 @@ import type { Duration } from '~/plugins/duration'
  * @param fn function whose return value is to be checked
  */
 // biome-ignore lint/suspicious/noExplicitAny: this method checks arbitrary methods of esday / moment
-export function expectSame(fn: (instance: EsDayFactory) => any) {
+export function expectSameValue(fn: (instance: EsDayFactory) => any) {
   const d = fn(esday)
   // call fn with moment; type casting avoids error from tsc
   const m = fn(moment as unknown as EsDayFactory)
@@ -29,7 +29,7 @@ export function expectSame(fn: (instance: EsDayFactory) => any) {
  * expectSameResult((esday) => esday().utc().utcOffset(100, true))
  * @param fn function whose return value is to be checked
  */
-export function expectSameResult(fn: (instance: EsDayFactory) => EsDay | Moment) {
+export function expectSameObject(fn: (instance: EsDayFactory) => EsDay | Moment) {
   const d = fn(esday)
   // call fn with moment; type casting avoids error from tsc
   const m = fn(moment as unknown as EsDayFactory)

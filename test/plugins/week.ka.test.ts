@@ -7,7 +7,7 @@ import localePlugin from '~/plugins/locale'
 import localizedFormatPlugin from '~/plugins/localizedFormat'
 import localizedParsePlugin from '~/plugins/localizedParse'
 import weekPlugin from '~/plugins/week'
-import { expectSameResult } from '../util'
+import { expectSameObject } from '../util'
 
 esday
   .extend(advancedParsePlugin)
@@ -55,7 +55,7 @@ describe('week plugin - locale "ka"', () => {
   ])(
     'parse "$sourceString" with day-of-week token in "$formatString"',
     ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
       expect(esday(sourceString, formatString).isValid()).toBeTruthy()
     },
   )

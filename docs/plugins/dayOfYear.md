@@ -8,7 +8,7 @@ DayOfYear adds the `dayOfYear` getter and setter to EsDay to get or set the day 
 DayOfYear has no dependencies on other plugins.
 
 ### Method signatures
-```typescript
+```signature
 esday().dayOfYear(): number
 esday().dayOfYear(dayOfYear: number): EsDay
 ```

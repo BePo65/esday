@@ -5,7 +5,7 @@ import { C } from '~/common'
 
 import advancedParsePlugin from '~/plugins/advancedParse'
 import type { ParsedElements, TokenDefinitions } from '~/plugins/advancedParse/types'
-import { expectSame, expectSameResult } from '../util'
+import { expectSameObject, expectSameValue } from '../util'
 
 esday.extend(advancedParsePlugin)
 
@@ -60,7 +60,7 @@ describe('advancedParse plugin - local mode', () => {
       { formatString: 'YYYY', sourceString: '2000' },
       { formatString: 'YYYY', sourceString: '2023' },
     ])('parse year "$sourceString" with "$formatString"', ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
       expect(esday(sourceString, formatString).isValid()).toBeTruthy()
     })
 
@@ -69,7 +69,7 @@ describe('advancedParse plugin - local mode', () => {
       { formatString: 'M', sourceString: '08' },
       { formatString: 'M', sourceString: '11' },
     ])('parse month "$sourceString" with "$formatString"', ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
       expect(esday(sourceString, formatString).isValid()).toBeTruthy()
     })
 
@@ -80,7 +80,7 @@ describe('advancedParse plugin - local mode', () => {
     ])(
       'parse day of month "$sourceString" with "$formatString"',
       ({ sourceString, formatString }) => {
-        expectSameResult((esday) => esday(sourceString, formatString))
+        expectSameObject((esday) => esday(sourceString, formatString))
         expect(esday(sourceString, formatString).isValid()).toBeTruthy()
       },
     )
@@ -108,7 +108,7 @@ describe('advancedParse plugin - local mode', () => {
       'parse milliseconds "$sourceString" with "$formatString" - difference to moment.js',
       ({ sourceString, formatString, expectedMS }) => {
         expect(esday(sourceString, formatString).millisecond()).toBe(expectedMS)
-        expectSame((esday) => esday(sourceString, formatString).millisecond())
+        expectSameValue((esday) => esday(sourceString, formatString).millisecond())
       },
     )
 
@@ -137,7 +137,7 @@ describe('advancedParse plugin - local mode', () => {
       { formatString: 'X', sourceString: '1442086062.579' },
       { formatString: 'X', sourceString: '1442086062' },
     ])('parse date&time "$sourceString" with "$formatString"', ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
       expect(esday(sourceString, formatString).isValid()).toBeTruthy()
     })
 
@@ -147,7 +147,7 @@ describe('advancedParse plugin - local mode', () => {
     ])(
       'parse date&time edge case "$sourceString" with format "$formatString"',
       ({ sourceString, formatString }) => {
-        expectSameResult((esday) => esday(sourceString, formatString))
+        expectSameObject((esday) => esday(sourceString, formatString))
         expect(esday(sourceString, formatString).isValid()).toBeTruthy()
       },
     )
@@ -156,56 +156,56 @@ describe('advancedParse plugin - local mode', () => {
       const sourceString = '17?12?2023?03?24?46?234'
       const formatString = `DD${sep}MM${sep}YYYY${sep}HH${sep}mm${sep}ss${sep}SSS`
 
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
     })
 
     it('parse with "." as separator', () => {
       const sourceString = '17.12.2023T03.12.46.234'
       const formatString = 'DD.MM.YYYYTHH.mm.ss.SSS'
 
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
     })
 
     it('parse with ":" as separator', () => {
       const sourceString = '17:12:2023T03:12:46.234'
       const formatString = 'DD:MM:YYYYTHH:mm:ss:SSS'
 
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
     })
 
     it('parse with different separator in source and format', () => {
       const sourceString = '2024/07/09T21:27:34.000'
       const formatString = 'YYYY-MM-DD HH-mm-ss-SSS'
 
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
     })
 
     it('parse with remaining text in sourceString', () => {
       const sourceString = '2024/07/09 14:27:34.987 and many more characters'
       const formatString = 'YYYY-MM-DD HH-mm-ss-SSS'
 
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
     })
 
     it('parse with not enough text in sourceString', () => {
       const sourceString = '2024/07/09T21:27'
       const formatString = 'YYYY-MM-DD HH-mm-ss-SSS'
 
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
     })
 
     it('parse with text as separator', () => {
       const sourceString = '2024ppp07qqq09 21:27:34'
       const formatString = 'YYYY-MM-DD HH:mm:ss'
 
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
     })
 
     it('parse with escaped text as separator', () => {
       const sourceString = '2024/07/09 21H27m34'
       const formatString = 'YYYY-MM-DD HH[H]mm[m]ss'
 
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
     })
 
     it.each([
@@ -264,7 +264,7 @@ describe('advancedParse plugin - local mode', () => {
         sourceString: '2021-01-26T15:38:43.000Z',
       },
     ])('parse offset in "$sourceString" with "$formatString"', ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
       expect(esday(sourceString, formatString).isValid()).toBeTruthy()
     })
 
@@ -281,7 +281,7 @@ describe('advancedParse plugin - local mode', () => {
       ({ sourceString, formatString }) => {
         const parsedEsday = esday(sourceString, formatString)
 
-        expectSameResult((esday) => esday(sourceString, formatString))
+        expectSameObject((esday) => esday(sourceString, formatString))
         expect(parsedEsday.isValid()).toBeFalsy()
       },
     )
@@ -290,7 +290,7 @@ describe('advancedParse plugin - local mode', () => {
       const sourceString = '10/12/2014'
       const formatString = 'YYYY-MM-DD'
 
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
       expect(esday(sourceString, formatString).isValid()).toBeTruthy()
     })
 
@@ -299,7 +299,7 @@ describe('advancedParse plugin - local mode', () => {
       const formatString = 'YYYY-MM-DD'
 
       expect(esday(sourceString, formatString).isValid()).toBeFalsy()
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
     })
 
     it('invalid date returns "Invalid Date" as toISOString unlike momentjs', () => {
@@ -331,7 +331,7 @@ describe('advancedParse plugin - local mode', () => {
         sourceString: '2012-11-28 20:21:15',
       },
     ])('parse "$sourceString" with array - "$name"', ({ formatString, sourceString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
       expect(esday(sourceString, formatString).isValid()).toBeTruthy()
     })
 
@@ -347,7 +347,7 @@ describe('advancedParse plugin - local mode', () => {
         sourceString: '2012-11-28 20:21:15',
       },
     ])('parse "$sourceString" with invalid array - "$name"', ({ formatString, sourceString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
       expect(esday(sourceString, formatString).isValid()).toBeFalsy()
     })
   })
@@ -381,7 +381,7 @@ describe('advancedParse plugin - local mode', () => {
     ])(
       'parse strict date&time "$sourceString" with "$formatString"',
       ({ sourceString, formatString }) => {
-        expectSameResult((esday) => esday(sourceString, formatString, true))
+        expectSameObject((esday) => esday(sourceString, formatString, true))
         expect(esday(sourceString, formatString, true).isValid()).toBeTruthy()
       },
     )
@@ -392,7 +392,7 @@ describe('advancedParse plugin - local mode', () => {
     ])(
       'parse strict date&time edge case "$sourceString" with format "$formatString"',
       ({ sourceString, formatString }) => {
-        expectSameResult((esday) => esday(sourceString, formatString, true))
+        expectSameObject((esday) => esday(sourceString, formatString, true))
         expect(esday(sourceString, formatString, true).isValid()).toBeTruthy()
       },
     )
@@ -409,7 +409,7 @@ describe('advancedParse plugin - local mode', () => {
     ])(
       'parse strict "$sourceString" with format "$formatString" (various separator characters)',
       ({ sourceString, formatString }) => {
-        expectSameResult((esday) => esday(sourceString, formatString))
+        expectSameObject((esday) => esday(sourceString, formatString))
         expect(esday(sourceString, formatString).isValid()).toBeTruthy()
       },
     )
@@ -420,7 +420,7 @@ describe('advancedParse plugin - local mode', () => {
       const parsedDateEsDay = esday(sourceString, formatString, true)
 
       expect(parsedDateEsDay.isValid()).toBeFalsy()
-      expectSame((esday) => esday(sourceString, formatString, true).isValid())
+      expectSameValue((esday) => esday(sourceString, formatString, true).isValid())
     })
 
     it.each([
@@ -446,7 +446,7 @@ describe('advancedParse plugin - local mode', () => {
         const parsedDateEsDay = esday(sourceString, formatString, true)
 
         expect(parsedDateEsDay.isValid()).toBeFalsy()
-        expectSame((esday) => esday(sourceString, formatString, true).isValid())
+        expectSameValue((esday) => esday(sourceString, formatString, true).isValid())
       },
     )
 
@@ -474,7 +474,7 @@ describe('advancedParse plugin - local mode', () => {
     ])(
       'parse date&time edge case "$sourceString" with format "$formatString"',
       ({ sourceString, formatString }) => {
-        expectSameResult((esday) => esday(sourceString, formatString, true))
+        expectSameObject((esday) => esday(sourceString, formatString, true))
         expect(esday(sourceString, formatString, true).isValid()).toBeTruthy()
       },
     )
@@ -535,7 +535,7 @@ describe('advancedParse plugin - local mode', () => {
         sourceString: '2021-01-26T15:38:43.000Z',
       },
     ])('parse offset in "$sourceString" with "$formatString"', ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString, true))
+      expectSameObject((esday) => esday(sourceString, formatString, true))
       expect(esday(sourceString, formatString, true).isValid()).toBeTruthy()
     })
   })
@@ -553,7 +553,7 @@ describe('advancedParse plugin - local mode', () => {
         sourceString: '2012-11-28 20:21:15',
       },
     ])('parse "$sourceString" with array - "$name"', ({ formatString, sourceString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString, true))
+      expectSameObject((esday) => esday(sourceString, formatString, true))
       expect(esday(sourceString, formatString, true).isValid()).toBeTruthy()
     })
 

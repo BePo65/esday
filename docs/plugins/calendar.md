@@ -8,7 +8,7 @@ Calendar adds the `calendar` method to EsDay to format a date relative to a give
 Calendar requires the plugin Locale and at least 1 registered and activated locale.
 
 ### Method signatures
-```typescript
+```signature
 calendar(referenceDate?: EsDay | null, formats?: CalendarPartial): string
 ```
 
@@ -31,7 +31,7 @@ calendar(referenceDate?: EsDay | null, formats?: CalendarPartial): string
 | sameElse | format used, when difference is 7 days or more                              |
 
 The property values can be a (format) string like `LT` or a function with the following signature:
-```typescript
+```signature
 (this: EsDay, refDate?: EsDay) => string
 ```
 

@@ -2,7 +2,7 @@ import moment from 'moment/min/moment-with-locales'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
 import { esday } from '~/core'
-import { expectSameResult } from './util'
+import { expectSameObject } from './util'
 
 describe('startOf', () => {
   const fakeTimeAsString = '2023-11-17T03:24:46.234'
@@ -45,7 +45,7 @@ describe('startOf', () => {
     const esdayResult = esday().startOf(unit)
 
     expect(esdayResult.format('YYYY-MM-DDTHH:mm:ss.SSS')).toBe(expectedAsString)
-    expectSameResult((esday) => esday().startOf(unit))
+    expectSameObject((esday) => esday().startOf(unit))
   })
 })
 
@@ -90,6 +90,6 @@ describe('endOf', () => {
     const resultDate = esday().endOf(unit)
 
     expect(resultDate.format('YYYY-MM-DDTHH:mm:ss.SSS')).toBe(expectedAsString)
-    expectSameResult((esday) => esday().endOf(unit))
+    expectSameObject((esday) => esday().endOf(unit))
   })
 })

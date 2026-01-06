@@ -10,7 +10,7 @@ import type {
 } from '~/plugins/relativeTime'
 import relativeTimePlugin from '~/plugins/relativeTime'
 import utcPlugin from '~/plugins/utc'
-import { expectSame } from '../util'
+import { expectSameValue } from '../util'
 
 esday.extend(localePlugin).extend(utcPlugin)
 esday.registerLocale(localeEn)
@@ -69,7 +69,7 @@ describe('relativeTime plugin - customize thresholds', () => {
     { unit: 'y', expected: false },
     { unit: 'hour', expected: false },
   ])('get threshold for "$unit"', ({ unit, expected }) => {
-    expectSame((esday) => esday.relativeTimeThreshold(unit as ThresholdRelativeTimeKeys))
+    expectSameValue((esday) => esday.relativeTimeThreshold(unit as ThresholdRelativeTimeKeys))
     expect(esday.relativeTimeThreshold(unit as ThresholdRelativeTimeKeys)).toBe(expected)
   })
 
@@ -89,7 +89,9 @@ describe('relativeTime plugin - customize thresholds', () => {
     { unit: 'M', newValue: 9 },
     { unit: 'M', newValue: null },
   ])('set threshold for "$unit" to "$newValue"', ({ unit, newValue }) => {
-    expectSame((esday) => esday.relativeTimeThreshold(unit as ThresholdRelativeTimeKeys, newValue))
+    expectSameValue((esday) =>
+      esday.relativeTimeThreshold(unit as ThresholdRelativeTimeKeys, newValue),
+    )
     expect(esday.relativeTimeThreshold(unit as ThresholdRelativeTimeKeys, newValue)).toBeTruthy()
     expect(esday.relativeTimeThreshold(unit as ThresholdRelativeTimeKeys)).toBe(newValue)
   })
@@ -240,6 +242,6 @@ describe('relativeTime plugin - customize rounding', () => {
   ])('set custom rounding to "$description" should return false', (value) => {
     const newFunction = value as unknown as RelativeTimeRound
 
-    expectSame((esday) => esday.relativeTimeRounding(newFunction))
+    expectSameValue((esday) => esday.relativeTimeRounding(newFunction))
   })
 })

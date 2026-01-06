@@ -8,7 +8,7 @@ IsTomorrow adds the `isTomorrow` method to EsDay indicating, if a date is tomorr
 IsTomorrow has no dependencies on other plugins.
 
 ### Method signatures
-```typescript
+```signature
 esday().isTomorrow(): boolean
 ```
 

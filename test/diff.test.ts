@@ -2,7 +2,7 @@ import { esday } from 'esday'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
 import type { UnitTypeAddSub } from '~/common/units'
-import { expectSame } from './util'
+import { expectSameValue } from './util'
 
 describe('Difference', () => {
   const fakeTimeAsString = '2025-03-17T03:24:46.234'
@@ -19,7 +19,7 @@ describe('Difference', () => {
   it.each([{ sourceString: '20240101' }, { sourceString: '2023-02-08' }])(
     'diff for "$sourceString"with default parameters (returns milliseconds)',
     ({ sourceString }) => {
-      expectSame((esday) => esday().diff(esday(sourceString)))
+      expectSameValue((esday) => esday().diff(esday(sourceString)))
     },
   )
 
@@ -99,7 +99,7 @@ describe('Difference', () => {
   ])(
     'diff for B > A in unit "$resultUnit"',
     ({ sourceString, sourceDiffValue, sourceDiffUnit, resultUnit }) => {
-      expectSame((esday) =>
+      expectSameValue((esday) =>
         esday(sourceString).diff(
           esday(sourceString).add(sourceDiffValue, sourceDiffUnit),
           resultUnit as UnitTypeAddSub,
@@ -166,7 +166,7 @@ describe('Difference', () => {
   ])(
     'diff for B < A in unit "$resultUnit"',
     ({ sourceString, sourceDiffValue, sourceDiffUnit, resultUnit }) => {
-      expectSame((esday) =>
+      expectSameValue((esday) =>
         esday(sourceString).diff(
           esday(sourceString).subtract(sourceDiffValue, sourceDiffUnit),
           resultUnit,
@@ -267,7 +267,7 @@ describe('Difference', () => {
       resultUnit: C.YEAR,
     },
   ])('diff in unit "$resultUnit" as float', ({ sourceString1, sourceString2, resultUnit }) => {
-    expectSame((esday) => esday(sourceString1).diff(esday(sourceString2), resultUnit, true))
+    expectSameValue((esday) => esday(sourceString1).diff(esday(sourceString2), resultUnit, true))
   })
 
   it.each([
@@ -290,7 +290,7 @@ describe('Difference', () => {
   ])('should handle plural units "$resultUnit"', ({ resultUnit }) => {
     const sourceDiffValue = 1000
 
-    expectSame((esday) =>
+    expectSameValue((esday) =>
       esday().diff(esday().add(sourceDiffValue, C.DAY), resultUnit as UnitTypeAddSub),
     )
   })
@@ -303,7 +303,7 @@ describe('Difference', () => {
   ])(
     'diff in "months" between "$sourceString1" and "$sourceString2" - testing internal  monthDiff function',
     ({ sourceString1, sourceString2, expected }) => {
-      expectSame((esday) => esday(sourceString1).diff(esday(sourceString2), C.MONTH))
+      expectSameValue((esday) => esday(sourceString1).diff(esday(sourceString2), C.MONTH))
       expect(esday(sourceString1).diff(esday(sourceString2), 'month')).toBe(expected)
     },
   )

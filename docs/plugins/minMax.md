@@ -8,7 +8,7 @@ MinMax adds the `min` and the `max` methods to esday, calculating the minimum or
 MinMax has no dependencies on other plugins.
 
 ### Method signatures
-```typescript
+```signature
 esday.min(EsDay[,EsDay...]): EsDay
 esday.min(string[]): EsDay
 esday.max(EsDay[,EsDay...]): EsDay

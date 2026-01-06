@@ -18,7 +18,7 @@ The `method2` method gets a new date in the middle of the next week for a date.
 
 ### Method signatures
 // TODO add all new and/or modified signatures here
-```typescript
+```signature
 esday().myPlugin(): string
 esday().myPlugin(format: string): EsDay
 ```

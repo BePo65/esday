@@ -7,10 +7,10 @@ The `endOf()` method returns an `esday` object at the end of a unit of time base
 ## Usage
 
 ### Method signatures
-```typescript
+```signature
 esday().startOf(units: UnitType): EsDay
 ```
-```typescript
+```signature
 esday().endOf(units: UnitType): EsDay
 ```
 

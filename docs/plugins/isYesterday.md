@@ -8,7 +8,7 @@ IsYesterday adds the `isYesterday` method to EsDay indicating, if a date is tomo
 IsYesterday has no dependencies on other plugins.
 
 ### Method signatures
-```typescript
+```signature
 esday().isYesterday(): boolean
 ```
 

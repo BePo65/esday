@@ -5,7 +5,7 @@ The `esday()` method returns an `esday` object defined by the method parameter.
 ## Usage
 
 ### Method signatures
-```typescript
+```signature
 esday(): EsDay
 esday(dateString: string): EsDay
 esday(dateObject: Date): EsDay

@@ -23,7 +23,7 @@ The `get` method takes a unit parameter to define, which value to extract from a
 ## Usage
 
 ### Method signatures
-```typescript
+```signature
 esday().get(unit: UnitTypeGetSet): number
 esday().year(): number
 esday().month(): number

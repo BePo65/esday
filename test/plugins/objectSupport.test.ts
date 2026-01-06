@@ -2,7 +2,7 @@ import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { esday } from '~/core'
 import objectSupportPlugin from '~/plugins/objectSupport'
-import { expectSameResult } from '../util'
+import { expectSameObject } from '../util'
 
 esday.extend(objectSupportPlugin)
 
@@ -53,7 +53,7 @@ describe('objectSupport plugin', () => {
     },
   ])('create date from object with short format "$description"', ({ value, expected }) => {
     expect(esday(value).format().slice(0, -6)).toBe(expected)
-    expectSameResult((esday) => esday(value))
+    expectSameObject((esday) => esday(value))
   })
 
   it.each([
@@ -114,7 +114,7 @@ describe('objectSupport plugin', () => {
     },
   ])('create date from object with long format "$description"', ({ value, expected }) => {
     expect(esday(value).format().slice(0, -6)).toBe(expected)
-    expectSameResult((esday) => esday(value))
+    expectSameObject((esday) => esday(value))
   })
 
   it.each([
@@ -175,7 +175,7 @@ describe('objectSupport plugin', () => {
     },
   ])('create date from object with plural format "$description"', ({ value, expected }) => {
     expect(esday(value).format().slice(0, -6)).toBe(expected)
-    expectSameResult((esday) => esday(value))
+    expectSameObject((esday) => esday(value))
   })
 
   it.each([
@@ -230,7 +230,7 @@ describe('objectSupport plugin', () => {
     { value: {}, expected: '2025-07-17T03:24:46', description: 'none' },
   ])('add object ("$description")', ({ value, expected }) => {
     expect(esday().add(value).format().slice(0, -6)).toBe(expected)
-    expectSameResult((esday) => esday().add(value))
+    expectSameObject((esday) => esday().add(value))
   })
 
   it('add without object should not be changed', () => {
@@ -268,7 +268,7 @@ describe('objectSupport plugin', () => {
     { value: {}, expected: '2025-07-17T03:24:46', description: 'none' },
   ])('subtract object ("$description")', ({ value, expected }) => {
     expect(esday().subtract(value).format().slice(0, -6)).toBe(expected)
-    expectSameResult((esday) => esday().subtract(value))
+    expectSameObject((esday) => esday().subtract(value))
   })
 
   it('subtract without object should not be changed', () => {
@@ -320,6 +320,6 @@ describe('objectSupport plugin', () => {
     { value: {}, expected: '2025-07-17T03:24:46', description: 'none' },
   ])('set object ("$description")', ({ value, expected }) => {
     expect(esday().set(value).format().slice(0, -6)).toBe(expected)
-    expectSameResult((esday) => esday().set(value))
+    expectSameObject((esday) => esday().set(value))
   })
 })

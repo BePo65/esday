@@ -16,7 +16,7 @@ The plugin AdvancedParse must be loaded using esday.extend(...) before the plugi
 LocalizedParse can be used together with the plugin Utc which must be loaded using esday.extend(...) before the plugin AdvancedParse.
 
 ### Method signatures
-```typescript
+```signature
 esday(date: string, format: string): EsDay
 esday(date: string, format: string[]): EsDay
 esday(date: string, format: string, strict: boolean): EsDay
@@ -27,7 +27,7 @@ esday(date: string, format: string, locale: string, strict: boolean): EsDay
 esday(date: string, format: string[], locale: string, strict: boolean): EsDay
 ```
 and for the `utc` plugin
-```typescript
+```signature
 esday.utc(date: string, format: string): EsDay
 esday.utc(date: string, format: string[]): EsDay
 esday.utc(date: string, format: string, strict: boolean): EsDay
@@ -69,7 +69,7 @@ If an array of formats is used, `date` will be parsed with the best matching for
 
 ## Examples
 Basic example with some localized tokens.
-```
+```typescript
 import { esday } from 'esday'
 import { advancedParsePlugin, localePlugin, localizedParsePlugin } from 'esday/plugins'
 import localeZhCn from 'esday/locales/zh-cn'
@@ -87,7 +87,7 @@ const parsedDate = esday('2024 12月 24日 星期二 8:10:21 早上', 'YYYY MMM 
 ```
 
 Example with locale given as parameter of esday.
-```
+```typescript
 import { esday } from 'esday'
 import { advancedParsePlugin, localePlugin, localizedParsePlugin } from 'esday/plugins'
 import localeZhCn from 'esday/locales/zh-cn'

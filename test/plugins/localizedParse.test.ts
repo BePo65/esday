@@ -12,7 +12,7 @@ import type { Locale } from '~/plugins/locale'
 import localePlugin from '~/plugins/locale'
 import localizedParsePlugin from '~/plugins/localizedParse'
 import weekPlugin from '~/plugins/week'
-import { expectSame, expectSameResult } from '../util'
+import { expectSameObject, expectSameValue } from '../util'
 
 esday
   .extend(advancedParsePlugin)
@@ -139,14 +139,14 @@ describe('localizedParse plugin - local mode for "en"', () => {
   ])(
     'parse date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
     },
   )
 
   it('parse date string with array of formats', () => {
     const sourceString = '2024 Dec 23 14:25:36'
     const formatString = ['YYYY MM DD HH:mm:ss', 'YYYY MMM DD HH:mm:ss']
-    expectSameResult((esday) => esday(sourceString, formatString))
+    expectSameObject((esday) => esday(sourceString, formatString))
   })
 
   it.each([
@@ -157,7 +157,7 @@ describe('localizedParse plugin - local mode for "en"', () => {
   ])(
     'parse date string "$sourceString" with format "$formatString" as invalid date',
     ({ sourceString, formatString }) => {
-      expectSame((esday) => esday(sourceString, formatString).isValid())
+      expectSameValue((esday) => esday(sourceString, formatString).isValid())
     },
   )
 })
@@ -271,7 +271,7 @@ describe('localizedParse plugin - local mode for "de"', () => {
   ])(
     'parse date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
     },
   )
 
@@ -283,7 +283,7 @@ describe('localizedParse plugin - local mode for "de"', () => {
   ])(
     'parse date string "$sourceString" with format "$formatString" as invalid date',
     ({ sourceString, formatString }) => {
-      expectSame((esday) => esday(sourceString, formatString).isValid())
+      expectSameValue((esday) => esday(sourceString, formatString).isValid())
     },
   )
 
@@ -292,7 +292,7 @@ describe('localizedParse plugin - local mode for "de"', () => {
     const formatString = 'YYYY MMM Do h:mm:ss A'
 
     expect(esday(sourceString, formatString, true).isValid()).toBeTruthy()
-    expectSameResult((esday) => esday(sourceString, formatString, true))
+    expectSameObject((esday) => esday(sourceString, formatString, true))
   })
 
   it('does not parse in strict mode - bad format', () => {
@@ -300,7 +300,7 @@ describe('localizedParse plugin - local mode for "de"', () => {
     const formatString = 'YYYY MMM Do dddd h:mm:ss A'
 
     expect(esday(sourceString, formatString, true).isValid()).toBeFalsy()
-    expectSame((esday) => esday(sourceString, formatString, true).isValid())
+    expectSameValue((esday) => esday(sourceString, formatString, true).isValid())
   })
 })
 
@@ -410,8 +410,8 @@ describe('localizedParse plugin - local mode for "hr"', () => {
   ])(
     'parse date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
-      expectSame((esday) => esday(sourceString, formatString).locale())
+      expectSameObject((esday) => esday(sourceString, formatString))
+      expectSameValue((esday) => esday(sourceString, formatString).locale())
     },
   )
 
@@ -423,7 +423,7 @@ describe('localizedParse plugin - local mode for "hr"', () => {
   ])(
     'parse date string "$sourceString" with format "$formatString" as invalid date',
     ({ sourceString, formatString }) => {
-      expectSame((esday) => esday(sourceString, formatString).isValid())
+      expectSameValue((esday) => esday(sourceString, formatString).isValid())
     },
   )
 
@@ -432,8 +432,8 @@ describe('localizedParse plugin - local mode for "hr"', () => {
     const formatString = 'YYYY MMM Do h:mm:ss A'
 
     expect(esday(sourceString, formatString, true).isValid()).toBeTruthy()
-    expectSameResult((esday) => esday(sourceString, formatString, true))
-    expectSame((esday) => esday(sourceString, formatString, true).locale())
+    expectSameObject((esday) => esday(sourceString, formatString, true))
+    expectSameValue((esday) => esday(sourceString, formatString, true).locale())
   })
 
   it('does not parse in strict mode - bad format', () => {
@@ -441,7 +441,7 @@ describe('localizedParse plugin - local mode for "hr"', () => {
     const formatString = 'YYYY MMM Do dddd h:mm:ss A'
 
     expect(esday(sourceString, formatString, true).isValid()).toBeFalsy()
-    expectSame((esday) => esday(sourceString, formatString, true).isValid())
+    expectSameValue((esday) => esday(sourceString, formatString, true).isValid())
   })
 })
 
@@ -468,8 +468,8 @@ describe('localizedParse plugin - local mode for "ku"', () => {
   ])(
     'parse date string "$sourceString" with arabic numbers with format "$formatString"',
     ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
-      expectSame((esday) => esday(sourceString, formatString).locale())
+      expectSameObject((esday) => esday(sourceString, formatString))
+      expectSameValue((esday) => esday(sourceString, formatString).locale())
     },
   )
 })
@@ -498,8 +498,8 @@ describe('localizedParse plugin - local mode for "ka"', () => {
   ])(
     'parse date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
-      expectSame((esday) => esday(sourceString, formatString).locale())
+      expectSameObject((esday) => esday(sourceString, formatString))
+      expectSameValue((esday) => esday(sourceString, formatString).locale())
     },
   )
 })
@@ -531,8 +531,8 @@ describe('localizedParse plugin - local mode using locale given as parameter', (
     'parse in "en" with "$locale" as locale parameter',
     ({ sourceString, formatString, locale }) => {
       expect(esday(sourceString, formatString, locale).isValid()).toBeTruthy()
-      expectSameResult((esday) => esday(sourceString, formatString, locale))
-      expectSame((esday) => esday(sourceString, formatString, locale).locale())
+      expectSameObject((esday) => esday(sourceString, formatString, locale))
+      expectSameValue((esday) => esday(sourceString, formatString, locale).locale())
     },
   )
 
@@ -556,8 +556,8 @@ describe('localizedParse plugin - local mode using locale given as parameter', (
     'parse in strict mode in "en" with "$locale" as locale parameter',
     ({ sourceString, formatString, locale }) => {
       expect(esday(sourceString, formatString, locale, true).isValid()).toBeTruthy()
-      expectSameResult((esday) => esday(sourceString, formatString, locale, true))
-      expectSame((esday) => esday(sourceString, formatString, locale, true).locale())
+      expectSameObject((esday) => esday(sourceString, formatString, locale, true))
+      expectSameValue((esday) => esday(sourceString, formatString, locale, true).locale())
     },
   )
 
@@ -571,7 +571,7 @@ describe('localizedParse plugin - local mode using locale given as parameter', (
 
     expect(d.isValid()).toBeFalsy()
     expect(m.isValid()).toBeFalsy()
-    expectSame((esday) => esday(sourceString, formatString, locale, true).locale())
+    expectSameValue((esday) => esday(sourceString, formatString, locale, true).locale())
   })
 })
 

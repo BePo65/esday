@@ -16,14 +16,14 @@ If used together with the plugin AdvancedParse, then Locale must be activated af
 Locale has no dependencies on other plugins.
 
 ### Public functions
-```
+```signature
 cloneLocale(source: Locale): Locale
 setLocaleProperty(targetLocale: Locale, propName: string, newValue: any)
 ```
 
 ### Method signatures
 For esday ('global')
-```
+```signature
 // get / set name of global locale
 esday.locale(): string
 esday.locale(localeName: string): EsDay
@@ -42,7 +42,7 @@ esday.updateLocale: (localeName: string, newLocale: Partial<Locale>): esday
 ```
 
 For EsDay instances ('local')
-```
+```signature
 // get / set the locale of an esday instance
 esday().locale(): string
 esday().locale(localeName: string): EsDay

@@ -7,7 +7,7 @@ import { describe, expect, it } from 'vitest'
 import locale from '~/locales/zh'
 import type { CalendarSpecValFunction } from '~/plugins/locale'
 import localePlugin from '~/plugins/locale'
-import { expectSame } from '../util'
+import { expectSameValue } from '../util'
 
 esday.extend(localePlugin).registerLocale(locale)
 
@@ -72,7 +72,7 @@ describe('locale zh', () => {
     ({ value, period, expected }) => {
       expect(locale.ordinal(value, period)).toBe(expected)
       // moment.js returns number if period does not require an pending string
-      expectSame((_) => locale.ordinal(value, period).toString())
+      expectSameValue((_) => locale.ordinal(value, period).toString())
     },
   )
 

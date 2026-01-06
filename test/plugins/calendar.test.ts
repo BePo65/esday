@@ -7,7 +7,7 @@ import calendarPlugin from '~/plugins/calendar'
 import localePlugin, { type CalendarPartial, type Locale } from '~/plugins/locale'
 import localizedFormatPlugin from '~/plugins/localizedFormat'
 import weekPlugin from '~/plugins/week'
-import { expectSame } from '../util'
+import { expectSameValue } from '../util'
 
 esday.extend(localePlugin)
 esday.extend(localizedFormatPlugin)
@@ -36,21 +36,21 @@ describe('calendar plugin - locale "en"', () => {
     const formattedEsday = esday().calendar()
 
     expect(formattedEsday).toBe('Today at 3:24 AM')
-    expectSame((esday) => esday().calendar())
+    expectSameValue((esday) => esday().calendar())
   })
 
   it('should accept undefined as first argument', () => {
     const formattedEsday = esday().calendar(undefined)
 
     expect(formattedEsday).toBe('Today at 3:24 AM')
-    expectSame((esday) => esday().calendar(undefined))
+    expectSameValue((esday) => esday().calendar(undefined))
   })
 
   it('should accept null as first argument', () => {
     const formattedEsday = esday().calendar(null)
 
     expect(formattedEsday).toBe('Today at 3:24 AM')
-    expectSame((esday) => esday().calendar(null))
+    expectSameValue((esday) => esday().calendar(null))
   })
 
   it('should format "sameDay" without arguments', () => {})
@@ -73,7 +73,7 @@ describe('calendar plugin - locale "en"', () => {
     const formattedEsday = esday().add(1, 'day').hour(10).calendar()
 
     expect(formattedEsday).toBe('Tomorrow at 10:24 AM')
-    expectSame((esday) => esday().add(1, 'day').hour(10).calendar())
+    expectSameValue((esday) => esday().add(1, 'day').hour(10).calendar())
   })
 
   it('should format "nextWeek" date', () => {
@@ -81,7 +81,7 @@ describe('calendar plugin - locale "en"', () => {
     const formattedEsday = esday().add(3, 'day').hour(11).calendar()
 
     expect(formattedEsday).toBe('Wednesday at 11:24 AM')
-    expectSame((esday) => esday().add(3, 'day').hour(11).calendar())
+    expectSameValue((esday) => esday().add(3, 'day').hour(11).calendar())
   })
 
   it('should format "lastDay" date', () => {
@@ -89,7 +89,7 @@ describe('calendar plugin - locale "en"', () => {
     const formattedEsday = esday().subtract(1, 'day').hour(14).calendar()
 
     expect(formattedEsday).toBe('Yesterday at 2:24 PM')
-    expectSame((esday) => esday().subtract(1, 'day').hour(14).calendar())
+    expectSameValue((esday) => esday().subtract(1, 'day').hour(14).calendar())
   })
 
   it('should format "lastWeek" date', () => {
@@ -97,7 +97,7 @@ describe('calendar plugin - locale "en"', () => {
     const formattedEsday = esday().subtract(4, 'day').hour(15).calendar()
 
     expect(formattedEsday).toBe('Last Wednesday at 3:24 PM')
-    expectSame((esday) => esday().subtract(4, 'day').hour(15).calendar())
+    expectSameValue((esday) => esday().subtract(4, 'day').hour(15).calendar())
   })
 
   it('should format "sameElse (future)" date', () => {
@@ -105,7 +105,7 @@ describe('calendar plugin - locale "en"', () => {
     const formattedEsday = esday().add(8, 'day').hour(16).calendar()
 
     expect(formattedEsday).toBe('12/25/2023')
-    expectSame((esday) => esday().add(8, 'day').hour(16).calendar())
+    expectSameValue((esday) => esday().add(8, 'day').hour(16).calendar())
   })
 
   it('should format "sameElse (past)" date', () => {
@@ -113,7 +113,7 @@ describe('calendar plugin - locale "en"', () => {
     const formattedEsday = esday().subtract(8, 'day').hour(17).calendar()
 
     expect(formattedEsday).toBe('12/09/2023')
-    expectSame((esday) => esday().subtract(8, 'day').hour(17).calendar())
+    expectSameValue((esday) => esday().subtract(8, 'day').hour(17).calendar())
   })
 
   it('should handle overriding a format key with a string', () => {
@@ -121,7 +121,7 @@ describe('calendar plugin - locale "en"', () => {
     const formattedEsday = esday().calendar(undefined, customFormats)
 
     expect(formattedEsday).toBe('My Custom Today at 03:24')
-    expectSame((esday) => esday().calendar(undefined, customFormats))
+    expectSameValue((esday) => esday().calendar(undefined, customFormats))
   })
 
   it('should handle overriding a format key with a function', () => {
@@ -135,7 +135,7 @@ describe('calendar plugin - locale "en"', () => {
     const formattedEsday = esday().add(1, 'day').hour(10).calendar(undefined, customFormats)
 
     expect(formattedEsday).toBe('Func: Next Day from 2023-12-17 at 1024')
-    expectSame((esday) => esday().add(1, 'day').hour(10).calendar(undefined, customFormats))
+    expectSameValue((esday) => esday().add(1, 'day').hour(10).calendar(undefined, customFormats))
   })
 
   it('should fall back to defaultCalendar, if key is missing in custom formats', () => {
@@ -152,8 +152,10 @@ describe('calendar plugin - locale "en"', () => {
 
     expect(nextDayEsday).toBe('Tomorrow at 10:24 AM')
     expect(lastWeekEsday).toBe('Custom Last Week')
-    expectSame((esday) => esday().add(1, 'day').hour(10).calendar(undefined, customFormats))
-    expectSame((esday) => esday().subtract(4, 'day').hour(15).calendar(undefined, customFormats))
+    expectSameValue((esday) => esday().add(1, 'day').hour(10).calendar(undefined, customFormats))
+    expectSameValue((esday) =>
+      esday().subtract(4, 'day').hour(15).calendar(undefined, customFormats),
+    )
   })
 })
 
@@ -178,7 +180,7 @@ describe('week plugin - locale "ja"', () => {
     const formattedEsday = esday().add(3, 'day').hour(11).calendar()
 
     expect(formattedEsday).toBe('来週日曜日 11:24')
-    expectSame((esday) => esday().add(3, 'day').hour(11).calendar())
+    expectSameValue((esday) => esday().add(3, 'day').hour(11).calendar())
   })
 
   it('should format "lastWeek" date', () => {
@@ -186,7 +188,7 @@ describe('week plugin - locale "ja"', () => {
     const formattedEsday = esday().subtract(6, 'day').hour(15).calendar()
 
     expect(formattedEsday).toBe('先週金曜日 15:24')
-    expectSame((esday) => esday().subtract(6, 'day').hour(15).calendar())
+    expectSameValue((esday) => esday().subtract(6, 'day').hour(15).calendar())
   })
 })
 

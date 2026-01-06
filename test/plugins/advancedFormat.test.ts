@@ -1,7 +1,7 @@
 import { esday } from 'esday'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import advancedFormatPlugin from '~/plugins/advancedFormat'
-import { expectSame } from '../util'
+import { expectSameValue } from '../util'
 
 esday.extend(advancedFormatPlugin)
 
@@ -20,7 +20,7 @@ describe('advancedFormat plugin', () => {
   it('does not break core module without template', () => {
     const sourceString = '2023-08-14T21:43:12.123'
 
-    expectSame((esday) => esday(sourceString).format())
+    expectSameValue((esday) => esday(sourceString).format())
   })
 
   it.each([
@@ -37,7 +37,7 @@ describe('advancedFormat plugin', () => {
   ])(
     'does not break core module with template "$formatString"',
     ({ sourceString, formatString, expected }) => {
-      expectSame((esday) => esday(sourceString).format(formatString))
+      expectSameValue((esday) => esday(sourceString).format(formatString))
       expect(esday(sourceString).format(formatString)).toBe(expected)
     },
   )
@@ -92,7 +92,7 @@ describe('advancedFormat plugin', () => {
     'formats date using added token "$formatString"',
     ({ sourceString, formatString, expected }) => {
       expect(esday(sourceString).format(formatString)).toBe(expected)
-      expectSame((esday) => esday(sourceString).format(formatString))
+      expectSameValue((esday) => esday(sourceString).format(formatString))
     },
   )
 

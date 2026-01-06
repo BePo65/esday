@@ -8,7 +8,7 @@ IsToday adds the `isToday` method to EsDay indicating, if a date is today.
 IsToday has no dependencies on other plugins.
 
 ### Method signatures
-```typescript
+```signature
 esday().isToday(): boolean
 ```
 

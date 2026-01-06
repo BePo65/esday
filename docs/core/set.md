@@ -25,7 +25,7 @@ All setters will bubble up to the next higher unit, If the range is exceeded. I.
 ## Usage
 
 ### Method signatures
-```typescript
+```signature
 esday().set(unit: UnitYears, year: number, month?: number, date?: number): EsDay
 esday().set(unit: UnitQuarters, quarter: number): EsDay
 esday().set(unit: UnitMonths, month: number, date?: number): EsDay

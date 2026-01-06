@@ -42,13 +42,8 @@ const matchDayOfMonthOrdinalDefault = /\d{1,2}/
  */
 const updateParsingPatternsFromLocale = (patterns: TokenDefinitions, locale: Locale) => {
   const dayOfMonthOrdinalPattern = locale.dayOfMonthOrdinalParse
-  if (Array.isArray(dayOfMonthOrdinalPattern)) {
-    patterns.Do[0] = dayOfMonthOrdinalPattern[0]
-    patterns.Do[1] = dayOfMonthOrdinalPattern[1]
-  } else {
-    patterns.Do[0] = dayOfMonthOrdinalPattern
-    patterns.Do[1] = dayOfMonthOrdinalPattern
-  }
+  patterns.Do[0] = dayOfMonthOrdinalPattern
+  patterns.Do[1] = dayOfMonthOrdinalPattern
 }
 
 /**

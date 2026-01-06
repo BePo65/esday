@@ -12,14 +12,14 @@ AdvancedParse can be used together with the plugin Utc. If used together with th
 If used together with the plugin Locale and/or LocalizedParse, then AdvancedParse must be activated before these plugins, as AdvancedParse "terminates" the parsing chain, if we have a parsing format.
 
 ### Method signatures
-```typescript
+```signature
 esday(date: string, format: string): EsDay
 esday(date: string, format: string[]): EsDay
 esday(date: string, format: string, strict: boolean): EsDay
 esday(date: string, format: string[], strict: boolean): EsDay
 ```
 and for the `utc` plugin
-```typescript
+```signature
 esday.utc(date: string, format: string): EsDay
 esday.utc(date: string, format: string[]): EsDay
 esday.utc(date: string, format: string, strict: boolean): EsDay
@@ -60,7 +60,7 @@ If an array of formats is used, `date` will be parsed with the best matching for
 | x         | 1410715640579 | Unix ms timestamp                                                    |
 
 ### Adding new parsing tokens
-```typescript
+```signature
 esday.addTokenDefinitions(newTokens: TokenDefinitions)
 ```
 

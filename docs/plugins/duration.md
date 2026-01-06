@@ -33,7 +33,7 @@ To use the Duration humanize method or any of the Duration locale methods, the p
 
 Create a duration with a given length of time.
 
-```typescript
+```signature
 esday.duration(): Duration
 esday.duration(input: string): Duration
 esday.duration(input: string, unit: UnitTypeDuration): Duration
@@ -115,7 +115,7 @@ esday.duration(Number.NaN).isValid()
 
 Create a clone of a duration.
 
-```typescript
+```signature
 esday.duration().clone(): Duration
 ```
 
@@ -137,7 +137,7 @@ esday.duration(2, 'days').clone()
 
 Get a part of the length of a duration. E.g. `.seconds()` gets the number of seconds in a duration.
 
-```typescript
+```signature
 esday.duration(<length>).milliseconds(): number
 esday.duration(<length>).seconds(): number
 esday.duration(<length>).minutes(): number
@@ -206,7 +206,7 @@ esday.duration(4, 'months').get('months')
 
 Get the number of milliseconds, seconds etc. of a duration. E.g. `.asSeconds()` gets the length of the duration as seconds.
 
-```typescript
+```signature
 esday.duration(<length>).asMilliseconds(): number
 esday.duration(<length>).asSeconds(): number
 esday.duration(<length>).asMinutes(): number
@@ -262,7 +262,7 @@ Invalid durations are humanized to `Invalid Date`.
 
 Humanize output can be configured with relative time thresholds.
 
-```typescript
+```signature
 esday.duration(<length>).humanize(): string
 esday.duration(<length>).humanize(withSuffix: boolean): string
 esday.duration(<length>).humanize(thresholds: ThresholdRelativeTime): string
@@ -319,7 +319,7 @@ esday.duration(20, 'hours').humanize()
 
 Get or set the Locale to use for .humanize function or get the currently used Locale object.
 
-```typescript
+```signature
 esday.duration(<length>).locale(): string
 esday.duration(<length>).locale(locale: string): Duration
 esday.duration(<length>).localeObject(): Locale
@@ -359,7 +359,7 @@ esday.duration().locale('fr').localeObject()
 
 Add or subtract a value to a duration.
 
-```typescript
+```signature
 esday.duration(<length>).add(input: number | UnitsObjectTypeDuration | Duration, unit?: UnitTypeDuration): Duration
 esday.duration(<length>).subtract(input: number | UnitsObjectTypeDuration | Duration, unit?: UnitTypeDuration): Duration
 ```
@@ -408,7 +408,7 @@ object of values to add / subtract with the following properties (all properties
 
 ## Format a duration
 
-```typescript
+```signature
 // Alias for 'toISOString'
 esday.duration(<length>).toString(): string
 
@@ -485,7 +485,7 @@ esday.duration({ ms:7, s: 6, m: 5, h: 4, d: 3, M: 2, y: 1 }).asStringifiedJSON()
 
 ## Inspect
 
-```typescript
+```signature
 // Is a duration valid?
 esday.duration(<length>).isValid(): boolean
 

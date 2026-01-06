@@ -8,7 +8,7 @@ IsBetween adds the `isBetween` method to EsDay indicating, if a date is between 
 IsBetween has no dependencies on other plugins.
 
 ### Method signatures
-```typescript
+```signature
 esday().isBetween(
       from: DateType,
       to: DateType,

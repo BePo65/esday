@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { esday } from '~/core'
-import { expectSame } from './util'
+import { expectSameValue } from './util'
 
 describe('utcOffset get', () => {
   const fakeTimeAsString = '2023-12-17T03:24:46.234'
@@ -21,7 +21,7 @@ describe('utcOffset get', () => {
   })
 
   it('should return the right value for the current date', () => {
-    expectSame((esday) => esday().utcOffset())
+    expectSameValue((esday) => esday().utcOffset())
   })
 })
 

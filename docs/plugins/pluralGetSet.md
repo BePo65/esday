@@ -10,7 +10,7 @@ PluralGetSet adds plural getter & setter APIs to `esday` instances. The getters 
 PluralGetSet has no dependencies on other plugins.
 
 ### Method signatures
-```typescript
+```signature
 esday().years(): number
 esday().years((year: number, month?: number, date?: number): EsDay
 esday().months(): number

@@ -23,7 +23,7 @@ The thresholds and the rounding function can also be set with an option paramete
 RelativeTime requires the plugin Locale and at least 1 registered and activated locale.
 
 ### Method signatures for EsDay instances
-```typescript
+```signature
 esday().fromNow(withoutSuffix?: boolean): string
 esday().toNow(withoutSuffix?: boolean): string
 esday().from(referenceDate: DateType, withoutSuffix?: boolean): string
@@ -90,7 +90,7 @@ By default, the unit 'w' is not used (set to null). It can be set it to a non-nu
 
 ### Method signatures for EsDay
 **Getters**
-```typescript
+```signature
 esday.relativeTimeThreshold(unit: ThresholdRelativeTimeKeys): boolean | number | null
 esday.relativeTimeThreshold(unit: ThresholdRelativeTimeKeys, limit: number | null): boolean
 esday.relativeTimeRounding(): RelativeTimeRound
@@ -119,7 +119,7 @@ esday.formatDifference: (
 | thresholds       | object containing the thresholds to use (defaults to the default thresholds listed above) |
 
 **Setters**
-```typescript
+```signature
 esday.relativeTimeThreshold(unit: ThresholdRelativeTimeKeys, limit: number | null): boolean
 esday.relativeTimeRounding(roundingFunction: RelativeTimeRound): boolean
 ```

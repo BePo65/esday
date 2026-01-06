@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { esday } from '~/core'
 import type { UnitsObjectTypeSet } from '~/types'
-import { expectSame, expectSameResult } from './util'
+import { expectSameObject, expectSameValue } from './util'
 
 describe('get', () => {
   const fakeTimeAsString = '2024-07-17T13:24:46.234'
@@ -16,24 +16,24 @@ describe('get', () => {
   })
 
   it('year', () => {
-    expectSame((esday) => esday().year())
-    expectSame((esday) => esday().get('y'))
-    expectSame((esday) => esday().get('year'))
-    expectSame((esday) => esday().get('years'))
+    expectSameValue((esday) => esday().year())
+    expectSameValue((esday) => esday().get('y'))
+    expectSameValue((esday) => esday().get('year'))
+    expectSameValue((esday) => esday().get('years'))
   })
 
   it('month', () => {
-    expectSame((esday) => esday().month())
-    expectSame((esday) => esday().get('M'))
-    expectSame((esday) => esday().get('month'))
-    expectSame((esday) => esday().get('months'))
+    expectSameValue((esday) => esday().month())
+    expectSameValue((esday) => esday().get('M'))
+    expectSameValue((esday) => esday().get('month'))
+    expectSameValue((esday) => esday().get('months'))
   })
 
   it('day of month', () => {
-    expectSame((esday) => esday().date())
-    expectSame((esday) => esday().get('D'))
-    expectSame((esday) => esday().get('date'))
-    expectSame((esday) => esday().get('dates'))
+    expectSameValue((esday) => esday().date())
+    expectSameValue((esday) => esday().get('D'))
+    expectSameValue((esday) => esday().get('date'))
+    expectSameValue((esday) => esday().get('dates'))
   })
 
   it.each([
@@ -41,38 +41,38 @@ describe('get', () => {
     { sourceString: '2024-11-06T00:00:00', expected: 3 },
     { sourceString: '2024-11-14T00:00:00', expected: 4 },
   ])('day of week for "$sourceString"', ({ sourceString }) => {
-    expectSame((esday) => esday(sourceString).day())
-    expectSame((esday) => esday(sourceString).get('d'))
-    expectSame((esday) => esday(sourceString).get('day'))
-    expectSame((esday) => esday(sourceString).get('days'))
+    expectSameValue((esday) => esday(sourceString).day())
+    expectSameValue((esday) => esday(sourceString).get('d'))
+    expectSameValue((esday) => esday(sourceString).get('day'))
+    expectSameValue((esday) => esday(sourceString).get('days'))
   })
 
   it('hour', () => {
-    expectSame((esday) => esday().hour())
-    expectSame((esday) => esday().get('h'))
-    expectSame((esday) => esday().get('hour'))
-    expectSame((esday) => esday().get('hours'))
+    expectSameValue((esday) => esday().hour())
+    expectSameValue((esday) => esday().get('h'))
+    expectSameValue((esday) => esday().get('hour'))
+    expectSameValue((esday) => esday().get('hours'))
   })
 
   it('minute', () => {
-    expectSame((esday) => esday().minute())
-    expectSame((esday) => esday().get('m'))
-    expectSame((esday) => esday().get('minute'))
-    expectSame((esday) => esday().get('minutes'))
+    expectSameValue((esday) => esday().minute())
+    expectSameValue((esday) => esday().get('m'))
+    expectSameValue((esday) => esday().get('minute'))
+    expectSameValue((esday) => esday().get('minutes'))
   })
 
   it('second', () => {
-    expectSame((esday) => esday().second())
-    expectSame((esday) => esday().get('s'))
-    expectSame((esday) => esday().get('second'))
-    expectSame((esday) => esday().get('seconds'))
+    expectSameValue((esday) => esday().second())
+    expectSameValue((esday) => esday().get('s'))
+    expectSameValue((esday) => esday().get('second'))
+    expectSameValue((esday) => esday().get('seconds'))
   })
 
   it('millisecond', () => {
-    expectSame((esday) => esday().millisecond())
-    expectSame((esday) => esday().get('ms'))
-    expectSame((esday) => esday().get('millisecond'))
-    expectSame((esday) => esday().get('milliseconds'))
+    expectSameValue((esday) => esday().millisecond())
+    expectSameValue((esday) => esday().get('ms'))
+    expectSameValue((esday) => esday().get('millisecond'))
+    expectSameValue((esday) => esday().get('milliseconds'))
   })
 
   it('quarter without plugin quarter returns NaN', () => {
@@ -103,28 +103,28 @@ describe('set', () => {
   it('year', () => {
     const newYear = 2025
 
-    expectSameResult((esday) => esday().year(newYear))
-    expectSameResult((esday) => esday().set('y', newYear))
-    expectSameResult((esday) => esday().set('year', newYear))
-    expectSameResult((esday) => esday().set('years', newYear))
+    expectSameObject((esday) => esday().year(newYear))
+    expectSameObject((esday) => esday().set('y', newYear))
+    expectSameObject((esday) => esday().set('year', newYear))
+    expectSameObject((esday) => esday().set('years', newYear))
   })
 
   it('month', () => {
     const newMonth = 5 // June
 
-    expectSameResult((esday) => esday().month(newMonth))
-    expectSameResult((esday) => esday().set('M', newMonth))
-    expectSameResult((esday) => esday().set('month', newMonth))
-    expectSameResult((esday) => esday().set('months', newMonth))
+    expectSameObject((esday) => esday().month(newMonth))
+    expectSameObject((esday) => esday().set('M', newMonth))
+    expectSameObject((esday) => esday().set('month', newMonth))
+    expectSameObject((esday) => esday().set('months', newMonth))
   })
 
   it('day of month', () => {
     const newDayOfMonth = 25
 
-    expectSameResult((esday) => esday().date(newDayOfMonth))
-    expectSameResult((esday) => esday().set('D', newDayOfMonth))
-    expectSameResult((esday) => esday().set('date', newDayOfMonth))
-    expectSameResult((esday) => esday().set('dates', newDayOfMonth))
+    expectSameObject((esday) => esday().date(newDayOfMonth))
+    expectSameObject((esday) => esday().set('D', newDayOfMonth))
+    expectSameObject((esday) => esday().set('date', newDayOfMonth))
+    expectSameObject((esday) => esday().set('dates', newDayOfMonth))
   })
 
   it.each([
@@ -132,46 +132,46 @@ describe('set', () => {
     { sourceString: '2024-11-14T00:00:00', newDayOfWeek: 4 },
     { sourceString: '2024-02-03T13:14:15.678', newDayOfWeek: 6 },
   ])('day of week for "$sourceString" to "$newDayOfWeek"', ({ sourceString, newDayOfWeek }) => {
-    expectSameResult((esday) => esday(sourceString).day(newDayOfWeek))
-    expectSameResult((esday) => esday(sourceString).set('d', newDayOfWeek))
-    expectSameResult((esday) => esday(sourceString).set('day', newDayOfWeek))
-    expectSameResult((esday) => esday(sourceString).set('days', newDayOfWeek))
+    expectSameObject((esday) => esday(sourceString).day(newDayOfWeek))
+    expectSameObject((esday) => esday(sourceString).set('d', newDayOfWeek))
+    expectSameObject((esday) => esday(sourceString).set('day', newDayOfWeek))
+    expectSameObject((esday) => esday(sourceString).set('days', newDayOfWeek))
   })
 
   it('hour', () => {
     const newHour = 4
 
-    expectSameResult((esday) => esday().hour(newHour))
-    expectSameResult((esday) => esday().set('h', newHour))
-    expectSameResult((esday) => esday().set('hour', newHour))
-    expectSameResult((esday) => esday().set('hours', newHour))
+    expectSameObject((esday) => esday().hour(newHour))
+    expectSameObject((esday) => esday().set('h', newHour))
+    expectSameObject((esday) => esday().set('hour', newHour))
+    expectSameObject((esday) => esday().set('hours', newHour))
   })
 
   it('minute', () => {
     const newMinute = 43
 
-    expectSameResult((esday) => esday().minute(newMinute))
-    expectSameResult((esday) => esday().set('m', newMinute))
-    expectSameResult((esday) => esday().set('minute', newMinute))
-    expectSameResult((esday) => esday().set('minutes', newMinute))
+    expectSameObject((esday) => esday().minute(newMinute))
+    expectSameObject((esday) => esday().set('m', newMinute))
+    expectSameObject((esday) => esday().set('minute', newMinute))
+    expectSameObject((esday) => esday().set('minutes', newMinute))
   })
 
   it('second', () => {
     const newSecond = 25
 
-    expectSameResult((esday) => esday().second(newSecond))
-    expectSameResult((esday) => esday().set('s', newSecond))
-    expectSameResult((esday) => esday().set('second', newSecond))
-    expectSameResult((esday) => esday().set('seconds', newSecond))
+    expectSameObject((esday) => esday().second(newSecond))
+    expectSameObject((esday) => esday().set('s', newSecond))
+    expectSameObject((esday) => esday().set('second', newSecond))
+    expectSameObject((esday) => esday().set('seconds', newSecond))
   })
 
   it('millisecond', () => {
     const newMillisecond = 25
 
-    expectSameResult((esday) => esday().millisecond(newMillisecond))
-    expectSameResult((esday) => esday().set('ms', newMillisecond))
-    expectSameResult((esday) => esday().set('millisecond', newMillisecond))
-    expectSameResult((esday) => esday().set('milliseconds', newMillisecond))
+    expectSameObject((esday) => esday().millisecond(newMillisecond))
+    expectSameObject((esday) => esday().set('ms', newMillisecond))
+    expectSameObject((esday) => esday().set('millisecond', newMillisecond))
+    expectSameObject((esday) => esday().set('milliseconds', newMillisecond))
   })
 
   it('to year returns new instance', () => {

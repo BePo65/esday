@@ -3,7 +3,7 @@ import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
 import isoWeekPlugin from '~/plugins/isoWeek'
-import { expectSame, expectSameResult } from '../util'
+import { expectSameObject, expectSameValue } from '../util'
 
 esday.extend(isoWeekPlugin)
 
@@ -33,7 +33,7 @@ describe('isoWeek plugin - default locale', () => {
     { sourceString: '2023-12-31', expected: 52, weekday: 'Sunday' },
     { sourceString: '2023-12-31T07:18:29', expected: 52, weekday: 'Sunday' },
   ])('get isoWeek for "$sourceString"', ({ sourceString, expected }) => {
-    expectSame((esday) => esday(sourceString).isoWeek())
+    expectSameValue((esday) => esday(sourceString).isoWeek())
     expect(esday(sourceString).isoWeek()).toBe(expected)
   })
 
@@ -41,7 +41,7 @@ describe('isoWeek plugin - default locale', () => {
     const sourceString = '2021-01-02T07:18:29'
     const expected = 53
 
-    expectSame((esday) => esday(sourceString).isoWeeks())
+    expectSameValue((esday) => esday(sourceString).isoWeeks())
     expect(esday(sourceString).isoWeeks()).toBe(expected)
   })
 
@@ -53,7 +53,7 @@ describe('isoWeek plugin - default locale', () => {
     const esdaySourceDate = esday(sourceString)
     const esdayTargetDate = esdaySourceDate.isoWeek(newWeek)
 
-    expectSameResult((esday) => esday(sourceString).isoWeek(newWeek))
+    expectSameObject((esday) => esday(sourceString).isoWeek(newWeek))
     expect(esdaySourceDate.day()).toBe(esdayTargetDate.day())
   })
 
@@ -63,7 +63,7 @@ describe('isoWeek plugin - default locale', () => {
     const esdaySourceDate = esday(sourceString)
     const esdayTargetDate = esdaySourceDate.isoWeek(newWeek)
 
-    expectSameResult((esday) => esday(sourceString).isoWeek(newWeek))
+    expectSameObject((esday) => esday(sourceString).isoWeek(newWeek))
     expect(esdaySourceDate.day()).toBe(esdayTargetDate.day())
   })
 
@@ -76,7 +76,7 @@ describe('isoWeek plugin - default locale', () => {
     { sourceString: '2025-07-12', expected: 6 },
     { sourceString: '2025-04-13', expected: 7 },
   ])('get isoWeekday for "$sourceString"', ({ sourceString, expected }) => {
-    expectSame((esday) => esday(sourceString).isoWeekday())
+    expectSameValue((esday) => esday(sourceString).isoWeekday())
     expect(esday(sourceString).isoWeekday()).toBe(expected)
   })
 
@@ -99,7 +99,7 @@ describe('isoWeek plugin - default locale', () => {
   ])(
     'set isoWeekday to "$newIsoWeekday" for "$sourceString"',
     ({ sourceString, newIsoWeekday }) => {
-      expectSameResult((esday) => esday(sourceString).isoWeekday(newIsoWeekday))
+      expectSameObject((esday) => esday(sourceString).isoWeekday(newIsoWeekday))
     },
   )
 
@@ -109,7 +109,7 @@ describe('isoWeek plugin - default locale', () => {
     { sourceString: '2025-12-29', expected: 2026 },
     { sourceString: '2026-12-31', expected: 2026 },
   ])('get isoWeekYear for "$sourceString"', ({ sourceString, expected }) => {
-    expectSame((esday) => esday(sourceString).isoWeekYear())
+    expectSameValue((esday) => esday(sourceString).isoWeekYear())
     expect(esday(sourceString).isoWeekYear()).toBe(expected)
   })
 
@@ -119,7 +119,7 @@ describe('isoWeek plugin - default locale', () => {
     { sourceString: '2025-12-31', newIsoYear: 2026, expected: '2025-12-31' },
     { sourceString: '2026-12-31', newIsoYear: 2026, expected: '2026-12-31' },
   ])('set isoWeekYear for "$sourceString" to "$newIsoYear"', ({ sourceString, newIsoYear }) => {
-    expectSameResult((esday) => esday(sourceString).isoWeekYear(newIsoYear))
+    expectSameObject((esday) => esday(sourceString).isoWeekYear(newIsoYear))
     expect(esday(sourceString).isoWeekYear(newIsoYear).isoWeekYear()).toBe(newIsoYear)
   })
 
@@ -158,7 +158,7 @@ describe('isoWeek plugin - default locale', () => {
     const resultDate = esday(sourceString).startOf(C.ISOWEEK)
 
     expect(resultDate.format('YYYY-MM-DDTHH:mm:ss.SSS')).toBe(expectedAsString)
-    expectSameResult((esday) => esday(sourceString).startOf(C.ISOWEEK))
+    expectSameObject((esday) => esday(sourceString).startOf(C.ISOWEEK))
   })
 
   it.each([
@@ -169,7 +169,7 @@ describe('isoWeek plugin - default locale', () => {
     { sourceString: '2023-11-14T00:00:00' },
     { sourceString: '2023-05-08T00:00:00' },
   ])('handle edge case for startOf week for "$sourceString"', ({ sourceString }) => {
-    expectSameResult((esday) => esday(sourceString).startOf(C.ISOWEEK))
+    expectSameObject((esday) => esday(sourceString).startOf(C.ISOWEEK))
   })
 
   it.each([
@@ -193,7 +193,7 @@ describe('isoWeek plugin - default locale', () => {
     const resultDate = esday(sourceString).endOf(C.ISOWEEK)
 
     expect(resultDate.format('YYYY-MM-DDTHH:mm:ss.SSS')).toBe(expectedAsString)
-    expectSameResult((esday) => esday(sourceString).endOf(C.ISOWEEK))
+    expectSameObject((esday) => esday(sourceString).endOf(C.ISOWEEK))
   })
 
   it.each([
@@ -204,7 +204,7 @@ describe('isoWeek plugin - default locale', () => {
     { sourceString: '2023-11-15T00:00:00' },
     { sourceString: '2023-05-08T00:00:00' },
   ])('handle edge case for endOf week for "$sourceString"', ({ sourceString }) => {
-    expectSameResult((esday) => esday(sourceString).endOf(C.ISOWEEK))
+    expectSameObject((esday) => esday(sourceString).endOf(C.ISOWEEK))
   })
 
   it.each([
@@ -216,7 +216,7 @@ describe('isoWeek plugin - default locale', () => {
   ])(
     'format date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString }) => {
-      expectSame((esday) => esday(sourceString).format(formatString))
+      expectSameValue((esday) => esday(sourceString).format(formatString))
     },
   )
 

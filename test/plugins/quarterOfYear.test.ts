@@ -3,7 +3,7 @@ import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { UnitTypeAddSub, UnitTypeGetSet } from '~/common/units'
 import quarterOfYearPlugin from '~/plugins/quarterOfYear'
-import { expectSame, expectSameResult } from '../util'
+import { expectSameObject, expectSameValue } from '../util'
 
 esday.extend(quarterOfYearPlugin)
 
@@ -30,7 +30,7 @@ describe('quarterOfYear plugin', () => {
     { sourceString: '2023-10-01T00:00:00.000', expected: 4 },
   ])('get quarter of "$sourceString" using quarter()', ({ sourceString, expected }) => {
     expect(esday(sourceString).quarter()).toBe(expected)
-    expectSame((esday) => esday(sourceString).quarter())
+    expectSameValue((esday) => esday(sourceString).quarter())
   })
 
   it('get quarters', () => {
@@ -38,7 +38,7 @@ describe('quarterOfYear plugin', () => {
     const expected = 2
 
     expect(esday(sourceString).quarter()).toBe(expected)
-    expectSame((esday) => esday(sourceString).quarter())
+    expectSameValue((esday) => esday(sourceString).quarter())
   })
 
   it.each([
@@ -48,7 +48,7 @@ describe('quarterOfYear plugin', () => {
   ])('get quarter of "$sourceString" using get("$unit")', ({ sourceString, unit, expected }) => {
     const unitAsUnitType = unit as UnitTypeGetSet
     expect(esday(sourceString).get(unitAsUnitType)).toBe(expected)
-    expectSame((esday) => esday(sourceString).get(unitAsUnitType))
+    expectSameValue((esday) => esday(sourceString).get(unitAsUnitType))
   })
 
   it('get quarter of invalid date', () => {
@@ -81,7 +81,7 @@ describe('quarterOfYear plugin', () => {
   ])(
     'set quarter for "$sourceString" to "$quarter" using quarter()',
     ({ sourceString, quarter }) => {
-      expectSameResult((esday) => esday(sourceString).quarter(quarter))
+      expectSameObject((esday) => esday(sourceString).quarter(quarter))
     },
   )
 
@@ -89,7 +89,7 @@ describe('quarterOfYear plugin', () => {
     const sourceString = '2023-02-05T04:05:06.789'
     const quarter = 2
 
-    expectSameResult((esday) => esday(sourceString).quarter(quarter))
+    expectSameObject((esday) => esday(sourceString).quarter(quarter))
   })
 
   it.each([
@@ -115,7 +115,7 @@ describe('quarterOfYear plugin', () => {
     'set quarter for "$sourceString" to "$value" using set("$unit")',
     ({ sourceString, unit, value }) => {
       const unitAsUnitType = unit as UnitTypeGetSet
-      expectSameResult((esday) => esday(sourceString).set(unitAsUnitType, value))
+      expectSameObject((esday) => esday(sourceString).set(unitAsUnitType, value))
     },
   )
 
@@ -135,7 +135,7 @@ describe('quarterOfYear plugin', () => {
     { sourceString: '2023-01-30T09:10:21.456', value: 1, unit: 'quarters' },
     { sourceString: '2023-01-31T09:10:21.456', value: 1, unit: 'quarter' },
   ])('add "$value" $unit to "$sourceString"', ({ sourceString, value, unit }) => {
-    expectSameResult((esday) => esday(sourceString).add(value, unit as UnitTypeAddSub))
+    expectSameObject((esday) => esday(sourceString).add(value, unit as UnitTypeAddSub))
   })
 
   it.each([
@@ -145,7 +145,7 @@ describe('quarterOfYear plugin', () => {
     { sourceString: '2023-08-30T09:10:21.456', value: 2, unit: 'quarter' },
     { sourceString: '2023-01-31T09:10:21.456', value: 1, unit: 'quarter' },
   ])('subtract "$value" quarter from "$sourceString"', ({ sourceString, value, unit }) => {
-    expectSameResult((esday) => esday(sourceString).subtract(value, unit as UnitTypeAddSub))
+    expectSameObject((esday) => esday(sourceString).subtract(value, unit as UnitTypeAddSub))
   })
 
   it.each([
@@ -155,7 +155,7 @@ describe('quarterOfYear plugin', () => {
     { sourceString: '2024-12-31T00:00:00' },
     { sourceString: '2025-01-01T00:00:00' },
   ])('startOf quarter of "$sourceString"', ({ sourceString }) => {
-    expectSameResult((esday) => esday(sourceString).startOf('quarter'))
+    expectSameObject((esday) => esday(sourceString).startOf('quarter'))
   })
 
   it.each([
@@ -165,7 +165,7 @@ describe('quarterOfYear plugin', () => {
     { sourceString: '2024-12-31T00:00:00' },
     { sourceString: '2025-01-01T00:00:00' },
   ])('endOf quarter of "$sourceString"', ({ sourceString }) => {
-    expectSameResult((esday) => esday(sourceString).endOf('quarter'))
+    expectSameObject((esday) => esday(sourceString).endOf('quarter'))
   })
 
   it.each([
@@ -173,6 +173,6 @@ describe('quarterOfYear plugin', () => {
     { sourceString: '2023-08-30T09:10:21.456', formatString: 'YYYY Q' },
     { sourceString: '2023-01-31T09:10:21.456', formatString: 'YYYY Q' },
   ])('format "$sourceString" with "$formatString"', ({ sourceString, formatString }) => {
-    expectSame((esday) => esday(sourceString).format(formatString))
+    expectSameValue((esday) => esday(sourceString).format(formatString))
   })
 })

@@ -7,10 +7,10 @@ The `subtract()` method subtracts a value from an `esday` object.
 ## Usage
 
 ### Method signatures
-```typescript
+```signature
 esday().add(value: number, unit: UnitTypeAddSub): EsDay
 ```
-```typescript
+```signature
 esday().subtract(value: number, unit: UnitTypeAddSub): EsDay
 ```
 

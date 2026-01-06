@@ -11,7 +11,7 @@ By default `diff` will truncate the result to an integer. If you want a floating
 ## Usage
 
 ### Method signatures
-```typescript
+```signature
 esday().diff(date: EsDay, unit?: UnitTypeAddSub, asFloat?: boolean): number
 ```
 

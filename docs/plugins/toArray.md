@@ -8,7 +8,7 @@ ToArray adds the `toArray` method to EsDay to get an array containing the parts 
 ToArray has no dependencies on other plugins.
 
 ### Method signatures
-```typescript
+```signature
 esday().toArray(): [number, number, number, number, number, number, number]
 ```
 

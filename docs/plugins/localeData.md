@@ -15,7 +15,7 @@ LocaleData requires the plugin Locale and at least 1 registered and activated lo
 The plugin Locale must be loaded using esday.extend(...) before the plugin LocaleData.
 
 ### Method signatures
-```typescript
+```signature
 esday().localeData(): LocaleData
 esday.localeData(localeName?: string): LocaleData
 ```

@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
 import { INVALID_DATE_STRING } from '~/common/constants'
 import durationPlugin, { type UnitTypeDuration } from '~/plugins/duration'
-import { expectSame, expectSameDuration } from '../util'
+import { expectSameDuration, expectSameValue } from '../util'
 
 esday.extend(durationPlugin)
 
@@ -218,7 +218,7 @@ describe('duration plugin - using default locale', () => {
         years: 8.7,
       }
 
-      expectSame((esday) => esday.duration(durationDef).isValid())
+      expectSameValue((esday) => esday.duration(durationDef).isValid())
       expect(esday.duration(durationDef).isValid()).toBeFalsy()
     })
 
@@ -675,7 +675,7 @@ describe('duration plugin - using default locale', () => {
         years: 8,
       }
 
-      expectSame((esday) => esday.duration(durationDefinition).get(unit as UnitTypeDuration))
+      expectSameValue((esday) => esday.duration(durationDefinition).get(unit as UnitTypeDuration))
       expect(esday.duration(durationDefinition).isValid()).toBeTruthy()
     })
 
@@ -700,7 +700,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 1
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asYears())
+      expectSameValue((esday) => esday.duration(value, unit).asYears())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asYears()).toBe(expected)
     })
@@ -710,7 +710,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 5
       const esdayDuration = esday.duration(value)
 
-      expectSame((esday) => esday.duration(value).years())
+      expectSameValue((esday) => esday.duration(value).years())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.years()).toBe(expected)
     })
@@ -721,7 +721,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 4
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asYears())
+      expectSameValue((esday) => esday.duration(value, unit).asYears())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asQuarters()).toBe(expected)
     })
@@ -748,7 +748,7 @@ describe('duration plugin - using default locale', () => {
       const typedUnit = unit as UnitTypeDuration
       const esdayDuration = esday.duration(value, typedUnit)
 
-      expectSame((esday) => esday.duration(value, typedUnit).asMonths())
+      expectSameValue((esday) => esday.duration(value, typedUnit).asMonths())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMonths()).toBe(expected)
     })
@@ -799,7 +799,7 @@ describe('duration plugin - using default locale', () => {
     ])('months of $description', ({ value, expectedM, expectedQ, expectedY }) => {
       const esdayDuration = esday.duration(value)
 
-      expectSame((esday) => esday.duration(value).months())
+      expectSameValue((esday) => esday.duration(value).months())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.quarters()).toBe(expectedQ)
       expect(esdayDuration.months()).toBe(expectedM)
@@ -812,7 +812,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 52.143
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asWeeks())
+      expectSameValue((esday) => esday.duration(value, unit).asWeeks())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asWeeks().toFixed(3)).toBeCloseTo(expected, 3)
     })
@@ -833,7 +833,7 @@ describe('duration plugin - using default locale', () => {
     ])('weeks of $description', ({ value, expectedD, expectedW, expectedM }) => {
       const esdayDuration = esday.duration(value)
 
-      expectSame((esday) => esday.duration(value).weeks())
+      expectSameValue((esday) => esday.duration(value).weeks())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.days()).toBe(expectedD)
       expect(esdayDuration.weeks()).toBe(expectedW)
@@ -850,7 +850,7 @@ describe('duration plugin - using default locale', () => {
       const typedUnit = unit as UnitTypeDuration
       const esdayDuration = esday.duration(value, typedUnit)
 
-      expectSame((esday) => esday.duration(value, typedUnit).asDays())
+      expectSameValue((esday) => esday.duration(value, typedUnit).asDays())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asDays()).toBe(expected)
     })
@@ -864,7 +864,7 @@ describe('duration plugin - using default locale', () => {
     ])('days of $description', ({ value, expected }) => {
       const esdayDuration = esday.duration(value)
 
-      expectSame((esday) => esday.duration(value).days())
+      expectSameValue((esday) => esday.duration(value).days())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.days()).toBe(expected)
     })
@@ -875,7 +875,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 8_760
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asHours())
+      expectSameValue((esday) => esday.duration(value, unit).asHours())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asHours()).toBe(expected)
     })
@@ -885,7 +885,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 8
       const esdayDuration = esday.duration(value)
 
-      expectSame((esday) => esday.duration(value).hours())
+      expectSameValue((esday) => esday.duration(value).hours())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.hours()).toBe(expected)
     })
@@ -896,7 +896,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 525_600
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMinutes())
+      expectSameValue((esday) => esday.duration(value, unit).asMinutes())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMinutes()).toBe(expected)
     })
@@ -906,7 +906,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 7
       const esdayDuration = esday.duration(value)
 
-      expectSame((esday) => esday.duration(value).minutes())
+      expectSameValue((esday) => esday.duration(value).minutes())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.minutes()).toBe(expected)
     })
@@ -917,7 +917,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 31_536_000
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asSeconds())
+      expectSameValue((esday) => esday.duration(value, unit).asSeconds())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asSeconds()).toBe(expected)
     })
@@ -927,7 +927,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 6
       const esdayDuration = esday.duration(value)
 
-      expectSame((esday) => esday.duration(value).seconds())
+      expectSameValue((esday) => esday.duration(value).seconds())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.seconds()).toBe(expected)
     })
@@ -938,7 +938,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 31_536_000_000
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMilliseconds())
+      expectSameValue((esday) => esday.duration(value, unit).asMilliseconds())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMilliseconds()).toBe(expected)
     })
@@ -948,7 +948,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 5
       const esdayDuration = esday.duration(value)
 
-      expectSame((esday) => esday.duration(value).milliseconds())
+      expectSameValue((esday) => esday.duration(value).milliseconds())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.milliseconds()).toBe(expected)
     })
@@ -959,7 +959,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.25
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asYears())
+      expectSameValue((esday) => esday.duration(value, unit).asYears())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asYears()).toBe(expected)
     })
@@ -970,7 +970,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 1
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asQuarters())
+      expectSameValue((esday) => esday.duration(value, unit).asQuarters())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asQuarters()).toBe(expected)
     })
@@ -981,7 +981,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 3
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMonths())
+      expectSameValue((esday) => esday.duration(value, unit).asMonths())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMonths()).toBe(expected)
     })
@@ -992,7 +992,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 26.143
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asWeeks())
+      expectSameValue((esday) => esday.duration(value, unit).asWeeks())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asWeeks().toFixed(3)).toBeCloseTo(expected, 3)
     })
@@ -1006,7 +1006,7 @@ describe('duration plugin - using default locale', () => {
       const typedUnit = unit as UnitTypeDuration
       const esdayDuration = esday.duration(value, typedUnit)
 
-      expectSame((esday) => esday.duration(value, typedUnit).asDays())
+      expectSameValue((esday) => esday.duration(value, typedUnit).asDays())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asDays()).toBe(expected)
     })
@@ -1018,7 +1018,7 @@ describe('duration plugin - using default locale', () => {
       const typedUnit = unit as UnitTypeDuration
       const esdayDuration = esday.duration(value, typedUnit)
 
-      expectSame((esday) => esday.duration(value, typedUnit).asHours())
+      expectSameValue((esday) => esday.duration(value, typedUnit).asHours())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asHours()).toBe(expected)
     })
@@ -1029,7 +1029,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 263_520
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMinutes())
+      expectSameValue((esday) => esday.duration(value, unit).asMinutes())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMinutes()).toBe(expected)
     })
@@ -1040,7 +1040,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 23_673_600
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asSeconds())
+      expectSameValue((esday) => esday.duration(value, unit).asSeconds())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asSeconds()).toBe(expected)
     })
@@ -1051,7 +1051,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 23_673_600_000
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMilliseconds())
+      expectSameValue((esday) => esday.duration(value, unit).asMilliseconds())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMilliseconds()).toBe(expected)
     })
@@ -1062,7 +1062,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.0833
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asYears())
+      expectSameValue((esday) => esday.duration(value, unit).asYears())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asYears().toFixed(4)).toBeCloseTo(expected, 4)
     })
@@ -1073,7 +1073,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 2
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asQuarters())
+      expectSameValue((esday) => esday.duration(value, unit).asQuarters())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asQuarters()).toBe(expected)
     })
@@ -1084,7 +1084,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 1
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMonths())
+      expectSameValue((esday) => esday.duration(value, unit).asMonths())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMonths()).toBe(expected)
     })
@@ -1095,7 +1095,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 4.286
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asWeeks())
+      expectSameValue((esday) => esday.duration(value, unit).asWeeks())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asWeeks().toFixed(3)).toBeCloseTo(expected, 3)
     })
@@ -1121,7 +1121,7 @@ describe('duration plugin - using default locale', () => {
       const typedUnit = unit as UnitTypeDuration
       const esdayDuration = esday.duration(value, typedUnit)
 
-      expectSame((esday) => esday.duration(value, typedUnit).asDays())
+      expectSameValue((esday) => esday.duration(value, typedUnit).asDays())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asDays()).toBe(expected)
     })
@@ -1132,7 +1132,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 720
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asHours())
+      expectSameValue((esday) => esday.duration(value, unit).asHours())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asHours()).toBe(expected)
     })
@@ -1143,7 +1143,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 43_200
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMinutes())
+      expectSameValue((esday) => esday.duration(value, unit).asMinutes())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMinutes()).toBe(expected)
     })
@@ -1154,7 +1154,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 2_592_000
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asSeconds())
+      expectSameValue((esday) => esday.duration(value, unit).asSeconds())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asSeconds()).toBe(expected)
     })
@@ -1165,7 +1165,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 2_592_000_000
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMilliseconds())
+      expectSameValue((esday) => esday.duration(value, unit).asMilliseconds())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMilliseconds()).toBe(expected)
     })
@@ -1176,7 +1176,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.0192
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asYears())
+      expectSameValue((esday) => esday.duration(value, unit).asYears())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asYears().toFixed(4)).toBeCloseTo(expected, 4)
     })
@@ -1187,7 +1187,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.0767
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asQuarters())
+      expectSameValue((esday) => esday.duration(value, unit).asQuarters())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asQuarters().toFixed(4)).toBeCloseTo(expected, 4)
     })
@@ -1198,7 +1198,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.23
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMonths())
+      expectSameValue((esday) => esday.duration(value, unit).asMonths())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMonths().toFixed(2)).toBeCloseTo(expected, 2)
     })
@@ -1209,7 +1209,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 1
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asWeeks())
+      expectSameValue((esday) => esday.duration(value, unit).asWeeks())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asWeeks()).toBe(expected)
     })
@@ -1220,7 +1220,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 7
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asDays())
+      expectSameValue((esday) => esday.duration(value, unit).asDays())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asDays()).toBe(expected)
     })
@@ -1231,7 +1231,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 168
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asHours())
+      expectSameValue((esday) => esday.duration(value, unit).asHours())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asHours()).toBe(expected)
     })
@@ -1242,7 +1242,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 10_080
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMinutes())
+      expectSameValue((esday) => esday.duration(value, unit).asMinutes())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMinutes()).toBe(expected)
     })
@@ -1253,7 +1253,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 604_800
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asSeconds())
+      expectSameValue((esday) => esday.duration(value, unit).asSeconds())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asSeconds()).toBe(expected)
     })
@@ -1264,7 +1264,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 604_800_000
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMilliseconds())
+      expectSameValue((esday) => esday.duration(value, unit).asMilliseconds())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMilliseconds()).toBe(expected)
     })
@@ -1275,7 +1275,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.0027
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asYears())
+      expectSameValue((esday) => esday.duration(value, unit).asYears())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asYears().toFixed(4)).toBeCloseTo(expected, 4)
     })
@@ -1286,7 +1286,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.011
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asQuarters())
+      expectSameValue((esday) => esday.duration(value, unit).asQuarters())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asQuarters().toFixed(3)).toBeCloseTo(expected, 3)
     })
@@ -1297,7 +1297,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.033
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMonths())
+      expectSameValue((esday) => esday.duration(value, unit).asMonths())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMonths().toFixed(3)).toBeCloseTo(expected, 3)
     })
@@ -1308,7 +1308,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.143
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asWeeks())
+      expectSameValue((esday) => esday.duration(value, unit).asWeeks())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asWeeks().toFixed(3)).toBeCloseTo(expected, 3)
     })
@@ -1319,7 +1319,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 1
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asDays())
+      expectSameValue((esday) => esday.duration(value, unit).asDays())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asDays()).toBe(expected)
     })
@@ -1330,7 +1330,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 24
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asHours())
+      expectSameValue((esday) => esday.duration(value, unit).asHours())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asHours()).toBe(expected)
     })
@@ -1341,7 +1341,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 1_440
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMinutes())
+      expectSameValue((esday) => esday.duration(value, unit).asMinutes())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMinutes()).toBe(expected)
     })
@@ -1352,7 +1352,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 86_400
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asSeconds())
+      expectSameValue((esday) => esday.duration(value, unit).asSeconds())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asSeconds()).toBe(expected)
     })
@@ -1363,7 +1363,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 86_400_000
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMilliseconds())
+      expectSameValue((esday) => esday.duration(value, unit).asMilliseconds())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMilliseconds()).toBe(expected)
     })
@@ -1374,7 +1374,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.000114
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asYears())
+      expectSameValue((esday) => esday.duration(value, unit).asYears())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asYears().toFixed(6)).toBeCloseTo(expected, 6)
     })
@@ -1385,7 +1385,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.000456
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asQuarters())
+      expectSameValue((esday) => esday.duration(value, unit).asQuarters())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asQuarters().toFixed(6)).toBeCloseTo(expected, 6)
     })
@@ -1396,7 +1396,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.00137
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMonths())
+      expectSameValue((esday) => esday.duration(value, unit).asMonths())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMonths().toFixed(5)).toBeCloseTo(expected, 5)
     })
@@ -1407,7 +1407,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.00595
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asWeeks())
+      expectSameValue((esday) => esday.duration(value, unit).asWeeks())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asWeeks().toFixed(5)).toBeCloseTo(expected, 5)
     })
@@ -1418,7 +1418,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.0417
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asDays())
+      expectSameValue((esday) => esday.duration(value, unit).asDays())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asDays().toFixed(4)).toBeCloseTo(expected, 4)
     })
@@ -1429,7 +1429,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 1
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asHours())
+      expectSameValue((esday) => esday.duration(value, unit).asHours())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asHours()).toBe(expected)
     })
@@ -1440,7 +1440,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 60
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMinutes())
+      expectSameValue((esday) => esday.duration(value, unit).asMinutes())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMinutes()).toBe(expected)
     })
@@ -1451,7 +1451,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 3_600
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asSeconds())
+      expectSameValue((esday) => esday.duration(value, unit).asSeconds())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asSeconds()).toBe(expected)
     })
@@ -1462,7 +1462,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 3_600_000
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMilliseconds())
+      expectSameValue((esday) => esday.duration(value, unit).asMilliseconds())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMilliseconds()).toBe(expected)
     })
@@ -1473,7 +1473,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.0000019
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asYears())
+      expectSameValue((esday) => esday.duration(value, unit).asYears())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asYears().toFixed(8)).toBeCloseTo(expected, 8)
     })
@@ -1484,7 +1484,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.00000761
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asQuarters())
+      expectSameValue((esday) => esday.duration(value, unit).asQuarters())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asQuarters().toFixed(8)).toBeCloseTo(expected, 8)
     })
@@ -1495,7 +1495,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.0000228
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMonths())
+      expectSameValue((esday) => esday.duration(value, unit).asMonths())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMonths().toFixed(7)).toBeCloseTo(expected, 7)
     })
@@ -1506,7 +1506,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.0000992
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asWeeks())
+      expectSameValue((esday) => esday.duration(value, unit).asWeeks())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asWeeks().toFixed(7)).toBeCloseTo(expected, 7)
     })
@@ -1517,7 +1517,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.000694
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asDays())
+      expectSameValue((esday) => esday.duration(value, unit).asDays())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asDays().toFixed(6)).toBeCloseTo(expected, 6)
     })
@@ -1528,7 +1528,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.0167
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asHours())
+      expectSameValue((esday) => esday.duration(value, unit).asHours())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asHours().toFixed(4)).toBeCloseTo(expected, 4)
     })
@@ -1539,7 +1539,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 1
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMinutes())
+      expectSameValue((esday) => esday.duration(value, unit).asMinutes())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMinutes()).toBe(expected)
     })
@@ -1550,7 +1550,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 60
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asSeconds())
+      expectSameValue((esday) => esday.duration(value, unit).asSeconds())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asSeconds()).toBe(expected)
     })
@@ -1561,7 +1561,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 60_000
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMilliseconds())
+      expectSameValue((esday) => esday.duration(value, unit).asMilliseconds())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMilliseconds()).toBe(expected)
     })
@@ -1572,7 +1572,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.0000000317
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asYears())
+      expectSameValue((esday) => esday.duration(value, unit).asYears())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asYears().toFixed(10)).toBeCloseTo(expected, 10)
     })
@@ -1583,7 +1583,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.0000001268
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asQuarters())
+      expectSameValue((esday) => esday.duration(value, unit).asQuarters())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asQuarters().toFixed(10)).toBeCloseTo(expected, 10)
     })
@@ -1594,7 +1594,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.00000038
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMonths())
+      expectSameValue((esday) => esday.duration(value, unit).asMonths())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMonths().toFixed(9)).toBeCloseTo(expected, 9)
     })
@@ -1605,7 +1605,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.00000165
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asWeeks())
+      expectSameValue((esday) => esday.duration(value, unit).asWeeks())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asWeeks().toFixed(8)).toBeCloseTo(expected, 8)
     })
@@ -1616,7 +1616,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.0000116
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asDays())
+      expectSameValue((esday) => esday.duration(value, unit).asDays())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asDays().toFixed(7)).toBeCloseTo(expected, 7)
     })
@@ -1627,7 +1627,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.000278
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asHours())
+      expectSameValue((esday) => esday.duration(value, unit).asHours())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asHours().toFixed(6)).toBeCloseTo(expected, 6)
     })
@@ -1638,7 +1638,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.0167
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMinutes())
+      expectSameValue((esday) => esday.duration(value, unit).asMinutes())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMinutes().toFixed(4)).toBeCloseTo(expected, 4)
     })
@@ -1649,7 +1649,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 1
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asSeconds())
+      expectSameValue((esday) => esday.duration(value, unit).asSeconds())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asSeconds()).toBe(expected)
     })
@@ -1660,7 +1660,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 1_000
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMilliseconds())
+      expectSameValue((esday) => esday.duration(value, unit).asMilliseconds())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMilliseconds()).toBe(expected)
     })
@@ -1671,7 +1671,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.0000000000317
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asYears())
+      expectSameValue((esday) => esday.duration(value, unit).asYears())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asYears().toFixed(13)).toBeCloseTo(expected, 13)
     })
@@ -1682,7 +1682,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.0000000001268
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asQuarters())
+      expectSameValue((esday) => esday.duration(value, unit).asQuarters())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asQuarters().toFixed(13)).toBeCloseTo(expected, 13)
     })
@@ -1693,7 +1693,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.00000000038
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMonths())
+      expectSameValue((esday) => esday.duration(value, unit).asMonths())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMonths().toFixed(12)).toBeCloseTo(expected, 12)
     })
@@ -1704,7 +1704,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.00000000165
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asWeeks())
+      expectSameValue((esday) => esday.duration(value, unit).asWeeks())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asWeeks().toFixed(11)).toBeCloseTo(expected, 11)
     })
@@ -1715,7 +1715,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.0000000116
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asDays())
+      expectSameValue((esday) => esday.duration(value, unit).asDays())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asDays().toFixed(10)).toBeCloseTo(expected, 10)
     })
@@ -1726,7 +1726,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.000000278
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asHours())
+      expectSameValue((esday) => esday.duration(value, unit).asHours())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asHours().toFixed(7)).toBeCloseTo(expected, 7)
     })
@@ -1737,7 +1737,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.0000167
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMinutes())
+      expectSameValue((esday) => esday.duration(value, unit).asMinutes())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMinutes().toFixed(7)).toBeCloseTo(expected, 7)
     })
@@ -1748,7 +1748,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 0.001
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asSeconds())
+      expectSameValue((esday) => esday.duration(value, unit).asSeconds())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asSeconds().toFixed(3)).toBeCloseTo(expected, 3)
     })
@@ -1759,7 +1759,7 @@ describe('duration plugin - using default locale', () => {
       const expected = 1
       const esdayDuration = esday.duration(value, unit)
 
-      expectSame((esday) => esday.duration(value, unit).asMilliseconds())
+      expectSameValue((esday) => esday.duration(value, unit).asMilliseconds())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.asMilliseconds()).toBe(expected)
     })
@@ -1770,7 +1770,7 @@ describe('duration plugin - using default locale', () => {
     ])('minutes from floating point hour $value', ({ value, expected }) => {
       const esdayDuration = esday.duration(value, 'h')
 
-      expectSame((esday) => esday.duration(value, 'h').minutes())
+      expectSameValue((esday) => esday.duration(value, 'h').minutes())
       expect(esdayDuration.isValid()).toBeTruthy()
       expect(esdayDuration.minutes()).toBe(expected)
     })
@@ -1781,7 +1781,7 @@ describe('duration plugin - using default locale', () => {
       { value: 15000, expected: 15 },
       { value: 61000, expected: 1 }, // 1 minute 1 second
     ])('Seconds from $value ms', ({ value, expected }) => {
-      expectSame((esday) => esday.duration(value).seconds())
+      expectSameValue((esday) => esday.duration(value).seconds())
       expect(esday.duration(value).seconds()).toBe(expected)
     })
 
@@ -1789,12 +1789,12 @@ describe('duration plugin - using default locale', () => {
       { value: 61000, expected: 1 }, // 1 minute 1 second
       { value: 100000, expected: 1 },
     ])('Minutes from $value ms', ({ value, expected }) => {
-      expectSame((esday) => esday.duration(value).minutes())
+      expectSameValue((esday) => esday.duration(value).minutes())
       expect(esday.duration(value).minutes()).toBe(expected)
     })
 
     it.each([{ value: 10000000, expected: 2 }])('Hours from $value ms', ({ value, expected }) => {
-      expectSame((esday) => esday.duration(value).hours())
+      expectSameValue((esday) => esday.duration(value).hours())
       expect(esday.duration(value).hours()).toBe(expected)
     })
 
@@ -1803,19 +1803,19 @@ describe('duration plugin - using default locale', () => {
       { value: -1, expected: 0 },
       { value: -1000000000, expected: -11 },
     ])('Days from $value ms', ({ value, expected }) => {
-      expectSame((esday) => esday.duration(value).days())
+      expectSameValue((esday) => esday.duration(value).days())
       expect(esday.duration(value).days()).toBe(expected)
     })
 
     it.each([{ value: 1000000000, expected: 1 }])('Weeks from $value ms', ({ value, expected }) => {
-      expectSame((esday) => esday.duration(value).weeks())
+      expectSameValue((esday) => esday.duration(value).weeks())
       expect(esday.duration(value).weeks()).toBe(expected)
     })
 
     it.each([{ value: 10000000000, expected: 3 }])(
       'Month from $value ms',
       ({ value, expected }) => {
-        expectSame((esday) => esday.duration(value).months())
+        expectSameValue((esday) => esday.duration(value).months())
         expect(esday.duration(value).months()).toBe(expected)
       },
     )
@@ -1823,7 +1823,7 @@ describe('duration plugin - using default locale', () => {
     it.each([{ value: 100000000000, expected: 3 }])(
       'Years from $value ms',
       ({ value, expected }) => {
-        expectSame((esday) => esday.duration(value).years())
+        expectSameValue((esday) => esday.duration(value).years())
         expect(esday.duration(value).years()).toBe(expected)
       },
     )
@@ -1837,7 +1837,7 @@ describe('duration plugin - using default locale', () => {
       { value: { days: 1 }, asUnit: 'M', expected: 0.033 },
       { value: { days: 1 }, asUnit: 'y', expected: 0.003 },
     ])('$value as $unit', ({ value, asUnit, expected }) => {
-      expectSame((esday) => esday.duration(value).as(asUnit as UnitTypeDuration))
+      expectSameValue((esday) => esday.duration(value).as(asUnit as UnitTypeDuration))
       expect(
         esday
           .duration(value)
@@ -1883,7 +1883,7 @@ describe('duration plugin - using default locale', () => {
       { source: { y: -1, h: -1, s: 1 }, expected: '-P1YT59M59S' },
       { source: { y: -1, d: 2 }, expected: '-P1Y-2D' },
     ])('using toISOString for $expected', ({ source, expected }) => {
-      expectSame((esday) => esday.duration(source).toISOString())
+      expectSameValue((esday) => esday.duration(source).toISOString())
       expect(esday.duration(source).toISOString()).toBe(expected)
     })
 
@@ -1906,7 +1906,7 @@ describe('duration plugin - using default locale', () => {
       { source: { y: -1, h: -1, s: 1 }, expected: '-P1YT59M59S' },
       { source: { y: -1, d: 2 }, expected: '-P1Y-2D' },
     ])('using toString for $expected', ({ source, expected }) => {
-      expectSame((esday) => esday.duration(source).toString())
+      expectSameValue((esday) => esday.duration(source).toString())
       expect(esday.duration(source).toString()).toBe(expected)
     })
 
@@ -1914,7 +1914,7 @@ describe('duration plugin - using default locale', () => {
       const source = { d: 2 }
       const expected = 'P2D'
 
-      expectSame((esday) => esday.duration(source).toJSON())
+      expectSameValue((esday) => esday.duration(source).toJSON())
       expect(esday.duration(source).toJSON()).toBe(expected)
     })
 
@@ -2175,17 +2175,17 @@ describe('duration plugin - using default locale', () => {
 
   describe('Query', () => {
     it('isValid for valid duration', () => {
-      expectSame((esday) => esday.duration().isValid())
+      expectSameValue((esday) => esday.duration().isValid())
       expect(esday.duration().isValid()).toBeTruthy()
     })
 
     it('isValid for invalid duration', () => {
-      expectSame((esday) => esday.duration(Number.NaN).isValid())
+      expectSameValue((esday) => esday.duration(Number.NaN).isValid())
       expect(esday.duration(Number.NaN).isValid()).toBeFalsy()
     })
 
     it('isDuration for basic duration instance', () => {
-      expectSame((esday) => esday.isDuration(esday.duration()))
+      expectSameValue((esday) => esday.isDuration(esday.duration()))
       expect(esday.duration()).toBeTruthy()
     })
 
@@ -2193,26 +2193,26 @@ describe('duration plugin - using default locale', () => {
       const source = 12345678
       const esdayDuration = esday.duration(source)
 
-      expectSame((esday) => esday.isDuration(esday.duration(source)))
+      expectSameValue((esday) => esday.isDuration(esday.duration(source)))
       expect(esdayDuration).toBeTruthy()
     })
 
     it('isDuration for esday instance', () => {
-      expectSame((esday) => esday.isDuration(esday()))
+      expectSameValue((esday) => esday.isDuration(esday()))
       expect(esday.isDuration(esday())).toBeFalsy()
     })
 
     it('isDuration for plain object', () => {
       const source = { milliseconds: 1 }
 
-      expectSame((esday) => esday.isDuration(source))
+      expectSameValue((esday) => esday.isDuration(source))
       expect(esday.isDuration(source)).toBeFalsy()
     })
 
     it('isDuration for invalid object', () => {
       const source = true
 
-      expectSame((esday) => esday.isDuration(source))
+      expectSameValue((esday) => esday.isDuration(source))
       expect(esday.isDuration(source)).toBeFalsy()
       // 'as Object' hack to make test run
       expectSameDuration((esday) => esday.duration(source as Object))

@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
 import type { UnitTypeAddSub } from '~/common/units'
 import { esday } from '~/core'
-import { expectSameResult } from './util'
+import { expectSameObject } from './util'
 
 describe('add', () => {
   const fakeTimeAsString = '2025-07-17T03:24:46.234'
@@ -130,7 +130,7 @@ describe('add', () => {
   ])(
     'edge case - add $value $unit to get $expected',
     ({ sourceString, addedValue, addUnit, expected }) => {
-      expectSameResult((esday) => esday(sourceString).add(addedValue, addUnit))
+      expectSameObject((esday) => esday(sourceString).add(addedValue, addUnit))
       expect(esday(sourceString).add(addedValue, addUnit).format().slice(0, -6)).toBe(expected)
     },
   )

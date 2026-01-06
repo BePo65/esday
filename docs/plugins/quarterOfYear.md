@@ -6,7 +6,7 @@ Setting the quarter does not affect the time of an EsDay instance.
 QuarterOfYear adds support for the formatting Token `Q`.
 
 ### Method signatures
-```typescript
+```signature
 esday().quarter(): number
 esday().quarter(quarterNumber: number): EsDay
 ```

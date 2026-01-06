@@ -6,7 +6,7 @@ The `format()` method returns a string representing an `esday` object.
 
 ### Method signatures
 #### Formatting using a given format template
-```typescript
+```signature
 esday().format(formatTemplate: string): string
 ```
 
@@ -15,7 +15,7 @@ esday().format(formatTemplate: string): string
 | formatTemplate | template used for formatting the EsDay object |
 
 #### Adding new formatting tokens
-```typescript
+```signature
 esday.addTokenDefinitions(newTokens: TokenDefinitions)
 ```
 
@@ -32,7 +32,7 @@ type TokenDefinitions = Record<token, [regexDefaultMode, regexStrictMode, setter
 | setterFn           | function | function to add parsed value to result in 'this' |
 
 Signature of `setterFn`
-```typescript
+```signature
 (this: ParsedElements, input: string) => void
 ```
 

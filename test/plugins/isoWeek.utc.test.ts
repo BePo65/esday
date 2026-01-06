@@ -8,7 +8,7 @@ import isoWeekPlugin from '~/plugins/isoWeek'
 import localePlugin from '~/plugins/locale'
 import localizedFormatPlugin from '~/plugins/localizedFormat'
 import utcPlugin from '~/plugins/utc'
-import { expectSameResult } from '../util'
+import { expectSameObject } from '../util'
 
 esday
   .extend(utcPlugin)
@@ -46,7 +46,7 @@ describe('isoWeek plugin - default locale ("en")', () => {
     'parse "$sourceString" with isoWeek token in "$formatString"',
     ({ sourceString, formatString }) => {
       expect(esday.utc(sourceString, formatString)).toBeTruthy()
-      expectSameResult((esday) => esday.utc(sourceString, formatString))
+      expectSameObject((esday) => esday.utc(sourceString, formatString))
     },
   )
 
@@ -58,7 +58,7 @@ describe('isoWeek plugin - default locale ("en")', () => {
     'parse "$sourceString" with isoWeekday token in "$formatString"',
     ({ sourceString, formatString }) => {
       expect(esday.utc(sourceString, formatString)).toBeTruthy()
-      expectSameResult((esday) => esday.utc(sourceString, formatString))
+      expectSameObject((esday) => esday.utc(sourceString, formatString))
     },
   )
 
@@ -87,7 +87,7 @@ describe('isoWeek plugin - default locale ("en")', () => {
     'parse "$sourceString" with isoWeekYear token in "$formatString"',
     ({ sourceString, formatString }) => {
       expect(esday.utc(sourceString, formatString)).toBeTruthy()
-      expectSameResult((esday) => esday.utc(sourceString, formatString))
+      expectSameObject((esday) => esday.utc(sourceString, formatString))
     },
   )
 })
@@ -120,7 +120,7 @@ describe('isoWeek plugin - locale ar', () => {
     'parse "$sourceString" with isoWeek token in "$formatString"',
     ({ sourceString, formatString }) => {
       expect(esday.utc(sourceString, formatString)).toBeTruthy()
-      expectSameResult((esday) => esday.utc(sourceString, formatString))
+      expectSameObject((esday) => esday.utc(sourceString, formatString))
     },
   )
 
@@ -132,7 +132,7 @@ describe('isoWeek plugin - locale ar', () => {
     'parse "$sourceString" with isoWeekday token in "$formatString"',
     ({ sourceString, formatString }) => {
       expect(esday.utc(sourceString, formatString)).toBeTruthy()
-      expectSameResult((esday) => esday.utc(sourceString, formatString))
+      expectSameObject((esday) => esday.utc(sourceString, formatString))
     },
   )
 
@@ -161,7 +161,7 @@ describe('isoWeek plugin - locale ar', () => {
     'parse "$sourceString" with isoWeekYear token in "$formatString"',
     ({ sourceString, formatString }) => {
       expect(esday.utc(sourceString, formatString)).toBeTruthy()
-      expectSameResult((esday) => esday.utc(sourceString, formatString))
+      expectSameObject((esday) => esday.utc(sourceString, formatString))
     },
   )
 })

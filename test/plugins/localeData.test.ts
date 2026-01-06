@@ -14,7 +14,7 @@ import localePlugin, {
 } from '~/plugins/locale'
 import localeDataPlugin from '~/plugins/localeData'
 import weekPlugin from '~/plugins/week'
-import { expectSame } from '../util'
+import { expectSameValue } from '../util'
 
 esday.extend(localePlugin).extend(weekPlugin).extend(localeDataPlugin)
 
@@ -54,14 +54,14 @@ describe('locale en - local', () => {
     const formattedDateEsday = esday().localeData().weekdays(esday('2025-08-02'))
 
     expect(formattedDateEsday).toBe('Saturday')
-    expectSame((esday) => esday().localeData().weekdays(esday('2025-08-02')))
+    expectSameValue((esday) => esday().localeData().weekdays(esday('2025-08-02')))
   })
 
   it('should format date as weekday name using test-format', () => {
     const formattedDateEsday = esday().localeData().weekdays(esday('2025-08-02'), '-dddd-')
 
     expect(formattedDateEsday).toBe('Saturday')
-    expectSame((esday) => esday().localeData().weekdays(esday('2025-08-02'), '-dddd-'))
+    expectSameValue((esday) => esday().localeData().weekdays(esday('2025-08-02'), '-dddd-'))
   })
 
   it('should have 7 short weekday names', () => {
@@ -76,14 +76,14 @@ describe('locale en - local', () => {
     const formattedDateEsday = esday().localeData().weekdaysShort(esday('2025-08-02'))
 
     expect(formattedDateEsday).toBe('Sat')
-    expectSame((esday) => esday().localeData().weekdaysShort(esday('2025-08-02')))
+    expectSameValue((esday) => esday().localeData().weekdaysShort(esday('2025-08-02')))
   })
 
   it('should format date as short weekday name using test-format', () => {
     const formattedDateEsday = esday().localeData().weekdaysShort(esday('2025-08-02'), '-dddd-')
 
     expect(formattedDateEsday).toBe('Sat')
-    expectSame((esday) => esday().localeData().weekdaysShort(esday('2025-08-02'), '-dddd-'))
+    expectSameValue((esday) => esday().localeData().weekdaysShort(esday('2025-08-02'), '-dddd-'))
   })
 
   it('should have 7 min weekday names', () => {
@@ -98,14 +98,14 @@ describe('locale en - local', () => {
     const formattedDateEsday = esday().localeData().weekdaysMin(esday('2025-08-02'))
 
     expect(formattedDateEsday).toBe('Sa')
-    expectSame((esday) => esday().localeData().weekdaysMin(esday('2025-08-02')))
+    expectSameValue((esday) => esday().localeData().weekdaysMin(esday('2025-08-02')))
   })
 
   it('should format date as min weekday name using test-format', () => {
     const formattedDateEsday = esday().localeData().weekdaysMin(esday('2025-08-02'), '-dddd-')
 
     expect(formattedDateEsday).toBe('Sa')
-    expectSame((esday) => esday().localeData().weekdaysMin(esday('2025-08-02'), '-dddd-'))
+    expectSameValue((esday) => esday().localeData().weekdaysMin(esday('2025-08-02'), '-dddd-'))
   })
 
   it('should have 12 month names', () => {
@@ -120,14 +120,14 @@ describe('locale en - local', () => {
     const formattedDateEsday = esday().localeData().months(esday('2025-08-02'))
 
     expect(formattedDateEsday).toBe('August')
-    expectSame((esday) => esday().localeData().months(esday('2025-08-02')))
+    expectSameValue((esday) => esday().localeData().months(esday('2025-08-02')))
   })
 
   it('should format date as month name using test-format', () => {
     const formattedDateEsday = esday().localeData().months(esday('2025-08-02'), 'DD MMMM')
 
     expect(formattedDateEsday).toBe('August')
-    expectSame((esday) => esday().localeData().months(esday('2025-08-02'), 'DD MMMM'))
+    expectSameValue((esday) => esday().localeData().months(esday('2025-08-02'), 'DD MMMM'))
   })
 
   it('should have 12 short month names', () => {
@@ -142,23 +142,23 @@ describe('locale en - local', () => {
     const formattedDateEsday = esday().localeData().monthsShort(esday('2025-08-02'))
 
     expect(formattedDateEsday).toBe('Aug')
-    expectSame((esday) => esday().localeData().monthsShort(esday('2025-08-02')))
+    expectSameValue((esday) => esday().localeData().monthsShort(esday('2025-08-02')))
   })
 
   it('should format date as short month name using test-format', () => {
     const formattedDateEsday = esday().localeData().monthsShort(esday('2025-08-02'), 'DD MMMM')
 
     expect(formattedDateEsday).toBe('Aug')
-    expectSame((esday) => esday().localeData().monthsShort(esday('2025-08-02'), 'DD MMMM'))
+    expectSameValue((esday) => esday().localeData().monthsShort(esday('2025-08-02'), 'DD MMMM'))
   })
 
   it('should format ordinal', () => {
     // (number: number, period?: 'W')
-    expectSame((esday) => esday().localeData().ordinal(2))
+    expectSameValue((esday) => esday().localeData().ordinal(2))
   })
 
   it('should get 1st day of week', () => {
-    expectSame((esday) => esday().localeData().firstDayOfWeek())
+    expectSameValue((esday) => esday().localeData().firstDayOfWeek())
   })
 
   it('should get 1st day of year', () => {
@@ -174,7 +174,7 @@ describe('locale en - local', () => {
     const formatTyped = format as LocaleFormatKeys
 
     expect(esday().localeData().longDateFormat(formatTyped)).toBe(expected)
-    expectSame((esday) => esday().localeData().longDateFormat(formatTyped))
+    expectSameValue((esday) => esday().localeData().longDateFormat(formatTyped))
   })
 
   it.each([
@@ -194,7 +194,7 @@ describe('locale en - local', () => {
   ])('should get calendar format for "$key"', ({ key, expected }) => {
     const typedKey = key as keyof Calendar
     expect(esday().localeData().calendar(typedKey)).toBe(expected)
-    expectSame((esday) => esday().localeData().calendar(typedKey))
+    expectSameValue((esday) => esday().localeData().calendar(typedKey))
   })
 
   it.each([
@@ -234,7 +234,7 @@ describe('locale en - local', () => {
           .localeData()
           .relativeTime(value, withoutSuffix, token as RelativeTimeKeys, isFuture),
       ).toBe(expected)
-      expectSame((esday) =>
+      expectSameValue((esday) =>
         esday()
           .localeData()
           .relativeTime(value, withoutSuffix, token as RelativeTimeKeys, isFuture),
@@ -244,12 +244,12 @@ describe('locale en - local', () => {
 
   it('should update string with preParse', () => {
     expect(esday().localeData().preParse).toBeUndefined()
-    expectSame((esday) => esday().localeData().preParse)
+    expectSameValue((esday) => esday().localeData().preParse)
   })
 
   it('should update string with postFormat', () => {
     expect(esday().localeData().postFormat).toBeUndefined()
-    expectSame((esday) => esday().localeData().postFormat)
+    expectSameValue((esday) => esday().localeData().postFormat)
   })
 
   it('should use different locale', () => {
@@ -291,14 +291,14 @@ describe('locale ca - local', () => {
     const formattedDateEsday = esday().localeData().months(esday('2025-08-02'))
 
     expect(formattedDateEsday).toBe('agost')
-    expectSame((esday) => esday().localeData().months(esday('2025-08-02')))
+    expectSameValue((esday) => esday().localeData().months(esday('2025-08-02')))
   })
 
   it('should format date as month name using test-format', () => {
     const formattedDateEsday = esday().localeData().months(esday('2025-08-02'), 'DD MMMM')
 
     expect(formattedDateEsday).toBe("d'agost")
-    expectSame((esday) => esday().localeData().months(esday('2025-08-02'), 'DD MMMM'))
+    expectSameValue((esday) => esday().localeData().months(esday('2025-08-02'), 'DD MMMM'))
   })
 
   it('should have 12 short month names', () => {
@@ -313,22 +313,22 @@ describe('locale ca - local', () => {
     const formattedDateEsday = esday().localeData().monthsShort(esday('2025-02-02'))
 
     expect(formattedDateEsday).toBe('febr.')
-    expectSame((esday) => esday().localeData().monthsShort(esday('2025-02-02')))
+    expectSameValue((esday) => esday().localeData().monthsShort(esday('2025-02-02')))
   })
 
   it('should format date as short month name using test-format', () => {
     const formattedDateEsday = esday().localeData().monthsShort(esday('2025-02-02'), 'DD MMMM')
 
     expect(formattedDateEsday).toBe('febr.')
-    expectSame((esday) => esday().localeData().monthsShort(esday('2025-02-02'), 'DD MMMM'))
+    expectSameValue((esday) => esday().localeData().monthsShort(esday('2025-02-02'), 'DD MMMM'))
   })
 
   it('should format ordinal', () => {
-    expectSame((esday) => esday().localeData().ordinal(2))
+    expectSameValue((esday) => esday().localeData().ordinal(2))
   })
 
   it('should get 1st day of week', () => {
-    expectSame((esday) => esday().localeData().firstDayOfWeek())
+    expectSameValue((esday) => esday().localeData().firstDayOfWeek())
   })
 
   it('should get 1st day of year', () => {
@@ -390,7 +390,7 @@ describe('locale hr - local', () => {
     const formattedDateEsday = esday().localeData().months(esday('2025-08-02'))
 
     expect(formattedDateEsday).toBe('kolovoz')
-    expectSame((esday) => esday().localeData().months(esday('2025-08-02')))
+    expectSameValue((esday) => esday().localeData().months(esday('2025-08-02')))
   })
 
   it('should format date as month name using test-format', () => {
@@ -414,14 +414,14 @@ describe('locale hr - local', () => {
     const formattedDateEsday = esday().localeData().monthsShort(esday('2025-02-02'))
 
     expect(formattedDateEsday).toBe('velj.')
-    expectSame((esday) => esday().localeData().monthsShort(esday('2025-02-02')))
+    expectSameValue((esday) => esday().localeData().monthsShort(esday('2025-02-02')))
   })
 
   it('should format date as short month name using test-format', () => {
     const formattedDateEsday = esday().localeData().monthsShort(esday('2025-02-02'), 'DD MMMM')
 
     expect(formattedDateEsday).toBe('velj.')
-    expectSame((esday) => esday().localeData().monthsShort(esday('2025-02-02'), 'DD MMMM'))
+    expectSameValue((esday) => esday().localeData().monthsShort(esday('2025-02-02'), 'DD MMMM'))
   })
 
   it.each([
@@ -461,7 +461,7 @@ describe('locale hr - local', () => {
           .localeData()
           .relativeTime(value, withoutSuffix, token as RelativeTimeKeys, isFuture),
       ).toBe(expected)
-      expectSame((esday) =>
+      expectSameValue((esday) =>
         esday()
           .localeData()
           .relativeTime(value, withoutSuffix, token as RelativeTimeKeys, isFuture),
@@ -535,14 +535,16 @@ describe('locale ru - local', () => {
     const formattedDateEsday = esday().localeData().weekdays(esday('2025-08-02'))
 
     expect(formattedDateEsday).toBe('суббота')
-    expectSame((esday) => esday().localeData().weekdays(esday('2025-08-02')))
+    expectSameValue((esday) => esday().localeData().weekdays(esday('2025-08-02')))
   })
 
   it('should format date as weekday name using test-format', () => {
     const formattedDateEsday = esday().localeData().weekdays(esday('2025-08-02'), '[впрошлую] dddd')
 
     expect(formattedDateEsday).toBe('субботу')
-    expectSame((esday) => esday().localeData().weekdays(esday('2025-08-02'), '[впрошлую] dddd'))
+    expectSameValue((esday) =>
+      esday().localeData().weekdays(esday('2025-08-02'), '[впрошлую] dddd'),
+    )
   })
 
   it('should have 7 short weekday names', () => {
@@ -583,7 +585,7 @@ describe('locale ru - local', () => {
     const formattedDateEsday = esday().localeData().weekdaysMin(esday('2025-08-02'))
 
     expect(formattedDateEsday).toBe('сб')
-    expectSame((esday) => esday().localeData().weekdaysMin(esday('2025-08-02')))
+    expectSameValue((esday) => esday().localeData().weekdaysMin(esday('2025-08-02')))
   })
 
   it('should format date as min weekday name using test-format', () => {
@@ -592,7 +594,9 @@ describe('locale ru - local', () => {
       .weekdaysMin(esday('2025-08-02'), '[впрошлую] dddd')
 
     expect(formattedDateEsday).toBe('сб')
-    expectSame((esday) => esday().localeData().weekdaysMin(esday('2025-08-02'), '[впрошлую] dddd'))
+    expectSameValue((esday) =>
+      esday().localeData().weekdaysMin(esday('2025-08-02'), '[впрошлую] dddd'),
+    )
   })
 })
 
@@ -615,7 +619,7 @@ describe('locale zh - local', () => {
   })
 
   it('should format ordinal', () => {
-    expectSame((esday) => esday().localeData().ordinal(2).toString())
+    expectSameValue((esday) => esday().localeData().ordinal(2).toString())
   })
 
   it.each([
@@ -629,11 +633,11 @@ describe('locale zh - local', () => {
   ])('should format "$value" with period "$period"', ({ value, period, expected }) => {
     expect(esday().localeData().ordinal(value, period)).toBe(expected)
     // moment.js returns number if period does not require an pending string
-    expectSame((esday) => esday().localeData().ordinal(value, period).toString())
+    expectSameValue((esday) => esday().localeData().ordinal(value, period).toString())
   })
 
   it('should get 1st day of week', () => {
-    expectSame((esday) => esday().localeData().firstDayOfWeek())
+    expectSameValue((esday) => esday().localeData().firstDayOfWeek())
   })
 
   it('should get 1st day of year', () => {
@@ -701,14 +705,14 @@ describe('locale en - global', () => {
 
   it('should use global locale by default', () => {
     expect(esday.localeData().weekdays(esday('2025-08-02'))).toBe('Saturday')
-    expectSame((esday) => esday.localeData().weekdays(esday('2025-08-02')))
+    expectSameValue((esday) => esday.localeData().weekdays(esday('2025-08-02')))
   })
 
   it('should use locale defined as parameter', () => {
     const localeToUse = 'fr'
 
     expect(esday.localeData(localeToUse).weekdays(esday('2025-08-02'))).toBe('samedi')
-    expectSame((esday) => esday.localeData(localeToUse).weekdays(esday('2025-08-02')))
+    expectSameValue((esday) => esday.localeData(localeToUse).weekdays(esday('2025-08-02')))
   })
 })
 
@@ -773,6 +777,6 @@ describe('locale fr - global', () => {
     const localeToUse = 'fr'
 
     expect(esday.localeData(localeToUse).weekdays(esday('2025-08-02'))).toBe('samedi')
-    expectSame((esday) => esday.localeData(localeToUse).weekdays(esday('2025-08-02')))
+    expectSameValue((esday) => esday.localeData(localeToUse).weekdays(esday('2025-08-02')))
   })
 })

@@ -23,7 +23,7 @@ When using the week parsing tokens, the plugin advancedParse is required and mus
 Week can be used together with the plugin Utc. If used together with the plugin Utc, the plugin Utc must be activated using esday.extend(...) before the plugin Week.
 
 ### Method signatures
-```typescript
+```signature
 esday().week(): number
 esday().week(week: number): EsDay
 esday().weeks(): number

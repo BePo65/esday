@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest'
 import advancedParsePlugin from '~/plugins/advancedParse'
 import type { ParsedElements, TokenDefinitions } from '~/plugins/advancedParse/types'
 import utcPlugin from '~/plugins/utc'
-import { expectSame, expectSameResult } from '../util'
+import { expectSameObject, expectSameValue } from '../util'
 
 esday.extend(utcPlugin)
 esday.extend(advancedParsePlugin)
@@ -33,7 +33,7 @@ describe('advancedParse plugin - utc mode', () => {
     ])(
       'parse date&time "$sourceString" with format "$formatString"',
       ({ sourceString, formatString }) => {
-        expectSameResult((esday) => esday(sourceString, formatString).utc())
+        expectSameObject((esday) => esday(sourceString, formatString).utc())
         expect(esday(sourceString, formatString).utc().isValid()).toBeTruthy()
       },
     )
@@ -57,7 +57,7 @@ describe('advancedParse plugin - utc mode', () => {
     ])(
       'parse date&time "$sourceString" with format as array - "$name"',
       ({ formatString, sourceString }) => {
-        expectSameResult((esday) => esday(sourceString, formatString).utc())
+        expectSameObject((esday) => esday(sourceString, formatString).utc())
         expect(esday(sourceString, formatString).utc().isValid()).toBeTruthy()
       },
     )
@@ -118,7 +118,7 @@ describe('advancedParse plugin - utc mode', () => {
         sourceString: '2021-01-26T15:38:43.000Z',
       },
     ])('parse offset in "$sourceString" with "$formatString"', ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString).utc())
+      expectSameObject((esday) => esday(sourceString, formatString).utc())
       expect(esday(sourceString, formatString).utc().isValid()).toBeTruthy()
     })
 
@@ -135,7 +135,7 @@ describe('advancedParse plugin - utc mode', () => {
       ({ sourceString, formatString }) => {
         const parsedEsday = esday(sourceString, formatString).utc()
 
-        expectSameResult((esday) => esday(sourceString, formatString).utc())
+        expectSameObject((esday) => esday(sourceString, formatString).utc())
         expect(parsedEsday.isValid()).toBeFalsy()
       },
     )
@@ -158,7 +158,7 @@ describe('advancedParse plugin - utc mode', () => {
     ])(
       'parse strict date&time "$sourceString" with format "$formatString"',
       ({ sourceString, formatString }) => {
-        expectSameResult((esday) => esday(sourceString, formatString, true).utc())
+        expectSameObject((esday) => esday(sourceString, formatString, true).utc())
         expect(esday(sourceString, formatString, true).utc().isValid()).toBeTruthy()
       },
     )
@@ -177,7 +177,7 @@ describe('advancedParse plugin - utc mode', () => {
     ])(
       'parse strict date&time "$sourceString" with format as array - "$name"',
       ({ formatString, sourceString }) => {
-        expectSameResult((esday) => esday(sourceString, formatString, true).utc())
+        expectSameObject((esday) => esday(sourceString, formatString, true).utc())
         expect(esday(sourceString, formatString, true).utc().isValid()).toBeTruthy()
       },
     )
@@ -238,7 +238,7 @@ describe('advancedParse plugin - utc mode', () => {
         sourceString: '2021-01-26T15:38:43.000Z',
       },
     ])('parse offset in "$sourceString" with "$formatString"', ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString, true).utc())
+      expectSameObject((esday) => esday(sourceString, formatString, true).utc())
       expect(esday(sourceString, formatString, true).utc().isValid()).toBeTruthy()
     })
 
@@ -248,7 +248,7 @@ describe('advancedParse plugin - utc mode', () => {
       const parsedDateEsDay = esday(sourceString, formatString, true).utc()
 
       expect(parsedDateEsDay.isValid()).toBeFalsy()
-      expectSame((esday) => esday(sourceString, formatString, true).utc().isValid())
+      expectSameValue((esday) => esday(sourceString, formatString, true).utc().isValid())
     })
 
     it.each([
@@ -291,7 +291,7 @@ describe('advancedParse plugin - utc mode', () => {
     ])(
       'parse date&time "$sourceString" with format "$formatString"',
       ({ sourceString, formatString }) => {
-        expectSameResult((esday) => esday.utc(sourceString, formatString))
+        expectSameObject((esday) => esday.utc(sourceString, formatString))
         expect(esday.utc(sourceString, formatString).isValid()).toBeTruthy()
       },
     )
@@ -315,7 +315,7 @@ describe('advancedParse plugin - utc mode', () => {
     ])(
       'parse date&time "$sourceString" with format as array - "$name"',
       ({ formatString, sourceString }) => {
-        expectSameResult((esday) => esday.utc(sourceString, formatString))
+        expectSameObject((esday) => esday.utc(sourceString, formatString))
         expect(esday.utc(sourceString, formatString).isValid()).toBeTruthy()
       },
     )
@@ -376,7 +376,7 @@ describe('advancedParse plugin - utc mode', () => {
         sourceString: '2021-01-26T15:38:43.000Z',
       },
     ])('parse offset in "$sourceString" with "$formatString"', ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday.utc(sourceString, formatString))
+      expectSameObject((esday) => esday.utc(sourceString, formatString))
       expect(esday.utc(sourceString, formatString).isValid()).toBeTruthy()
     })
 
@@ -393,7 +393,7 @@ describe('advancedParse plugin - utc mode', () => {
       ({ sourceString, formatString }) => {
         const parsedEsday = esday.utc(sourceString, formatString)
 
-        expectSameResult((esday) => esday.utc(sourceString, formatString))
+        expectSameObject((esday) => esday.utc(sourceString, formatString))
         expect(parsedEsday.isValid()).toBeFalsy()
       },
     )
@@ -416,7 +416,7 @@ describe('advancedParse plugin - utc mode', () => {
     ])(
       'parse strict date&time "$sourceString" with format "$formatString"',
       ({ sourceString, formatString }) => {
-        expectSameResult((esday) => esday.utc(sourceString, formatString, true))
+        expectSameObject((esday) => esday.utc(sourceString, formatString, true))
         expect(esday.utc(sourceString, formatString, true).isValid()).toBeTruthy()
       },
     )
@@ -435,7 +435,7 @@ describe('advancedParse plugin - utc mode', () => {
     ])(
       'parse strict date&time "$sourceString" with format as array - "$name"',
       ({ formatString, sourceString }) => {
-        expectSameResult((esday) => esday.utc(sourceString, formatString, true))
+        expectSameObject((esday) => esday.utc(sourceString, formatString, true))
         expect(esday.utc(sourceString, formatString, true).isValid()).toBeTruthy()
       },
     )
@@ -496,7 +496,7 @@ describe('advancedParse plugin - utc mode', () => {
         sourceString: '2021-01-26T15:38:43.000Z',
       },
     ])('parse offset in "$sourceString" with "$formatString"', ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday.utc(sourceString, formatString, true))
+      expectSameObject((esday) => esday.utc(sourceString, formatString, true))
       expect(esday.utc(sourceString, formatString, true).isValid()).toBeTruthy()
     })
 
@@ -506,7 +506,7 @@ describe('advancedParse plugin - utc mode', () => {
       const parsedDateEsDay = esday.utc(sourceString, formatString, true)
 
       expect(parsedDateEsDay.isValid()).toBeFalsy()
-      expectSame((esday) => esday.utc(sourceString, formatString, true).isValid())
+      expectSameValue((esday) => esday.utc(sourceString, formatString, true).isValid())
     })
 
     it.each([

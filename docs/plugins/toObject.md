@@ -8,7 +8,7 @@ ToObject adds the `toObject` method to EsDay to get an object containing the par
 ToObject has no dependencies on other plugins.
 
 ### Method signatures
-```typescript
+```signature
 esday().toObject(): { years, months, date, hours, minutes, seconds, milliseconds }
 ```
 

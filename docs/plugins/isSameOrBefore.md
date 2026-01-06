@@ -8,7 +8,7 @@ IsSameOrBefore adds the `isSameOrBefore` method to EsDay indicating, if a date i
 IsSameOrBefore has no dependencies on other plugins.
 
 ### Method signatures
-```typescript
+```signature
 esday().isSameOrBefore(date: DateType, unit?: UnitType): boolean
 ```
 

@@ -11,7 +11,7 @@ ObjectSupport has no dependencies on other plugins.
 ObjectSupport can be used together with the plugin Utc that must be loaded using esday.extend(...) before the plugin ObjectSupport.
 
 ### Method signatures
-```typescript
+```signature
 esday(value: ParsingObject): EsDay
 esday.utc(value: ParsingObject): EsDay
 esday().set(value: UnitsObjectTypeSet): EsDay
@@ -39,7 +39,7 @@ Both `day` and `date` key mean day-of-the-month (in short, long and plural form)
 
 **ParsingObjectLong**
 
-```
+```typescript
 type ParsingObjectLong = {
   year?: number | string
   month?: number | string
@@ -62,7 +62,7 @@ ParsingObjectShort corresponds to ParsingObjectLong, but with short names (`y`, 
 
 **UnitsObjectTypeSet**
 
-```
+```typescript
 type UnitsObjectTypeSet = {
   year?: number
   quarter?: number
@@ -79,7 +79,7 @@ type UnitsObjectTypeSet = {
 
 **UnitsObjectTypeAddSub**
 
-```
+```typescript
 type UnitsObjectTypeAddSub = {
   years?: number
   quarters?: number

@@ -1,7 +1,7 @@
 import { esday } from 'esday'
 import { afterEach, beforeEach, describe, it, vi } from 'vitest'
 import pluralGetSetPlugin from '~/plugins/pluralGetSet'
-import { expectSame, expectSameResult } from '../util'
+import { expectSameObject, expectSameValue } from '../util'
 
 esday.extend(pluralGetSetPlugin)
 
@@ -18,15 +18,15 @@ describe('plural get', () => {
   })
 
   it('years', () => {
-    expectSame((esday) => esday().years())
+    expectSameValue((esday) => esday().years())
   })
 
   it('months', () => {
-    expectSame((esday) => esday().months())
+    expectSameValue((esday) => esday().months())
   })
 
   it('days of month', () => {
-    expectSame((esday) => esday().dates())
+    expectSameValue((esday) => esday().dates())
   })
 
   it.each([
@@ -34,23 +34,23 @@ describe('plural get', () => {
     { sourceString: '2024-11-06T00:00:00', expected: 3 },
     { sourceString: '2024-11-14T00:00:00', expected: 4 },
   ])('days of week for "$sourceString"', ({ sourceString }) => {
-    expectSame((esday) => esday(sourceString).days())
+    expectSameValue((esday) => esday(sourceString).days())
   })
 
   it('hours', () => {
-    expectSame((esday) => esday().hours())
+    expectSameValue((esday) => esday().hours())
   })
 
   it('minutes', () => {
-    expectSame((esday) => esday().minutes())
+    expectSameValue((esday) => esday().minutes())
   })
 
   it('seconds', () => {
-    expectSame((esday) => esday().seconds())
+    expectSameValue((esday) => esday().seconds())
   })
 
   it('milliseconds', () => {
-    expectSame((esday) => esday().milliseconds())
+    expectSameValue((esday) => esday().milliseconds())
   })
 })
 
@@ -69,19 +69,19 @@ describe('plural set', () => {
   it('years', () => {
     const newYear = 2025
 
-    expectSameResult((esday) => esday().years(newYear))
+    expectSameObject((esday) => esday().years(newYear))
   })
 
   it('months', () => {
     const newMonth = 5 // June
 
-    expectSameResult((esday) => esday().months(newMonth))
+    expectSameObject((esday) => esday().months(newMonth))
   })
 
   it('days of month', () => {
     const newDayOfMonth = 25
 
-    expectSameResult((esday) => esday().dates(newDayOfMonth))
+    expectSameObject((esday) => esday().dates(newDayOfMonth))
   })
 
   it.each([
@@ -89,30 +89,30 @@ describe('plural set', () => {
     { sourceString: '2024-11-14T00:00:00', newDayOfWeek: 4 },
     { sourceString: '2024-02-03T13:14:15.678', newDayOfWeek: 6 },
   ])('days of week for "$sourceString" to "$newDayOfWeek"', ({ sourceString, newDayOfWeek }) => {
-    expectSameResult((esday) => esday(sourceString).days(newDayOfWeek))
+    expectSameObject((esday) => esday(sourceString).days(newDayOfWeek))
   })
 
   it('hours', () => {
     const newHour = 4
 
-    expectSameResult((esday) => esday().hours(newHour))
+    expectSameObject((esday) => esday().hours(newHour))
   })
 
   it('minutes', () => {
     const newMinute = 43
 
-    expectSameResult((esday) => esday().minutes(newMinute))
+    expectSameObject((esday) => esday().minutes(newMinute))
   })
 
   it('seconds', () => {
     const newSecond = 25
 
-    expectSameResult((esday) => esday().seconds(newSecond))
+    expectSameObject((esday) => esday().seconds(newSecond))
   })
 
   it('milliseconds', () => {
     const newMillisecond = 25
 
-    expectSameResult((esday) => esday().milliseconds(newMillisecond))
+    expectSameObject((esday) => esday().milliseconds(newMillisecond))
   })
 })

@@ -23,7 +23,7 @@ When using the parsing tokens, the plugin AdvancedParse is required and must be 
 IsoWeek can be used together with the plugin Utc. If used together with the plugin Utc, the plugin Utc must be activated using esday.extend(...) before the plugin IsoWeek.
 
 ### Method signatures
-```typescript
+```signature
 esday().isoWeek(): number
 esday().isoWeek(newIsoWeek: number): EsDay
 esday().isoWeeks(): number

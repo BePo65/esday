@@ -8,7 +8,7 @@ import advancedParsePlugin from '~/plugins/advancedParse'
 import isoWeekPlugin from '~/plugins/isoWeek'
 import localePlugin from '~/plugins/locale'
 import localizedFormatPlugin from '~/plugins/localizedFormat'
-import { expectSameResult } from '../util'
+import { expectSameObject } from '../util'
 
 esday
   .extend(localePlugin)
@@ -64,7 +64,7 @@ describe('isoWeek plugin - default locale ("en")', () => {
   ])(
     'parse "$sourceString" with isoWeek token "W" in "$formatString"',
     ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
     },
   )
 
@@ -76,7 +76,7 @@ describe('isoWeek plugin - default locale ("en")', () => {
   ])(
     'parse "$sourceString" with isoWeekday token "E" in "$formatString"',
     ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
     },
   )
 
@@ -106,7 +106,7 @@ describe('isoWeek plugin - default locale ("en")', () => {
   ])(
     'parse "$sourceString" with isoWeekYear token in "$formatString"',
     ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
     },
   )
 })
@@ -145,7 +145,7 @@ describe('isoWeek plugin - locale "ar"', () => {
       expectedRawString: '2024-01-01T00:00:00.000',
     },
   ])('should get startOf week for "$sourceString"', ({ sourceString }) => {
-    expectSameResult((esday) => esday(sourceString).startOf(C.ISOWEEK))
+    expectSameObject((esday) => esday(sourceString).startOf(C.ISOWEEK))
   })
 
   it.each([
@@ -156,7 +156,7 @@ describe('isoWeek plugin - locale "ar"', () => {
     { sourceString: '2023-11-14T00:00:00' },
     { sourceString: '2023-05-08T00:00:00' },
   ])('should handle edge case for startOf week for "$sourceString"', ({ sourceString }) => {
-    expectSameResult((esday) => esday(sourceString).startOf(C.ISOWEEK))
+    expectSameObject((esday) => esday(sourceString).startOf(C.ISOWEEK))
   })
 
   it.each([
@@ -177,7 +177,7 @@ describe('isoWeek plugin - locale "ar"', () => {
       expectedRawString: '2023-01-01T23:59:59.999',
     },
   ])('should get endOf week for "$sourceString"', ({ sourceString }) => {
-    expectSameResult((esday) => esday(sourceString).endOf(C.ISOWEEK))
+    expectSameObject((esday) => esday(sourceString).endOf(C.ISOWEEK))
   })
 
   it.each([
@@ -188,7 +188,7 @@ describe('isoWeek plugin - locale "ar"', () => {
     { sourceString: '2023-11-15T00:00:00' },
     { sourceString: '2023-05-08T00:00:00' },
   ])('should handle edge case for endOf week for "$sourceString"', ({ sourceString }) => {
-    expectSameResult((esday) => esday(sourceString).endOf(C.ISOWEEK))
+    expectSameObject((esday) => esday(sourceString).endOf(C.ISOWEEK))
   })
 
   it.each([
@@ -213,7 +213,7 @@ describe('isoWeek plugin - locale "ar"', () => {
   ])(
     'parse "$sourceString" with isoWeek token in "$formatString"',
     ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
     },
   )
 
@@ -225,7 +225,7 @@ describe('isoWeek plugin - locale "ar"', () => {
   ])(
     'parse "$sourceString" with isoWeekday token in "$formatString"',
     ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
     },
   )
 
@@ -240,7 +240,7 @@ describe('isoWeek plugin - locale "ar"', () => {
   ])(
     'parse "$sourceString" with isoWeekYear token in "$formatString"',
     ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
     },
   )
 })

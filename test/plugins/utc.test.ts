@@ -7,7 +7,7 @@ import { C } from '~/common'
 import advancedParsePlugin from '~/plugins/advancedParse'
 import utcPlugin from '~/plugins/utc'
 import weekPlugin from '~/plugins/week'
-import { expectSame, expectSameResult } from '../util'
+import { expectSameObject, expectSameValue } from '../util'
 
 esday.extend(utcPlugin).extend(advancedParsePlugin).extend(weekPlugin)
 
@@ -25,35 +25,35 @@ describe('plugin utc', () => {
     })
 
     it('year', () => {
-      expectSame((esday) => esday().utc().year())
+      expectSameValue((esday) => esday().utc().year())
     })
 
     it('month', () => {
-      expectSame((esday) => esday().utc().month())
+      expectSameValue((esday) => esday().utc().month())
     })
 
     it('day', () => {
-      expectSame((esday) => esday().utc().date())
+      expectSameValue((esday) => esday().utc().date())
     })
 
     it('day of week', () => {
-      expectSame((esday) => esday().utc().day())
+      expectSameValue((esday) => esday().utc().day())
     })
 
     it('hour', () => {
-      expectSame((esday) => esday().utc().hour())
+      expectSameValue((esday) => esday().utc().hour())
     })
 
     it('minute', () => {
-      expectSame((esday) => esday().utc().minute())
+      expectSameValue((esday) => esday().utc().minute())
     })
 
     it('second', () => {
-      expectSame((esday) => esday().utc().second())
+      expectSameValue((esday) => esday().utc().second())
     })
 
     it('millisecond', () => {
-      expectSame((esday) => esday().utc().millisecond())
+      expectSameValue((esday) => esday().utc().millisecond())
     })
   })
 
@@ -70,55 +70,55 @@ describe('plugin utc', () => {
     })
 
     it('year', () => {
-      expectSameResult((esday) => esday().utc().set('year', 2008))
+      expectSameObject((esday) => esday().utc().set('year', 2008))
     })
 
     it('month', () => {
-      expectSameResult((esday) => esday().utc().set('month', 11))
+      expectSameObject((esday) => esday().utc().set('month', 11))
     })
 
     it('day', () => {
-      expectSameResult((esday) => esday().utc().set('date', 30))
+      expectSameObject((esday) => esday().utc().set('date', 30))
     })
 
     it('day to 45', () => {
-      expectSameResult((esday) => esday().utc().set('date', 45))
+      expectSameObject((esday) => esday().utc().set('date', 45))
     })
 
     it('day of week to 0', () => {
-      expectSameResult((esday) => esday().utc().set('day', 0))
+      expectSameObject((esday) => esday().utc().set('day', 0))
     })
 
     it('hour to 6', () => {
-      expectSameResult((esday) => esday().utc().set('hour', 6))
+      expectSameObject((esday) => esday().utc().set('hour', 6))
     })
 
     it('minute to 59', () => {
-      expectSameResult((esday) => esday().utc().set('minute', 59))
+      expectSameObject((esday) => esday().utc().set('minute', 59))
     })
 
     it('second to 59', () => {
-      expectSameResult((esday) => esday().utc().set('second', 59))
+      expectSameObject((esday) => esday().utc().set('second', 59))
     })
 
     it('second to 110', () => {
-      expectSameResult((esday) => esday().utc().set('second', 110))
+      expectSameObject((esday) => esday().utc().set('second', 110))
     })
 
     it('millisecond to 999', () => {
-      expectSameResult((esday) => esday().utc().set('millisecond', 999))
+      expectSameObject((esday) => esday().utc().set('millisecond', 999))
     })
 
     it('millisecond to 85', () => {
-      expectSameResult((esday) => esday().utc().set('millisecond', 85))
+      expectSameObject((esday) => esday().utc().set('millisecond', 85))
     })
 
     it('millisecond to 7', () => {
-      expectSameResult((esday) => esday().utc().set('millisecond', 7))
+      expectSameObject((esday) => esday().utc().set('millisecond', 7))
     })
 
     it('millisecond to 1234', () => {
-      expectSameResult((esday) => esday().utc().set('millisecond', 1234))
+      expectSameObject((esday) => esday().utc().set('millisecond', 1234))
     })
 
     it('set using an object without plugin ObjectSupport', () => {
@@ -142,19 +142,19 @@ describe('plugin utc', () => {
     })
 
     it('now with parsed date', () => {
-      expectSameResult((esday) => esday.utc())
+      expectSameObject((esday) => esday.utc())
     })
 
     it('parse Date object', () => {
-      expectSameResult((esday) => esday.utc(new Date('2025-12-17T03:24:00')))
+      expectSameObject((esday) => esday.utc(new Date('2025-12-17T03:24:00')))
     })
 
     it('parse utc Date object', () => {
-      expectSameResult((esday) => esday.utc(new Date(Date.UTC(2024, 1, 2, 3, 4, 5))))
+      expectSameObject((esday) => esday.utc(new Date(Date.UTC(2024, 1, 2, 3, 4, 5))))
     })
 
     it('now with converted date', () => {
-      expectSameResult((esday) => esday().utc())
+      expectSameObject((esday) => esday().utc())
     })
 
     it.each([
@@ -169,7 +169,7 @@ describe('plugin utc', () => {
       '2012-01-02T08:20:00-09:00',
       '2019-03-25T06:41:00.999999999',
     ])('date string using "%s" with parsed date', (dateString) => {
-      expectSameResult((esday) => esday.utc(dateString))
+      expectSameObject((esday) => esday.utc(dateString))
     })
 
     it.each([
@@ -184,7 +184,7 @@ describe('plugin utc', () => {
       '2012-01-02T08:20:00-09:00',
       '2019-03-25T06:41:00.999999999',
     ])('date string using "%s" with converted date', (dateString) => {
-      expectSameResult((esday) => esday(dateString).utc())
+      expectSameObject((esday) => esday(dateString).utc())
     })
 
     it('date time string with utc set in config', () => {
@@ -208,7 +208,7 @@ describe('plugin utc', () => {
       { dateArray: [2024, 5, 1, 13, 14, 15, 99] },
       { dateArray: [24, 5, 1, 13, 14, 15, 99] },
     ])('parses $dateArray to date', ({ dateArray }) => {
-      expectSameResult((esday) => esday.utc(dateArray))
+      expectSameObject((esday) => esday.utc(dateArray))
     })
   })
 
@@ -229,7 +229,7 @@ describe('plugin utc', () => {
       { dateString: '11-02-02 03:04:05', format: 'YY-MM-DD HH:mm:ss' },
       { dateString: '2011-02-02 03:04:05Z', format: 'YYYY-MM-DD HH:mm:ss' },
     ])('"$dateString" using "$format"', ({ dateString, format }) => {
-      expectSameResult((esday) => esday.utc(dateString, format))
+      expectSameObject((esday) => esday.utc(dateString, format))
     })
   })
 
@@ -326,13 +326,13 @@ describe('plugin utc', () => {
     it('convert to utc', () => {
       const dateString = '2016-05-03 22:15:01'
 
-      expectSameResult((esday) => esday(dateString).utc())
+      expectSameObject((esday) => esday(dateString).utc())
     })
 
     it('convert to utc with keepLocalTime', () => {
       const dateString = '2016-05-03 22:15:01'
 
-      expectSameResult((esday) => esday(dateString).utc(true))
+      expectSameObject((esday) => esday(dateString).utc(true))
     })
   })
 
@@ -358,7 +358,7 @@ describe('plugin utc', () => {
     it('returns the same formatted value as moment does', () => {
       const dateString = '2018-09-06'
 
-      expectSame((esday) => esday.utc(dateString).local().format())
+      expectSameValue((esday) => esday.utc(dateString).local().format())
     })
 
     it('local date from utc date from local date is same', () => {
@@ -424,18 +424,18 @@ describe('plugin utc', () => {
     })
 
     it('for local date', () => {
-      expectSame((esday) => esday().format())
-      expectSame((esday) => esday().utcOffset())
+      expectSameValue((esday) => esday().format())
+      expectSameValue((esday) => esday().utcOffset())
     })
 
     it('for utc date generated without keepLocalTime', () => {
-      expectSame((esday) => esday().utc().format())
-      expectSame((esday) => esday().utc().utcOffset())
+      expectSameValue((esday) => esday().utc().format())
+      expectSameValue((esday) => esday().utc().utcOffset())
     })
 
     it('for utc date generated with keepLocalTime', () => {
-      expectSame((esday) => esday().utc(true).format())
-      expectSame((esday) => esday().utc(true).utcOffset())
+      expectSameValue((esday) => esday().utc(true).format())
+      expectSameValue((esday) => esday().utc(true).utcOffset())
     })
   })
 
@@ -462,7 +462,7 @@ describe('plugin utc', () => {
       ({ offset }) => {
         const dateString = '2021-02-28 19:40:10'
 
-        expectSameResult((esday) => esday(dateString).utc().utcOffset(offset))
+        expectSameObject((esday) => esday(dateString).utc().utcOffset(offset))
       },
     )
 
@@ -471,27 +471,27 @@ describe('plugin utc', () => {
       ({ offset }) => {
         const dateString = '2021-02-28 19:40:10'
 
-        expectSameResult((esday) => esday(dateString).utc().utcOffset(offset, true))
+        expectSameObject((esday) => esday(dateString).utc().utcOffset(offset, true))
       },
     )
 
     it('for non-utc date without keepLocalTime', () => {
       const dateString = '2021-02-28 19:40:10'
 
-      expectSameResult((esday) => esday(dateString).utcOffset(540))
+      expectSameObject((esday) => esday(dateString).utcOffset(540))
     })
 
     it('for non-utc date with keepLocalTime', () => {
       const dateString = '2021-02-28 19:40:10'
 
-      expectSameResult((esday) => esday(dateString).utcOffset(540, true))
+      expectSameObject((esday) => esday(dateString).utcOffset(540, true))
     })
 
     it('using string offset "-08:00"', () => {
       const dateString = '2021-02-28 19:40:10'
       const hoursOffset = -8
 
-      expectSameResult((esday) =>
+      expectSameObject((esday) =>
         esday(dateString)
           .utc()
           .utcOffset(`-0${Math.abs(hoursOffset)}:00`, true),
@@ -502,14 +502,14 @@ describe('plugin utc', () => {
       const dateString = '2021-02-28 19:40:10'
       const hoursOffset = 8
 
-      expectSameResult((esday) => esday(dateString).utc().utcOffset(`+0${hoursOffset}:00`, true))
+      expectSameObject((esday) => esday(dateString).utc().utcOffset(`+0${hoursOffset}:00`, true))
     })
 
     it('using string offset "-0800"', () => {
       const dateString = '2021-02-28 19:40:10'
       const hoursOffset = -8
 
-      expectSameResult((esday) =>
+      expectSameObject((esday) =>
         esday(dateString)
           .utc()
           .utcOffset(`-0${Math.abs(hoursOffset)}00`, true),
@@ -520,19 +520,19 @@ describe('plugin utc', () => {
       const dateString = '2021-02-28 19:40:10'
       const hoursOffset = 8
 
-      expectSameResult((esday) => esday(dateString).utc().utcOffset(`+0${hoursOffset}00`, true))
+      expectSameObject((esday) => esday(dateString).utc().utcOffset(`+0${hoursOffset}00`, true))
     })
 
     it('using string offset "-08"', () => {
       const dateString = '2021-02-28 19:40:10'
 
-      expectSameResult((esday) => esday(dateString).utc().utcOffset('-08', true))
+      expectSameObject((esday) => esday(dateString).utc().utcOffset('-08', true))
     })
 
     it('using an invalid string value ("random")', () => {
       const dateString = '2021-02-28 19:40:10'
 
-      expectSameResult((esday) => esday(dateString).utc(true).utcOffset('random'))
+      expectSameObject((esday) => esday(dateString).utc(true).utcOffset('random'))
     })
 
     it('changes hours when changing the utc offset in UTC mode using a number', () => {
@@ -558,9 +558,9 @@ describe('plugin utc', () => {
       const dateWithOffset = esday(dateString).utcOffset(9)
       const esdayCloned = dateWithOffset.clone()
 
-      expectSameResult((esday) => esday(dateString).utcOffset(9))
+      expectSameObject((esday) => esday(dateString).utcOffset(9))
 
-      expectSameResult((esday) => esday(dateString).utcOffset(9).clone())
+      expectSameObject((esday) => esday(dateString).utcOffset(9).clone())
 
       expect(dateWithOffset).not.toBe(esdayCloned)
       expect(dateWithOffset.valueOf()).toBe(esdayCloned.valueOf())
@@ -583,14 +583,14 @@ describe('plugin utc', () => {
       const esdayDate = esday(dateString).utc(true).utcOffset('+0000')
 
       expect(esdayDate.utcOffset()).toEqual(0)
-      expectSameResult((esday) => esday(dateString).utc(true).utcOffset('+0000'))
+      expectSameObject((esday) => esday(dateString).utc(true).utcOffset('+0000'))
     })
 
     it('sets utc mode (using offset "0")', () => {
       const esdayDate = esday().utcOffset(0)
 
       expect(esdayDate.isUTC()).toBeTruthy()
-      expectSameResult((esday) => esday().utcOffset(0))
+      expectSameObject((esday) => esday().utcOffset(0))
     })
 
     it('resets utc mode (using offset "1")', () => {
@@ -650,14 +650,14 @@ describe('plugin utc', () => {
     it.each([C.YEAR, C.MONTH, C.DAY, C.DAY_OF_MONTH, C.HOUR, C.MIN, C.SECOND])(
       'startOf in UTC mode for "%s"',
       (unit) => {
-        expectSameResult((esday) => esday().utc().startOf(unit))
+        expectSameObject((esday) => esday().utc().startOf(unit))
       },
     )
 
     it.each([C.YEAR, C.MONTH, C.DAY, C.DAY_OF_MONTH, C.HOUR, C.MIN, C.SECOND])(
       'endOf in UTC mode for "%s"',
       (unit) => {
-        expectSameResult((esday) => esday().utc().endOf(unit))
+        expectSameObject((esday) => esday().utc().endOf(unit))
       },
     )
   })
@@ -675,7 +675,7 @@ describe('plugin utc', () => {
     ])('"$value $unit" to date parsed as utc', ({ value, unit }) => {
       const dateString = '2018-02-06T19:34:28.652'
 
-      expectSameResult((esday) => esday.utc(dateString).add(value, unit as UnitTypeAddSub))
+      expectSameObject((esday) => esday.utc(dateString).add(value, unit as UnitTypeAddSub))
     })
 
     it('unsupported unit to date parsed as utc', () => {
@@ -702,7 +702,7 @@ describe('plugin utc', () => {
     ])('"$value $unit" to date converted to utc', ({ value, unit }) => {
       const dateString = '2018-02-06T19:34:28.652'
 
-      expectSameResult((esday) =>
+      expectSameObject((esday) =>
         esday(dateString)
           .utc()
           .add(value, unit as UnitTypeAddSub),
@@ -735,7 +735,7 @@ describe('plugin utc', () => {
     ])('"$value $unit" to date parsed as utc', ({ value, unit }) => {
       const dateString = '2018-11-06T19:34:28.652'
 
-      expectSameResult((esday) => esday.utc(dateString).subtract(value, unit as UnitTypeAddSub))
+      expectSameObject((esday) => esday.utc(dateString).subtract(value, unit as UnitTypeAddSub))
     })
 
     it('unsupported unit to date parsed as utc', () => {
@@ -762,7 +762,7 @@ describe('plugin utc', () => {
     ])('"$value $unit" to date converted to utc', ({ value, unit }) => {
       const dateString = '2018-11-06T19:34:28.652'
 
-      expectSameResult((esday) =>
+      expectSameObject((esday) =>
         esday(dateString)
           .utc()
           .subtract(value, unit as UnitTypeAddSub),

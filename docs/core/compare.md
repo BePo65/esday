@@ -9,13 +9,13 @@ The `isAfter()` method checks if one `esday` object is after an esday object giv
 ## Usage
 
 ### Method signatures
-```typescript
+```signature
 esday().isBefore(units: UnitType = C.MS): boolean
 ```
-```typescript
+```signature
 esday().isSame(units: UnitType = C.MS: boolean
 ```
-```typescript
+```signature
 esday().isAfter(units: UnitType = C.MS: boolean
 ```
 

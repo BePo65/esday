@@ -6,7 +6,7 @@ import localeFr from '~/locales/fr'
 import durationPlugin from '~/plugins/duration'
 import localePlugin from '~/plugins/locale'
 import relativeTimePlugin, { type ThresholdRelativeTime } from '~/plugins/relativeTime'
-import { expectSame } from '../util'
+import { expectSameValue } from '../util'
 
 esday.extend(localePlugin).extend(relativeTimePlugin).extend(durationPlugin)
 esday.registerLocale(localeEn).registerLocale(localeFr)
@@ -67,7 +67,7 @@ describe('duration plugin - using global locale "en"', () => {
       { source: { years: 5 }, expected: '5 years', description: '5 years = 5 years' },
       { source: 7200000, expected: '2 hours', description: '7200000 = 2 hours' },
     ])('for  "$description" with default parameters', ({ source, expected }) => {
-      expectSame((esday) => esday.duration(source).humanize())
+      expectSameValue((esday) => esday.duration(source).humanize())
       expect(esday.duration(source).humanize()).toBe(expected)
     })
 
@@ -81,7 +81,7 @@ describe('duration plugin - using global locale "en"', () => {
     ])('for  "$description" with suffix', ({ source, expected }) => {
       const withSuffix = true
 
-      expectSame((esday) => esday.duration(source).humanize(withSuffix))
+      expectSameValue((esday) => esday.duration(source).humanize(withSuffix))
       expect(esday.duration(source).humanize(withSuffix)).toBe(expected)
     })
 
@@ -98,9 +98,9 @@ describe('duration plugin - using global locale "en"', () => {
         years: 8.7,
       }
 
-      expectSame((esday) => esday.duration(invalidDurationDef).isValid())
+      expectSameValue((esday) => esday.duration(invalidDurationDef).isValid())
       expect(esday.duration(invalidDurationDef).isValid()).toBeFalsy()
-      expectSame((esday) => esday.duration(invalidDurationDef).humanize())
+      expectSameValue((esday) => esday.duration(invalidDurationDef).humanize())
       expect(esday.duration(invalidDurationDef).humanize()).toBe('Invalid date')
     })
   })
@@ -161,7 +161,7 @@ describe('duration plugin - using global locale "en"', () => {
       { source: { years: 5 }, expected: '5 years', description: '5 years = 5 years' },
       { source: 7200000, expected: '2 hours', description: '7200000 = 2 hours' },
     ])('for  "$description" with all units and default parameters', ({ source, expected }) => {
-      expectSame((esday) => esday.duration(source).humanize(thresholdAllUnits))
+      expectSameValue((esday) => esday.duration(source).humanize(thresholdAllUnits))
       expect(esday.duration(source).humanize(thresholdAllUnits)).toBe(expected)
     })
 
@@ -209,14 +209,14 @@ describe('duration plugin - using global locale "en"', () => {
       { source: { years: 5 }, expected: '5 years', description: '5 years = 5 years' },
       { source: 7200000, expected: '2 hours', description: '7200000 = 2 hours' },
     ])('for  "$description" with some units and default parameters', ({ source, expected }) => {
-      expectSame((esday) => esday.duration(source).humanize(thresholdSomeUnits))
+      expectSameValue((esday) => esday.duration(source).humanize(thresholdSomeUnits))
       expect(esday.duration(source).humanize(thresholdSomeUnits)).toBe(expected)
     })
   })
 
   describe('Locale', () => {
     it('get locale', () => {
-      expectSame((esday) => esday.duration().locale())
+      expectSameValue((esday) => esday.duration().locale())
       expect(esday.duration().locale()).toBe('en')
     })
 
@@ -265,7 +265,7 @@ describe('duration plugin - using global locale "fr"', () => {
     { source: { days: 25 }, expected: '25 jours', description: '25 days - 25 jours' },
     { source: { days: 26 }, expected: 'un mois', description: '26 days - un mois' },
   ])('for  "$description"', ({ source, expected }) => {
-    expectSame((esday) => esday.duration(source).humanize())
+    expectSameValue((esday) => esday.duration(source).humanize())
     expect(esday.duration(source).humanize()).toBe(expected)
   })
 })

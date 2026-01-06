@@ -9,7 +9,7 @@ import localePlugin from '~/plugins/locale'
 import localizedFormatPlugin from '~/plugins/localizedFormat'
 import localizedParsePlugin from '~/plugins/localizedParse'
 import weekPlugin from '~/plugins/week'
-import { expectSame, expectSameResult } from '../util'
+import { expectSameObject, expectSameValue } from '../util'
 
 esday
   .extend(advancedParsePlugin)
@@ -59,7 +59,7 @@ describe('week plugin - locale "en"', () => {
     { sourceString: '2025-06-19', expected: 25, weekday: 'Wednesday' },
     { sourceString: '2025-06-20', expected: 25, weekday: 'Thursday' },
   ])('should get week number for "$sourceString" using week()', ({ sourceString, expected }) => {
-    expectSame((esday) => esday(sourceString).week())
+    expectSameValue((esday) => esday(sourceString).week())
     expect(esday(sourceString).week()).toBe(expected)
   })
 
@@ -67,7 +67,7 @@ describe('week plugin - locale "en"', () => {
     const sourceString = '2024-04-06'
     const expected = 14
 
-    expectSame((esday) => esday(sourceString).weeks())
+    expectSameValue((esday) => esday(sourceString).weeks())
     expect(esday(sourceString).weeks()).toBe(expected)
   })
 
@@ -94,7 +94,7 @@ describe('week plugin - locale "en"', () => {
     { sourceString: '2025-06-19T07:18:29', expected: 25, weekday: 'Wednesday' },
     { sourceString: '2025-06-20T07:18:29', expected: 25, weekday: 'Thursday' },
   ])('should get week number for "$sourceString" with time part', ({ sourceString, expected }) => {
-    expectSame((esday) => esday(sourceString).week())
+    expectSameValue((esday) => esday(sourceString).week())
     expect(esday(sourceString).week()).toBe(expected)
   })
 
@@ -116,7 +116,7 @@ describe('week plugin - locale "en"', () => {
     'should get week number for "$sourceString" using get("$unit")',
     ({ sourceString, unit, expected }) => {
       const unitAsUnitType = unit as UnitTypeGetSet
-      expectSame((esday) => esday(sourceString).get(unitAsUnitType))
+      expectSameValue((esday) => esday(sourceString).get(unitAsUnitType))
       expect(esday(sourceString).get(unitAsUnitType)).toBe(expected)
     },
   )
@@ -133,7 +133,7 @@ describe('week plugin - locale "en"', () => {
   ])(
     'should get week number for year transition for "$sourceString"',
     ({ sourceString, expected }) => {
-      expectSame((esday) => esday(sourceString).week())
+      expectSameValue((esday) => esday(sourceString).week())
       expect(esday(sourceString).week()).toBe(expected)
     },
   )
@@ -148,7 +148,7 @@ describe('week plugin - locale "en"', () => {
       const esdaySourceDate = esday(sourceString)
       const esdayTargetDate = esdaySourceDate.week(newWeek)
 
-      expectSameResult((esday) => esday(sourceString).week(newWeek))
+      expectSameObject((esday) => esday(sourceString).week(newWeek))
       expect(esdaySourceDate.day()).toBe(esdayTargetDate.day())
     },
   )
@@ -159,7 +159,7 @@ describe('week plugin - locale "en"', () => {
     const esdaySourceDate = esday(sourceString)
     const esdayTargetDate = esdaySourceDate.week(newWeek)
 
-    expectSameResult((esday) => esday(sourceString).week(newWeek))
+    expectSameObject((esday) => esday(sourceString).week(newWeek))
     expect(esdaySourceDate.day()).toBe(esdayTargetDate.day())
   })
 
@@ -174,7 +174,7 @@ describe('week plugin - locale "en"', () => {
       const esdaySourceDate = esday(sourceString)
       const esdayTargetDate = esdaySourceDate.set(unitAsUnitType, newWeek)
 
-      expectSameResult((esday) => esday(sourceString).set(unitAsUnitType, newWeek))
+      expectSameObject((esday) => esday(sourceString).set(unitAsUnitType, newWeek))
       expect(esdaySourceDate.day()).toBe(esdayTargetDate.day())
     },
   )
@@ -188,7 +188,7 @@ describe('week plugin - locale "en"', () => {
     { sourceString: '2025-07-11', expected: 5 },
     { sourceString: '2025-04-12', expected: 6 },
   ])('should get weekday for "$sourceString"', ({ sourceString, expected }) => {
-    expectSame((esday) => esday(sourceString).weekday())
+    expectSameValue((esday) => esday(sourceString).weekday())
     expect(esday(sourceString).weekday()).toBe(expected)
   })
 
@@ -209,7 +209,7 @@ describe('week plugin - locale "en"', () => {
     { sourceString: '2025-05-15', newWeekday: 6 },
     { sourceString: '2025-03-10', newWeekday: -7 },
   ])('should set weekday to "$newWeekday" for "$sourceString"', ({ sourceString, newWeekday }) => {
-    expectSameResult((esday) => esday(sourceString).weekday(newWeekday))
+    expectSameObject((esday) => esday(sourceString).weekday(newWeekday))
   })
 
   it.each([
@@ -218,7 +218,7 @@ describe('week plugin - locale "en"', () => {
     { sourceString: '2025-12-28', expected: 2026 },
     { sourceString: '2026-12-31', expected: 2027 },
   ])('should get weekYear for "$sourceString"', ({ sourceString, expected }) => {
-    expectSame((esday) => esday(sourceString).weekYear())
+    expectSameValue((esday) => esday(sourceString).weekYear())
     expect(esday(sourceString).weekYear()).toBe(expected)
   })
 
@@ -230,7 +230,7 @@ describe('week plugin - locale "en"', () => {
   ])(
     'should set the weekYear for "$sourceString" to "$newIsoYear"',
     ({ sourceString, newIsoYear }) => {
-      expectSameResult((esday) => esday(sourceString).weekYear(newIsoYear))
+      expectSameObject((esday) => esday(sourceString).weekYear(newIsoYear))
       expect(esday(sourceString).weekYear(newIsoYear).weekYear()).toBe(newIsoYear)
     },
   )
@@ -275,7 +275,7 @@ describe('week plugin - locale "en"', () => {
     const resultDate = esday(sourceString).startOf(C.WEEK)
 
     expect(resultDate.format('YYYY-MM-DDTHH:mm:ss.SSS')).toBe(expectedAsString)
-    expectSameResult((esday) => esday(sourceString).startOf(C.WEEK))
+    expectSameObject((esday) => esday(sourceString).startOf(C.WEEK))
   })
 
   it.each([
@@ -286,7 +286,7 @@ describe('week plugin - locale "en"', () => {
     { sourceString: '2023-11-14T00:00:00' },
     { sourceString: '2023-05-07T00:00:00' },
   ])('should handle edge case for startOf week for "$sourceString"', ({ sourceString }) => {
-    expectSameResult((esday) => esday(sourceString).startOf(C.WEEK))
+    expectSameObject((esday) => esday(sourceString).startOf(C.WEEK))
   })
 
   it.each([
@@ -310,7 +310,7 @@ describe('week plugin - locale "en"', () => {
     const resultDate = esday(sourceString).endOf(C.WEEK)
 
     expect(resultDate.format('YYYY-MM-DDTHH:mm:ss.SSS')).toBe(expectedAsString)
-    expectSameResult((esday) => esday(sourceString).endOf(C.WEEK))
+    expectSameObject((esday) => esday(sourceString).endOf(C.WEEK))
   })
 
   it.each([
@@ -321,7 +321,7 @@ describe('week plugin - locale "en"', () => {
     { sourceString: '2023-11-14T00:00:00' },
     { sourceString: '2023-05-07T00:00:00' },
   ])('should handle edge case for endOf week for "$sourceString"', ({ sourceString }) => {
-    expectSameResult((esday) => esday(sourceString).endOf(C.WEEK))
+    expectSameObject((esday) => esday(sourceString).endOf(C.WEEK))
   })
 
   it.each([
@@ -335,7 +335,7 @@ describe('week plugin - locale "en"', () => {
   ])(
     'should format date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString }) => {
-      expectSame((esday) => esday(sourceString).format(formatString))
+      expectSameValue((esday) => esday(sourceString).format(formatString))
     },
   )
 
@@ -348,7 +348,7 @@ describe('week plugin - locale "en"', () => {
   ])(
     'should parse "$sourceString" with week token in "$formatString"',
     ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
     },
   )
 
@@ -364,7 +364,7 @@ describe('week plugin - locale "en"', () => {
   ])(
     'parse "$sourceString" with weekday token in "$formatString"',
     ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
     },
   )
 
@@ -372,7 +372,7 @@ describe('week plugin - locale "en"', () => {
     const sourceString = '2025 7'
     const formatString = 'YYYY e'
 
-    expectSame((esday) => esday(sourceString, formatString).isValid())
+    expectSameValue((esday) => esday(sourceString, formatString).isValid())
     expect(esday(sourceString, formatString).isValid()).toBeFalsy()
   })
 
@@ -398,7 +398,7 @@ describe('week plugin - locale "en"', () => {
   ])(
     'parse "$sourceString" with day-of-week token in "$formatString"',
     ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
       expect(esday(sourceString, formatString).isValid()).toBeTruthy()
     },
   )
@@ -410,7 +410,7 @@ describe('week plugin - locale "en"', () => {
       formatString: 'YYYY MM DD ddd HH:mm:ss',
     },
   ])('parse illegal day-of-week value', ({ sourceString, formatString }) => {
-    expectSame((esday) => esday(sourceString, formatString).isValid())
+    expectSameValue((esday) => esday(sourceString, formatString).isValid())
     expect(esday(sourceString, formatString).isValid()).toBeFalsy()
   })
 
@@ -419,7 +419,7 @@ describe('week plugin - locale "en"', () => {
     const formatString = 'YYYY MMM Do dddd h:mm:ss A'
 
     expect(esday(sourceString, formatString, true).isValid()).toBeTruthy()
-    expectSameResult((esday) => esday(sourceString, formatString, true))
+    expectSameObject((esday) => esday(sourceString, formatString, true))
   })
 
   it('does not parse in strict mode - bad format', () => {
@@ -427,7 +427,7 @@ describe('week plugin - locale "en"', () => {
     const formatString = 'YYYY MMM Do dddd h:mm:ss A'
 
     expect(esday(sourceString, formatString, true).isValid()).toBeFalsy()
-    expectSame((esday) => esday(sourceString, formatString, true).isValid())
+    expectSameValue((esday) => esday(sourceString, formatString, true).isValid())
   })
 
   it.each([
@@ -453,7 +453,7 @@ describe('week plugin - locale "en"', () => {
   ])(
     'should parse "$sourceString" with weekYear token in "$formatString"',
     ({ sourceString, formatString }) => {
-      expectSameResult((esday) => esday(sourceString, formatString))
+      expectSameObject((esday) => esday(sourceString, formatString))
     },
   )
 })

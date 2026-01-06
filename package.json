@@ -5,14 +5,19 @@
   "packageManager": "pnpm@10.14.0",
   "description": "A simple date library fully written in TypeScript",
   "license": "MIT",
-  "homepage": "https://github.com/g-mero/esday",
+  "homepage": "https://github.com/BePo65/esday",
   "repository": {
     "type": "git",
-    "url": "https://github.com/g-mero/esday"
+    "url": "https://github.com/BePo65/esday"
   },
   "bugs": {
-    "url": "https://github.com/g-mero/esday/issues"
+    "url": "https://github.com/BePo65/esday/issues"
   },
+  "author": "BePo65 (https://github.com/BePo65)",
+  "contributors": [
+    "g-mero (https://github.com/g-mero)",
+    "Olexandr88 <radole1203@gmail.com> (https://github.com/Olexandr88)"
+  ],
   "keywords": [
     "dayjs",
     "date",

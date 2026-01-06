@@ -15,7 +15,7 @@ Utc has no dependencies on other plugins.
 
 ### Method signatures
 Methods added to EsDay instances:
-```typescript
+```signature
 esday().utc(keepLocalTime?: boolean): EsDay
 esday().local(): EsDay
 esday().isUTC(): boolean
@@ -33,7 +33,7 @@ If the first parameter of utcOffset is less than 16 and greater than -16, it wil
 utcOffset will take a string as input value; EsDay will search the string for the last match of +00 -00 +00:00 +0000 -00:00 -0000 Z, so you can even pass an ISO8601 formatted string to offset and esday will set that UTC offset. If the string does not include 'Z', it must include the + or - character.
 
 Methods added to esday:
-```typescript
+```signature
 esday.utc(date: DateType): EsDay
 ```
 
