@@ -1,4 +1,8 @@
 import { esday } from 'esday'
+// @ts-expect-error only type definition is missing, but we do not need it
+import fr from 'moment/dist/locale/fr'
+// @ts-expect-error only type definition is missing, but we do not need it
+import zhCN from 'moment/dist/locale/zh-cn'
 import moment from 'moment-timezone'
 import { describe, expect, it } from 'vitest'
 import localeFr from '~/locales/fr'
@@ -9,6 +13,11 @@ import localizedParsePlugin from '~/plugins/localizedParse'
 import timezonePLugin from '~/plugins/timezone'
 import utcPlugin from '~/plugins/utc'
 import { expectSameObjectTz, expectSameValueTz } from './timezone-util'
+
+// we do have to add locales to moment-timezone for browser testing
+// see https://github.com/moment/moment-timezone/issues/647#issuecomment-3232648209
+moment.updateLocale('fr', fr._config)
+moment.updateLocale('zh-cn', zhCN._config)
 
 esday
   .extend(utcPlugin)
