@@ -18,13 +18,9 @@ export const expectSameObjectTz = (fn: (instance: EsDayFactory) => EsDay | Momen
   const m = fn(moment as unknown as EsDayFactory)
   expect(d.isValid()).toBe(m.isValid())
   if (d.isValid()) {
-    expect(d.toISOString()).toBe(m.toISOString())
-    expect(d.valueOf()).toBe(m.valueOf())
-    expect(d.millisecond()).toBe(m.millisecond())
-    expect(d.toDate()).toEqual(m.toDate())
-    expect(d.toJSON()).toBe(m.toJSON())
-    expect(d.utcOffset()).toBe(m.utcOffset())
-    expect(d.isUTC()).toBe(m.isUTC())
+    const dResults = objectResultsAsJson(d)
+    const mResults = objectResultsAsJson(m)
+    expect(dResults).toEqual(mResults)
   } else {
     expect(d.toString().toLowerCase()).toBe(m.toString().toLowerCase())
   }
@@ -63,4 +59,28 @@ export const expectSameTimestamp = (d: EsDay, m: Moment) => {
   expect(d.toDate()).toEqual(m.toDate())
   expect(d.toJSON()).toBe(m.toJSON())
   expect(d.format()).toBe(m.format())
+}
+
+/**
+ * Create a literal object with the results of all important methods
+ * of an esday / moment.js instance.
+ * If the instance is not valid, then 'undefined' is returned as result
+ * of all methods.
+ * @param instance - instance to be used
+ * @returns object literal with all detailed results
+ */
+export const objectResultsAsJson = (instance: EsDay | Moment) => {
+  const isValid = instance.isValid()
+
+  return {
+    isValid,
+    toISOString: isValid ? instance.toISOString() : undefined,
+    valueOf: isValid ? instance.valueOf() : undefined,
+    millisecond: isValid ? instance.millisecond() : undefined,
+    toDate: isValid ? instance.toDate() : undefined,
+    toJSON: isValid ? instance.toJSON() : undefined,
+    utcOffset: isValid ? instance.utcOffset() : undefined,
+    isUTC: isValid ? instance.isUTC() : undefined,
+    tz: isValid ? instance.tz() : undefined,
+  }
 }
