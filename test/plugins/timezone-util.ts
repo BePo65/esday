@@ -74,11 +74,12 @@ export const objectResultsAsJson = (instance: EsDay | Moment) => {
 
   return {
     isValid,
-    toISOString: isValid ? instance.toISOString() : undefined,
     valueOf: isValid ? instance.valueOf() : undefined,
     millisecond: isValid ? instance.millisecond() : undefined,
     toDate: isValid ? instance.toDate() : undefined,
+    toISOString: isValid ? instance.toISOString() : undefined,
     toJSON: isValid ? instance.toJSON() : undefined,
+    format: isValid ? instance.format() : undefined,
     utcOffset: isValid ? instance.utcOffset() : undefined,
     isUTC: isValid ? instance.isUTC() : undefined,
     tz: isValid ? instance.tz() : undefined,
