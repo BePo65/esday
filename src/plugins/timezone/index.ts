@@ -15,8 +15,15 @@
  *   timezone    name of the timezone of this instance
  */
 
-import type { DateType, EsDay, EsDayPlugin, SimpleType } from 'esday'
-import { C } from '~/common'
+import type {
+  DateType,
+  EsDay,
+  EsDayPlugin,
+  SimpleType,
+  UnitsObjectTypeAddSub,
+  UnitTypeAddSub,
+} from 'esday'
+import { C, isObject, normalizeUnitWithPlurals } from '~/common'
 import { getDateTimeFormat } from './getDateTimeFormat'
 
 /**
@@ -51,6 +58,54 @@ const matchOffset = /^(\d{4})[-/](\d{1,2})[-/](\d{0,2}).*(([+-]\d\d:?(\d\d)?)$|Z
 
 const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
   let defaultTimezone = ''
+
+  // @ts-expect-error "implement tz method"
+  esdayFactory.tz = (
+    input: DateType,
+    ...others: (SimpleType | string[] | { [key: string]: SimpleType })[]
+  ) => {
+    let originalTimezone: string | undefined
+    let timezone = defaultTimezone
+    if (others.length > 0) {
+      // last parameter is timezone
+      timezone = others.pop() as string
+      originalTimezone = timezone
+    }
+
+    const parsedInput = esdayFactory(input, ...others)
+    if (!parsedInput.isValid()) {
+      return parsedInput
+    }
+
+    // Does 'input' contain an offset (e.g. +08:00)?
+    const offsetParsedInput = tzOffset(parsedInput.valueOf(), timezone)
+    if (typeof input !== 'string' || matchOffset.test(input)) {
+      const result = parsedInput.tz(timezone)
+      // moment treats GMT as UTC
+      const isGmtOrUtc = ['GMT', 'UTC'].includes(timezone.toUpperCase())
+      if (parsedInput['$conf']['utc'] === undefined && !isGmtOrUtc) {
+        delete result['$conf']['utc']
+      } else {
+        result['$conf']['utc'] = true
+      }
+      return result
+    }
+    const parsedAsUtc = esdayFactory.utc(input, ...others).valueOf()
+    const [targetTimestamp, targetOffset] = fixOffset(parsedAsUtc, offsetParsedInput, timezone)
+    const result = esdayFactory(targetTimestamp, ...others).utcOffset(targetOffset)
+    result['$conf'].localeName = parsedInput['$conf'].localeName
+    result['$conf'].timezone = originalTimezone
+    return result
+  }
+
+  esdayFactory.tz.guess = () => Intl.DateTimeFormat().resolvedOptions().timeZone
+
+  esdayFactory.tz.setDefault = (timezone: string = '') => {
+    defaultTimezone = timezone
+  }
+  esdayFactory.tz.getDefault = () => {
+    return defaultTimezone
+  }
 
   const tzOffset = (timestamp: number, timezone: string) => {
     const formatResult = makeFormatParts(timestamp, timezone)
@@ -100,21 +155,23 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
     // If offset of guess is different, then change the timestamp by the differences of the offsets
     utcGuess -= (offsetGuess1 - originalOffset) * 60 * 1000
 
-    // If that gives us the local time we want, we're done
+    // If that gives us the local time we want, we're done (fixes fall back overlap)
     const offsetGuess2 = tzOffset(utcGuess, tz)
     if (offsetGuess1 === offsetGuess2) {
       return [utcGuess, offsetGuess1]
     }
 
-    // If it's still different, we're in a DST gap and we don't adjust the time
+    // If it's still different, we're in a DST spring forward gap and we don't adjust the time
     return [
       originalTimestamp - Math.min(offsetGuess1, offsetGuess2) * 60 * 1000,
       Math.max(offsetGuess1, offsetGuess2),
     ]
   }
 
+  const proto = dayClass.prototype
+
   // @ts-expect-error "implement tz method"
-  dayClass.prototype.tz = function (timezone?: string, keepLocalTime?: boolean) {
+  proto.tz = function (timezone?: string, keepLocalTime?: boolean) {
     // Getter for timezone of EsDay instance
     if (timezone === undefined) {
       return this['$conf'].timezone
@@ -153,7 +210,7 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
   }
 
   const oldStartOf = dayClass.prototype.startOf
-  dayClass.prototype.startOf = function (units) {
+  proto.startOf = function (units) {
     if (!this['$conf'] || !this['$conf']['timezone']) {
       return oldStartOf.call(this, units)
     }
@@ -164,7 +221,7 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
   }
 
   const oldEndOf = dayClass.prototype.endOf
-  dayClass.prototype.endOf = function (units) {
+  proto.endOf = function (units) {
     if (!this['$conf'] || !this['$conf']['timezone']) {
       return oldEndOf.call(this, units)
     }
@@ -174,50 +231,75 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
     return endOfWithoutTz.tz(this['$conf']['timezone'] as string, true)
   }
 
-  // @ts-expect-error "implement tz method"
-  esdayFactory.tz = (
-    input: DateType,
-    ...others: (SimpleType | string[] | { [key: string]: SimpleType })[]
-  ) => {
-    let originalTimezone: string | undefined
-    let timezone = defaultTimezone
-    if (others.length > 0) {
-      // last parameter is timezone
-      timezone = others.pop() as string
-      originalTimezone = timezone
+  const oldAdd = proto.add
+  proto.add = function (value: number | UnitsObjectTypeAddSub, unit?: UnitTypeAddSub) {
+    if (isObject(value) || unit === undefined) {
+      // using UnitsObjectTypeAddSub is implemented in plugin ObjectSupport
+      // therefore we ignore the request here.
+      return this.clone()
     }
 
-    const parsedInput = esdayFactory(input, ...others)
-    if (!parsedInput.isValid()) {
-      return parsedInput
-    }
-    const offsetParsedInput = tzOffset(parsedInput.valueOf(), timezone)
-    if (typeof input !== 'string' || matchOffset.test(input)) {
-      const result = parsedInput.tz(timezone)
-      // moment treats GMT as UTC
-      const isGmtOrUtc = ['GMT', 'UTC'].includes(timezone.toUpperCase())
-      if (parsedInput['$conf']['utc'] === undefined && !isGmtOrUtc) {
-        delete result['$conf']['utc']
-      } else {
-        result['$conf']['utc'] = true
+    if (this['$conf'].timezone) {
+      let result: EsDay
+
+      switch (normalizeUnitWithPlurals(unit)) {
+        case C.YEAR:
+          result = this.set('year', this.get('year') + value)
+          break
+        case C.MONTH:
+          result = this.set('month', this.get('month') + value)
+          break
+        case C.WEEK:
+          result = this.set('date', this.get('date') + value * 7)
+          break
+        case C.DAY:
+        case C.DAY_OF_MONTH:
+          result = this.set('date', this.get('date') + value)
+          break
+        case C.HOUR:
+          result = this.set('hour', this.get('hour') + value)
+          break
+        case C.MIN:
+          result = this.set('minute', this.get('minute') + value)
+          break
+        case C.SECOND:
+          result = this.set('second', this.get('second') + value)
+          break
+        case C.MS: {
+          result = this.set('millisecond', this.get('millisecond') + value)
+          break
+        }
+        default:
+          // ignore unsupported units
+          result = this.clone()
       }
+
+      const resultTzOffset = tzOffset(result.valueOf(), this['$conf']['timezone'] as string)
+
+      // biome-ignore lint/correctness/noUnusedVariables: we need the second value (targetOffset)
+      const [targetTimestamp, targetOffset] = fixOffset(result.valueOf(), resultTzOffset, this.tz())
+      const fixTimestamp = targetOffset - resultTzOffset
+      if (fixTimestamp !== 0) {
+        result = result.set('minute', result.get('minute') + fixTimestamp)
+      }
+
+      // HACK for testing alternative 1 (moves problems to .add(1, 'day'))
+      const y = result.clone()
+      const y$d = y['$d']
+
+      if (result['$conf'].utcOffset !== targetOffset) {
+        result['$conf'].utcOffset = targetOffset
+        const oldYOffset = y['$conf'].utcOffset as number
+        y['$conf'].utcOffset = targetOffset
+        y['$d'].setUTCMinutes(y$d.getUTCMinutes() + (targetOffset - oldYOffset))
+      }
+
       return result
+      // return y
     }
-    const parsedAsUtc = esdayFactory.utc(input, ...others).valueOf()
-    const [targetTimestamp, targetOffset] = fixOffset(parsedAsUtc, offsetParsedInput, timezone)
-    const result = esdayFactory(targetTimestamp, ...others).utcOffset(targetOffset)
-    result['$conf'].localeName = parsedInput['$conf'].localeName
-    result['$conf'].timezone = originalTimezone
-    return result
-  }
 
-  esdayFactory.tz.guess = () => Intl.DateTimeFormat().resolvedOptions().timeZone
-
-  esdayFactory.tz.setDefault = (timezone: string = '') => {
-    defaultTimezone = timezone
-  }
-  esdayFactory.tz.getDefault = () => {
-    return defaultTimezone
+    // @ts-expect-error always requires 3 args, as  UnitsObjectTypeAddSub is covered by plugin ObjectSupport
+    return oldAdd.call(this, value, unit)
   }
 }
 

@@ -3,11 +3,16 @@ import moment from 'moment-timezone'
 import { afterEach, describe, expect, it } from 'vitest'
 import timezonePLugin from '~/plugins/timezone'
 import utcPlugin from '~/plugins/utc'
-import { expectSameObjectTz, expectSameTimestamp, expectSameValueTz } from './timezone-util'
+import {
+  expectSameObjectTz,
+  expectSameTimestamp,
+  expectSameValueTz,
+  objectResultsAsJson,
+} from './timezone-util'
 
 esday.extend(utcPlugin).extend(timezonePLugin)
 
-describe('timezone plugin without plugins', () => {
+describe('timezone plugin', () => {
   afterEach(() => {
     esday.tz.setDefault()
     moment.tz.setDefault()
@@ -619,9 +624,100 @@ describe('timezone plugin without plugins', () => {
     expectSameObjectTz((esday) => esday.tz(timestamp, timezone).endOf('month'))
     expectSameValueTz((esday) => esday.tz(timestamp, timezone).endOf('month').tz())
   })
+
+  it.each([
+    {
+      timestamp: '2025-07-21 14:25:36',
+      tz: 'US/Pacific',
+      diffValue: 1,
+      diffUnit: 'day' as const,
+      expectedDiffMinutes: 1440,
+      comment: 'no DST involved; 24h difference',
+    },
+    {
+      timestamp: '2025-03-09 01:00:00',
+      tz: 'US/Pacific',
+      diffValue: 1,
+      diffUnit: 'day' as const,
+      expectedDiffMinutes: 1380,
+      comment: 'add 1 day around DST spring forward',
+    },
+    {
+      timestamp: '2025-11-02 01:00:00',
+      tz: 'US/Pacific',
+      diffValue: 1,
+      diffUnit: 'day' as const,
+      expectedDiffMinutes: 1500,
+      comment: 'add 1 day around DST fall back (dayjs pr#2961)',
+    },
+  ])(
+    'add "$diffValue $diffUnit" to "$timestamp" in "$tz"',
+    ({ timestamp, tz, diffValue, diffUnit, expectedDiffMinutes }) => {
+      const dateBeforeDST = esday.tz(timestamp, tz)
+      const diffInUnit = dateBeforeDST.add(diffValue, diffUnit).diff(dateBeforeDST, 'minutes')
+
+      expectSameObjectTz((esday) => esday.tz(timestamp, tz).add(diffValue, diffUnit))
+      expect(diffInUnit).toBe(expectedDiffMinutes)
+      expectSameValueTz((esday) =>
+        esday.tz(timestamp, tz).add(diffValue, diffUnit).diff(esday.tz(timestamp, tz)),
+      )
+    },
+  )
+
+  it.each([
+    {
+      timestamp: '2025-03-09 01:00:00',
+      tz: 'US/Pacific',
+      diffValue: 90,
+      diffUnit: 'minutes' as const,
+      expectedDiffMinutesEsDay: 30, // should be 90
+      expectedTimestampEsDay: 1741512600000, // "2025-03-09T09:30:00.000Z"; should equal expectedTimestampMoment
+      expectedTimestampMoment: 1741516200000, // "2025-03-09T10:30:00.000Z"
+      comment: 'add 90 minutes around DST into spring forward gap',
+    },
+    {
+      timestamp: '2025-11-02 01:00:00',
+      tz: 'US/Pacific',
+      diffValue: 90,
+      diffUnit: 'minutes' as const,
+      expectedDiffMinutesEsDay: 150, // should be 90
+      expectedTimestampEsDay: 1762079400000, // "2025-11-02T10:30:00Z"; should equal expectedTimestampMoment
+      expectedTimestampMoment: 1762075800000, // "2025-11-02T09:30:00Z"
+      comment: 'add 90 minutes around DST into fall back overlap',
+    },
+  ])(
+    'add difference to moment - add "$diffValue $diffUnit" to "$timestamp" in "$tz"',
+    ({
+      timestamp,
+      tz,
+      diffValue,
+      diffUnit,
+      expectedDiffMinutesEsDay,
+      expectedTimestampEsDay,
+      expectedTimestampMoment,
+    }) => {
+      const baseDateEsday = esday.tz(timestamp, tz)
+      const resultingDateEsday = baseDateEsday.add(diffValue, diffUnit)
+      const resultKeyValuesEsday = objectResultsAsJson(resultingDateEsday)
+      const diffInUnitEsday = resultingDateEsday.diff(baseDateEsday, 'minutes')
+
+      const baseDateMoment = moment.tz(timestamp, tz)
+      const resultingDateMoment = moment.tz(timestamp, tz).add(diffValue, diffUnit)
+      const resultKeyValuesMoment = objectResultsAsJson(resultingDateMoment)
+      const diffInUnitMoment = resultingDateMoment.diff(baseDateMoment, 'minutes')
+
+      expect(resultKeyValuesEsday.valueOf).toBe(expectedTimestampEsDay)
+      expect(resultKeyValuesMoment.valueOf).toBe(expectedTimestampMoment)
+      expect(diffInUnitEsday).toBe(expectedDiffMinutesEsDay)
+      expect(diffInUnitMoment).toBe(diffValue)
+    },
+  )
+
+  // TODO hier geht es weiter
+  it.todo('add test for add / subtract (pr#2895, pr#2813)')
 })
 
-describe('timezone plugin with utc', () => {
+describe('timezone parse using esday.utc', () => {
   afterEach(() => {
     esday.tz.setDefault()
     moment.tz.setDefault()
