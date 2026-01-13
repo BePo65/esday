@@ -5,8 +5,8 @@
  *
  * new esday parameters in '$conf':
  *   utc          utc mode (true / false)
- *   utcOffset    utcOffset (constant value, no DST handling)
- *   localOffset  local timezone offset (with DST handling)
+ *   utcOffset    utcOffset to use for this esday instance
+ *   localOffset  local timezone offset (as internal Date - $d - is always in local timezone)
  */
 
 import type { EsDay } from 'esday'
