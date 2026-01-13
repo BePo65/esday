@@ -177,7 +177,7 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     inst['$conf'].utc = true
     if (keepLocalTime) {
       // TODO maybe the generated time does not exits in the current timezone; see moment.js
-      return inst.add(this.utcOffset(), C.MIN)
+      return addUtc(inst, this.utcOffset(), C.MIN)
     }
     return inst
   }
