@@ -225,8 +225,8 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   const oldFormat = proto.format
   proto.format = function (formatStr) {
     const UTC_FORMAT_DEFAULT = 'YYYY-MM-DDTHH:mm:ss[Z]'
-    const str = formatStr || (this['$conf'].utc ? UTC_FORMAT_DEFAULT : '')
-    return oldFormat.call(this, str)
+    const activeFormatString = formatStr || (this['$conf'].utc ? UTC_FORMAT_DEFAULT : '')
+    return oldFormat.call(this, activeFormatString)
   }
 
   // change private method 'dateFromDateComponents' of EsDay
