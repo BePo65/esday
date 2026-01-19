@@ -23,7 +23,7 @@ import type {
   UnitsObjectTypeAddSub,
   UnitTypeAddSub,
 } from 'esday'
-import { C, isObject, normalizeUnitWithPlurals } from '~/common'
+import { C, isObject } from '~/common'
 import { getDateTimeFormat } from './getDateTimeFormat'
 
 /**
@@ -270,13 +270,35 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
             // new date is in a DST overlap;
             // use original timezone offset as utcOffset without moving valueOf
             z['$d'].setUTCMinutes(z['$d'].getUTCMinutes() - (zTzOffset3 - zTzOffset2))
+          } else if (!this['$conf'].utc && z['$conf'].utc) {
+            // switched to utc in DST overlap : don't change valueOf
+            z['$d'].setUTCMinutes(z['$d'].getUTCMinutes() + zUtcOffset1)
+            // TODO is this solved by .utc()?
+            delete z['$conf'].utcOffset
+            delete z['$conf'].localOffset
+          } else if (this['$conf'].utc && !z['$conf'].utc) {
+            // switched out of utc in DST overlap : don't change valueOf
+            const localOffset = z.toDate().getTimezoneOffset()
+            // TODO is this solved by .utc()?
+            z['$conf'].utcOffset = zTzOffset3
+            z['$conf'].localOffset = localOffset
+            z['$d'].setUTCMinutes(z['$d'].getUTCMinutes() + localOffset)
           }
         } else {
-          // new date is in a DST gap;
-          // use original timezone offset as utcOffset without moving valueOf
-          z['$d'].setUTCMinutes(z['$d'].getUTCMinutes() - (zTzOffset2 - zTzOffset1))
-          z['$conf'].utcOffset = zTzOffset1
+          // new date is in a DST gap
           z['$conf'].utc = zTzOffset1 === 0
+          if (this['$conf'].utc && !z['$conf'].utc) {
+            // TODO when switching out of utc we need $conf.localOffset too
+            // TODO is this solved by .utc()?
+            z['$conf'].utcOffset = zTzOffset1
+            const localOffset = z.toDate().getTimezoneOffset()
+            z['$conf'].localOffset = localOffset
+            z['$d'].setUTCMinutes(z['$d'].getUTCMinutes() + (zTzOffset1 + localOffset))
+          } else {
+            // use original timezone offset as utcOffset without moving valueOf
+            z['$d'].setUTCMinutes(z['$d'].getUTCMinutes() - (zTzOffset2 - zTzOffset1))
+            z['$conf'].utcOffset = zTzOffset1
+          }
         }
       }
 
