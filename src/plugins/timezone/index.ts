@@ -240,62 +240,47 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
     }
 
     if (this['$conf'].timezone) {
-      let result: EsDay
+      const timezone = this['$conf']['timezone'] as string
 
-      switch (normalizeUnitWithPlurals(unit)) {
-        case C.YEAR:
-          result = this.set('year', this.get('year') + value)
-          break
-        case C.MONTH:
-          result = this.set('month', this.get('month') + value)
-          break
-        case C.WEEK:
-          result = this.set('date', this.get('date') + value * 7)
-          break
-        case C.DAY:
-        case C.DAY_OF_MONTH:
-          result = this.set('date', this.get('date') + value)
-          break
-        case C.HOUR:
-          result = this.set('hour', this.get('hour') + value)
-          break
-        case C.MIN:
-          result = this.set('minute', this.get('minute') + value)
-          break
-        case C.SECOND:
-          result = this.set('second', this.get('second') + value)
-          break
-        case C.MS: {
-          result = this.set('millisecond', this.get('millisecond') + value)
-          break
+      // TODO replace variable names
+      // TODO use .utcOffset instead of ['$conf'].utcOffset?
+      // @ts-expect-error always requires 3 args, as  UnitsObjectTypeAddSub is covered by plugin ObjectSupport
+      const z = oldAdd.call(this, value, unit)
+      const zTzOffset1 = tzOffset(z.valueOf(), timezone)
+      const zUtcOffset1 = z.utcOffset()
+      const timestamp1 = z.valueOf()
+
+      if (zTzOffset1 !== zUtcOffset1) {
+        // new date is behind a DST gap or overlap or in an overlap or gap;
+        // we have to fix the date
+        const timestamp2 = timestamp1 - (zTzOffset1 - zUtcOffset1) * 60 * 1000
+        const zTzOffset2 = tzOffset(timestamp2, timezone)
+
+        if (zTzOffset2 === zTzOffset1) {
+          // new date is behind a DST gap or overlap or in an overlap
+          // TODO use "+ ()" or "- Math.abs()"?
+          const timestamp3 = timestamp1 + (zTzOffset1 - zUtcOffset1) * 60 * 1000
+          const zTzOffset3 = tzOffset(timestamp3, timezone)
+
+          // use new timezone offset as utcOffset and therefore move valueOf too
+          z['$conf'].utcOffset = zTzOffset2
+          z['$conf'].utc = zTzOffset2 === 0
+
+          if (zTzOffset3 !== zTzOffset2) {
+            // new date is in a DST overlap;
+            // use original timezone offset as utcOffset without moving valueOf
+            z['$d'].setUTCMinutes(z['$d'].getUTCMinutes() - (zTzOffset3 - zTzOffset2))
+          }
+        } else {
+          // new date is in a DST gap;
+          // use original timezone offset as utcOffset without moving valueOf
+          z['$d'].setUTCMinutes(z['$d'].getUTCMinutes() - (zTzOffset2 - zTzOffset1))
+          z['$conf'].utcOffset = zTzOffset1
+          z['$conf'].utc = zTzOffset1 === 0
         }
-        default:
-          // ignore unsupported units
-          result = this.clone()
       }
 
-      const resultTzOffset = tzOffset(result.valueOf(), this['$conf']['timezone'] as string)
-
-      // biome-ignore lint/correctness/noUnusedVariables: we need the second value (targetOffset)
-      const [targetTimestamp, targetOffset] = fixOffset(result.valueOf(), resultTzOffset, this.tz())
-      const fixTimestamp = targetOffset - resultTzOffset
-      if (fixTimestamp !== 0) {
-        result = result.set('minute', result.get('minute') + fixTimestamp)
-      }
-
-      // HACK for testing alternative 1 (moves problems to .add(1, 'day'))
-      const y = result.clone()
-      const y$d = y['$d']
-
-      if (result['$conf'].utcOffset !== targetOffset) {
-        result['$conf'].utcOffset = targetOffset
-        const oldYOffset = y['$conf'].utcOffset as number
-        y['$conf'].utcOffset = targetOffset
-        y['$d'].setUTCMinutes(y$d.getUTCMinutes() + (targetOffset - oldYOffset))
-      }
-
-      return result
-      // return y
+      return z
     }
 
     // @ts-expect-error always requires 3 args, as  UnitsObjectTypeAddSub is covered by plugin ObjectSupport
