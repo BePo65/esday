@@ -1,21 +1,56 @@
+/** biome-ignore-all lint/correctness/noUnusedVariables: HACK for debugging only */
+
 import { EsDay, esday } from 'esday'
 import moment from 'moment-timezone'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import timezonePLugin from '~/plugins/timezone'
 import utcPlugin from '~/plugins/utc'
-import {
-  expectSameObjectTz,
-  expectSameTimestamp,
-  expectSameValueTz,
-  objectResultsAsJson,
-} from './timezone-util'
+import { expectSameObjectTz, expectSameTimestamp, expectSameValueTz } from './timezone-util'
 
 esday.extend(utcPlugin).extend(timezonePLugin)
 
 describe('timezone plugin', () => {
+  const fakeTimeAsString = '2023-12-17T03:24:46.234' // 'Sunday 2023-12-17 03:24'
+
+  beforeEach(() => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(fakeTimeAsString))
+  })
+
   afterEach(() => {
+    vi.useRealTimers()
+
+    // reset default timezone
     esday.tz.setDefault()
     moment.tz.setDefault()
+  })
+
+  it('Test parse gap in London', () => {
+    // DST start at 01:00 (jumping to 02:00); i.e. gap is from 01:00 .. 01:59.
+    // But in CET (my timezone) it starts at 02:00 (jumping to 03:00); here 02:15 does not exist.
+    // Result: $d would be 02
+    const timestamp = '2025-03-30 02:15:00'
+    const tz = 'Europe/London'
+    const d = esday.tz(timestamp, tz)
+    const m = moment.tz(timestamp, tz)
+
+    expectSameObjectTz((esday) => esday.tz(timestamp, tz))
+  })
+
+  it('Test add 30min in DST fall back overlap in Canberra', () => {
+    const timestamp = '2025-04-06 02:15:00'
+    const tz = 'Australia/Canberra'
+    const diffValue = 30
+    const diffUnit = 'minutes' as const
+    const expectedDiffMinutes = 30
+
+    const esdayBeforeDST = esday.tz(timestamp, tz)
+    const momentBeforeDST = moment.tz(timestamp, tz)
+    const esdayAfterDST = esdayBeforeDST.add(diffValue, diffUnit)
+    const momentAfterDST = moment.tz(timestamp, tz).add(diffValue, diffUnit)
+
+    expectSameObjectTz((esday) => esday.tz(timestamp, tz))
+    expectSameObjectTz((esday) => esday.tz(timestamp, tz).add(diffValue, diffUnit))
   })
 
   it.each([
@@ -153,6 +188,14 @@ describe('timezone plugin', () => {
   it('parse timezone with seconds in offset', () => {
     const timestamp = '1900-06-01T12:00:00'
     const timezone = 'Europe/Kiev'
+
+    expectSameObjectTz((esday) => esday.tz(timestamp, timezone))
+    expect(esday.tz(timestamp, timezone).isValid()).toBeTruthy()
+  })
+
+  it('parse current date with timezone', () => {
+    const timestamp = undefined
+    const timezone = 'Europe/Paris'
 
     expectSameObjectTz((esday) => esday.tz(timestamp, timezone))
     expect(esday.tz(timestamp, timezone).isValid()).toBeTruthy()
