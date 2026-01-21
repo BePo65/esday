@@ -30,6 +30,16 @@ describe('timezone plugin', () => {
       comment: 'with DST',
     },
     {
+      timestamp: '2025-03-09 02:15:00',
+      timezone: 'America/Toronto',
+      comment: 'parse in DST spring forward gap',
+    },
+    {
+      timestamp: '2025-11-02 02:15:00',
+      timezone: 'America/Toronto',
+      comment: 'parse in DST fall back overlap',
+    },
+    {
       timestamp: '2025-01-30 02:15',
       timezone: 'Europe/Paris',
       comment: 'without DST',
@@ -95,6 +105,16 @@ describe('timezone plugin', () => {
       comment: 'is DST (utcOffset === 60)',
     },
     {
+      timestamp: '2025-03-30 02:15:00',
+      timezone: 'Europe/London',
+      comment: 'parse in DST spring forward gap',
+    },
+    {
+      timestamp: '2025-10-26 02:15:00',
+      timezone: 'Europe/London',
+      comment: 'parse in DST fall back overlap',
+    },
+    {
       timestamp: '2022-04-19T03:00:00-02:00',
       timezone: 'GMT',
       comment: 'dayjs pr#2118 test 1a',
@@ -113,6 +133,16 @@ describe('timezone plugin', () => {
       timestamp: '2022-01-22',
       timezone: 'UTC',
       comment: 'dayjs pr#2118 test 2b',
+    },
+    {
+      timestamp: '2025-10-05 02:15:00',
+      timezone: 'Australia/Canberra',
+      comment: 'parse in DST spring forward gap',
+    },
+    {
+      timestamp: '2025-04-06 02:15:00',
+      timezone: 'Australia/Canberra',
+      comment: 'parse in DST fall back overlap',
     },
   ])('parse "$timestamp" for "$timezone"', ({ timestamp, timezone }) => {
     expectSameObjectTz((esday) => esday.tz(timestamp, timezone))
@@ -627,14 +657,6 @@ describe('timezone plugin', () => {
 
   it.each([
     {
-      timestamp: '2025-07-21 14:25:36',
-      tz: 'US/Pacific',
-      diffValue: 1,
-      diffUnit: 'day' as const,
-      expectedDiffMinutes: 1440,
-      comment: 'no DST involved; 24h difference',
-    },
-    {
       timestamp: '2025-03-09 01:00:00',
       tz: 'US/Pacific',
       diffValue: 1,
@@ -650,8 +672,144 @@ describe('timezone plugin', () => {
       expectedDiffMinutes: 1500,
       comment: 'add 1 day around DST fall back (dayjs pr#2961)',
     },
+    {
+      timestamp: '2025-03-09 01:00:00',
+      tz: 'US/Pacific',
+      diffValue: 90,
+      diffUnit: 'minutes' as const,
+      expectedDiffMinutes: 90,
+      comment: 'add 90 minutes around DST into spring forward gap',
+    },
+    {
+      timestamp: '2025-03-09 02:15:00',
+      tz: 'US/Pacific',
+      diffValue: 30,
+      diffUnit: 'minutes' as const,
+      expectedDiffMinutes: 30,
+      comment: 'add 30 minutes within DST spring forward gap',
+    },
+    {
+      timestamp: '2025-11-02 01:00:00',
+      tz: 'US/Pacific',
+      diffValue: 90,
+      diffUnit: 'minutes' as const,
+      expectedDiffMinutes: 90,
+      comment: 'add 90 minutes around DST into fall back overlap',
+    },
+    {
+      timestamp: '2025-11-02 02:15:00',
+      tz: 'US/Pacific',
+      diffValue: 30,
+      diffUnit: 'minutes' as const,
+      expectedDiffMinutes: 30,
+      comment: 'add 30 minutes within DST fall back overlap',
+    },
+    {
+      timestamp: '2025-03-29 23:00:00',
+      tz: 'Europe/London',
+      diffValue: 1,
+      diffUnit: 'day' as const,
+      expectedDiffMinutes: 1380,
+      comment: 'add 1 day around DST spring forward',
+    },
+    {
+      timestamp: '2025-10-25 23:00:00',
+      tz: 'Europe/London',
+      diffValue: 1,
+      diffUnit: 'day' as const,
+      expectedDiffMinutes: 1500,
+      comment: 'add 1 day around DST fall back (dayjs pr#2961)',
+    },
+    {
+      timestamp: '2025-03-30 00:00:00',
+      tz: 'Europe/London',
+      diffValue: 90,
+      diffUnit: 'minutes' as const,
+      expectedDiffMinutes: 90,
+      comment: 'add 90 minutes around DST into spring forward gap',
+    },
+    {
+      timestamp: '2025-03-30 02:15:00',
+      tz: 'Europe/London',
+      diffValue: 30,
+      diffUnit: 'minutes' as const,
+      expectedDiffMinutes: 30,
+      comment: 'add 30 minutes within DST spring forward gap',
+    },
+    {
+      timestamp: '2025-10-26 00:00:00',
+      tz: 'Europe/London',
+      diffValue: 90,
+      diffUnit: 'minutes' as const,
+      expectedDiffMinutes: 90,
+      comment: 'add 90 minutes around DST into fall back overlap',
+    },
+    {
+      timestamp: '2025-10-26 02:15:00',
+      tz: 'Europe/London',
+      diffValue: 30,
+      diffUnit: 'minutes' as const,
+      expectedDiffMinutes: 30,
+      comment: 'add 30 minutes within DST fall back overlap',
+    },
+    {
+      timestamp: '2025-07-21 14:25:36',
+      tz: 'Australia/Canberra',
+      diffValue: 1,
+      diffUnit: 'day' as const,
+      expectedDiffMinutes: 1440,
+      comment: 'no DST involved; 24h difference',
+    },
+    {
+      timestamp: '2025-10-05 01:00:00',
+      tz: 'Australia/Canberra',
+      diffValue: 1,
+      diffUnit: 'day' as const,
+      expectedDiffMinutes: 1380,
+      comment: 'add 1 day around DST spring forward',
+    },
+    {
+      timestamp: '2025-04-06 01:00:00',
+      tz: 'Australia/Canberra',
+      diffValue: 1,
+      diffUnit: 'day' as const,
+      expectedDiffMinutes: 1500,
+      comment: 'add 1 day around DST fall back',
+    },
+    {
+      timestamp: '2025-10-05 01:00:00',
+      tz: 'Australia/Canberra',
+      diffValue: 90,
+      diffUnit: 'minutes' as const,
+      expectedDiffMinutes: 90,
+      comment: 'add 90 minutes around DST into spring forward gap',
+    },
+    {
+      timestamp: '2025-10-05 02:15:00',
+      tz: 'Australia/Canberra',
+      diffValue: 30,
+      diffUnit: 'minutes' as const,
+      expectedDiffMinutes: 30,
+      comment: 'add 30 minutes within DST spring forward gap',
+    },
+    {
+      timestamp: '2025-04-06 01:00:00',
+      tz: 'Australia/Canberra',
+      diffValue: 90,
+      diffUnit: 'minutes' as const,
+      expectedDiffMinutes: 90,
+      comment: 'add 90 minutes around DST into fall back overlap',
+    },
+    {
+      timestamp: '2025-04-06 02:15:00',
+      tz: 'Australia/Canberra',
+      diffValue: 30,
+      diffUnit: 'minutes' as const,
+      expectedDiffMinutes: 30,
+      comment: 'add 30 minutes within DST fall back overlap',
+    },
   ])(
-    'add "$diffValue $diffUnit" to "$timestamp" in "$tz"',
+    'add around DST for"$diffValue $diffUnit" to "$timestamp" in "$tz"',
     ({ timestamp, tz, diffValue, diffUnit, expectedDiffMinutes }) => {
       const dateBeforeDST = esday.tz(timestamp, tz)
       const diffInUnit = dateBeforeDST.add(diffValue, diffUnit).diff(dateBeforeDST, 'minutes')
@@ -666,50 +824,60 @@ describe('timezone plugin', () => {
 
   it.each([
     {
-      timestamp: '2025-03-09 01:00:00',
+      timestamp: '2025-07-21 14:25:36',
       tz: 'US/Pacific',
-      diffValue: 90,
-      diffUnit: 'minutes' as const,
-      expectedDiffMinutesEsDay: 30, // should be 90
-      expectedTimestampEsDay: 1741512600000, // "2025-03-09T09:30:00.000Z"; should equal expectedTimestampMoment
-      expectedTimestampMoment: 1741516200000, // "2025-03-09T10:30:00.000Z"
-      comment: 'add 90 minutes around DST into spring forward gap',
+      diffValue: 1,
+      diffUnit: 'year' as const,
     },
     {
-      timestamp: '2025-11-02 01:00:00',
+      timestamp: '2025-07-21 14:25:36',
       tz: 'US/Pacific',
-      diffValue: 90,
-      diffUnit: 'minutes' as const,
-      expectedDiffMinutesEsDay: 150, // should be 90
-      expectedTimestampEsDay: 1762079400000, // "2025-11-02T10:30:00Z"; should equal expectedTimestampMoment
-      expectedTimestampMoment: 1762075800000, // "2025-11-02T09:30:00Z"
-      comment: 'add 90 minutes around DST into fall back overlap',
+      diffValue: 1,
+      diffUnit: 'month' as const,
+    },
+    {
+      timestamp: '2025-07-21 14:25:36',
+      tz: 'US/Pacific',
+      diffValue: 1,
+      diffUnit: 'week' as const,
+    },
+    {
+      timestamp: '2025-07-21 14:25:36',
+      tz: 'US/Pacific',
+      diffValue: 1,
+      diffUnit: 'day' as const,
+    },
+    {
+      timestamp: '2025-07-21 14:25:36',
+      tz: 'US/Pacific',
+      diffValue: 1,
+      diffUnit: 'hour' as const,
+    },
+    {
+      timestamp: '2025-07-21 14:25:36',
+      tz: 'US/Pacific',
+      diffValue: 1,
+      diffUnit: 'minute' as const,
+    },
+    {
+      timestamp: '2025-07-21 14:25:36',
+      tz: 'US/Pacific',
+      diffValue: 1,
+      diffUnit: 'second' as const,
+    },
+    {
+      timestamp: '2025-07-21 14:25:36',
+      tz: 'US/Pacific',
+      diffValue: 1,
+      diffUnit: 'millisecond' as const,
     },
   ])(
-    'add difference to moment - add "$diffValue $diffUnit" to "$timestamp" in "$tz"',
-    ({
-      timestamp,
-      tz,
-      diffValue,
-      diffUnit,
-      expectedDiffMinutesEsDay,
-      expectedTimestampEsDay,
-      expectedTimestampMoment,
-    }) => {
-      const baseDateEsday = esday.tz(timestamp, tz)
-      const resultingDateEsday = baseDateEsday.add(diffValue, diffUnit)
-      const resultKeyValuesEsday = objectResultsAsJson(resultingDateEsday)
-      const diffInUnitEsday = resultingDateEsday.diff(baseDateEsday, 'minutes')
-
-      const baseDateMoment = moment.tz(timestamp, tz)
-      const resultingDateMoment = moment.tz(timestamp, tz).add(diffValue, diffUnit)
-      const resultKeyValuesMoment = objectResultsAsJson(resultingDateMoment)
-      const diffInUnitMoment = resultingDateMoment.diff(baseDateMoment, 'minutes')
-
-      expect(resultKeyValuesEsday.valueOf).toBe(expectedTimestampEsDay)
-      expect(resultKeyValuesMoment.valueOf).toBe(expectedTimestampMoment)
-      expect(diffInUnitEsday).toBe(expectedDiffMinutesEsDay)
-      expect(diffInUnitMoment).toBe(diffValue)
+    'add without DST "$diffValue $diffUnit" to "$timestamp" in "$tz"',
+    ({ timestamp, tz, diffValue, diffUnit }) => {
+      expectSameObjectTz((esday) => esday.tz(timestamp, tz).add(diffValue, diffUnit))
+      expectSameValueTz((esday) =>
+        esday.tz(timestamp, tz).add(diffValue, diffUnit).diff(esday.tz(timestamp, tz)),
+      )
     },
   )
 
