@@ -93,7 +93,11 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
     const parsedAsUtc = esdayFactory.utc(input, ...others).valueOf()
     const [targetTimestamp, targetOffset] = fixOffset(parsedAsUtc, offsetParsedInput, timezone)
     const result = esdayFactory(targetTimestamp, ...others).utcOffset(targetOffset)
-    result['$conf'].localeName = parsedInput['$conf'].localeName
+
+    if (result['$conf'].localeName !== undefined && parsedInput['$conf'].localeName !== undefined) {
+      result['$conf'].localeName = parsedInput['$conf'].localeName
+    }
+
     result['$conf'].timezone = originalTimezone
     return result
   }
