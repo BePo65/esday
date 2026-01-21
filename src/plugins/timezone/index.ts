@@ -269,6 +269,8 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
           // use new timezone offset as utcOffset and therefore move valueOf too
           z['$conf'].utcOffset = zTzOffset2
           z['$conf'].utc = zTzOffset2 === 0
+          let localOffset = z.toDate().getTimezoneOffset()
+          z['$conf'].localOffset = localOffset
 
           if (zTzOffset3 !== zTzOffset2) {
             // new date is in a DST overlap;
@@ -282,7 +284,7 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
             delete z['$conf'].localOffset
           } else if (this['$conf'].utc && !z['$conf'].utc) {
             // switched out of utc in DST overlap : don't change valueOf
-            const localOffset = z.toDate().getTimezoneOffset()
+            localOffset = z.toDate().getTimezoneOffset()
             // TODO is this solved by .utc()?
             z['$conf'].utcOffset = zTzOffset3
             z['$conf'].localOffset = localOffset
