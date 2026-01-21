@@ -236,6 +236,10 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
   }
 
   const oldAdd = proto.add
+  /**
+   * we cannot use esday.utcOffset(newOffset) in proto.add, as this method uses the
+   * add method and this way generates an infinite loop
+   */
   proto.add = function (value: number | UnitsObjectTypeAddSub, unit?: UnitTypeAddSub) {
     if (isObject(value) || unit === undefined) {
       // using UnitsObjectTypeAddSub is implemented in plugin ObjectSupport
@@ -248,6 +252,7 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
 
       // TODO replace variable names
       // TODO use .utcOffset instead of ['$conf'].utcOffset?
+      // TODO wrong results as $conf.localOffset is not fixed in some cases
       // @ts-expect-error always requires 3 args, as  UnitsObjectTypeAddSub is covered by plugin ObjectSupport
       const z = oldAdd.call(this, value, unit)
       const zTzOffset1 = tzOffset(z.valueOf(), timezone)
