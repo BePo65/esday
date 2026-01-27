@@ -177,7 +177,7 @@ export class EsDay {
     if (isEmptyObject(date)) return new Date()
     if (Array.isArray(date)) return parseArrayToDate.call(this, date)
     if (typeof date === 'string') {
-      const dateTrimmed = date.trimStart()
+      let dateTrimmed = date.trimStart()
       if (!/Z$/i.test(dateTrimmed)) {
         const d = dateTrimmed.match(C.REGEX_PARSE_DEFAULT)
         if (d) {
@@ -191,6 +191,11 @@ export class EsDay {
           return this.dateFromDateComponents(Y, M, D, h, m, s, ms)
         }
       } else {
+        // restricts milliseconds in an ISO 8601 string to exactly 3 digits;
+        // this is necessary, as webkit rounds fractions of seconds, while
+        // other browser engines take only the first 3 digits.
+        dateTrimmed = dateTrimmed.replace(/(\.\d{3})\d*(?=Z)/, '$1')
+
         return new Date(dateTrimmed)
       }
     }
