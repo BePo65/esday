@@ -20,7 +20,7 @@ esday.extend(isTodayPlugin)
 esday('2024-12-10').set('year', 2025).add(1, 'month').isToday()
 ```
 
-For detailed information see the [full documentation](https://g-mero.github.io/esday/).
+For detailed information see the [full documentation](https://bepo65.github.io/esday/).
 
 ## Concepts
 

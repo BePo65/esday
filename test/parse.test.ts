@@ -28,11 +28,37 @@ describe('parse', () => {
     expect(esday(sourceString).isValid()).toBeTruthy()
   })
 
+  it('parses ISO8601 string with leading spaces', () => {
+    const sourceString = ' 2024-04-24T16:27:38.456'
+
+    expectSameObject((esday) => esday(sourceString))
+    expect(esday(sourceString).isValid()).toBeTruthy()
+  })
+
+  it('parses ISO8601 string with trailing spaces', () => {
+    const sourceString = '2024-04-24T16:27:38.456 '
+
+    expect(esday(sourceString).isValid()).toBeFalsy()
+  })
+
   it('parses ISO8601 string with date, time and zone', () => {
     const sourceString = '2024-04-24T16:27:38.456Z'
 
     expectSameObject((esday) => esday(sourceString))
     expect(esday(sourceString).isValid()).toBeTruthy()
+  })
+
+  it('parses ISO8601 string with date, time and zone and leading spaces', () => {
+    const sourceString = ' 2024-04-24T16:27:38.456Z'
+
+    expectSameObject((esday) => esday(sourceString))
+    expect(esday(sourceString).isValid()).toBeTruthy()
+  })
+
+  it('parses ISO8601 string with date, time and zone and trailing spaces', () => {
+    const sourceString = '2024-04-24T16:27:38.456Z '
+
+    expect(esday(sourceString).isValid()).toBeFalsy()
   })
 
   it('parses ISO8601 string with unlimited milliseconds', () => {
