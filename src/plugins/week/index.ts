@@ -431,7 +431,7 @@ const weekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     if (isObject(unit)) {
       // UnitsObjectTypeSet is implemented in plugin ObjectSupport
       // therefore we ignore the request here.
-      return this.clone()
+      return this
     }
 
     const normalizedUnit = normalizeUnitWithPlurals(unit)
