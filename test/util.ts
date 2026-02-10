@@ -89,3 +89,25 @@ export function expectSameDuration(fn: (instance: EsDayFactory) => Duration | mo
     expect(d.valueOf()).toBe(m.valueOf())
   }
 }
+
+/**
+ * Create a literal object with the results of all important methods
+ * of an esday / moment.js instance.
+ * If the instance is not valid, then 'undefined' is returned as result
+ * of all methods.
+ * @param instance - instance to be used
+ * @returns object literal with all detailed results
+ */
+export const objectResultsAsJson = (instance: EsDay | Moment) => {
+  const isValid = instance.isValid()
+
+  return {
+    isValid,
+    toISOString: isValid ? instance.toISOString() : undefined,
+    valueOf: isValid ? instance.valueOf() : undefined,
+    millisecond: isValid ? instance.millisecond() : undefined,
+    toDate: isValid ? instance.toDate() : undefined,
+    toJSON: isValid ? instance.toJSON() : undefined,
+    utcOffset: isValid ? instance.utcOffset() : undefined,
+  }
+}

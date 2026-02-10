@@ -77,6 +77,11 @@ The unit `quarter` (in short, long and plural forms) requires the plugin [quarte
 
 `UnitsObjectTypeSet` (an object containing several units and values to set) requires the plugin [ObjectSupport](../plugins/objectSupport.md).
 
+
+## Differences to Moment.js
+
+When setting the year you can add parameters to set the month and date too. The same goes true for hours, minutes and seconds that can set the corresponding smaller units too.
+
 ## Examples
 ```typescript
 import { esday } from 'esday'

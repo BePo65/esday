@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { esday } from '~/core'
 import type { UnitsObjectTypeSet } from '~/types'
-import { expectSameObject, expectSameValue } from './util'
+import { expectSameObject, expectSameValue, objectResultsAsJson } from './util'
 
 describe('get', () => {
   const fakeTimeAsString = '2024-07-17T13:24:46.234'
@@ -109,6 +109,16 @@ describe('set', () => {
     expectSameObject((esday) => esday().set('years', newYear))
   })
 
+  it('year, month, day-of-month', () => {
+    const newYear = 2025
+    const newMonth = 9 // October
+    const newDate = 23
+    const esdaySet = esday().set('year', newYear, newMonth, newDate)
+    const esdayParsed = esday(`${newYear}-${newMonth + 1}-${newDate}T13:24:46.234`)
+
+    expect(objectResultsAsJson(esdaySet)).toEqual(objectResultsAsJson(esdayParsed))
+  })
+
   it('month', () => {
     const newMonth = 5 // June
 
@@ -118,6 +128,21 @@ describe('set', () => {
     expectSameObject((esday) => esday().set('months', newMonth))
   })
 
+  it('bubble up month', () => {
+    const newMonth = 27
+
+    expectSameObject((esday) => esday().set('month', newMonth))
+  })
+
+  it('month, day-of-month', () => {
+    const newMonth = 5 // June
+    const newDate = 23
+    const esdaySet = esday().set('month', newMonth, newDate)
+    const esdayParsed = esday(`2024-${newMonth + 1}-${newDate}T13:24:46.234`)
+
+    expect(objectResultsAsJson(esdaySet)).toEqual(objectResultsAsJson(esdayParsed))
+  })
+
   it('day of month', () => {
     const newDayOfMonth = 25
 
@@ -125,6 +150,12 @@ describe('set', () => {
     expectSameObject((esday) => esday().set('D', newDayOfMonth))
     expectSameObject((esday) => esday().set('date', newDayOfMonth))
     expectSameObject((esday) => esday().set('dates', newDayOfMonth))
+  })
+
+  it('bubble up day of month', () => {
+    const newDate = 45
+
+    expectSameObject((esday) => esday().set('date', newDate))
   })
 
   it.each([
@@ -147,6 +178,24 @@ describe('set', () => {
     expectSameObject((esday) => esday().set('hours', newHour))
   })
 
+  it('hour, minute, second, millisecond', () => {
+    const newHour = 4
+    const newMinute = 12
+    const newSecond = 31
+    const newMs = 987
+
+    const esdaySet = esday().set('hour', newHour, newMinute, newSecond, newMs)
+    const esdayParsed = esday(`2024-07-17T${newHour}:${newMinute}:${newSecond}.${newMs}`)
+
+    expect(objectResultsAsJson(esdaySet)).toEqual(objectResultsAsJson(esdayParsed))
+  })
+
+  it('bubble up hour', () => {
+    const newHour = 31
+
+    expectSameObject((esday) => esday().set('hour', newHour))
+  })
+
   it('minute', () => {
     const newMinute = 43
 
@@ -154,6 +203,23 @@ describe('set', () => {
     expectSameObject((esday) => esday().set('m', newMinute))
     expectSameObject((esday) => esday().set('minute', newMinute))
     expectSameObject((esday) => esday().set('minutes', newMinute))
+  })
+
+  it('minute, second, millisecond', () => {
+    const newMinute = 43
+    const newSecond = 3
+    const newMs = 564
+
+    const esdaySet = esday().set('minute', newMinute, newSecond, newMs)
+    const esdayParsed = esday(`2024-07-17T13:${newMinute}:${newSecond}.${newMs}`)
+
+    expect(objectResultsAsJson(esdaySet)).toEqual(objectResultsAsJson(esdayParsed))
+  })
+
+  it('bubble up minute', () => {
+    const newMinute = 131
+
+    expectSameObject((esday) => esday().set('minute', newMinute))
   })
 
   it('second', () => {
@@ -165,6 +231,22 @@ describe('set', () => {
     expectSameObject((esday) => esday().set('seconds', newSecond))
   })
 
+  it('second, millisecond', () => {
+    const newSecond = 25
+    const newMs = 5
+
+    const esdaySet = esday().set('second', newSecond, newMs)
+    const esdayParsed = esday(`2024-07-17T13:24:${newSecond}.${newMs}`)
+
+    expect(objectResultsAsJson(esdaySet)).toEqual(objectResultsAsJson(esdayParsed))
+  })
+
+  it('bubble up second', () => {
+    const newSecond = 131
+
+    expectSameObject((esday) => esday().set('second', newSecond))
+  })
+
   it('millisecond', () => {
     const newMillisecond = 25
 
@@ -172,6 +254,12 @@ describe('set', () => {
     expectSameObject((esday) => esday().set('ms', newMillisecond))
     expectSameObject((esday) => esday().set('millisecond', newMillisecond))
     expectSameObject((esday) => esday().set('milliseconds', newMillisecond))
+  })
+
+  it('bubble up millisecond', () => {
+    const newMillisecond = 1234
+
+    expectSameObject((esday) => esday().set('ms', newMillisecond))
   })
 
   it('to year returns new instance', () => {
