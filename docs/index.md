@@ -50,4 +50,4 @@ Examples of how to use EsDay in an application can be found in the demo apps:
 
 ## Source code
 
-The source code for this project can be found at [g-mero/esday](https://github.com/g-mero/esday)
+The source code for this project can be found at [bepo65.github.io/esday](https://bepo65.github.io/esday/)

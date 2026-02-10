@@ -1,6 +1,6 @@
 # Week
 
-Week adds the `week`, the `weeks`, the `weekDay`, the `wWeekYear` and the `weeksInYear` methods to EsDay.  Extend the `get` and `set` methods to handle the unit 'week'.
+Week adds the `week`, the `weeks`, the `weekDay`, the `weekYear` and the `weeksInYear` methods to EsDay.  Extend the `get` and `set` methods to handle the unit 'week'.
 
 The `week` method gets or sets the week of the year of a date according to the active locale.
 The `weeks` method is just an alias for the `week` method.
