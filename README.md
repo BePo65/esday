@@ -1,7 +1,7 @@
 ## esday
 
 [![npm](https://img.shields.io/npm/v/esday)](https://www.npmjs.com/package/esday)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/g-mero/esday?tab=readme-ov-file#contribute)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/BePo65/esday?tab=readme-ov-file#contribute)
 
 > 🚧 working in progress
 
