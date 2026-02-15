@@ -815,10 +815,10 @@ describe('plugin utc', () => {
       expect(esday.utc(C.INVALID_DATE).toISOString()).toBe(C.INVALID_DATE_STRING)
     })
 
-    it('valueOf without tzOffset', () => {
+    it('valueOf without localOffset', () => {
       const dateEsday = esday.utc().utcOffset(540)
-      // remove tzOffset for testing default value for utcOffset
-      dateEsday['$conf'].tzOffset = undefined
+      // remove localOffset for testing default value for utcOffset
+      dateEsday['$conf'].localOffset = undefined
 
       expect(dateEsday.valueOf()).toBe(1_702_783_486_234)
     })

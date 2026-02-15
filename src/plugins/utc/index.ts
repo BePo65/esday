@@ -5,8 +5,8 @@
  *
  * new esday parameters in '$conf':
  *   utc          utc mode (true / false)
- *   offset       utcOffset (constant value, no DST handling)
- *   tzOffset     timezone offset (with DST handling)
+ *   utcOffset    utcOffset to use for this esday instance
+ *   localOffset  local timezone offset (as internal Date - $d - is always in local timezone)
  */
 
 import type { EsDay } from 'esday'
@@ -71,8 +71,8 @@ function utcOffsetGetImpl(that: EsDay, defaultValue = Number.NaN) {
   if (that['$conf'].utc) {
     return 0
   }
-  if (that['$conf'].offset !== undefined) {
-    return Number(that['$conf'].offset)
+  if (that['$conf'].utcOffset !== undefined) {
+    return Number(that['$conf'].utcOffset)
   }
   return defaultValue
 }
@@ -103,8 +103,8 @@ function utcOffsetSetImpl(that: EsDay, offset: number | string, keepLocalTime?: 
       instance['$conf'].utc = offsetAsMinutes === 0
     }
 
-    instance['$conf'].offset = offsetAsMinutes
-    instance['$conf'].tzOffset = localTimezoneOffset
+    instance['$conf'].utcOffset = offsetAsMinutes
+    instance['$conf'].localOffset = localTimezoneOffset
     return instance
   }
 
@@ -115,8 +115,8 @@ function utcOffsetSetImpl(that: EsDay, offset: number | string, keepLocalTime?: 
 
     // switch away from utc mode
     const instance = that.local().add(offsetAsMinutes + localTimezoneOffset, C.MIN)
-    instance['$conf'].offset = offsetAsMinutes
-    instance['$conf'].tzOffset = localTimezoneOffset
+    instance['$conf'].utcOffset = offsetAsMinutes
+    instance['$conf'].localOffset = localTimezoneOffset
     return instance
   }
   return that.utc()
@@ -210,10 +210,10 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
 
   const oldValueOf = proto.valueOf
   proto.valueOf = function () {
-    if (this['$conf'].offset !== undefined) {
+    if (this['$conf'].utcOffset !== undefined) {
       const internalDate = this['$d']
-      const offsetToUse = Number(this['$conf'].tzOffset ?? internalDate.getTimezoneOffset())
-      const addedOffset = Number(this['$conf'].offset) + offsetToUse
+      const offsetToUse = Number(this['$conf'].localOffset ?? internalDate.getTimezoneOffset())
+      const addedOffset = Number(this['$conf'].utcOffset) + offsetToUse
       return internalDate.valueOf() - addedOffset * C.MILLISECONDS_A_MINUTE
     }
     return oldValueOf.call(this)
@@ -222,8 +222,8 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   const oldFormat = proto.format
   proto.format = function (formatStr) {
     const UTC_FORMAT_DEFAULT = 'YYYY-MM-DDTHH:mm:ss[Z]'
-    const str = formatStr || (this['$conf'].utc ? UTC_FORMAT_DEFAULT : '')
-    return oldFormat.call(this, str)
+    const activeFormatString = formatStr || (this['$conf'].utc ? UTC_FORMAT_DEFAULT : '')
+    return oldFormat.call(this, activeFormatString)
   }
 
   // change private method 'dateFromDateComponents' of EsDay
