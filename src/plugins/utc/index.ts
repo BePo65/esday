@@ -127,9 +127,7 @@ function addUtc(that: EsDay, value: number, units: UnitTypeAddSub) {
   const unit = normalizeUnitWithPlurals(units)
 
   const instanceFactorySet = (multiplier: number) => {
-    const newInstance = that.clone()
-    newInstance['$d'].setUTCDate($d.getUTCDate() + Math.round(multiplier * value))
-    return newInstance
+    return that.set('date', that.get('date') + Math.round(multiplier * value))
   }
 
   switch (normalizeUnitWithPlurals(unit)) {
@@ -176,7 +174,6 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     inst['$d'] = this.toDate()
     inst['$conf'].utc = true
     if (keepLocalTime) {
-      // TODO maybe the generated time does not exits in the current timezone; see moment.js
       return inst.add(this.utcOffset(), C.MIN)
     }
     return inst

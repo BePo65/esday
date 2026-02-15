@@ -7,9 +7,7 @@ export function addImpl(that: EsDay, value: number, units: UnitTypeAddSub) {
   const unit = normalizeUnitWithPlurals(units)
 
   const instanceFactorySet = (multiplier: number) => {
-    const newInstance = that.clone()
-    newInstance['$d'].setDate($d.getDate() + Math.round(multiplier * value))
-    return newInstance
+    return that.set('date', that.get('date') + Math.round(multiplier * value))
   }
 
   switch (normalizeUnitWithPlurals(unit)) {
