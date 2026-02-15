@@ -28,6 +28,20 @@ describe('parse', () => {
     expect(esday(sourceString).isValid()).toBeTruthy()
   })
 
+  it('parses ISO8601 string with date, time and offset with minutes', () => {
+    const sourceString = '2024-04-24T16:27:38.456+01:25'
+
+    expectSameObject((esday) => esday(sourceString))
+    expect(esday(sourceString).isValid()).toBeTruthy()
+  })
+
+  it('parses ISO8601 string with date, time and offset with seconds', () => {
+    const sourceString = '2024-04-24T16:27:38.456+01:25:36'
+
+    expectSameObject((esday) => esday(sourceString))
+    expect(esday(sourceString).isValid()).toBeFalsy()
+  })
+
   it('parses ISO8601 string with leading spaces', () => {
     const sourceString = ' 2024-04-24T16:27:38.456'
 

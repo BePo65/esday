@@ -63,6 +63,6 @@ export function padZoneStr(utcOffset: number) {
   const negMinutes = -utcOffset
   const minutes = Math.abs(negMinutes)
   const hourOffset = Math.floor(minutes / 60)
-  const minuteOffset = minutes % 60
+  const minuteOffset = Math.trunc(minutes % 60) // ignore seconds in offset (like moment.js does)
   return `${negMinutes <= 0 ? '+' : '-'}${padStart(hourOffset, 2, '0')}:${padStart(minuteOffset, 2, '0')}`
 }

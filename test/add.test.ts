@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
 import type { UnitTypeAddSub } from '~/common/units'
-import { esday } from '~/core'
+import { EsDay, esday } from '~/core'
 import { expectSameObject } from './util'
 
 describe('add', () => {
@@ -140,6 +140,19 @@ describe('add', () => {
 
     expect(esday().add(value).format().slice(0, -6)).toBe('2025-07-17T03:24:46')
   })
+
+  it('add returns new instance', () => {
+    const sourceString = '2024-01-31T13:24:35.789'
+    const addedValue = 3
+    const addUnit = C.DAY
+    const base = esday(sourceString)
+    const added = base.add(addedValue, addUnit)
+
+    expect(base).toBeInstanceOf(EsDay)
+    expect(added).toBeInstanceOf(EsDay)
+    expect(base).toBe(base)
+    expect(base).not.toBe(added)
+  })
 })
 
 describe('subtract', () => {
@@ -158,5 +171,18 @@ describe('subtract', () => {
     const value = { years: 1, months: 2, days: 3 }
 
     expect(esday().subtract(value).format().slice(0, -6)).toBe('2025-07-17T03:24:46')
+  })
+
+  it('subtract returns new instance', () => {
+    const sourceString = '2024-01-31T13:24:35.789'
+    const addedValue = 3
+    const addUnit = C.DAY
+    const base = esday(sourceString)
+    const subtracted = base.subtract(addedValue, addUnit)
+
+    expect(base).toBeInstanceOf(EsDay)
+    expect(subtracted).toBeInstanceOf(EsDay)
+    expect(base).toBe(base)
+    expect(base).not.toBe(subtracted)
   })
 })
