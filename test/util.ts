@@ -35,11 +35,9 @@ export function expectSameObject(fn: (instance: EsDayFactory) => EsDay | Moment)
   const m = fn(moment as unknown as EsDayFactory)
   expect(d.isValid()).toBe(m.isValid())
   if (d.isValid()) {
-    expect(d.toISOString()).toBe(m.toISOString())
-    expect(d.valueOf()).toBe(m.valueOf())
-    expect(d.millisecond()).toBe(m.millisecond())
-    expect(d.toDate()).toEqual(m.toDate())
-    expect(d.toJSON()).toBe(m.toJSON())
+    const dResults = objectResultsAsJson(d)
+    const mResults = objectResultsAsJson(m)
+    expect(dResults).toEqual(mResults)
   } else {
     expect(d.toString().toLowerCase()).toBe(m.toString().toLowerCase())
   }
