@@ -124,7 +124,7 @@ const addDayOfMonthOrdinal = (esday: EsDayFactory) => {
     const splittedInput = input.match(/^[^\d]*(\d+)[^\d]*$/)
     if (splittedInput !== null) {
       dateValue = +splittedInput[1]
-      const dateAsOrdinal = ordinal?.(dateValue)
+      const dateAsOrdinal = ordinal?.(dateValue, 'd')
 
       if (dateAsOrdinal === undefined || dateAsOrdinal === input) {
         parsedElements.date = dateValue
