@@ -127,13 +127,15 @@ describe('add', () => {
       addUnit: C.YEAR,
       expected: '2024-12-31T13:24:35',
     },
-  ])(
-    'edge case - add $value $unit to get $expected',
-    ({ sourceString, addedValue, addUnit, expected }) => {
-      expectSameObject((esday) => esday(sourceString).add(addedValue, addUnit))
-      expect(esday(sourceString).add(addedValue, addUnit).format().slice(0, -6)).toBe(expected)
-    },
-  )
+  ])('edge case - add $value $unit to get $expected', ({
+    sourceString,
+    addedValue,
+    addUnit,
+    expected,
+  }) => {
+    expectSameObject((esday) => esday(sourceString).add(addedValue, addUnit))
+    expect(esday(sourceString).add(addedValue, addUnit).format().slice(0, -6)).toBe(expected)
+  })
 
   it('add object without plugin ObjectSupport', () => {
     const value = { years: 1, months: 2, days: 3 }

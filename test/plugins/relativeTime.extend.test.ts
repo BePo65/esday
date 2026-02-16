@@ -52,12 +52,13 @@ describe('relativeTime plugin - extend with custom thresholds', () => {
     { difference: 7, unit: C.DAY, expected: 'a week ago' },
     { difference: 4, unit: C.WEEK, expected: '4 weeks ago' },
     { difference: 5, unit: C.WEEK, expected: 'a month ago' },
-  ])(
-    'fromNow with difference "$difference $unit" in the past',
-    ({ difference, unit, expected }) => {
-      expect(esday().from(esday().add(difference, unit))).toBe(expected)
-    },
-  )
+  ])('fromNow with difference "$difference $unit" in the past', ({
+    difference,
+    unit,
+    expected,
+  }) => {
+    expect(esday().from(esday().add(difference, unit))).toBe(expected)
+  })
 
   it.each([
     { difference: 44, unit: C.SECOND, expected: 'in 44 seconds' },
@@ -70,10 +71,11 @@ describe('relativeTime plugin - extend with custom thresholds', () => {
     { difference: 7, unit: C.DAY, expected: 'in a week' },
     { difference: 4, unit: C.WEEK, expected: 'in 4 weeks' },
     { difference: 5, unit: C.WEEK, expected: 'in a month' },
-  ])(
-    'fromNow with difference "$difference $unit" in the future',
-    ({ difference, unit, expected }) => {
-      expect(esday().from(esday().subtract(difference, unit))).toBe(expected)
-    },
-  )
+  ])('fromNow with difference "$difference $unit" in the future', ({
+    difference,
+    unit,
+    expected,
+  }) => {
+    expect(esday().from(esday().subtract(difference, unit))).toBe(expected)
+  })
 })

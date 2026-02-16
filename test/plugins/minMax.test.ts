@@ -11,15 +11,14 @@ describe('minMax plugin', () => {
       { dateStrings: ['2025-01-01', '2024-12-31', '2023-06-15'] },
       { dateStrings: ['2023-01-01', '2023-12-31'] },
       { dateStrings: ['2024-02-29', '2024-02-28', '2024-01-01'] }, // Leap year edge case
-    ])(
-      'should correctly determine the maximum date from array of "dateStrings"',
-      ({ dateStrings }) => {
-        const maxEsDay = esday.max(...dateStrings)
-        const maxMoment = moment.max(dateStrings.map((d) => moment(d)))
+    ])('should correctly determine the maximum date from array of "dateStrings"', ({
+      dateStrings,
+    }) => {
+      const maxEsDay = esday.max(...dateStrings)
+      const maxMoment = moment.max(dateStrings.map((d) => moment(d)))
 
-        expect(maxEsDay.toISOString()).toEqual(maxMoment.toISOString())
-      },
-    )
+      expect(maxEsDay.toISOString()).toEqual(maxMoment.toISOString())
+    })
 
     it('should correctly determine the maximum date from arguments given', () => {
       const maxEsDay = esday.max(esday('2025-01-01'), esday('2024-12-31'), esday('2023-06-15'))

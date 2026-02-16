@@ -89,15 +89,16 @@ describe('locale el', () => {
     { weekday: 1, hour: 2, expected: '[την προηγούμενη] dddd [στις] LT' },
     { weekday: 6, hour: 12, expected: '[το προηγούμενο] dddd [στις] LT' },
     { weekday: 6, hour: 13, expected: '[το προηγούμενο] dddd [στη] LT' },
-  ])(
-    'should format lastWeek with calendar for weekday "$weekday"',
-    ({ weekday, hour, expected }) => {
-      const referenceDate = { day: () => weekday, hour: () => hour } as EsDay
-      const nextWeek = locale.calendar.lastWeek as CalendarSpecValFunction
+  ])('should format lastWeek with calendar for weekday "$weekday"', ({
+    weekday,
+    hour,
+    expected,
+  }) => {
+    const referenceDate = { day: () => weekday, hour: () => hour } as EsDay
+    const nextWeek = locale.calendar.lastWeek as CalendarSpecValFunction
 
-      expect(nextWeek.call(referenceDate)).toBe(expected)
-    },
-  )
+    expect(nextWeek.call(referenceDate)).toBe(expected)
+  })
 
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()

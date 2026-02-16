@@ -34,13 +34,14 @@ describe('advancedFormat plugin', () => {
       formatString: 'YYYY-MM-DD [MM] HH [any other text] mm [m]b',
       expected: '2023-08-14 MM 21 any other text 43 mb',
     },
-  ])(
-    'does not break core module with template "$formatString"',
-    ({ sourceString, formatString, expected }) => {
-      expectSameValue((esday) => esday(sourceString).format(formatString))
-      expect(esday(sourceString).format(formatString)).toBe(expected)
-    },
-  )
+  ])('does not break core module with template "$formatString"', ({
+    sourceString,
+    formatString,
+    expected,
+  }) => {
+    expectSameValue((esday) => esday(sourceString).format(formatString))
+    expect(esday(sourceString).format(formatString)).toBe(expected)
+  })
 
   it.each([
     {
@@ -88,13 +89,14 @@ describe('advancedFormat plugin', () => {
       formatString: 'kk',
       expected: '24',
     },
-  ])(
-    'formats date using added token "$formatString"',
-    ({ sourceString, formatString, expected }) => {
-      expect(esday(sourceString).format(formatString)).toBe(expected)
-      expectSameValue((esday) => esday(sourceString).format(formatString))
-    },
-  )
+  ])('formats date using added token "$formatString"', ({
+    sourceString,
+    formatString,
+    expected,
+  }) => {
+    expect(esday(sourceString).format(formatString)).toBe(expected)
+    expectSameValue((esday) => esday(sourceString).format(formatString))
+  })
 
   it('current date and time using "ZZ" to "nnmm"', () => {
     const esdayDate = esday()

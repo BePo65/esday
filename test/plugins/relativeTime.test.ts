@@ -334,40 +334,41 @@ describe('relativeTime plugin - without locale', () => {
       unit: C.YEAR,
       expected: 'key=yy - value=2 ago',
     },
-  ])(
-    'should accept function for "$difference $unit" in the past',
-    ({ difference, unit, expected }) => {
-      const formatter: RelativeTimeElementFunction = (
-        timeValue: string | number,
-        _withoutSuffix: boolean,
-        token: string,
-        _isFuture: boolean,
-      ) => `key=${token} - value=${timeValue}`
-      esday.registerLocale({
-        name: 'test',
-        relativeTime: {
-          future: 'in %s',
-          past: '%s ago',
-          s: formatter,
-          ss: formatter,
-          m: formatter,
-          mm: formatter,
-          h: formatter,
-          hh: formatter,
-          d: formatter,
-          dd: formatter,
-          M: formatter,
-          MM: formatter,
-          y: formatter,
-          yy: formatter,
-        },
-      } as Locale)
-      const testDate = esday().locale('test')
-      const referenceDate = testDate.add(difference, unit)
+  ])('should accept function for "$difference $unit" in the past', ({
+    difference,
+    unit,
+    expected,
+  }) => {
+    const formatter: RelativeTimeElementFunction = (
+      timeValue: string | number,
+      _withoutSuffix: boolean,
+      token: string,
+      _isFuture: boolean,
+    ) => `key=${token} - value=${timeValue}`
+    esday.registerLocale({
+      name: 'test',
+      relativeTime: {
+        future: 'in %s',
+        past: '%s ago',
+        s: formatter,
+        ss: formatter,
+        m: formatter,
+        mm: formatter,
+        h: formatter,
+        hh: formatter,
+        d: formatter,
+        dd: formatter,
+        M: formatter,
+        MM: formatter,
+        y: formatter,
+        yy: formatter,
+      },
+    } as Locale)
+    const testDate = esday().locale('test')
+    const referenceDate = testDate.add(difference, unit)
 
-      expect(testDate.from(referenceDate)).toBe(expected)
-    },
-  )
+    expect(testDate.from(referenceDate)).toBe(expected)
+  })
 
   it.each([
     {
@@ -425,40 +426,41 @@ describe('relativeTime plugin - without locale', () => {
       unit: C.YEAR,
       expected: 'in key=yy - value=2',
     },
-  ])(
-    'should accept function for "$difference $unit" in the future',
-    ({ difference, unit, expected }) => {
-      const formatter: RelativeTimeElementFunction = (
-        timeValue: string | number,
-        _withoutSuffix: boolean,
-        token: string,
-        _isFuture: boolean,
-      ) => `key=${token} - value=${timeValue}`
-      esday.registerLocale({
-        name: 'test',
-        relativeTime: {
-          future: 'in %s',
-          past: '%s ago',
-          s: formatter,
-          ss: formatter,
-          m: formatter,
-          mm: formatter,
-          h: formatter,
-          hh: formatter,
-          d: formatter,
-          dd: formatter,
-          M: formatter,
-          MM: formatter,
-          y: formatter,
-          yy: formatter,
-        },
-      } as Locale)
-      const testDate = esday().locale('test')
-      const referenceDate = testDate.subtract(difference, unit)
+  ])('should accept function for "$difference $unit" in the future', ({
+    difference,
+    unit,
+    expected,
+  }) => {
+    const formatter: RelativeTimeElementFunction = (
+      timeValue: string | number,
+      _withoutSuffix: boolean,
+      token: string,
+      _isFuture: boolean,
+    ) => `key=${token} - value=${timeValue}`
+    esday.registerLocale({
+      name: 'test',
+      relativeTime: {
+        future: 'in %s',
+        past: '%s ago',
+        s: formatter,
+        ss: formatter,
+        m: formatter,
+        mm: formatter,
+        h: formatter,
+        hh: formatter,
+        d: formatter,
+        dd: formatter,
+        M: formatter,
+        MM: formatter,
+        y: formatter,
+        yy: formatter,
+      },
+    } as Locale)
+    const testDate = esday().locale('test')
+    const referenceDate = testDate.subtract(difference, unit)
 
-      expect(testDate.from(referenceDate)).toBe(expected)
-    },
-  )
+    expect(testDate.from(referenceDate)).toBe(expected)
+  })
 
   it('should accept fractional difference', () => {
     expectSameValue((esday) => esday().from(esday().add(36.1, C.HOUR)))
@@ -549,13 +551,15 @@ describe('relativeTime plugin - utc', () => {
     { difference: -10, unit: C.MONTH, withoutSuffix: true, expected: '10 months' },
     { difference: -11, unit: C.MONTH, withoutSuffix: false, expected: 'in a year' },
     { difference: -11, unit: C.MONTH, withoutSuffix: true, expected: 'a year' },
-  ])(
-    'fromNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"',
-    ({ difference, unit, withoutSuffix, expected }) => {
-      expectSameValue((esday) => esday.utc().subtract(difference, unit).fromNow(withoutSuffix))
-      expect(esday.utc().subtract(difference, unit).fromNow(withoutSuffix)).toBe(expected)
-    },
-  )
+  ])('fromNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"', ({
+    difference,
+    unit,
+    withoutSuffix,
+    expected,
+  }) => {
+    expectSameValue((esday) => esday.utc().subtract(difference, unit).fromNow(withoutSuffix))
+    expect(esday.utc().subtract(difference, unit).fromNow(withoutSuffix)).toBe(expected)
+  })
 
   it.each([
     {
@@ -570,15 +574,15 @@ describe('relativeTime plugin - utc', () => {
       withoutSuffix: true,
       expected: '8 months',
     },
-  ])(
-    'from "$sourceDate" to "$referenceDate" withoutSuffix="$withoutSuffix"',
-    ({ sourceDate, referenceDate, withoutSuffix, expected }) => {
-      expectSameValue((esday) =>
-        esday.utc(sourceDate).from(esday.utc(referenceDate), withoutSuffix),
-      )
-      expect(esday.utc(sourceDate).from(esday.utc(referenceDate), withoutSuffix)).toBe(expected)
-    },
-  )
+  ])('from "$sourceDate" to "$referenceDate" withoutSuffix="$withoutSuffix"', ({
+    sourceDate,
+    referenceDate,
+    withoutSuffix,
+    expected,
+  }) => {
+    expectSameValue((esday) => esday.utc(sourceDate).from(esday.utc(referenceDate), withoutSuffix))
+    expect(esday.utc(sourceDate).from(esday.utc(referenceDate), withoutSuffix)).toBe(expected)
+  })
 
   it.each([
     { difference: 44, unit: C.SECOND, withoutSuffix: false, expected: 'in a few seconds' },
@@ -601,13 +605,15 @@ describe('relativeTime plugin - utc', () => {
     { difference: -10, unit: C.MONTH, withoutSuffix: true, expected: '10 months' },
     { difference: -11, unit: C.MONTH, withoutSuffix: false, expected: 'a year ago' },
     { difference: -11, unit: C.MONTH, withoutSuffix: true, expected: 'a year' },
-  ])(
-    'toNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"',
-    ({ difference, unit, withoutSuffix, expected }) => {
-      expectSameValue((esday) => esday.utc().subtract(difference, unit).toNow(withoutSuffix))
-      expect(esday.utc().subtract(difference, unit).toNow(withoutSuffix)).toBe(expected)
-    },
-  )
+  ])('toNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"', ({
+    difference,
+    unit,
+    withoutSuffix,
+    expected,
+  }) => {
+    expectSameValue((esday) => esday.utc().subtract(difference, unit).toNow(withoutSuffix))
+    expect(esday.utc().subtract(difference, unit).toNow(withoutSuffix)).toBe(expected)
+  })
 
   it.each([
     {
@@ -622,13 +628,15 @@ describe('relativeTime plugin - utc', () => {
       withoutSuffix: true,
       expected: '8 months',
     },
-  ])(
-    'to "$sourceDate" from "$referenceDate" withoutSuffix="$withoutSuffix"',
-    ({ sourceDate, referenceDate, withoutSuffix, expected }) => {
-      expectSameValue((esday) => esday.utc(sourceDate).to(esday.utc(referenceDate), withoutSuffix))
-      expect(esday.utc(sourceDate).to(esday.utc(referenceDate), withoutSuffix)).toBe(expected)
-    },
-  )
+  ])('to "$sourceDate" from "$referenceDate" withoutSuffix="$withoutSuffix"', ({
+    sourceDate,
+    referenceDate,
+    withoutSuffix,
+    expected,
+  }) => {
+    expectSameValue((esday) => esday.utc(sourceDate).to(esday.utc(referenceDate), withoutSuffix))
+    expect(esday.utc(sourceDate).to(esday.utc(referenceDate), withoutSuffix)).toBe(expected)
+  })
 })
 
 describe('relativeTime plugin - locale en', () => {
@@ -678,13 +686,15 @@ describe('relativeTime plugin - locale en', () => {
     { difference: -10, unit: C.MONTH, withoutSuffix: true, expected: '10 months' },
     { difference: -11, unit: C.MONTH, withoutSuffix: false, expected: 'in a year' },
     { difference: -11, unit: C.MONTH, withoutSuffix: true, expected: 'a year' },
-  ])(
-    'fromNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"',
-    ({ difference, unit, withoutSuffix, expected }) => {
-      expectSameValue((esday) => esday().subtract(difference, unit).fromNow(withoutSuffix))
-      expect(esday().subtract(difference, unit).fromNow(withoutSuffix)).toBe(expected)
-    },
-  )
+  ])('fromNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"', ({
+    difference,
+    unit,
+    withoutSuffix,
+    expected,
+  }) => {
+    expectSameValue((esday) => esday().subtract(difference, unit).fromNow(withoutSuffix))
+    expect(esday().subtract(difference, unit).fromNow(withoutSuffix)).toBe(expected)
+  })
 
   it.each([
     {
@@ -699,13 +709,15 @@ describe('relativeTime plugin - locale en', () => {
       withoutSuffix: true,
       expected: '8 months',
     },
-  ])(
-    'from "$sourceDate" to "$referenceDate" withoutSuffix="$withoutSuffix"',
-    ({ sourceDate, referenceDate, withoutSuffix, expected }) => {
-      expectSameValue((esday) => esday(sourceDate).from(esday(referenceDate), withoutSuffix))
-      expect(esday(sourceDate).from(esday(referenceDate), withoutSuffix)).toBe(expected)
-    },
-  )
+  ])('from "$sourceDate" to "$referenceDate" withoutSuffix="$withoutSuffix"', ({
+    sourceDate,
+    referenceDate,
+    withoutSuffix,
+    expected,
+  }) => {
+    expectSameValue((esday) => esday(sourceDate).from(esday(referenceDate), withoutSuffix))
+    expect(esday(sourceDate).from(esday(referenceDate), withoutSuffix)).toBe(expected)
+  })
 
   it.each([
     { difference: 44, unit: C.SECOND, withoutSuffix: false, expected: 'in a few seconds' },
@@ -728,13 +740,15 @@ describe('relativeTime plugin - locale en', () => {
     { difference: -10, unit: C.MONTH, withoutSuffix: true, expected: '10 months' },
     { difference: -11, unit: C.MONTH, withoutSuffix: false, expected: 'a year ago' },
     { difference: -11, unit: C.MONTH, withoutSuffix: true, expected: 'a year' },
-  ])(
-    'toNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"',
-    ({ difference, unit, withoutSuffix, expected }) => {
-      expectSameValue((esday) => esday().subtract(difference, unit).toNow(withoutSuffix))
-      expect(esday().subtract(difference, unit).toNow(withoutSuffix)).toBe(expected)
-    },
-  )
+  ])('toNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"', ({
+    difference,
+    unit,
+    withoutSuffix,
+    expected,
+  }) => {
+    expectSameValue((esday) => esday().subtract(difference, unit).toNow(withoutSuffix))
+    expect(esday().subtract(difference, unit).toNow(withoutSuffix)).toBe(expected)
+  })
 
   it.each([
     {
@@ -749,13 +763,15 @@ describe('relativeTime plugin - locale en', () => {
       withoutSuffix: true,
       expected: '8 months',
     },
-  ])(
-    'to "$sourceDate" from "$referenceDate" withoutSuffix="$withoutSuffix"',
-    ({ sourceDate, referenceDate, withoutSuffix, expected }) => {
-      expectSameValue((esday) => esday(sourceDate).to(esday(referenceDate), withoutSuffix))
-      expect(esday(sourceDate).to(esday(referenceDate), withoutSuffix)).toBe(expected)
-    },
-  )
+  ])('to "$sourceDate" from "$referenceDate" withoutSuffix="$withoutSuffix"', ({
+    sourceDate,
+    referenceDate,
+    withoutSuffix,
+    expected,
+  }) => {
+    expectSameValue((esday) => esday(sourceDate).to(esday(referenceDate), withoutSuffix))
+    expect(esday(sourceDate).to(esday(referenceDate), withoutSuffix)).toBe(expected)
+  })
 })
 
 describe('relativeTime plugin - locale fr', () => {
@@ -803,13 +819,15 @@ describe('relativeTime plugin - locale fr', () => {
     { difference: -10, unit: C.MONTH, withoutSuffix: true, expected: '10 mois' },
     { difference: -11, unit: C.MONTH, withoutSuffix: false, expected: 'dans un an' },
     { difference: -11, unit: C.MONTH, withoutSuffix: true, expected: 'un an' },
-  ])(
-    'fromNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"',
-    ({ difference, unit, withoutSuffix, expected }) => {
-      expectSameValue((esday) => esday().subtract(difference, unit).fromNow(withoutSuffix))
-      expect(esday().subtract(difference, unit).fromNow(withoutSuffix)).toBe(expected)
-    },
-  )
+  ])('fromNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"', ({
+    difference,
+    unit,
+    withoutSuffix,
+    expected,
+  }) => {
+    expectSameValue((esday) => esday().subtract(difference, unit).fromNow(withoutSuffix))
+    expect(esday().subtract(difference, unit).fromNow(withoutSuffix)).toBe(expected)
+  })
 
   it.each([
     {
@@ -824,13 +842,15 @@ describe('relativeTime plugin - locale fr', () => {
       withoutSuffix: true,
       expected: '8 mois',
     },
-  ])(
-    'from "$sourceDate" to "$referenceDate" withoutSuffix="$withoutSuffix"',
-    ({ sourceDate, referenceDate, withoutSuffix, expected }) => {
-      expectSameValue((esday) => esday(sourceDate).from(esday(referenceDate), withoutSuffix))
-      expect(esday(sourceDate).from(esday(referenceDate), withoutSuffix)).toBe(expected)
-    },
-  )
+  ])('from "$sourceDate" to "$referenceDate" withoutSuffix="$withoutSuffix"', ({
+    sourceDate,
+    referenceDate,
+    withoutSuffix,
+    expected,
+  }) => {
+    expectSameValue((esday) => esday(sourceDate).from(esday(referenceDate), withoutSuffix))
+    expect(esday(sourceDate).from(esday(referenceDate), withoutSuffix)).toBe(expected)
+  })
 
   it.each([
     { difference: 44, unit: C.SECOND, withoutSuffix: false, expected: 'dans quelques secondes' },
@@ -853,13 +873,15 @@ describe('relativeTime plugin - locale fr', () => {
     { difference: -10, unit: C.MONTH, withoutSuffix: true, expected: '10 mois' },
     { difference: -11, unit: C.MONTH, withoutSuffix: false, expected: 'il y a un an' },
     { difference: -11, unit: C.MONTH, withoutSuffix: true, expected: 'un an' },
-  ])(
-    'toNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"',
-    ({ difference, unit, withoutSuffix, expected }) => {
-      expectSameValue((esday) => esday().subtract(difference, unit).toNow(withoutSuffix))
-      expect(esday().subtract(difference, unit).toNow(withoutSuffix)).toBe(expected)
-    },
-  )
+  ])('toNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"', ({
+    difference,
+    unit,
+    withoutSuffix,
+    expected,
+  }) => {
+    expectSameValue((esday) => esday().subtract(difference, unit).toNow(withoutSuffix))
+    expect(esday().subtract(difference, unit).toNow(withoutSuffix)).toBe(expected)
+  })
 
   it.each([
     {
@@ -874,13 +896,15 @@ describe('relativeTime plugin - locale fr', () => {
       withoutSuffix: true,
       expected: '8 mois',
     },
-  ])(
-    'to "$sourceDate" from "$referenceDate" withoutSuffix="$withoutSuffix"',
-    ({ sourceDate, referenceDate, withoutSuffix, expected }) => {
-      expectSameValue((esday) => esday(sourceDate).to(esday(referenceDate), withoutSuffix))
-      expect(esday(sourceDate).to(esday(referenceDate), withoutSuffix)).toBe(expected)
-    },
-  )
+  ])('to "$sourceDate" from "$referenceDate" withoutSuffix="$withoutSuffix"', ({
+    sourceDate,
+    referenceDate,
+    withoutSuffix,
+    expected,
+  }) => {
+    expectSameValue((esday) => esday(sourceDate).to(esday(referenceDate), withoutSuffix))
+    expect(esday(sourceDate).to(esday(referenceDate), withoutSuffix)).toBe(expected)
+  })
 })
 
 describe('relativeTime plugin - locale de', () => {
@@ -910,13 +934,15 @@ describe('relativeTime plugin - locale de', () => {
     { difference: 548, unit: C.DAY, withoutSuffix: true, expected: '2 Jahre' },
     { difference: 1094, unit: C.DAY, withoutSuffix: false, expected: 'vor 3 Jahren' },
     { difference: 1094, unit: C.DAY, withoutSuffix: true, expected: '3 Jahre' },
-  ])(
-    'fromNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"',
-    ({ difference, unit, withoutSuffix, expected }) => {
-      expectSameValue((esday) => esday().subtract(difference, unit).fromNow(withoutSuffix))
-      expect(esday().subtract(difference, unit).fromNow(withoutSuffix)).toBe(expected)
-    },
-  )
+  ])('fromNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"', ({
+    difference,
+    unit,
+    withoutSuffix,
+    expected,
+  }) => {
+    expectSameValue((esday) => esday().subtract(difference, unit).fromNow(withoutSuffix))
+    expect(esday().subtract(difference, unit).fromNow(withoutSuffix)).toBe(expected)
+  })
 })
 
 describe('relativeTime plugin - locale ar', () => {
@@ -962,13 +988,15 @@ describe('relativeTime plugin - locale ar', () => {
     { difference: -10, unit: C.MONTH, withoutSuffix: true, expected: '١٠ أشهر' },
     { difference: -11, unit: C.MONTH, withoutSuffix: false, expected: 'بعد عام واحد' },
     { difference: -11, unit: C.MONTH, withoutSuffix: true, expected: 'عام واحد' },
-  ])(
-    'fromNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"',
-    ({ difference, unit, withoutSuffix, expected }) => {
-      expectSameValue((esday) => esday().subtract(difference, unit).fromNow(withoutSuffix))
-      expect(esday().subtract(difference, unit).fromNow(withoutSuffix)).toBe(expected)
-    },
-  )
+  ])('fromNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"', ({
+    difference,
+    unit,
+    withoutSuffix,
+    expected,
+  }) => {
+    expectSameValue((esday) => esday().subtract(difference, unit).fromNow(withoutSuffix))
+    expect(esday().subtract(difference, unit).fromNow(withoutSuffix)).toBe(expected)
+  })
 
   it.each([
     {
@@ -983,13 +1011,15 @@ describe('relativeTime plugin - locale ar', () => {
       withoutSuffix: true,
       expected: '٨ أشهر',
     },
-  ])(
-    'from "$sourceDate" to "$referenceDate" withoutSuffix="$withoutSuffix"',
-    ({ sourceDate, referenceDate, withoutSuffix, expected }) => {
-      expectSameValue((esday) => esday(sourceDate).from(esday(referenceDate), withoutSuffix))
-      expect(esday(sourceDate).from(esday(referenceDate), withoutSuffix)).toBe(expected)
-    },
-  )
+  ])('from "$sourceDate" to "$referenceDate" withoutSuffix="$withoutSuffix"', ({
+    sourceDate,
+    referenceDate,
+    withoutSuffix,
+    expected,
+  }) => {
+    expectSameValue((esday) => esday(sourceDate).from(esday(referenceDate), withoutSuffix))
+    expect(esday(sourceDate).from(esday(referenceDate), withoutSuffix)).toBe(expected)
+  })
 
   it.each([
     { difference: 44, unit: C.SECOND, withoutSuffix: false, expected: 'بعد ٤٤ ثانية' },
@@ -1012,13 +1042,15 @@ describe('relativeTime plugin - locale ar', () => {
     { difference: -10, unit: C.MONTH, withoutSuffix: true, expected: '١٠ أشهر' },
     { difference: -11, unit: C.MONTH, withoutSuffix: false, expected: 'منذ عام واحد' },
     { difference: -11, unit: C.MONTH, withoutSuffix: true, expected: 'عام واحد' },
-  ])(
-    'toNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"',
-    ({ difference, unit, withoutSuffix, expected }) => {
-      expectSameValue((esday) => esday().subtract(difference, unit).toNow(withoutSuffix))
-      expect(esday().subtract(difference, unit).toNow(withoutSuffix)).toBe(expected)
-    },
-  )
+  ])('toNow with difference "$difference $unit" withoutSuffix="$withoutSuffix"', ({
+    difference,
+    unit,
+    withoutSuffix,
+    expected,
+  }) => {
+    expectSameValue((esday) => esday().subtract(difference, unit).toNow(withoutSuffix))
+    expect(esday().subtract(difference, unit).toNow(withoutSuffix)).toBe(expected)
+  })
 
   it.each([
     {
@@ -1033,11 +1065,13 @@ describe('relativeTime plugin - locale ar', () => {
       withoutSuffix: true,
       expected: '٨ أشهر',
     },
-  ])(
-    'to "$sourceDate" from "$referenceDate" withoutSuffix="$withoutSuffix"',
-    ({ sourceDate, referenceDate, withoutSuffix, expected }) => {
-      expectSameValue((esday) => esday(sourceDate).to(esday(referenceDate), withoutSuffix))
-      expect(esday(sourceDate).to(esday(referenceDate), withoutSuffix)).toBe(expected)
-    },
-  )
+  ])('to "$sourceDate" from "$referenceDate" withoutSuffix="$withoutSuffix"', ({
+    sourceDate,
+    referenceDate,
+    withoutSuffix,
+    expected,
+  }) => {
+    expectSameValue((esday) => esday(sourceDate).to(esday(referenceDate), withoutSuffix))
+    expect(esday(sourceDate).to(esday(referenceDate), withoutSuffix)).toBe(expected)
+  })
 })

@@ -457,14 +457,17 @@ describe('plugin utc', () => {
       expect(newDate).toHaveProperty('valueOf')
     })
 
-    it.each([{ offset: 540 }, { offset: -540 }, { offset: 8 }, { offset: -8 }, { offset: 4.5 }])(
-      'using offset "$offset"',
-      ({ offset }) => {
-        const dateString = '2021-02-28 19:40:10'
+    it.each([
+      { offset: 540 },
+      { offset: -540 },
+      { offset: 8 },
+      { offset: -8 },
+      { offset: 4.5 },
+    ])('using offset "$offset"', ({ offset }) => {
+      const dateString = '2021-02-28 19:40:10'
 
-        expectSameObject((esday) => esday(dateString).utc().utcOffset(offset))
-      },
-    )
+      expectSameObject((esday) => esday(dateString).utc().utcOffset(offset))
+    })
 
     it('with seconds', () => {
       const dateString = '2021-02-28 19:40:10'
@@ -479,14 +482,16 @@ describe('plugin utc', () => {
       expect(esday(dateString).utc().utcOffset(offset).format('Z').length).toBe(6)
     })
 
-    it.each([{ offset: 540 }, { offset: -540 }, { offset: 8 }, { offset: -8 }])(
-      'using offset "$offset" and keepLocalTime',
-      ({ offset }) => {
-        const dateString = '2021-02-28 19:40:10'
+    it.each([
+      { offset: 540 },
+      { offset: -540 },
+      { offset: 8 },
+      { offset: -8 },
+    ])('using offset "$offset" and keepLocalTime', ({ offset }) => {
+      const dateString = '2021-02-28 19:40:10'
 
-        expectSameObject((esday) => esday(dateString).utc().utcOffset(offset, true))
-      },
-    )
+      expectSameObject((esday) => esday(dateString).utc().utcOffset(offset, true))
+    })
 
     it('for non-utc date without keepLocalTime', () => {
       const dateString = '2021-02-28 19:40:10'
@@ -660,19 +665,29 @@ describe('plugin utc', () => {
       moment.locale(momentDefaultLocale)
     })
 
-    it.each([C.YEAR, C.MONTH, C.DAY, C.DAY_OF_MONTH, C.HOUR, C.MIN, C.SECOND])(
-      'startOf in UTC mode for "%s"',
-      (unit) => {
-        expectSameObject((esday) => esday().utc().startOf(unit))
-      },
-    )
+    it.each([
+      C.YEAR,
+      C.MONTH,
+      C.DAY,
+      C.DAY_OF_MONTH,
+      C.HOUR,
+      C.MIN,
+      C.SECOND,
+    ])('startOf in UTC mode for "%s"', (unit) => {
+      expectSameObject((esday) => esday().utc().startOf(unit))
+    })
 
-    it.each([C.YEAR, C.MONTH, C.DAY, C.DAY_OF_MONTH, C.HOUR, C.MIN, C.SECOND])(
-      'endOf in UTC mode for "%s"',
-      (unit) => {
-        expectSameObject((esday) => esday().utc().endOf(unit))
-      },
-    )
+    it.each([
+      C.YEAR,
+      C.MONTH,
+      C.DAY,
+      C.DAY_OF_MONTH,
+      C.HOUR,
+      C.MIN,
+      C.SECOND,
+    ])('endOf in UTC mode for "%s"', (unit) => {
+      expectSameObject((esday) => esday().utc().endOf(unit))
+    })
   })
 
   describe('add', () => {

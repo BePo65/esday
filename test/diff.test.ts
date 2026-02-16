@@ -16,12 +16,14 @@ describe('Difference', () => {
     vi.useRealTimers()
   })
 
-  it.each([{ sourceString: '20240101' }, { sourceString: '2023-02-08' }])(
-    'diff for "$sourceString"with default parameters (returns milliseconds)',
-    ({ sourceString }) => {
-      expectSameValue((esday) => esday().diff(esday(sourceString)))
-    },
-  )
+  it.each([
+    { sourceString: '20240101' },
+    { sourceString: '2023-02-08' },
+  ])('diff for "$sourceString"with default parameters (returns milliseconds)', ({
+    sourceString,
+  }) => {
+    expectSameValue((esday) => esday().diff(esday(sourceString)))
+  })
 
   it.each([
     {
@@ -96,17 +98,19 @@ describe('Difference', () => {
       sourceDiffUnit: C.DAY,
       resultUnit: 'years',
     },
-  ])(
-    'diff for B > A in unit "$resultUnit"',
-    ({ sourceString, sourceDiffValue, sourceDiffUnit, resultUnit }) => {
-      expectSameValue((esday) =>
-        esday(sourceString).diff(
-          esday(sourceString).add(sourceDiffValue, sourceDiffUnit),
-          resultUnit as UnitTypeAddSub,
-        ),
-      )
-    },
-  )
+  ])('diff for B > A in unit "$resultUnit"', ({
+    sourceString,
+    sourceDiffValue,
+    sourceDiffUnit,
+    resultUnit,
+  }) => {
+    expectSameValue((esday) =>
+      esday(sourceString).diff(
+        esday(sourceString).add(sourceDiffValue, sourceDiffUnit),
+        resultUnit as UnitTypeAddSub,
+      ),
+    )
+  })
 
   it.each([
     {
@@ -163,17 +167,19 @@ describe('Difference', () => {
       sourceDiffUnit: C.DAY,
       resultUnit: C.YEAR,
     },
-  ])(
-    'diff for B < A in unit "$resultUnit"',
-    ({ sourceString, sourceDiffValue, sourceDiffUnit, resultUnit }) => {
-      expectSameValue((esday) =>
-        esday(sourceString).diff(
-          esday(sourceString).subtract(sourceDiffValue, sourceDiffUnit),
-          resultUnit,
-        ),
-      )
-    },
-  )
+  ])('diff for B < A in unit "$resultUnit"', ({
+    sourceString,
+    sourceDiffValue,
+    sourceDiffUnit,
+    resultUnit,
+  }) => {
+    expectSameValue((esday) =>
+      esday(sourceString).diff(
+        esday(sourceString).subtract(sourceDiffValue, sourceDiffUnit),
+        resultUnit,
+      ),
+    )
+  })
 
   it.each([
     {
@@ -300,11 +306,12 @@ describe('Difference', () => {
     { sourceString1: '2024-09-08', sourceString2: '2024-08-08', expected: 1 },
     { sourceString1: '2024-08-08', sourceString2: '2024-09-08', expected: -1 },
     { sourceString1: '2024-01-01', sourceString2: '2024-01-01', expected: 0 },
-  ])(
-    'diff in "months" between "$sourceString1" and "$sourceString2" - testing internal  monthDiff function',
-    ({ sourceString1, sourceString2, expected }) => {
-      expectSameValue((esday) => esday(sourceString1).diff(esday(sourceString2), C.MONTH))
-      expect(esday(sourceString1).diff(esday(sourceString2), 'month')).toBe(expected)
-    },
-  )
+  ])('diff in "months" between "$sourceString1" and "$sourceString2" - testing internal  monthDiff function', ({
+    sourceString1,
+    sourceString2,
+    expected,
+  }) => {
+    expectSameValue((esday) => esday(sourceString1).diff(esday(sourceString2), C.MONTH))
+    expect(esday(sourceString1).diff(esday(sourceString2), 'month')).toBe(expected)
+  })
 })

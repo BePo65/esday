@@ -96,12 +96,12 @@ describe('isoWeek plugin - default locale', () => {
     { sourceString: '2025-05-15', newIsoWeekday: 6 },
     { sourceString: '2025-05-15', newIsoWeekday: 7 },
     { sourceString: '2025-03-10', newIsoWeekday: -7 },
-  ])(
-    'set isoWeekday to "$newIsoWeekday" for "$sourceString"',
-    ({ sourceString, newIsoWeekday }) => {
-      expectSameObject((esday) => esday(sourceString).isoWeekday(newIsoWeekday))
-    },
-  )
+  ])('set isoWeekday to "$newIsoWeekday" for "$sourceString"', ({
+    sourceString,
+    newIsoWeekday,
+  }) => {
+    expectSameObject((esday) => esday(sourceString).isoWeekday(newIsoWeekday))
+  })
 
   it.each([
     { sourceString: '2025-01-01', expected: 2025 },
@@ -213,22 +213,23 @@ describe('isoWeek plugin - default locale', () => {
     { sourceString: '2024-12-24T14:25:36', formatString: 'E' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'GG' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'GGGG' },
-  ])(
-    'format date string "$sourceString" with format "$formatString"',
-    ({ sourceString, formatString }) => {
-      expectSameValue((esday) => esday(sourceString).format(formatString))
-    },
-  )
+  ])('format date string "$sourceString" with format "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameValue((esday) => esday(sourceString).format(formatString))
+  })
 
   it.each([
     { sourceString: '2024-12-24T14:25:36', formatString: 'Wo', expected: '52' },
     { sourceString: '2025-01-01T14:25:36', formatString: 'Wo', expected: '1' },
-  ])(
-    'format date string "$sourceString" with format "$formatString" without locale',
-    ({ sourceString, formatString, expected }) => {
-      expect(esday(sourceString).format(formatString)).toBe(expected)
-    },
-  )
+  ])('format date string "$sourceString" with format "$formatString" without locale', ({
+    sourceString,
+    formatString,
+    expected,
+  }) => {
+    expect(esday(sourceString).format(formatString)).toBe(expected)
+  })
 
   // without plugin AdvancedParse, the new parsing tokens ('W', 'E', 'GG') are ignored
   it.each([
@@ -247,12 +248,13 @@ describe('isoWeek plugin - default locale', () => {
       formatString: 'YYYY WW',
       expected: '2025-01-01T12:00:00',
     },
-  ])(
-    'parse "$sourceString" ignoring unknown tokens in "$formatString" without plugin advancedParse',
-    ({ sourceString, formatString, expected }) => {
-      const esdayDate = esday(sourceString, formatString)
+  ])('parse "$sourceString" ignoring unknown tokens in "$formatString" without plugin advancedParse', ({
+    sourceString,
+    formatString,
+    expected,
+  }) => {
+    const esdayDate = esday(sourceString, formatString)
 
-      expect(esdayDate.format().slice(0, -6)).toBe(expected)
-    },
-  )
+    expect(esdayDate.format().slice(0, -6)).toBe(expected)
+  })
 })

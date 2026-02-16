@@ -67,14 +67,15 @@ describe('locale zh', () => {
     { value: 2, period: 'W', expected: '2周' },
     { value: 3, period: 'MM', expected: '3' },
     { value: 3, period: undefined, expected: '3' },
-  ])(
-    'should format "$value" with period "$period" using "ordinal"',
-    ({ value, period, expected }) => {
-      expect(locale.ordinal(value, period)).toBe(expected)
-      // moment.js returns number if period does not require an pending string
-      expectSameValue((_) => locale.ordinal(value, period).toString())
-    },
-  )
+  ])('should format "$value" with period "$period" using "ordinal"', ({
+    value,
+    period,
+    expected,
+  }) => {
+    expect(locale.ordinal(value, period)).toBe(expected)
+    // moment.js returns number if period does not require an pending string
+    expectSameValue((_) => locale.ordinal(value, period).toString())
+  })
 
   it('should have numeric property named weekStart', () => {
     expect(locale.weekStart).toBeDefined()
@@ -102,30 +103,32 @@ describe('locale zh', () => {
   it.each([
     { thisWeek: 0, refWeek: 1, expected: '[下]dddLT' },
     { thisWeek: 0, refWeek: 0, expected: '[本]dddLT' },
-  ])(
-    'should format nextWeek with calendar for weekday "$weekday"',
-    ({ thisWeek, refWeek, expected }) => {
-      const thisDate = { week: () => thisWeek } as EsDay
-      const referenceDate = { week: () => refWeek } as EsDay
-      const nextWeek = locale.calendar.nextWeek as CalendarSpecValFunction
+  ])('should format nextWeek with calendar for weekday "$weekday"', ({
+    thisWeek,
+    refWeek,
+    expected,
+  }) => {
+    const thisDate = { week: () => thisWeek } as EsDay
+    const referenceDate = { week: () => refWeek } as EsDay
+    const nextWeek = locale.calendar.nextWeek as CalendarSpecValFunction
 
-      expect(nextWeek.call(thisDate, referenceDate)).toBe(expected)
-    },
-  )
+    expect(nextWeek.call(thisDate, referenceDate)).toBe(expected)
+  })
 
   it.each([
     { thisWeek: 0, refWeek: 1, expected: '[上]dddLT' },
     { thisWeek: 0, refWeek: 0, expected: '[本]dddLT' },
-  ])(
-    'should format lastWeek with calendar for weekday "$weekday"',
-    ({ thisWeek, refWeek, expected }) => {
-      const thisDate = { week: () => thisWeek } as EsDay
-      const referenceDate = { week: () => refWeek } as EsDay
-      const lastWeek = locale.calendar.lastWeek as CalendarSpecValFunction
+  ])('should format lastWeek with calendar for weekday "$weekday"', ({
+    thisWeek,
+    refWeek,
+    expected,
+  }) => {
+    const thisDate = { week: () => thisWeek } as EsDay
+    const referenceDate = { week: () => refWeek } as EsDay
+    const lastWeek = locale.calendar.lastWeek as CalendarSpecValFunction
 
-      expect(lastWeek.call(thisDate, referenceDate)).toBe(expected)
-    },
-  )
+    expect(lastWeek.call(thisDate, referenceDate)).toBe(expected)
+  })
 
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()

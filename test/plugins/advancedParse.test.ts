@@ -77,13 +77,13 @@ describe('advancedParse plugin - local mode', () => {
       { formatString: 'D', sourceString: '8' },
       { formatString: 'D', sourceString: '08' },
       { formatString: 'D', sourceString: '11' },
-    ])(
-      'parse day of month "$sourceString" with "$formatString"',
-      ({ sourceString, formatString }) => {
-        expectSameObject((esday) => esday(sourceString, formatString))
-        expect(esday(sourceString, formatString).isValid()).toBeTruthy()
-      },
-    )
+    ])('parse day of month "$sourceString" with "$formatString"', ({
+      sourceString,
+      formatString,
+    }) => {
+      expectSameObject((esday) => esday(sourceString, formatString))
+      expect(esday(sourceString, formatString).isValid()).toBeTruthy()
+    })
 
     it.each([
       { formatString: 'S', sourceString: '0', expectedMS: 0 },
@@ -104,13 +104,14 @@ describe('advancedParse plugin - local mode', () => {
       { formatString: 'SSS', sourceString: '168', expectedMS: 168 },
       { formatString: 'SSS', sourceString: '2369', expectedMS: 236 },
       { formatString: 'SSS', sourceString: '23678901987', expectedMS: 236 },
-    ])(
-      'parse milliseconds "$sourceString" with "$formatString" - difference to moment.js',
-      ({ sourceString, formatString, expectedMS }) => {
-        expect(esday(sourceString, formatString).millisecond()).toBe(expectedMS)
-        expectSameValue((esday) => esday(sourceString, formatString).millisecond())
-      },
-    )
+    ])('parse milliseconds "$sourceString" with "$formatString" - difference to moment.js', ({
+      sourceString,
+      formatString,
+      expectedMS,
+    }) => {
+      expect(esday(sourceString, formatString).millisecond()).toBe(expectedMS)
+      expectSameValue((esday) => esday(sourceString, formatString).millisecond())
+    })
 
     it.each([
       {
@@ -144,13 +145,13 @@ describe('advancedParse plugin - local mode', () => {
     it.each([
       { formatString: 'DD.MM.YYYY', sourceString: '31.12.2019' },
       { formatString: 'DD.MM.YYYY', sourceString: '01.01.2019' },
-    ])(
-      'parse date&time edge case "$sourceString" with format "$formatString"',
-      ({ sourceString, formatString }) => {
-        expectSameObject((esday) => esday(sourceString, formatString))
-        expect(esday(sourceString, formatString).isValid()).toBeTruthy()
-      },
-    )
+    ])('parse date&time edge case "$sourceString" with format "$formatString"', ({
+      sourceString,
+      formatString,
+    }) => {
+      expectSameObject((esday) => esday(sourceString, formatString))
+      expect(esday(sourceString, formatString).isValid()).toBeTruthy()
+    })
 
     it.each(['-', '_', ',', '(', ')', '/'])('using "%s" as separator', (sep) => {
       const sourceString = '17?12?2023?03?24?46?234'
@@ -276,15 +277,15 @@ describe('advancedParse plugin - local mode', () => {
         formatString: 'DD-MM-YYYY HH:mm:ss',
         sourceString: '35/22/2010 99:88:77',
       },
-    ])(
-      'parse invalid date "$sourceString" with format "$formatString"',
-      ({ sourceString, formatString }) => {
-        const parsedEsday = esday(sourceString, formatString)
+    ])('parse invalid date "$sourceString" with format "$formatString"', ({
+      sourceString,
+      formatString,
+    }) => {
+      const parsedEsday = esday(sourceString, formatString)
 
-        expectSameObject((esday) => esday(sourceString, formatString))
-        expect(parsedEsday.isValid()).toBeFalsy()
-      },
-    )
+      expectSameObject((esday) => esday(sourceString, formatString))
+      expect(parsedEsday.isValid()).toBeFalsy()
+    })
 
     it('parse date not matching format', () => {
       const sourceString = '10/12/2014'
@@ -378,24 +379,24 @@ describe('advancedParse plugin - local mode', () => {
       { formatString: 'x', sourceString: '1442086062579' },
       { formatString: 'X', sourceString: '1442086062.579' },
       { formatString: 'X', sourceString: '1442086062' },
-    ])(
-      'parse strict date&time "$sourceString" with "$formatString"',
-      ({ sourceString, formatString }) => {
-        expectSameObject((esday) => esday(sourceString, formatString, true))
-        expect(esday(sourceString, formatString, true).isValid()).toBeTruthy()
-      },
-    )
+    ])('parse strict date&time "$sourceString" with "$formatString"', ({
+      sourceString,
+      formatString,
+    }) => {
+      expectSameObject((esday) => esday(sourceString, formatString, true))
+      expect(esday(sourceString, formatString, true).isValid()).toBeTruthy()
+    })
 
     it.each([
       { formatString: 'DD.MM.YYYY', sourceString: '31.12.2019' },
       { formatString: 'DD.MM.YYYY', sourceString: '01.01.2019' },
-    ])(
-      'parse strict date&time edge case "$sourceString" with format "$formatString"',
-      ({ sourceString, formatString }) => {
-        expectSameObject((esday) => esday(sourceString, formatString, true))
-        expect(esday(sourceString, formatString, true).isValid()).toBeTruthy()
-      },
-    )
+    ])('parse strict date&time edge case "$sourceString" with format "$formatString"', ({
+      sourceString,
+      formatString,
+    }) => {
+      expectSameObject((esday) => esday(sourceString, formatString, true))
+      expect(esday(sourceString, formatString, true).isValid()).toBeTruthy()
+    })
 
     it.each([
       {
@@ -406,13 +407,13 @@ describe('advancedParse plugin - local mode', () => {
         formatString: 'MM-YYYY_DD HH,mm(ss)SSS',
         sourceString: '08-2023_14 21,43(12)123',
       },
-    ])(
-      'parse strict "$sourceString" with format "$formatString" (various separator characters)',
-      ({ sourceString, formatString }) => {
-        expectSameObject((esday) => esday(sourceString, formatString))
-        expect(esday(sourceString, formatString).isValid()).toBeTruthy()
-      },
-    )
+    ])('parse strict "$sourceString" with format "$formatString" (various separator characters)', ({
+      sourceString,
+      formatString,
+    }) => {
+      expectSameObject((esday) => esday(sourceString, formatString))
+      expect(esday(sourceString, formatString).isValid()).toBeTruthy()
+    })
 
     it('does not parse strict date&time with non-matching separator characters', () => {
       const formatString = 'MM-YYYY-DD HH mm.ss SSS'
@@ -440,15 +441,15 @@ describe('advancedParse plugin - local mode', () => {
       { formatString: 'Q YYYY', sourceString: '1 23' },
       { formatString: 'Q YYYY', sourceString: '02 23' },
       { formatString: 'x', sourceString: '1442086062.579' },
-    ])(
-      'does not parse strict date&time "$sourceString" with "$formatString"',
-      ({ sourceString, formatString }) => {
-        const parsedDateEsDay = esday(sourceString, formatString, true)
+    ])('does not parse strict date&time "$sourceString" with "$formatString"', ({
+      sourceString,
+      formatString,
+    }) => {
+      const parsedDateEsDay = esday(sourceString, formatString, true)
 
-        expect(parsedDateEsDay.isValid()).toBeFalsy()
-        expectSameValue((esday) => esday(sourceString, formatString, true).isValid())
-      },
-    )
+      expect(parsedDateEsDay.isValid()).toBeFalsy()
+      expectSameValue((esday) => esday(sourceString, formatString, true).isValid())
+    })
 
     it.each([
       {
@@ -457,27 +458,27 @@ describe('advancedParse plugin - local mode', () => {
         comment: '4-digit year',
       },
       { formatString: 'YY', sourceString: '2023', comment: '4-digit year' },
-    ])(
-      'parse as invalid for "$sourceString" with "$formatString"',
-      ({ sourceString, formatString }) => {
-        const parsedDateEsDay = esday(sourceString, formatString, true)
-        const parsedDateMoment = moment(sourceString, formatString, true)
+    ])('parse as invalid for "$sourceString" with "$formatString"', ({
+      sourceString,
+      formatString,
+    }) => {
+      const parsedDateEsDay = esday(sourceString, formatString, true)
+      const parsedDateMoment = moment(sourceString, formatString, true)
 
-        expect(parsedDateMoment.isValid()).toBeFalsy()
-        expect(parsedDateEsDay.isValid()).toBeFalsy()
-      },
-    )
+      expect(parsedDateMoment.isValid()).toBeFalsy()
+      expect(parsedDateEsDay.isValid()).toBeFalsy()
+    })
 
     it.each([
       { formatString: 'DD.MM.YYYY', sourceString: '31.12.2019' },
       { formatString: 'DD.MM.YYYY', sourceString: '01.01.2019' },
-    ])(
-      'parse date&time edge case "$sourceString" with format "$formatString"',
-      ({ sourceString, formatString }) => {
-        expectSameObject((esday) => esday(sourceString, formatString, true))
-        expect(esday(sourceString, formatString, true).isValid()).toBeTruthy()
-      },
-    )
+    ])('parse date&time edge case "$sourceString" with format "$formatString"', ({
+      sourceString,
+      formatString,
+    }) => {
+      expectSameObject((esday) => esday(sourceString, formatString, true))
+      expect(esday(sourceString, formatString, true).isValid()).toBeTruthy()
+    })
 
     it.each([
       {
@@ -586,96 +587,102 @@ describe('advancedParse plugin - local mode', () => {
     it.each([
       { formatString: 'YYYY PP', sourceString: '2024 3' },
       { formatString: 'YYYY PP', sourceString: '2024 23' },
-    ])(
-      'add new token to list of tokens - test with "$sourceString" with format "$formatString"',
-      ({ sourceString, formatString }) => {
-        const additionalTokens: TokenDefinitions = {
-          PP: [
-            /\d\d?/,
-            /\d{2}/,
-            (parsedElements: ParsedElements, input: string) => {
-              // we don't use parsed value ('input')
-              if (input.length > 0) {
-                parsedElements.milliseconds = 987
-              }
-            },
-          ],
-        }
-        esday.addParseTokenDefinitions(additionalTokens)
-        const parsedDate = esday(sourceString, formatString)
+    ])('add new token to list of tokens - test with "$sourceString" with format "$formatString"', ({
+      sourceString,
+      formatString,
+    }) => {
+      const additionalTokens: TokenDefinitions = {
+        PP: [
+          /\d\d?/,
+          /\d{2}/,
+          (parsedElements: ParsedElements, input: string) => {
+            // we don't use parsed value ('input')
+            if (input.length > 0) {
+              parsedElements.milliseconds = 987
+            }
+          },
+        ],
+      }
+      esday.addParseTokenDefinitions(additionalTokens)
+      const parsedDate = esday(sourceString, formatString)
 
-        expect(parsedDate.year()).toBe(2024)
-        expect(parsedDate.millisecond()).toBe(987)
-      },
-    )
+      expect(parsedDate.year()).toBe(2024)
+      expect(parsedDate.millisecond()).toBe(987)
+    })
 
-    it.each([{ formatString: 'YYYY PP', sourceString: '2024 234' }])(
-      'add new token to list of tokens - failing test with "$sourceString" with format "$formatString"',
-      ({ sourceString, formatString }) => {
-        const additionalTokens: TokenDefinitions = {
-          PP: [
-            /\d\d?/,
-            /\d{2}/,
-            (parsedElements: ParsedElements, input: string) => {
-              // we don't use parsed value ('input')
-              if (input.length > 0) {
-                parsedElements.milliseconds = 987
-              }
-            },
-          ],
-        }
-        esday.addParseTokenDefinitions(additionalTokens)
-        const parsedDate = esday(sourceString, formatString)
+    it.each([
+      { formatString: 'YYYY PP', sourceString: '2024 234' },
+    ])('add new token to list of tokens - failing test with "$sourceString" with format "$formatString"', ({
+      sourceString,
+      formatString,
+    }) => {
+      const additionalTokens: TokenDefinitions = {
+        PP: [
+          /\d\d?/,
+          /\d{2}/,
+          (parsedElements: ParsedElements, input: string) => {
+            // we don't use parsed value ('input')
+            if (input.length > 0) {
+              parsedElements.milliseconds = 987
+            }
+          },
+        ],
+      }
+      esday.addParseTokenDefinitions(additionalTokens)
+      const parsedDate = esday(sourceString, formatString)
 
-        expect(parsedDate.year()).toBe(2024)
-        expect(parsedDate.millisecond()).toBe(987)
-      },
-    )
+      expect(parsedDate.year()).toBe(2024)
+      expect(parsedDate.millisecond()).toBe(987)
+    })
 
-    it.each([{ formatString: 'YYYY PP', sourceString: '2024 23' }])(
-      'add new token to list of tokens - test in strict mode with "$sourceString" with format "$formatString"',
-      ({ sourceString, formatString }) => {
-        const additionalTokens: TokenDefinitions = {
-          PP: [
-            /\d\d?/,
-            /\d{2}/,
-            (parsedElements: ParsedElements, input: string) => {
-              // we don't use parsed value ('input')
-              if (input.length > 0) {
-                parsedElements.milliseconds = 987
-              }
-            },
-          ],
-        }
-        esday.addParseTokenDefinitions(additionalTokens)
-        const parsedDate = esday(sourceString, formatString, true)
+    it.each([
+      { formatString: 'YYYY PP', sourceString: '2024 23' },
+    ])('add new token to list of tokens - test in strict mode with "$sourceString" with format "$formatString"', ({
+      sourceString,
+      formatString,
+    }) => {
+      const additionalTokens: TokenDefinitions = {
+        PP: [
+          /\d\d?/,
+          /\d{2}/,
+          (parsedElements: ParsedElements, input: string) => {
+            // we don't use parsed value ('input')
+            if (input.length > 0) {
+              parsedElements.milliseconds = 987
+            }
+          },
+        ],
+      }
+      esday.addParseTokenDefinitions(additionalTokens)
+      const parsedDate = esday(sourceString, formatString, true)
 
-        expect(parsedDate.year()).toBe(2024)
-        expect(parsedDate.millisecond()).toBe(987)
-      },
-    )
+      expect(parsedDate.year()).toBe(2024)
+      expect(parsedDate.millisecond()).toBe(987)
+    })
 
-    it.each([{ formatString: 'YYYY PP', sourceString: '2024 3' }])(
-      'add new token to list of tokens - failing test in strict mode with "$sourceString" with format "$formatString"',
-      ({ sourceString, formatString }) => {
-        const additionalTokens: TokenDefinitions = {
-          PP: [
-            /\d\d?/,
-            /\d{2}/,
-            (parsedElements: ParsedElements, input: string) => {
-              // we don't use parsed value ('input')
-              if (input.length > 0) {
-                parsedElements.milliseconds = 987
-              }
-            },
-          ],
-        }
-        esday.addParseTokenDefinitions(additionalTokens)
-        const parsedDate = esday(sourceString, formatString, true)
+    it.each([
+      { formatString: 'YYYY PP', sourceString: '2024 3' },
+    ])('add new token to list of tokens - failing test in strict mode with "$sourceString" with format "$formatString"', ({
+      sourceString,
+      formatString,
+    }) => {
+      const additionalTokens: TokenDefinitions = {
+        PP: [
+          /\d\d?/,
+          /\d{2}/,
+          (parsedElements: ParsedElements, input: string) => {
+            // we don't use parsed value ('input')
+            if (input.length > 0) {
+              parsedElements.milliseconds = 987
+            }
+          },
+        ],
+      }
+      esday.addParseTokenDefinitions(additionalTokens)
+      const parsedDate = esday(sourceString, formatString, true)
 
-        expect(parsedDate.isValid()).toBeFalsy()
-      },
-    )
+      expect(parsedDate.isValid()).toBeFalsy()
+    })
 
     it('adding existing token should not change existing definition', () => {
       const additionalTokens: TokenDefinitions = {

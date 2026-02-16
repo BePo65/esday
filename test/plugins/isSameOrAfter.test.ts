@@ -23,19 +23,21 @@ describe('isSameOrAfter plugin', () => {
       unit: 'second',
       expected: false,
     },
-  ])(
-    'should correctly determine if "$date1" is the same or after "$date2"',
-    ({ date1, date2, unit, expected }) => {
-      const esDayInstance = esday(date1)
-      const momentInstance = moment(date1)
+  ])('should correctly determine if "$date1" is the same or after "$date2"', ({
+    date1,
+    date2,
+    unit,
+    expected,
+  }) => {
+    const esDayInstance = esday(date1)
+    const momentInstance = moment(date1)
 
-      const esDayResult = esDayInstance.isSameOrAfter(date2, unit as UnitType)
-      const momentResult = momentInstance.isSameOrAfter(date2, unit as UnitType)
+    const esDayResult = esDayInstance.isSameOrAfter(date2, unit as UnitType)
+    const momentResult = momentInstance.isSameOrAfter(date2, unit as UnitType)
 
-      expect(esDayResult).toBe(expected)
-      expect(esDayResult).toBe(momentResult)
-    },
-  )
+    expect(esDayResult).toBe(expected)
+    expect(esDayResult).toBe(momentResult)
+  })
 
   it('should handle invalid dates gracefully', () => {
     const invalidEsDay = esday('invalid-date')

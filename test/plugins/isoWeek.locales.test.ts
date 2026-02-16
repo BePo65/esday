@@ -45,13 +45,14 @@ describe('isoWeek plugin - default locale ("en")', () => {
       formatString: 'Wo',
       expected: '1st',
     },
-  ])(
-    'format date string "$sourceString" with format "$formatString"',
-    ({ sourceString, formatString, expected }) => {
-      esday(sourceString).format(formatString)
-      expect(esday(sourceString).format(formatString)).toBe(expected)
-    },
-  )
+  ])('format date string "$sourceString" with format "$formatString"', ({
+    sourceString,
+    formatString,
+    expected,
+  }) => {
+    esday(sourceString).format(formatString)
+    expect(esday(sourceString).format(formatString)).toBe(expected)
+  })
 
   it.each([
     { sourceString: '2025-10-24 2', formatString: 'YYYY-MM-DD W' },
@@ -61,24 +62,24 @@ describe('isoWeek plugin - default locale ("en")', () => {
     { sourceString: '2025 02', formatString: 'YYYY WW' },
     { sourceString: '2025 12', formatString: 'YYYY WW' },
     { sourceString: '2025 W12', formatString: 'YYYY [W]WW' },
-  ])(
-    'parse "$sourceString" with isoWeek token "W" in "$formatString"',
-    ({ sourceString, formatString }) => {
-      expectSameObject((esday) => esday(sourceString, formatString))
-    },
-  )
+  ])('parse "$sourceString" with isoWeek token "W" in "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameObject((esday) => esday(sourceString, formatString))
+  })
 
   it.each([
     { sourceString: '2025-10-24 2', formatString: 'YYYY-MM-DD E' },
     { sourceString: '2025-10 2', formatString: 'YYYY-MM E' },
     { sourceString: '2025 3', formatString: 'YYYY E' },
     { sourceString: '2025 4', formatString: 'YYYY E' },
-  ])(
-    'parse "$sourceString" with isoWeekday token "E" in "$formatString"',
-    ({ sourceString, formatString }) => {
-      expectSameObject((esday) => esday(sourceString, formatString))
-    },
-  )
+  ])('parse "$sourceString" with isoWeekday token "E" in "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameObject((esday) => esday(sourceString, formatString))
+  })
 
   it.each([
     { sourceString: '84', formatString: 'GG' },
@@ -103,12 +104,12 @@ describe('isoWeek plugin - default locale ("en")', () => {
     { sourceString: '22 2025', formatString: 'WW GGGG' },
     { sourceString: '2025 22 4', formatString: 'GGGG WW E' },
     { sourceString: '2025   W22 4', formatString: 'GGGG [W]WW E' },
-  ])(
-    'parse "$sourceString" with isoWeekYear token in "$formatString"',
-    ({ sourceString, formatString }) => {
-      expectSameObject((esday) => esday(sourceString, formatString))
-    },
-  )
+  ])('parse "$sourceString" with isoWeekYear token in "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameObject((esday) => esday(sourceString, formatString))
+  })
 })
 
 describe('isoWeek plugin - locale "ar"', () => {
@@ -194,13 +195,14 @@ describe('isoWeek plugin - locale "ar"', () => {
   it.each([
     { sourceString: '2024-12-24T14:25:36', formatString: 'Wo', expected: '٥٢' },
     { sourceString: '2025-01-01T14:25:36', formatString: 'Wo', expected: '١' },
-  ])(
-    'format date string "$sourceString" with format "$formatString"',
-    ({ sourceString, formatString, expected }) => {
-      esday(sourceString).format(formatString)
-      expect(esday(sourceString).format(formatString)).toBe(expected)
-    },
-  )
+  ])('format date string "$sourceString" with format "$formatString"', ({
+    sourceString,
+    formatString,
+    expected,
+  }) => {
+    esday(sourceString).format(formatString)
+    expect(esday(sourceString).format(formatString)).toBe(expected)
+  })
 
   it.each([
     { sourceString: '2025-10-24 2', formatString: 'YYYY-MM-DD W' },
@@ -210,24 +212,24 @@ describe('isoWeek plugin - locale "ar"', () => {
     { sourceString: '2025 02', formatString: 'YYYY WW' },
     { sourceString: '2025 12', formatString: 'YYYY WW' },
     { sourceString: '2025 W12', formatString: 'YYYY [W]WW' },
-  ])(
-    'parse "$sourceString" with isoWeek token in "$formatString"',
-    ({ sourceString, formatString }) => {
-      expectSameObject((esday) => esday(sourceString, formatString))
-    },
-  )
+  ])('parse "$sourceString" with isoWeek token in "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameObject((esday) => esday(sourceString, formatString))
+  })
 
   it.each([
     { sourceString: '2025-10-24 2', formatString: 'YYYY-MM-DD E' },
     { sourceString: '2025-10 2', formatString: 'YYYY-MM E' },
     { sourceString: '2025 3', formatString: 'YYYY E' },
     { sourceString: '2025 4', formatString: 'YYYY E' },
-  ])(
-    'parse "$sourceString" with isoWeekday token in "$formatString"',
-    ({ sourceString, formatString }) => {
-      expectSameObject((esday) => esday(sourceString, formatString))
-    },
-  )
+  ])('parse "$sourceString" with isoWeekday token in "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameObject((esday) => esday(sourceString, formatString))
+  })
 
   it.each([
     { sourceString: '2020', formatString: 'GGGG' },
@@ -237,10 +239,10 @@ describe('isoWeek plugin - locale "ar"', () => {
     { sourceString: '2025-10-24', formatString: 'GGGG-MM-DD' },
     { sourceString: '2025 22', formatString: 'GGGG DD' },
     { sourceString: '2025 22 4', formatString: 'GGGG WW E' },
-  ])(
-    'parse "$sourceString" with isoWeekYear token in "$formatString"',
-    ({ sourceString, formatString }) => {
-      expectSameObject((esday) => esday(sourceString, formatString))
-    },
-  )
+  ])('parse "$sourceString" with isoWeekYear token in "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameObject((esday) => esday(sourceString, formatString))
+  })
 })

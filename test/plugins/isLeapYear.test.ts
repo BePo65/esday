@@ -20,12 +20,13 @@ describe('isLeapYear plugin', () => {
     expect(esdayDate.isLeapYear()).toBe(momentDate.isLeapYear())
   })
 
-  it.each(['2000-02-29', '2020-12-31', '1900-06-15'])(
-    'should work correctly with different "%s"',
-    (date) => {
-      const esdayDate = esday(date)
-      const momentDate = moment(date)
-      expect(esdayDate.isLeapYear()).toBe(momentDate.isLeapYear())
-    },
-  )
+  it.each([
+    '2000-02-29',
+    '2020-12-31',
+    '1900-06-15',
+  ])('should work correctly with different "%s"', (date) => {
+    const esdayDate = esday(date)
+    const momentDate = moment(date)
+    expect(esdayDate.isLeapYear()).toBe(momentDate.isLeapYear())
+  })
 })

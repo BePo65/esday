@@ -135,15 +135,16 @@ describe('locale it', () => {
     { day: 1, hour: 0, expected: '[Lo scorso] dddd [a ]LT' },
     { day: 1, hour: 1, expected: "[Lo scorso] dddd [all']LT" },
     { day: 1, hour: 2, expected: '[Lo scorso] dddd [alle ]LT' },
-  ])(
-    'should format lastWeek with calendar for day "$day" and hour "$hour"',
-    ({ day, hour, expected }) => {
-      const referenceDate = { day: () => day, hour: () => hour } as EsDay
-      const lastWeek = locale.calendar.lastWeek as CalendarSpecValFunction
+  ])('should format lastWeek with calendar for day "$day" and hour "$hour"', ({
+    day,
+    hour,
+    expected,
+  }) => {
+    const referenceDate = { day: () => day, hour: () => hour } as EsDay
+    const lastWeek = locale.calendar.lastWeek as CalendarSpecValFunction
 
-      expect(lastWeek.call(referenceDate)).toBe(expected)
-    },
-  )
+    expect(lastWeek.call(referenceDate)).toBe(expected)
+  })
 
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()

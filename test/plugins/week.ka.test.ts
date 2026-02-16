@@ -52,11 +52,11 @@ describe('week plugin - locale "ka"', () => {
     { sourceString: '2024 სამშაბათი', formatString: 'YYYY dddd' },
     { sourceString: '2024 სამშაბათი 15:26', formatString: 'YYYY dddd HH:mm' },
     { sourceString: '2024 12 კვირა', formatString: 'YYYY MM dddd' },
-  ])(
-    'parse "$sourceString" with day-of-week token in "$formatString"',
-    ({ sourceString, formatString }) => {
-      expectSameObject((esday) => esday(sourceString, formatString))
-      expect(esday(sourceString, formatString).isValid()).toBeTruthy()
-    },
-  )
+  ])('parse "$sourceString" with day-of-week token in "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameObject((esday) => esday(sourceString, formatString))
+    expect(esday(sourceString, formatString).isValid()).toBeTruthy()
+  })
 })

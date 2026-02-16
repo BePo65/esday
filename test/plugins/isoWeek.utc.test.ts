@@ -42,25 +42,25 @@ describe('isoWeek plugin - default locale ("en")', () => {
     { sourceString: '2025 02', formatString: 'YYYY WW' },
     { sourceString: '2025 12', formatString: 'YYYY WW' },
     { sourceString: '2025 W12', formatString: 'YYYY [W]WW' },
-  ])(
-    'parse "$sourceString" with isoWeek token in "$formatString"',
-    ({ sourceString, formatString }) => {
-      expect(esday.utc(sourceString, formatString)).toBeTruthy()
-      expectSameObject((esday) => esday.utc(sourceString, formatString))
-    },
-  )
+  ])('parse "$sourceString" with isoWeek token in "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expect(esday.utc(sourceString, formatString)).toBeTruthy()
+    expectSameObject((esday) => esday.utc(sourceString, formatString))
+  })
 
   it.each([
     { sourceString: '2025-10-24 2', formatString: 'YYYY-MM-DD E' },
     { sourceString: '2025 3', formatString: 'YYYY E' },
     { sourceString: '2025 4', formatString: 'YYYY E' },
-  ])(
-    'parse "$sourceString" with isoWeekday token in "$formatString"',
-    ({ sourceString, formatString }) => {
-      expect(esday.utc(sourceString, formatString)).toBeTruthy()
-      expectSameObject((esday) => esday.utc(sourceString, formatString))
-    },
-  )
+  ])('parse "$sourceString" with isoWeekday token in "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expect(esday.utc(sourceString, formatString)).toBeTruthy()
+    expectSameObject((esday) => esday.utc(sourceString, formatString))
+  })
 
   it.each([
     { sourceString: '24', formatString: 'GG' },
@@ -83,13 +83,13 @@ describe('isoWeek plugin - default locale ("en")', () => {
     { sourceString: '22 2025', formatString: 'WW GGGG' },
     { sourceString: '2025 22 4', formatString: 'GGGG WW E' },
     { sourceString: '2025   W22 4', formatString: 'GGGG [W]WW E' },
-  ])(
-    'parse "$sourceString" with isoWeekYear token in "$formatString"',
-    ({ sourceString, formatString }) => {
-      expect(esday.utc(sourceString, formatString)).toBeTruthy()
-      expectSameObject((esday) => esday.utc(sourceString, formatString))
-    },
-  )
+  ])('parse "$sourceString" with isoWeekYear token in "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expect(esday.utc(sourceString, formatString)).toBeTruthy()
+    expectSameObject((esday) => esday.utc(sourceString, formatString))
+  })
 })
 
 describe('isoWeek plugin - locale ar', () => {
@@ -116,25 +116,25 @@ describe('isoWeek plugin - locale ar', () => {
     { sourceString: '2025 02', formatString: 'YYYY WW' },
     { sourceString: '2025 12', formatString: 'YYYY WW' },
     { sourceString: '2025 W12', formatString: 'YYYY [W]WW' },
-  ])(
-    'parse "$sourceString" with isoWeek token in "$formatString"',
-    ({ sourceString, formatString }) => {
-      expect(esday.utc(sourceString, formatString)).toBeTruthy()
-      expectSameObject((esday) => esday.utc(sourceString, formatString))
-    },
-  )
+  ])('parse "$sourceString" with isoWeek token in "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expect(esday.utc(sourceString, formatString)).toBeTruthy()
+    expectSameObject((esday) => esday.utc(sourceString, formatString))
+  })
 
   it.each([
     { sourceString: '2025-10-24 2', formatString: 'YYYY-MM-DD E' },
     { sourceString: '2025 3', formatString: 'YYYY E' },
     { sourceString: '2025 4', formatString: 'YYYY E' },
-  ])(
-    'parse "$sourceString" with isoWeekday token in "$formatString"',
-    ({ sourceString, formatString }) => {
-      expect(esday.utc(sourceString, formatString)).toBeTruthy()
-      expectSameObject((esday) => esday.utc(sourceString, formatString))
-    },
-  )
+  ])('parse "$sourceString" with isoWeekday token in "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expect(esday.utc(sourceString, formatString)).toBeTruthy()
+    expectSameObject((esday) => esday.utc(sourceString, formatString))
+  })
 
   it.each([
     { sourceString: '24', formatString: 'GG' },
@@ -157,11 +157,11 @@ describe('isoWeek plugin - locale ar', () => {
     { sourceString: '22 2025', formatString: 'WW GGGG' },
     { sourceString: '2025 22 4', formatString: 'GGGG WW E' },
     { sourceString: '2025   W22 4', formatString: 'GGGG [W]WW E' },
-  ])(
-    'parse "$sourceString" with isoWeekYear token in "$formatString"',
-    ({ sourceString, formatString }) => {
-      expect(esday.utc(sourceString, formatString)).toBeTruthy()
-      expectSameObject((esday) => esday.utc(sourceString, formatString))
-    },
-  )
+  ])('parse "$sourceString" with isoWeekYear token in "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expect(esday.utc(sourceString, formatString)).toBeTruthy()
+    expectSameObject((esday) => esday.utc(sourceString, formatString))
+  })
 })

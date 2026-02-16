@@ -145,18 +145,19 @@ describe('extend formatting token definitions', () => {
       sourceString: '2024 3',
       expected: '2024 [special token PP] 2024',
     },
-  ])(
-    'add new token to list of tokens - test with "$sourceString" with format "$formatString"',
-    ({ sourceString, formatString, expected }) => {
-      const additionalTokens: FormattingTokenDefinitions = {
-        PP: (sourceDate: EsDay) => `[special token PP] ${sourceDate.year().toString()}`,
-      }
-      esday.addFormatTokenDefinitions(additionalTokens)
-      const formattedDate = esday(sourceString).format(formatString)
+  ])('add new token to list of tokens - test with "$sourceString" with format "$formatString"', ({
+    sourceString,
+    formatString,
+    expected,
+  }) => {
+    const additionalTokens: FormattingTokenDefinitions = {
+      PP: (sourceDate: EsDay) => `[special token PP] ${sourceDate.year().toString()}`,
+    }
+    esday.addFormatTokenDefinitions(additionalTokens)
+    const formattedDate = esday(sourceString).format(formatString)
 
-      expect(formattedDate).toBe(expected)
-    },
-  )
+    expect(formattedDate).toBe(expected)
+  })
 
   it('adding existing token should not change existing definition', () => {
     const additionalTokens: FormattingTokenDefinitions = {

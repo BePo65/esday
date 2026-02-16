@@ -54,18 +54,18 @@ describe('duration plugin - using default locale', () => {
       { value: -2812, expected: '-PT2.812S' },
       { value: 3121632.27382247, expected: 'PT52M1.632S' },
       { value: 7647826.525774224, expected: 'PT2H7M27.827S' },
-    ])(
-      'should handle floating point rounding errors for $value without unit',
-      ({ value, expected }) => {
-        // An example of this is when adding 2 to 0.812 seconds, which is how
-        // the seconds component is calculated in .toISOString().
-        // > 2 + 0.812
-        // 2.8120000000000003
-        expectSameDuration((esday) => esday.duration(value))
-        expect(esday.duration(value).isValid()).toBeTruthy()
-        expect(esday.duration(value).toISOString()).toBe(expected)
-      },
-    )
+    ])('should handle floating point rounding errors for $value without unit', ({
+      value,
+      expected,
+    }) => {
+      // An example of this is when adding 2 to 0.812 seconds, which is how
+      // the seconds component is calculated in .toISOString().
+      // > 2 + 0.812
+      // 2.8120000000000003
+      expectSameDuration((esday) => esday.duration(value))
+      expect(esday.duration(value).isValid()).toBeTruthy()
+      expect(esday.duration(value).toISOString()).toBe(expected)
+    })
 
     it.each([
       { value: 1, unit: 's' },
@@ -146,14 +146,15 @@ describe('duration plugin - using default locale', () => {
       { value: -60, unit: 's', expected: '-PT1M' },
       { value: -13213, unit: 's', expected: '-PT3H40M13S' },
       { value: 350, unit: 'm', expected: 'PT5H50M' },
-    ])(
-      '$value $unit exceeding unit range should bubble up to the next unit',
-      ({ value, unit, expected }) => {
-        expectSameDuration((esday) => esday.duration(value, unit as UnitTypeDuration))
-        expect(esday.duration(value, unit as UnitTypeDuration).toISOString()).toBe(expected)
-        expect(esday.duration(value, unit as UnitTypeDuration).isValid()).toBeTruthy()
-      },
-    )
+    ])('$value $unit exceeding unit range should bubble up to the next unit', ({
+      value,
+      unit,
+      expected,
+    }) => {
+      expectSameDuration((esday) => esday.duration(value, unit as UnitTypeDuration))
+      expect(esday.duration(value, unit as UnitTypeDuration).toISOString()).toBe(expected)
+      expect(esday.duration(value, unit as UnitTypeDuration).isValid()).toBeTruthy()
+    })
 
     it('from object with integers without weeks or quarters', () => {
       const durationDef = {
@@ -680,19 +681,20 @@ describe('duration plugin - using default locale', () => {
     })
 
     // moment.js does not know 'quarters'
-    it.each([{ unit: 'Q' }, { unit: 'quarter' }, { unit: 'quarters' }])(
-      'value using unit $unit available in  esday only',
-      ({ unit }) => {
-        const durationDefinition = {
-          months: 8,
-          quarters: 7,
-        }
-        const expected = 1 // 7Q+8M=29M=2Y+1Q and 5M
+    it.each([
+      { unit: 'Q' },
+      { unit: 'quarter' },
+      { unit: 'quarters' },
+    ])('value using unit $unit available in  esday only', ({ unit }) => {
+      const durationDefinition = {
+        months: 8,
+        quarters: 7,
+      }
+      const expected = 1 // 7Q+8M=29M=2Y+1Q and 5M
 
-        expect(esday.duration(durationDefinition).isValid()).toBeTruthy()
-        expect(esday.duration(durationDefinition).get(unit as UnitTypeDuration)).toBe(expected)
-      },
-    )
+      expect(esday.duration(durationDefinition).isValid()).toBeTruthy()
+      expect(esday.duration(durationDefinition).get(unit as UnitTypeDuration)).toBe(expected)
+    })
 
     it('asYears', () => {
       const value = 1
@@ -1812,21 +1814,21 @@ describe('duration plugin - using default locale', () => {
       expect(esday.duration(value).weeks()).toBe(expected)
     })
 
-    it.each([{ value: 10000000000, expected: 3 }])(
-      'Month from $value ms',
-      ({ value, expected }) => {
-        expectSameValue((esday) => esday.duration(value).months())
-        expect(esday.duration(value).months()).toBe(expected)
-      },
-    )
+    it.each([{ value: 10000000000, expected: 3 }])('Month from $value ms', ({
+      value,
+      expected,
+    }) => {
+      expectSameValue((esday) => esday.duration(value).months())
+      expect(esday.duration(value).months()).toBe(expected)
+    })
 
-    it.each([{ value: 100000000000, expected: 3 }])(
-      'Years from $value ms',
-      ({ value, expected }) => {
-        expectSameValue((esday) => esday.duration(value).years())
-        expect(esday.duration(value).years()).toBe(expected)
-      },
-    )
+    it.each([{ value: 100000000000, expected: 3 }])('Years from $value ms', ({
+      value,
+      expected,
+    }) => {
+      expectSameValue((esday) => esday.duration(value).years())
+      expect(esday.duration(value).years()).toBe(expected)
+    })
 
     it.each([
       { value: { days: 1 }, asUnit: 'ms', expected: 86400000.0 },

@@ -117,20 +117,28 @@ describe('localizedFormat plugin - using locale "en"', () => {
       sourceString: '2024-12-24T16:25:36',
       formatString: 'YYYY MM DD [lll] LTS',
     },
-  ])(
-    'format date string "$sourceString" with format "$formatString"',
-    ({ sourceString, formatString }) => {
-      expectSameValue((esday) => esday(sourceString).format(formatString))
-    },
-  )
+  ])('format date string "$sourceString" with format "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameValue((esday) => esday(sourceString).format(formatString))
+  })
 
-  it.each(['MMM', 'MMMM', 'Do', 'dd', 'ddd', 'dddd', 'h', 'hh', 'a', 'A'])(
-    'format invalid date with format "%s"',
-    (formatString) => {
-      const sourceString = 'I am not a date'
-      expectSameValue((esday) => esday(sourceString).format(formatString).toLowerCase())
-    },
-  )
+  it.each([
+    'MMM',
+    'MMMM',
+    'Do',
+    'dd',
+    'ddd',
+    'dddd',
+    'h',
+    'hh',
+    'a',
+    'A',
+  ])('format invalid date with format "%s"', (formatString) => {
+    const sourceString = 'I am not a date'
+    expectSameValue((esday) => esday(sourceString).format(formatString).toLowerCase())
+  })
 })
 
 describe('localizedFormat plugin - using locale "de"', () => {
@@ -227,20 +235,28 @@ describe('localizedFormat plugin - using locale "de"', () => {
       sourceString: '2024-12-24T16:25:36',
       formatString: 'YYYY MM DD [lll] LTS',
     },
-  ])(
-    'format date string "$sourceString" with format "$formatString"',
-    ({ sourceString, formatString }) => {
-      expectSameValue((esday) => esday(sourceString).format(formatString))
-    },
-  )
+  ])('format date string "$sourceString" with format "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameValue((esday) => esday(sourceString).format(formatString))
+  })
 
-  it.each(['MMM', 'MMMM', 'Do', 'dd', 'ddd', 'dddd', 'h', 'hh', 'a', 'A'])(
-    'format invalid date with format "%s"',
-    (formatString) => {
-      const sourceString = 'I am not a date'
-      expectSameValue((esday) => esday(sourceString).format(formatString).toLowerCase())
-    },
-  )
+  it.each([
+    'MMM',
+    'MMMM',
+    'Do',
+    'dd',
+    'ddd',
+    'dddd',
+    'h',
+    'hh',
+    'a',
+    'A',
+  ])('format invalid date with format "%s"', (formatString) => {
+    const sourceString = 'I am not a date'
+    expectSameValue((esday) => esday(sourceString).format(formatString).toLowerCase())
+  })
 })
 
 describe('localizedFormat plugin - using locale "hr"', () => {
@@ -343,20 +359,28 @@ describe('localizedFormat plugin - using locale "hr"', () => {
       sourceString: '2024-12-24T16:25:36',
       formatString: 'YYYY MM DD [lll] LTS',
     },
-  ])(
-    'format date string "$sourceString" with format "$formatString"',
-    ({ sourceString, formatString }) => {
-      expectSameValue((esday) => esday(sourceString).format(formatString))
-    },
-  )
+  ])('format date string "$sourceString" with format "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameValue((esday) => esday(sourceString).format(formatString))
+  })
 
-  it.each(['MMM', 'MMMM', 'Do', 'dd', 'ddd', 'dddd', 'h', 'hh', 'a', 'A'])(
-    'format invalid date with format "%s"',
-    (formatString) => {
-      const sourceString = 'I am not a date'
-      expectSameValue((esday) => esday(sourceString).format(formatString).toLowerCase())
-    },
-  )
+  it.each([
+    'MMM',
+    'MMMM',
+    'Do',
+    'dd',
+    'ddd',
+    'dddd',
+    'h',
+    'hh',
+    'a',
+    'A',
+  ])('format invalid date with format "%s"', (formatString) => {
+    const sourceString = 'I am not a date'
+    expectSameValue((esday) => esday(sourceString).format(formatString).toLowerCase())
+  })
 })
 
 describe('localizedFormat plugin - using locale "ca"', () => {
@@ -460,20 +484,28 @@ describe('localizedFormat plugin - using locale "ca"', () => {
       sourceString: '2024-12-24T16:25:36',
       formatString: 'YYYY MM DD [lll] LTS',
     },
-  ])(
-    'format date string "$sourceString" with format "$formatString"',
-    ({ sourceString, formatString }) => {
-      expectSameValue((esday) => esday(sourceString).format(formatString))
-    },
-  )
+  ])('format date string "$sourceString" with format "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameValue((esday) => esday(sourceString).format(formatString))
+  })
 
-  it.each(['MMM', 'MMMM', 'Do', 'dd', 'ddd', 'dddd', 'h', 'hh', 'a', 'A'])(
-    'format invalid date with format "%s"',
-    (formatString) => {
-      const sourceString = 'I am not a date'
-      expectSameValue((esday) => esday(sourceString).format(formatString).toLowerCase())
-    },
-  )
+  it.each([
+    'MMM',
+    'MMMM',
+    'Do',
+    'dd',
+    'ddd',
+    'dddd',
+    'h',
+    'hh',
+    'a',
+    'A',
+  ])('format invalid date with format "%s"', (formatString) => {
+    const sourceString = 'I am not a date'
+    expectSameValue((esday) => esday(sourceString).format(formatString).toLowerCase())
+  })
 })
 
 describe('localizedFormat plugin - using locale "ka"', () => {
@@ -504,12 +536,12 @@ describe('localizedFormat plugin - using locale "ka"', () => {
     { sourceString: '2024-12-23T14:25:36', formatString: 'D MMMM' },
     { sourceString: '2024-12-23T14:25:36', formatString: 'DD MMMM' },
     { sourceString: '2024-12-23T14:25:36', formatString: 'Do MMMM' },
-  ])(
-    'format date string "$sourceString" with format "$formatString"',
-    ({ sourceString, formatString }) => {
-      expectSameValue((esday) => esday(sourceString).format(formatString))
-    },
-  )
+  ])('format date string "$sourceString" with format "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameValue((esday) => esday(sourceString).format(formatString))
+  })
 })
 
 describe('localizedFormat plugin - using locale "be"', () => {
@@ -519,10 +551,12 @@ describe('localizedFormat plugin - using locale "be"', () => {
     moment.locale('be')
   })
 
-  it.each([{ sourceString: '2024-12-23T14:25:36', formatString: 'D MMMM' }])(
-    'format date string "$sourceString" with format "$formatString"',
-    ({ sourceString, formatString }) => {
-      expectSameValue((esday) => esday(sourceString).format(formatString))
-    },
-  )
+  it.each([
+    { sourceString: '2024-12-23T14:25:36', formatString: 'D MMMM' },
+  ])('format date string "$sourceString" with format "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameValue((esday) => esday(sourceString).format(formatString))
+  })
 })
