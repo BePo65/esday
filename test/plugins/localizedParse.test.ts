@@ -7,6 +7,7 @@ import localeFr from '~/locales/fr'
 import localeHr from '~/locales/hr'
 import localeKa from '~/locales/ka'
 import localeKu from '~/locales/ku'
+import localeZh from '~/locales/zh'
 import advancedParsePlugin from '~/plugins/advancedParse'
 import type { Locale } from '~/plugins/locale'
 import localePlugin from '~/plugins/locale'
@@ -25,6 +26,7 @@ esday.registerLocale(localeFr)
 esday.registerLocale(localeHr)
 esday.registerLocale(localeKa)
 esday.registerLocale(localeKu)
+esday.registerLocale(localeZh)
 
 describe('localizedParse plugin - local mode for "en"', () => {
   const fakeTimeAsString = '2023-12-17T03:24:46.234' // 'Sunday 2023-12-17 03:24'
@@ -115,6 +117,7 @@ describe('localizedParse plugin - local mode for "en"', () => {
       sourceString: '2024-02-29 8:10:21 xy',
       formatString: 'YYYY-MM-DD h:mm:ss A',
     },
+    { sourceString: '3/11/2022, 11:29:26 AM', formatString: 'M/D/YYYY, h:mm:ss A' },
     { sourceString: '2024 12 24 4:25 PM', formatString: 'YYYY MM DD LT' },
     { sourceString: '2024 12 24 4:25:36 PM', formatString: 'YYYY MM DD LTS' },
     { sourceString: '12/24/2024', formatString: 'L' },
@@ -501,6 +504,30 @@ describe('localizedParse plugin - local mode for "ka"', () => {
       expectSameValue((esday) => esday(sourceString, formatString).locale())
     },
   )
+})
+
+describe('localizedParse plugin - local mode for "zh"', () => {
+  const fakeTimeAsString = '2023-12-17T03:24:46.234' // 'Sunday 2023-12-17 03:24'
+
+  beforeEach(() => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(fakeTimeAsString))
+
+    // set global locale
+    esday.locale('zh')
+    moment.locale('zh')
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('parse date string with format containing "Do"', () => {
+    const sourceString = '2024 12 23日 14:25:36'
+    const formatString = 'YYYY MM Do HH:mm:ss'
+
+    expectSameObject((esday) => esday(sourceString, formatString))
+  })
 })
 
 describe('localizedParse plugin - local mode using locale given as parameter', () => {

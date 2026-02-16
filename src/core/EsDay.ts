@@ -93,6 +93,7 @@ export class EsDay {
   ) {
     const parsedYearOrDefault = Y ?? new Date().getFullYear()
     const parsedMonthOrDefault = M ?? (Y !== undefined ? 1 : new Date().getMonth() + 1)
+
     const dateComponents = {
       Y: parsedYearOrDefault,
       M: parsedMonthOrDefault - 1,
@@ -121,12 +122,13 @@ export class EsDay {
     }
 
     overflowed =
-      (M !== undefined && M - 1 !== result.getMonth()) ||
-      (D !== undefined && D !== result.getDate()) ||
-      (h !== undefined && h !== result.getHours()) ||
-      (m !== undefined && m !== result.getMinutes()) ||
-      (s !== undefined && s !== result.getSeconds())
+      (M !== undefined && (M < 1 || M > 12 || M - 1 !== result.getMonth())) ||
+      (D !== undefined && (D < 0 || D !== result.getDate())) ||
+      (h !== undefined && (h < 0 || h > 23)) ||
+      (m !== undefined && (m < 0 || m > 59)) ||
+      (s !== undefined && (s < 0 || s > 59))
 
+    // moment.js treats dates with overflow as invalid dates
     if (overflowed) {
       result = C.INVALID_DATE
     } else if (!isUndefined(offsetMs)) {
@@ -198,6 +200,13 @@ export class EsDay {
 
         return new Date(dateTrimmed)
       }
+    }
+
+    if (typeof date === 'string') {
+      // restricts milliseconds in an ISO 8601 string to exactly 3 digits;
+      // this is necessary, as webkit rounds fractions of seconds, while
+      // other browser engines take only the first 3 digits.
+      date = date.replace(/(\.\d{3})\d*(?=Z)/, '$1')
     }
 
     return new Date(date)
