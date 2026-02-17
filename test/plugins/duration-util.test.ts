@@ -2,7 +2,8 @@ import { esday } from 'esday'
 import moment from 'moment/min/moment-with-locales'
 import { expect, it } from 'vitest'
 import durationPlugin from '~/plugins/duration'
-import { objectResultsAsJson } from './util'
+import { objectResultsAsJson } from '../util'
+import { expectSameDuration } from './duration-util'
 
 esday.extend(durationPlugin)
 
@@ -24,4 +25,9 @@ it('objectResultsAsJson with invalid date', () => {
   const mResults = objectResultsAsJson(m)
 
   expect(dResults).toEqual(mResults)
+})
+
+it('expectSameDuration without duration', () => {
+  // @ts-expect-error as test should handle wrong input type
+  expectSameDuration((esday) => esday())
 })

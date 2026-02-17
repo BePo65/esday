@@ -4,7 +4,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
 import { INVALID_DATE_STRING } from '~/common/constants'
 import durationPlugin, { type UnitTypeDuration } from '~/plugins/duration'
-import { expectSameDuration, expectSameValue } from '../util'
+import { expectSameValue } from '../util'
+import { expectSameDuration } from './duration-util'
 
 esday.extend(durationPlugin)
 
