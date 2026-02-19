@@ -117,40 +117,42 @@ describe('relativeTime plugin - customize thresholds', () => {
     { difference: 26, unit: 'd', expectedBefore: 'a month', expectedAfter: 'a month' },
     { difference: 10, unit: 'M', expectedBefore: '10 months', expectedAfter: 'a year' },
     { difference: 11, unit: 'M', expectedBefore: 'a year', expectedAfter: 'a year' },
-  ])(
-    'set threshold for "$unit" to null should format toNow() as "$expectedAfter"',
-    ({ difference, unit, expectedBefore, expectedAfter }) => {
-      // First: test before setting threshold to null
-      expect(
-        moment()
-          .subtract(difference, unit as unitOfTime.Base)
-          .toNow(true),
-      ).toBe(expectedBefore)
+  ])('set threshold for "$unit" to null should format toNow() as "$expectedAfter"', ({
+    difference,
+    unit,
+    expectedBefore,
+    expectedAfter,
+  }) => {
+    // First: test before setting threshold to null
+    expect(
+      moment()
+        .subtract(difference, unit as unitOfTime.Base)
+        .toNow(true),
+    ).toBe(expectedBefore)
 
-      expect(
-        esday()
-          .subtract(difference, unit as UnitTypeAddSub)
-          .toNow(true),
-      ).toBe(expectedBefore)
+    expect(
+      esday()
+        .subtract(difference, unit as UnitTypeAddSub)
+        .toNow(true),
+    ).toBe(expectedBefore)
 
-      // Then: repeat test after setting threshold to null
-      esday.relativeTimeThreshold(unit as ThresholdRelativeTimeKeys, null)
-      // @ts-expect-error moment.js accepts null as threshold anyway
-      moment.relativeTimeThreshold(unit, null)
+    // Then: repeat test after setting threshold to null
+    esday.relativeTimeThreshold(unit as ThresholdRelativeTimeKeys, null)
+    // @ts-expect-error moment.js accepts null as threshold anyway
+    moment.relativeTimeThreshold(unit, null)
 
-      expect(
-        moment()
-          .subtract(difference, unit as unitOfTime.Base)
-          .toNow(true),
-      ).toBe(expectedAfter)
+    expect(
+      moment()
+        .subtract(difference, unit as unitOfTime.Base)
+        .toNow(true),
+    ).toBe(expectedAfter)
 
-      expect(
-        esday()
-          .subtract(difference, unit as UnitTypeAddSub)
-          .toNow(true),
-      ).toBe(expectedAfter)
-    },
-  )
+    expect(
+      esday()
+        .subtract(difference, unit as UnitTypeAddSub)
+        .toNow(true),
+    ).toBe(expectedAfter)
+  })
 
   it.each([
     { threshold: 55, unit: 's', difference: 54, expected: 'a few seconds ago' },
@@ -165,14 +167,16 @@ describe('relativeTime plugin - customize thresholds', () => {
     { threshold: 3, unit: 'w', difference: 4, expected: 'a month ago' },
     { threshold: 9, unit: 'M', difference: 8, expected: '8 months ago' },
     { threshold: 9, unit: 'M', difference: 9, expected: 'a year ago' },
-  ])(
-    'format difference "$difference $unit" with customized threshold',
-    ({ threshold, unit, difference, expected }) => {
-      esday.relativeTimeThreshold(unit as ThresholdRelativeTimeKeys, threshold)
+  ])('format difference "$difference $unit" with customized threshold', ({
+    threshold,
+    unit,
+    difference,
+    expected,
+  }) => {
+    esday.relativeTimeThreshold(unit as ThresholdRelativeTimeKeys, threshold)
 
-      expect(esday().from(esday().add(difference, unit as UnitTypeAddSub))).toBe(expected)
-    },
-  )
+    expect(esday().from(esday().add(difference, unit as UnitTypeAddSub))).toBe(expected)
+  })
 })
 
 describe('relativeTime plugin - customize rounding', () => {

@@ -87,8 +87,12 @@ function cloneObject(sourceObject: object): object {
       setObjectProperty(result, key, structuredClone(sourceValue))
     } else if (sourceValue instanceof RegExp) {
       setObjectProperty(result, key, new RegExp(sourceValue.source, sourceValue.flags))
-    } else if (typeof sourceValue === 'object') {
-      setObjectProperty(result, key, cloneObject(sourceValue))
+    } else {
+      // last possible type
+      /* istanbul ignore else -- @preserve */
+      if (typeof sourceValue === 'object') {
+        setObjectProperty(result, key, cloneObject(sourceValue))
+      }
     }
   }
 
@@ -144,9 +148,7 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
 
   const oldParse = dayClass.prototype['$parse']
   dayClass.prototype['$parse'] = function (d: Exclude<DateType, EsDay>) {
-    if (getSetPrivateLocaleName(this).length === 0) {
-      getSetPrivateLocaleName(this, $localeGlobal)
-    }
+    getSetPrivateLocaleName(this, $localeGlobal)
     oldParse.call(this, d)
   }
 

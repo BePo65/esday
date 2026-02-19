@@ -187,7 +187,7 @@ describe('Update locale', () => {
     expect(esdayInstanceLocale.monthsShort).toEqual(globalLocaleObject.monthsShort)
   })
 
-  it('update all properties', () => {
+  it('update all properties - using locale "zh"', () => {
     const randomLocaleName = createRandomString(8)
     const oldLocaleData = esday.getLocale('zh')
     const newLocaleData = cloneLocale(oldLocaleData)

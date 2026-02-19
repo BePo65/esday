@@ -644,15 +644,19 @@ describe('locale cs', () => {
       future: true,
       expected: '',
     }, // test for unknown token
-  ])(
-    'should format relativeTime for "$token" with "$value", "$noSuffix", "$key", "$future"',
-    ({ token, value, noSuffix, key, future, expected }) => {
-      const tokenKey = token as keyof RelativeTimeElementFunction
-      const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
+  ])('should format relativeTime for "$token" with "$value", "$noSuffix", "$key", "$future"', ({
+    token,
+    value,
+    noSuffix,
+    key,
+    future,
+    expected,
+  }) => {
+    const tokenKey = token as keyof RelativeTimeElementFunction
+    const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
 
-      expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
-    },
-  )
+    expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
+  })
 
   it('should format unknown token as relativeTime', () => {
     const rtFunctionToken = locale.relativeTime.s as RelativeTimeElementFunction

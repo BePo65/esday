@@ -132,15 +132,15 @@ describe('locale uk', () => {
     { currentHour: 1, expected: '[У] dddd [о] LT' },
     { currentHour: 11, expected: '[У] dddd [об] LT' },
     { currentHour: 12, expected: '[У] dddd [о] LT' },
-  ])(
-    'should format nextWeek with calendar for hour "$currentHour"',
-    ({ currentHour, expected }) => {
-      const referenceDate = { hour: () => currentHour } as EsDay
-      const nextWeek = locale.calendar.nextWeek as CalendarSpecValFunction
+  ])('should format nextWeek with calendar for hour "$currentHour"', ({
+    currentHour,
+    expected,
+  }) => {
+    const referenceDate = { hour: () => currentHour } as EsDay
+    const nextWeek = locale.calendar.nextWeek as CalendarSpecValFunction
 
-      expect(nextWeek.call(referenceDate)).toBe(expected)
-    },
-  )
+    expect(nextWeek.call(referenceDate)).toBe(expected)
+  })
 
   it.each([
     { weekday: 0, currentHour: 1, expected: '[Минулої] dddd [о] LT' },
@@ -158,18 +158,19 @@ describe('locale uk', () => {
     { weekday: 6, currentHour: 1, expected: '[Минулої] dddd [о] LT' },
     { weekday: 6, currentHour: 11, expected: '[Минулої] dddd [об] LT' },
     { weekday: 7, currentHour: 11, expected: '' },
-  ])(
-    'should format lastWeek with calendar for weekday "$weekday"',
-    ({ weekday, currentHour, expected }) => {
-      const referenceDate = {
-        hour: () => currentHour,
-        day: () => weekday,
-      } as EsDay
-      const lastWeek = locale.calendar.lastWeek as CalendarSpecValFunction
+  ])('should format lastWeek with calendar for weekday "$weekday"', ({
+    weekday,
+    currentHour,
+    expected,
+  }) => {
+    const referenceDate = {
+      hour: () => currentHour,
+      day: () => weekday,
+    } as EsDay
+    const lastWeek = locale.calendar.lastWeek as CalendarSpecValFunction
 
-      expect(lastWeek.call(referenceDate)).toBe(expected)
-    },
-  )
+    expect(lastWeek.call(referenceDate)).toBe(expected)
+  })
 
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()
@@ -530,15 +531,19 @@ describe('locale uk', () => {
       future: true,
       expected: '23 роки',
     },
-  ])(
-    'should format relativeTime for "$token" with "$value", "$key", "$noSuffix", "$future"',
-    ({ token, value, noSuffix, key, future, expected }) => {
-      const tokenKey = token as keyof RelativeTimeElementFunction
-      const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
+  ])('should format relativeTime for "$token" with "$value", "$key", "$noSuffix", "$future"', ({
+    token,
+    value,
+    noSuffix,
+    key,
+    future,
+    expected,
+  }) => {
+    const tokenKey = token as keyof RelativeTimeElementFunction
+    const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
 
-      expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
-    },
-  )
+    expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
+  })
 
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()

@@ -78,12 +78,12 @@ describe('quarterOfYear plugin', () => {
       quarter: 3,
       expected: '2023-07-25T00:00:00.000',
     },
-  ])(
-    'set quarter for "$sourceString" to "$quarter" using quarter()',
-    ({ sourceString, quarter }) => {
-      expectSameObject((esday) => esday(sourceString).quarter(quarter))
-    },
-  )
+  ])('set quarter for "$sourceString" to "$quarter" using quarter()', ({
+    sourceString,
+    quarter,
+  }) => {
+    expectSameObject((esday) => esday(sourceString).quarter(quarter))
+  })
 
   it('set quarters', () => {
     const sourceString = '2023-02-05T04:05:06.789'
@@ -111,13 +111,14 @@ describe('quarterOfYear plugin', () => {
       value: 3,
       expected: '2023-07-25T00:00:00.000',
     },
-  ])(
-    'set quarter for "$sourceString" to "$value" using set("$unit")',
-    ({ sourceString, unit, value }) => {
-      const unitAsUnitType = unit as UnitTypeGetSet
-      expectSameObject((esday) => esday(sourceString).set(unitAsUnitType, value))
-    },
-  )
+  ])('set quarter for "$sourceString" to "$value" using set("$unit")', ({
+    sourceString,
+    unit,
+    value,
+  }) => {
+    const unitAsUnitType = unit as UnitTypeGetSet
+    expectSameObject((esday) => esday(sourceString).set(unitAsUnitType, value))
+  })
 
   it('set with object without plugin ObjectSupport', () => {
     const value = { years: 1, months: 2, days: 3 }
@@ -136,6 +137,14 @@ describe('quarterOfYear plugin', () => {
     { sourceString: '2023-01-31T09:10:21.456', value: 1, unit: 'quarter' },
   ])('add "$value" $unit to "$sourceString"', ({ sourceString, value, unit }) => {
     expectSameObject((esday) => esday(sourceString).add(value, unit as UnitTypeAddSub))
+  })
+
+  it('add without unit', () => {
+    const sourceString = '2023-01-05T09:10:21'
+    const value = 20
+
+    // @ts-expect-error we want to test add without unit
+    expectSameObject((esday) => esday(sourceString).add(value))
   })
 
   it.each([

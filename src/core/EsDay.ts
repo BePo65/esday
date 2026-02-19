@@ -263,8 +263,8 @@ export class EsDay {
   add(value: number, unit: UnitTypeAddSub): EsDay
   add(value: UnitsObjectTypeAddSub): EsDay
   add(value: number | UnitsObjectTypeAddSub, unit?: UnitTypeAddSub) {
-    if (!isObject(value) && unit !== undefined) {
-      return addImpl(this, value, unit)
+    if (!isObject(value)) {
+      return addImpl(this, value, unit ?? C.MS)
     }
     // using UnitsObjectTypeAddSub is implemented in plugin ObjectSupport
     // therefore we ignore the request here.

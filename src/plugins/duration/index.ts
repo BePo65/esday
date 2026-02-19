@@ -348,7 +348,6 @@ class DurationImpl implements Duration {
    * @returns a string representation of this instance
    */
   asStringifiedJSON() {
-    // biome-ignore lint/correctness/noUnusedVariables: quarters is used to remove that property from the generated result
     const { quarters, weeks, ...durationProperties } = this.#detailsCache
     return JSON.stringify(durationProperties)
   }

@@ -138,12 +138,12 @@ describe('localizedParse plugin - local mode for "en"', () => {
       sourceString: '2024 12 24 [L lll ka] 4:25:36 PM',
       formatString: 'YYYY MM DD [L lll ka] LTS',
     },
-  ])(
-    'parse date string "$sourceString" with format "$formatString"',
-    ({ sourceString, formatString }) => {
-      expectSameObject((esday) => esday(sourceString, formatString))
-    },
-  )
+  ])('parse date string "$sourceString" with format "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameObject((esday) => esday(sourceString, formatString))
+  })
 
   it('parse date string with array of formats', () => {
     const sourceString = '2024 Dec 23 14:25:36'
@@ -156,12 +156,12 @@ describe('localizedParse plugin - local mode for "en"', () => {
       sourceString: '2024-02-29 08:10:21 pM',
       formatString: 'YYYY-MM-DD hh:mm:ss a',
     },
-  ])(
-    'parse date string "$sourceString" with format "$formatString" as invalid date',
-    ({ sourceString, formatString }) => {
-      expectSameValue((esday) => esday(sourceString, formatString).isValid())
-    },
-  )
+  ])('parse date string "$sourceString" with format "$formatString" as invalid date', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameValue((esday) => esday(sourceString, formatString).isValid())
+  })
 })
 
 describe('localizedParse plugin - local mode for "de"', () => {
@@ -270,24 +270,24 @@ describe('localizedParse plugin - local mode for "de"', () => {
       sourceString: '2024 12 24 [L lll ka] 14:25:36',
       formatString: 'YYYY MM DD [L lll ka] LTS',
     },
-  ])(
-    'parse date string "$sourceString" with format "$formatString"',
-    ({ sourceString, formatString }) => {
-      expectSameObject((esday) => esday(sourceString, formatString))
-    },
-  )
+  ])('parse date string "$sourceString" with format "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameObject((esday) => esday(sourceString, formatString))
+  })
 
   it.each([
     {
       sourceString: '2024-02-29 08:10:21 pM',
       formatString: 'YYYY-MM-DD hh:mm:ss a',
     },
-  ])(
-    'parse date string "$sourceString" with format "$formatString" as invalid date',
-    ({ sourceString, formatString }) => {
-      expectSameValue((esday) => esday(sourceString, formatString).isValid())
-    },
-  )
+  ])('parse date string "$sourceString" with format "$formatString" as invalid date', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameValue((esday) => esday(sourceString, formatString).isValid())
+  })
 
   it('parse in strict mode - good format', () => {
     const sourceString = '2024 Dez. 24. 8:10:21 PM'
@@ -409,25 +409,25 @@ describe('localizedParse plugin - local mode for "hr"', () => {
       sourceString: '2024 12 24 [L lll ka] 4:25:36 PM',
       formatString: 'YYYY MM DD [L lll ka] LTS',
     },
-  ])(
-    'parse date string "$sourceString" with format "$formatString"',
-    ({ sourceString, formatString }) => {
-      expectSameObject((esday) => esday(sourceString, formatString))
-      expectSameValue((esday) => esday(sourceString, formatString).locale())
-    },
-  )
+  ])('parse date string "$sourceString" with format "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameObject((esday) => esday(sourceString, formatString))
+    expectSameValue((esday) => esday(sourceString, formatString).locale())
+  })
 
   it.each([
     {
       sourceString: '2024-02-29 08:10:21 pM',
       formatString: 'YYYY-MM-DD hh:mm:ss a',
     },
-  ])(
-    'parse date string "$sourceString" with format "$formatString" as invalid date',
-    ({ sourceString, formatString }) => {
-      expectSameValue((esday) => esday(sourceString, formatString).isValid())
-    },
-  )
+  ])('parse date string "$sourceString" with format "$formatString" as invalid date', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameValue((esday) => esday(sourceString, formatString).isValid())
+  })
 
   it('parse in strict mode - good format', () => {
     const sourceString = '2024 pro. 24. 8:10:21 PM'
@@ -467,13 +467,13 @@ describe('localizedParse plugin - local mode for "ku"', () => {
   it.each([
     { sourceString: '٢٠٢٤ ١٢', formatString: 'YYYY MM' },
     { sourceString: '٢٠٢٤ ٢٣', formatString: 'YYYY DD' },
-  ])(
-    'parse date string "$sourceString" with arabic numbers with format "$formatString"',
-    ({ sourceString, formatString }) => {
-      expectSameObject((esday) => esday(sourceString, formatString))
-      expectSameValue((esday) => esday(sourceString, formatString).locale())
-    },
-  )
+  ])('parse date string "$sourceString" with arabic numbers with format "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameObject((esday) => esday(sourceString, formatString))
+    expectSameValue((esday) => esday(sourceString, formatString).locale())
+  })
 })
 
 describe('localizedParse plugin - local mode for "ka"', () => {
@@ -497,13 +497,13 @@ describe('localizedParse plugin - local mode for "ka"', () => {
     { sourceString: '2024', formatString: 'YYYY' },
     { sourceString: '2024 16', formatString: 'YYYY DD' },
     { sourceString: '2024 12 16', formatString: 'YYYY MM DD' },
-  ])(
-    'parse date string "$sourceString" with format "$formatString"',
-    ({ sourceString, formatString }) => {
-      expectSameObject((esday) => esday(sourceString, formatString))
-      expectSameValue((esday) => esday(sourceString, formatString).locale())
-    },
-  )
+  ])('parse date string "$sourceString" with format "$formatString"', ({
+    sourceString,
+    formatString,
+  }) => {
+    expectSameObject((esday) => esday(sourceString, formatString))
+    expectSameValue((esday) => esday(sourceString, formatString).locale())
+  })
 })
 
 describe('localizedParse plugin - local mode for "zh"', () => {
@@ -553,14 +553,15 @@ describe('localizedParse plugin - local mode using locale given as parameter', (
       formatString: 'YYYY MMM Do h:mm:ss A',
       locale: 'fr',
     },
-  ])(
-    'parse in "en" with "$locale" as locale parameter',
-    ({ sourceString, formatString, locale }) => {
-      expect(esday(sourceString, formatString, locale).isValid()).toBeTruthy()
-      expectSameObject((esday) => esday(sourceString, formatString, locale))
-      expectSameValue((esday) => esday(sourceString, formatString, locale).locale())
-    },
-  )
+  ])('parse in "en" with "$locale" as locale parameter', ({
+    sourceString,
+    formatString,
+    locale,
+  }) => {
+    expect(esday(sourceString, formatString, locale).isValid()).toBeTruthy()
+    expectSameObject((esday) => esday(sourceString, formatString, locale))
+    expectSameValue((esday) => esday(sourceString, formatString, locale).locale())
+  })
 
   it.each([
     {
@@ -578,14 +579,15 @@ describe('localizedParse plugin - local mode using locale given as parameter', (
       formatString: 'YYYY MMM Do h:mm:ss A',
       locale: 'fr',
     },
-  ])(
-    'parse in strict mode in "en" with "$locale" as locale parameter',
-    ({ sourceString, formatString, locale }) => {
-      expect(esday(sourceString, formatString, locale, true).isValid()).toBeTruthy()
-      expectSameObject((esday) => esday(sourceString, formatString, locale, true))
-      expectSameValue((esday) => esday(sourceString, formatString, locale, true).locale())
-    },
-  )
+  ])('parse in strict mode in "en" with "$locale" as locale parameter', ({
+    sourceString,
+    formatString,
+    locale,
+  }) => {
+    expect(esday(sourceString, formatString, locale, true).isValid()).toBeTruthy()
+    expectSameObject((esday) => esday(sourceString, formatString, locale, true))
+    expectSameValue((esday) => esday(sourceString, formatString, locale, true).locale())
+  })
 
   it('parse in strict mode with non-matching format with locale as parameter', () => {
     // Day should not have a trailing decimal point
@@ -653,13 +655,63 @@ describe('localizedParse plugin - locale without meridiem', () => {
       formatString: 'YYYY-MM-DD h:mm:ss A',
       expected: '2024-02-29T20:10:21',
     },
-  ])(
-    'should use default meridiem for "$sourceString" with format "$formatString"',
-    ({ sourceString, formatString, expected }) => {
-      const parsedDate = esday(sourceString, formatString)
+  ])('should use default meridiem for "$sourceString" with format "$formatString"', ({
+    sourceString,
+    formatString,
+    expected,
+  }) => {
+    const parsedDate = esday(sourceString, formatString)
 
-      expect(parsedDate.isValid()).toBeTruthy()
-      expect(parsedDate.format().slice(0, -6)).toBe(expected)
-    },
-  )
+    expect(parsedDate.isValid()).toBeTruthy()
+    expect(parsedDate.format().slice(0, -6)).toBe(expected)
+  })
+})
+
+describe('localizedParse plugin - edge cases', () => {
+  const fakeTimeAsString = '2023-12-17T03:24:46.234' // 'Sunday 2023-12-17 03:24'
+
+  beforeEach(() => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(fakeTimeAsString))
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('parse day-of-month with input not containing a number', () => {
+    // define locale for test
+    esday.registerLocale({
+      name: 'test1',
+      dayOfMonthOrdinalParse: /.+/,
+      ordinal: (n) => `${n}`,
+    } as Locale)
+    esday.locale('test1')
+
+    const sourceString = 'first'
+    const formatString = 'Do'
+
+    expectSameObject((esday) => esday(sourceString, formatString))
+    expect(esday(sourceString, formatString).isValid()).toBeFalsy()
+  })
+
+  it('parse day-of-month with input not being an ordinal number', () => {
+    // define locale for test
+    esday.registerLocale({
+      name: 'test2',
+      dayOfMonthOrdinalParse: /\d{1,2}([^\s]*)/,
+      ordinal: (n) => {
+        const suffices = ['th', 'st', 'nd', 'rd']
+        const v = n % 100
+        return `${n}${suffices[(v - 20) % 10] || suffices[v] || suffices[0]}`
+      },
+    } as Locale)
+    esday.locale('test2')
+
+    const sourceString = '23.'
+    const formatString = 'Do'
+
+    // "en" in moment.js just ignores the string after the number
+    expect(esday(sourceString, formatString).isValid()).toBeFalsy()
+  })
 })

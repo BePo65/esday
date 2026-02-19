@@ -7,7 +7,7 @@
  * format a date, the plugin 'Week' is required too.
  */
 
-import type { EsDay, EsDayPlugin } from 'esday'
+import { type EsDay, type EsDayPlugin, esday } from 'esday'
 import type {
   Calendar,
   CalendarSpecValFunction,
@@ -116,12 +116,16 @@ const getMonths = (
       } else {
         nameArray = propAsFunction.format
       }
-    } else if (typeof property === 'object') {
-      const propAsObject = property as MonthNamesStandaloneFormat
-      if (propAsObject.isFormat !== undefined) {
-        nameArray = propAsObject.isFormat.test(format ?? defaultFormat)
-          ? propAsObject.format
-          : propAsObject.standalone
+    } else {
+      // property can only be of type function or object; otherwise we have an error
+      /* istanbul ignore else -- @preserve */
+      if (typeof property === 'object') {
+        const propAsObject = property as MonthNamesStandaloneFormat
+        if (propAsObject.isFormat !== undefined) {
+          nameArray = propAsObject.isFormat.test(format ?? defaultFormat)
+            ? propAsObject.format
+            : propAsObject.standalone
+        }
       }
     }
 
@@ -155,10 +159,13 @@ const getCalendar = (locale: Locale, key?: keyof Calendar, date?: EsDay, now?: E
   const defaultKey = 'sameElse'
   const calendarArray = locale.calendar
   const calendarEntry = calendarArray[key ?? defaultKey] ?? calendarArray[defaultKey]
+  const nowDate = now ?? esday()
 
   if (typeof calendarEntry === 'function') {
+    // if we  have no date, then we take the default return value
+    /* istanbul ignore else -- @preserve */
     if (date !== undefined) {
-      result = (calendarEntry as CalendarSpecValFunction).call(date, now)
+      result = (calendarEntry as CalendarSpecValFunction).call(date, nowDate)
     }
   } else {
     result = calendarEntry as string

@@ -249,8 +249,10 @@ const weekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   function _postParseYear(this: EsDay, parsedDate: Date, parsedElements: ParsedElements) {
     let modifiedDate = parsedDate
 
-    // is this a valid date and do we have parsed the weekYear?
+    // we need no else branch, as postPastYear is only required for 'weekYear' format
+    /* istanbul ignore else -- @preserve */
     if (!(Number.isNaN(parsedDate.valueOf()) || isUndefined(parsedElements.weekYear))) {
+      // this is a valid date and we have parsed 'weekYear'
       const newEsday = createInstanceFromExist(parsedDate, this)
       const parsedWeekYear = parsedElements.weekYear as number
 

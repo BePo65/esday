@@ -31,13 +31,14 @@ describe('localizedParse plugin - without locale', () => {
       formatString: 'YYYY MMM Do h:mm:ss a',
       expected: '2024-12-24T08:10:21',
     },
-  ])(
-    'should use default locale for "$sourceString" with format "$formatString"',
-    ({ sourceString, formatString, expected }) => {
-      const parsedDate = esday(sourceString, formatString)
+  ])('should use default locale for "$sourceString" with format "$formatString"', ({
+    sourceString,
+    formatString,
+    expected,
+  }) => {
+    const parsedDate = esday(sourceString, formatString)
 
-      expect(parsedDate.isValid()).toBeTruthy()
-      expect(parsedDate.format().slice(0, -6)).toBe(expected)
-    },
-  )
+    expect(parsedDate.isValid()).toBeTruthy()
+    expect(parsedDate.format().slice(0, -6)).toBe(expected)
+  })
 })

@@ -48,7 +48,7 @@ const calendar = {
   sameDay: '[dnes v] LT',
   nextDay: '[zítra v] LT',
   nextWeek(this: EsDay) {
-    switch (this.day()) {
+    switch (this?.day()) {
       case 0:
         return '[v neděli v] LT'
       case 1:
@@ -68,7 +68,7 @@ const calendar = {
   },
   lastDay: '[včera v] LT',
   lastWeek(this: EsDay) {
-    switch (this.day()) {
+    switch (this?.day()) {
       case 0:
         return '[minulou neděli v] LT'
       case 1:

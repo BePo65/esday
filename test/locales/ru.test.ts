@@ -134,19 +134,21 @@ describe('locale ru', () => {
     { thisWeek: 0, refWeek: 1, weekday: 7, expected: '' },
     { thisWeek: 0, refWeek: 0, weekday: 0, expected: '[В] dddd, [в] LT' },
     { thisWeek: 0, refWeek: 0, weekday: 2, expected: '[Во] dddd, [в] LT' },
-  ])(
-    'should format nextWeek with calendar for weekday "$weekday"',
-    ({ thisWeek, refWeek, weekday, expected }) => {
-      const thisDate = { week: () => thisWeek, day: () => weekday } as EsDay
-      const referenceDate = {
-        week: () => refWeek,
-        day: () => weekday,
-      } as EsDay
-      const nextWeek = locale.calendar.nextWeek as CalendarSpecValFunction
+  ])('should format nextWeek with calendar for weekday "$weekday"', ({
+    thisWeek,
+    refWeek,
+    weekday,
+    expected,
+  }) => {
+    const thisDate = { week: () => thisWeek, day: () => weekday } as EsDay
+    const referenceDate = {
+      week: () => refWeek,
+      day: () => weekday,
+    } as EsDay
+    const nextWeek = locale.calendar.nextWeek as CalendarSpecValFunction
 
-      expect(nextWeek.call(thisDate, referenceDate)).toBe(expected)
-    },
-  )
+    expect(nextWeek.call(thisDate, referenceDate)).toBe(expected)
+  })
 
   it.each([
     {
@@ -194,19 +196,21 @@ describe('locale ru', () => {
     { thisWeek: 0, refWeek: 1, weekday: 7, expected: '' },
     { thisWeek: 0, refWeek: 0, weekday: 0, expected: '[В] dddd, [в] LT' },
     { thisWeek: 0, refWeek: 0, weekday: 2, expected: '[Во] dddd, [в] LT' },
-  ])(
-    'should format lastWeek with calendar for weekday "$weekday"',
-    ({ thisWeek, refWeek, weekday, expected }) => {
-      const thisDate = { week: () => thisWeek, day: () => weekday } as EsDay
-      const referenceDate = {
-        week: () => refWeek,
-        day: () => weekday,
-      } as EsDay
-      const lastWeek = locale.calendar.lastWeek as CalendarSpecValFunction
+  ])('should format lastWeek with calendar for weekday "$weekday"', ({
+    thisWeek,
+    refWeek,
+    weekday,
+    expected,
+  }) => {
+    const thisDate = { week: () => thisWeek, day: () => weekday } as EsDay
+    const referenceDate = {
+      week: () => refWeek,
+      day: () => weekday,
+    } as EsDay
+    const lastWeek = locale.calendar.lastWeek as CalendarSpecValFunction
 
-      expect(lastWeek.call(thisDate, referenceDate)).toBe(expected)
-    },
-  )
+    expect(lastWeek.call(thisDate, referenceDate)).toBe(expected)
+  })
 
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()
@@ -511,15 +515,19 @@ describe('locale ru', () => {
       future: true,
       expected: '36 лет',
     },
-  ])(
-    'should format relativeTime for "$token" with "$value", "$key", "$noSuffix", "$future"',
-    ({ token, value, noSuffix, key, future, expected }) => {
-      const tokenKey = token as keyof RelativeTimeElementFunction
-      const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
+  ])('should format relativeTime for "$token" with "$value", "$key", "$noSuffix", "$future"', ({
+    token,
+    value,
+    noSuffix,
+    key,
+    future,
+    expected,
+  }) => {
+    const tokenKey = token as keyof RelativeTimeElementFunction
+    const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
 
-      expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
-    },
-  )
+    expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
+  })
 
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()

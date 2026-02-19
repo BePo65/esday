@@ -121,10 +121,7 @@ function offsetFromString(offset: string): number {
  */
 function addInput(property: keyof ParsedElements) {
   return (parsedElements: ParsedElements, input: string) => {
-    // this 'if' is required, to avoid type errors
-    if (property !== 'afternoon') {
-      parsedElements[property] = +input
-    }
+    parsedElements[property] = +input
   }
 }
 
@@ -495,68 +492,65 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
         ) {
           this['$d'] = invalidDate
         }
-      } else if (isArray(format)) {
-        // format as array string
-        let bestDate = invalidDate
-        let scoreToBeat = 0
-        let bestFormatIsValid = false
+      } else {
+        /* istanbul ignore else -- @preserve */
+        if (isArray(format)) {
+          // format as array string
+          let bestDate = invalidDate
+          let scoreToBeat = 0 // score: always >= 0; lower value means format matches better
+          let bestFormatIsValid = false
 
-        // look for best matching format from array of formats
-        for (let i = 0; i < format.length; i++) {
-          let currentScore = 0
-          let validFormatFound = false
+          // look for best matching format from array of formats
+          for (let i = 0; i < format.length; i++) {
+            let currentScore = 0
+            let validFormatFound = false
 
-          const formatUnderInspection = format[i]
-          const parsingResult = parseFormattedInput.call(
-            this,
-            d,
-            formatUnderInspection,
-            isStrict,
-            parseOptions,
-          )
+            const formatUnderInspection = format[i]
+            const parsingResult = parseFormattedInput.call(
+              this,
+              d,
+              formatUnderInspection,
+              isStrict,
+              parseOptions,
+            )
 
-          if (
-            isStrict &&
-            (parsingResult.charsLeftOver > 0 ||
-              parsingResult.unusedTokens > 0 ||
-              !parsingResult.separatorsMatch)
-          ) {
-            parsingResult.date = invalidDate
-          }
+            if (
+              isStrict &&
+              (parsingResult.charsLeftOver > 0 ||
+                parsingResult.unusedTokens > 0 ||
+                !parsingResult.separatorsMatch)
+            ) {
+              parsingResult.date = invalidDate
+            }
 
-          if (isValidDate(parsingResult.date)) {
-            validFormatFound = true
-          }
+            if (isValidDate(parsingResult.date)) {
+              validFormatFound = true
+            }
 
-          // if there are any unused tokens or if there is any input that was not parsed
-          // add a penalty for that format
-          currentScore += parsingResult.charsLeftOver
-          currentScore += parsingResult.unusedTokens * 10
+            // if there are any unused tokens or if there is any input that was not parsed
+            // add a penalty for that format
+            currentScore += parsingResult.charsLeftOver
+            currentScore += parsingResult.unusedTokens * 10
 
-          // wait for valid date(s)
-          if (bestFormatIsValid) {
-            // evaluate only valid formats
-            if (validFormatFound && !isUndefined(scoreToBeat) && currentScore < scoreToBeat) {
+            if (bestFormatIsValid) {
+              // we already have a valid format for the input (date string)
+              if (validFormatFound && currentScore < scoreToBeat) {
+                // this is a format better matching the date string
+                scoreToBeat = currentScore
+                bestDate = parsingResult.date
+              }
+            } else if (validFormatFound) {
               scoreToBeat = currentScore
               bestDate = parsingResult.date
-            }
-          } else if (
-            isUndefined(scoreToBeat) || // take the first parsed date whatever it is
-            currentScore < scoreToBeat || // take better date (even invalid one)
-            validFormatFound // take first valid date
-          ) {
-            scoreToBeat = currentScore
-            bestDate = parsingResult.date
-            if (validFormatFound) {
               bestFormatIsValid = true
             }
           }
-        }
-        this['$d'] = bestDate
+          this['$d'] = bestDate
 
-        // remove properties required for parsing only from $conf
-        if (Object.keys(this['$conf'].parseOptions).length) {
-          delete this['$conf'].parseOptions
+          // remove properties required for parsing only from $conf
+          if (Object.keys(this['$conf'].parseOptions).length) {
+            delete this['$conf'].parseOptions
+          }
         }
       }
     } else {

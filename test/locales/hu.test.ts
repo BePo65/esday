@@ -581,15 +581,19 @@ describe('locale hu', () => {
       future: true,
       expected: '',
     }, // unknown token
-  ])(
-    'should format relativeTime for "$token" with "$value", "$key", "$noSuffix", "$future"',
-    ({ token, value, noSuffix, key, future, expected }) => {
-      const tokenKey = token as keyof RelativeTimeElementFunction
-      const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
+  ])('should format relativeTime for "$token" with "$value", "$key", "$noSuffix", "$future"', ({
+    token,
+    value,
+    noSuffix,
+    key,
+    future,
+    expected,
+  }) => {
+    const tokenKey = token as keyof RelativeTimeElementFunction
+    const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
 
-      expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
-    },
-  )
+    expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
+  })
 
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()

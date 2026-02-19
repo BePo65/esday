@@ -321,10 +321,14 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       if (normalizedUnit === C.DAY) {
         // change date to the given day of week as setUnitInDate does not have a setDay() method
         setUnitInDateUTC($date, C.DAY_OF_MONTH, this.date() + (values[0] - this.day()))
-      } else if (normalizedUnit !== C.QUARTER && normalizedUnit !== C.WEEK) {
-        // Units 'quarter' and 'weeks' are implemented in the corresponding plugins
-        const typedUnit = normalizedUnit as UnitForSetDate
-        setUnitInDateUTC($date, typedUnit, values)
+      } else {
+        // we do not need an else branch, as we already have handled all units
+        /* istanbul ignore else -- @preserve */
+        if (normalizedUnit !== C.QUARTER && normalizedUnit !== C.WEEK) {
+          // Units 'quarter' and 'weeks' are implemented in the corresponding plugins
+          const typedUnit = normalizedUnit as UnitForSetDate
+          setUnitInDateUTC($date, typedUnit, values)
+        }
       }
 
       return this

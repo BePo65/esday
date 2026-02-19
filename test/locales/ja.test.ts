@@ -88,31 +88,33 @@ describe('locale ja', () => {
     { thisWeek: 0, refWeek: 0, expected: 'dddd LT' },
     { thisWeek: 0, refWeek: 1, expected: '[来週]dddd LT' },
     { thisWeek: 1, refWeek: 1, expected: 'dddd LT' },
-  ])(
-    'should format nextWeek with calendar for week "$thisWeek" and ref week "$refWeek"',
-    ({ thisWeek, refWeek, expected }) => {
-      const thisDate = { week: () => thisWeek } as EsDay
-      const referenceDate = { week: () => refWeek } as EsDay
-      const nextWeek = locale.calendar.nextWeek as CalendarSpecValFunction
+  ])('should format nextWeek with calendar for week "$thisWeek" and ref week "$refWeek"', ({
+    thisWeek,
+    refWeek,
+    expected,
+  }) => {
+    const thisDate = { week: () => thisWeek } as EsDay
+    const referenceDate = { week: () => refWeek } as EsDay
+    const nextWeek = locale.calendar.nextWeek as CalendarSpecValFunction
 
-      expect(nextWeek.call(thisDate, referenceDate)).toBe(expected)
-    },
-  )
+    expect(nextWeek.call(thisDate, referenceDate)).toBe(expected)
+  })
 
   it.each([
     { thisWeek: 0, refWeek: 0, expected: 'dddd LT' },
     { thisWeek: 0, refWeek: 1, expected: '[先週]dddd LT' },
     { thisWeek: 1, refWeek: 1, expected: 'dddd LT' },
-  ])(
-    'should format lastWeek with calendar for week "$thisWeek" and ref week "$refWeek"',
-    ({ thisWeek, refWeek, expected }) => {
-      const thisDate = { week: () => thisWeek } as EsDay
-      const referenceDate = { week: () => refWeek } as EsDay
-      const lastWeek = locale.calendar.lastWeek as CalendarSpecValFunction
+  ])('should format lastWeek with calendar for week "$thisWeek" and ref week "$refWeek"', ({
+    thisWeek,
+    refWeek,
+    expected,
+  }) => {
+    const thisDate = { week: () => thisWeek } as EsDay
+    const referenceDate = { week: () => refWeek } as EsDay
+    const lastWeek = locale.calendar.lastWeek as CalendarSpecValFunction
 
-      expect(lastWeek.call(thisDate, referenceDate)).toBe(expected)
-    },
-  )
+    expect(lastWeek.call(thisDate, referenceDate)).toBe(expected)
+  })
 
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()

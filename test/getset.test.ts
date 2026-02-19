@@ -109,7 +109,7 @@ describe('set', () => {
     expectSameObject((esday) => esday().set('years', newYear))
   })
 
-  it('year, month, day-of-month', () => {
+  it('year with month and day-of-month', () => {
     const newYear = 2025
     const newMonth = 9 // October
     const newDate = 23
@@ -134,7 +134,7 @@ describe('set', () => {
     expectSameObject((esday) => esday().set('month', newMonth))
   })
 
-  it('month, day-of-month', () => {
+  it('month with day-of-month', () => {
     const newMonth = 5 // June
     const newDate = 23
     const esdaySet = esday().set('month', newMonth, newDate)
@@ -178,7 +178,7 @@ describe('set', () => {
     expectSameObject((esday) => esday().set('hours', newHour))
   })
 
-  it('hour, minute, second, millisecond', () => {
+  it('hour with minute, second and millisecond', () => {
     const newHour = 4
     const newMinute = 12
     const newSecond = 31
@@ -205,7 +205,7 @@ describe('set', () => {
     expectSameObject((esday) => esday().set('minutes', newMinute))
   })
 
-  it('minute, second, millisecond', () => {
+  it('minute with second and millisecond', () => {
     const newMinute = 43
     const newSecond = 3
     const newMs = 564
@@ -231,7 +231,7 @@ describe('set', () => {
     expectSameObject((esday) => esday().set('seconds', newSecond))
   })
 
-  it('second, millisecond', () => {
+  it('second with millisecond', () => {
     const newSecond = 25
     const newMs = 5
 

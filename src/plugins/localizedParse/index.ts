@@ -63,11 +63,7 @@ const addHour = (parsedElements: ParsedElements, input: string, _parseOptions: P
  * @param isLowerCase - should this be a lowercase meridiem string?
  * @returns is input an 'afternoon' string for given locale
  */
-const meridiemMatch = (
-  locale: Locale,
-  input: string,
-  isLowerCase: boolean,
-): boolean | undefined => {
+const meridiemMatch = (locale: Locale, input: string, isLowerCase: boolean): boolean => {
   let isAfternoon = false
   const { meridiem } = locale
   if (meridiem) {
@@ -99,9 +95,7 @@ const addAfternoon = (isLowerCase: boolean, esday: EsDayFactory) => {
     const localeName = parseOptions['locale'] as string
     const locale = esday.getLocale(localeName)
     const meridiem = meridiemMatch(locale, input, isLowerCase)
-    if (!isUndefined(meridiem)) {
-      parsedElements.afternoon = meridiem
-    }
+    parsedElements.afternoon = meridiem
   }
 }
 
@@ -287,12 +281,15 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
 
     oldParse.call(this, newDate)
 
-    // remove properties required for parsing only from $conf
+    // remove properties required only during parsing from $conf
     if (this['$conf'].parseOptions !== undefined) {
+      // nothing to do, if we do not have "temporary" properties
+      /* istanbul ignore else -- @preserve */
       if (this['$conf'].parseOptions?.locale !== undefined) {
         delete this['$conf'].parseOptions.locale
       }
 
+      /* istanbul ignore else -- @preserve */
       if (Object.keys(this['$conf'].parseOptions).length === 0) {
         delete this['$conf'].parseOptions
       }

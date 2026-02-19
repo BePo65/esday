@@ -100,7 +100,7 @@ const transformMdToHtml = async (fullSourcePath, baseDirectory, templateHtml, md
  */
 const setInternalLinkTargets = (content, localLinks) => {
   localLinks.forEach((localLinkParams) => {
-    const headerTag = new RegExp(`<h(\\d)>${localLinkParams.content}<\/h(\\d)>`, 'g')
+    const headerTag = new RegExp(`<h(\\d)>${localLinkParams.content}</h(\\d)>`, 'g')
     content = content.replace(
       headerTag,
       `<h$1 id="${localLinkParams.target}">${localLinkParams.content}</h$2>`,
