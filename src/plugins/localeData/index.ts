@@ -7,7 +7,7 @@
  * format a date, the plugin 'Week' is required too.
  */
 
-import { type EsDay, type EsDayPlugin, esday } from 'esday';
+import { type EsDay, type EsDayPlugin, esday } from 'esday'
 import type {
   Calendar,
   CalendarSpecValFunction,
@@ -20,8 +20,8 @@ import type {
   MonthNamesStandaloneFormat,
   RelativeTimeElementFunction,
   RelativeTimeKeys,
-} from '../locale/types';
-import type { LocaleData } from './types';
+} from '../locale/types'
+import type { LocaleData } from './types'
 
 /**
  * Get list of month names or format a date as month (short or long month name).
@@ -37,44 +37,44 @@ const getWeekdays = (
   date?: EsDay,
   format?: string,
 ) => {
-  let nameArray: DayNames;
-  const property = locale[propName];
+  let nameArray: DayNames
+  const property = locale[propName]
 
   // get list of weekday names depending on type of localeData().weekdays (or one of the other keys)
   if (Array.isArray(property)) {
-    nameArray = property as DayNames;
+    nameArray = property as DayNames
   } else {
-    nameArray = (property as DayNamesStandaloneFormat).standalone;
+    nameArray = (property as DayNamesStandaloneFormat).standalone
   }
 
   // format date, if there is one
   if (date !== undefined) {
-    let defaultFormat = '';
+    let defaultFormat = ''
     switch (propName) {
       case 'weekdays':
-        defaultFormat = 'dddd';
-        break;
+        defaultFormat = 'dddd'
+        break
       case 'weekdaysShort':
-        defaultFormat = 'ddd';
-        break;
+        defaultFormat = 'ddd'
+        break
       case 'weekdaysMin':
-        defaultFormat = 'dd';
-        break;
+        defaultFormat = 'dd'
+        break
     }
 
     // find the names list to use when months / monthsShort is a MonthNamesFunction
     if (!Array.isArray(property)) {
-      const propAsObject = property as DayNamesStandaloneFormat;
+      const propAsObject = property as DayNamesStandaloneFormat
       nameArray = propAsObject.isFormat.test(format ?? defaultFormat)
         ? propAsObject.format
-        : propAsObject.standalone;
+        : propAsObject.standalone
     }
 
-    return nameArray[date.day()];
+    return nameArray[date.day()]
   }
 
-  return nameArray;
-};
+  return nameArray
+}
 
 /**
  * Get list of month names or format a date as month (short or long month name).
@@ -90,50 +90,50 @@ const getMonths = (
   date?: EsDay,
   format?: string,
 ) => {
-  let nameArray: MonthNames;
-  const property = locale[propName];
+  let nameArray: MonthNames
+  const property = locale[propName]
 
   // get list of month names depending on type of localeData().months (or localeData().monthsShort)
   if (Array.isArray(property)) {
-    nameArray = property as MonthNames;
+    nameArray = property as MonthNames
   } else if (typeof property === 'function') {
-    nameArray = property.standalone as MonthNames;
+    nameArray = property.standalone as MonthNames
   } else {
-    nameArray = (property as MonthNamesStandaloneFormat).standalone;
+    nameArray = (property as MonthNamesStandaloneFormat).standalone
   }
 
   // format date, if there is one
   if (date !== undefined) {
-    const defaultFormat = propName === 'months' ? 'MMMM' : 'MMM';
+    const defaultFormat = propName === 'months' ? 'MMMM' : 'MMM'
 
     // find the names list to use when months / monthsShort is a MonthNamesFunction
     if (typeof property === 'function') {
-      const propAsFunction = property as MonthNamesFunction;
-      const formattedDate = propAsFunction(date, format ?? defaultFormat);
+      const propAsFunction = property as MonthNamesFunction
+      const formattedDate = propAsFunction(date, format ?? defaultFormat)
 
       if (propAsFunction.standalone.includes(formattedDate)) {
-        nameArray = propAsFunction.standalone;
+        nameArray = propAsFunction.standalone
       } else {
-        nameArray = propAsFunction.format;
+        nameArray = propAsFunction.format
       }
     } else {
       // property can only be of type function or object; otherwise we have an error
       /* istanbul ignore else -- @preserve */
       if (typeof property === 'object') {
-        const propAsObject = property as MonthNamesStandaloneFormat;
+        const propAsObject = property as MonthNamesStandaloneFormat
         if (propAsObject.isFormat !== undefined) {
           nameArray = propAsObject.isFormat.test(format ?? defaultFormat)
             ? propAsObject.format
-            : propAsObject.standalone;
+            : propAsObject.standalone
         }
       }
     }
 
-    return nameArray[date.month()];
+    return nameArray[date.month()]
   }
 
-  return nameArray;
-};
+  return nameArray
+}
 
 /**
  * Get the full format of the abbreviated date-time format (e.g. 'LT')
@@ -142,9 +142,9 @@ const getMonths = (
  * @returns full format of abbreviated date-time format
  */
 const getLongDateFormat = (locale: Locale, format: LocaleFormatKeys) => {
-  const formatsArray = locale.formats;
-  return formatsArray[format as LocaleFormatKeys] ?? '';
-};
+  const formatsArray = locale.formats
+  return formatsArray[format as LocaleFormatKeys] ?? ''
+}
 
 /**
  * Get a locale dependant format for relative dates.
@@ -155,24 +155,24 @@ const getLongDateFormat = (locale: Locale, format: LocaleFormatKeys) => {
  * @returns - format to use for relative date
  */
 const getCalendar = (locale: Locale, key?: keyof Calendar, date?: EsDay, now?: EsDay) => {
-  let result = '';
-  const defaultKey = 'sameElse';
-  const calendarArray = locale.calendar;
-  const calendarEntry = calendarArray[key ?? defaultKey] ?? calendarArray[defaultKey];
-  const nowDate = now ?? esday();
+  let result = ''
+  const defaultKey = 'sameElse'
+  const calendarArray = locale.calendar
+  const calendarEntry = calendarArray[key ?? defaultKey] ?? calendarArray[defaultKey]
+  const nowDate = now ?? esday()
 
   if (typeof calendarEntry === 'function') {
     // if we  have no date, then we take the default return value
     /* istanbul ignore else -- @preserve */
     if (date !== undefined) {
-      result = (calendarEntry as CalendarSpecValFunction).call(date, nowDate);
+      result = (calendarEntry as CalendarSpecValFunction).call(date, nowDate)
     }
   } else {
-    result = calendarEntry as string;
+    result = calendarEntry as string
   }
 
-  return result;
-};
+  return result
+}
 
 /**
  *
@@ -190,9 +190,9 @@ const getRelativeTime = (
   token: RelativeTimeKeys,
   isFuture: boolean,
 ) => {
-  let result = '';
-  const relativeTimeArray = locale.relativeTime;
-  const relativeTimeEntry = relativeTimeArray[token];
+  let result = ''
+  const relativeTimeArray = locale.relativeTime
+  const relativeTimeEntry = relativeTimeArray[token]
 
   if (typeof relativeTimeEntry === 'function') {
     result = (relativeTimeEntry as RelativeTimeElementFunction)(
@@ -200,13 +200,13 @@ const getRelativeTime = (
       withoutSuffix,
       token,
       isFuture,
-    );
+    )
   } else {
-    result = (relativeTimeEntry as string).replace(/%d/i, timeValue.toString());
+    result = (relativeTimeEntry as string).replace(/%d/i, timeValue.toString())
   }
 
-  return result;
-};
+  return result
+}
 
 const createLocaleDataObject = (locale: Locale) => {
   const localeData: LocaleData = {
@@ -235,45 +235,45 @@ const createLocaleDataObject = (locale: Locale) => {
       isFuture: boolean,
     ) => getRelativeTime(locale, timeValue, withoutSuffix, token, isFuture),
     meridiem: locale.meridiem,
-  };
+  }
 
   if (locale.preParse !== undefined) {
-    localeData.preParse = locale.preParse;
+    localeData.preParse = locale.preParse
   }
 
   if (locale.postFormat !== undefined) {
-    localeData.postFormat = locale.postFormat;
+    localeData.postFormat = locale.postFormat
   }
 
-  return localeData;
-};
+  return localeData
+}
 
 const localeDataPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
-  const proto = dayClass.prototype;
+  const proto = dayClass.prototype
 
   proto.localeData = function (): LocaleData {
-    const locale = this.localeObject();
-    return createLocaleDataObject(locale);
-  };
+    const locale = this.localeObject()
+    return createLocaleDataObject(locale)
+  }
 
   dayFactory.localeData = (localeName?: string): LocaleData => {
     const locale =
       localeName !== undefined
         ? dayFactory.getLocale(localeName)
-        : dayFactory.getLocale(dayFactory.locale());
-    return createLocaleDataObject(locale);
-  };
+        : dayFactory.getLocale(dayFactory.locale())
+    return createLocaleDataObject(locale)
+  }
 
   dayFactory.months = () =>
-    getMonths(dayFactory.getLocale(dayFactory.locale()), 'months') as MonthNames;
+    getMonths(dayFactory.getLocale(dayFactory.locale()), 'months') as MonthNames
   dayFactory.monthsShort = () =>
-    getMonths(dayFactory.getLocale(dayFactory.locale()), 'monthsShort') as MonthNames;
+    getMonths(dayFactory.getLocale(dayFactory.locale()), 'monthsShort') as MonthNames
   dayFactory.weekdays = () =>
-    getWeekdays(dayFactory.getLocale(dayFactory.locale()), 'weekdays') as DayNames;
+    getWeekdays(dayFactory.getLocale(dayFactory.locale()), 'weekdays') as DayNames
   dayFactory.weekdaysShort = () =>
-    getWeekdays(dayFactory.getLocale(dayFactory.locale()), 'weekdaysShort') as DayNames;
+    getWeekdays(dayFactory.getLocale(dayFactory.locale()), 'weekdaysShort') as DayNames
   dayFactory.weekdaysMin = () =>
-    getWeekdays(dayFactory.getLocale(dayFactory.locale()), 'weekdaysMin') as DayNames;
-};
+    getWeekdays(dayFactory.getLocale(dayFactory.locale()), 'weekdaysMin') as DayNames
+}
 
-export default localeDataPlugin;
+export default localeDataPlugin

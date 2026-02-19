@@ -2,13 +2,13 @@
  * Croatian [hr]
  */
 
-import type { EsDay } from 'esday';
+import type { EsDay } from 'esday'
 import type {
   Locale,
   MonthNames,
   MonthNamesFunction,
   RelativeTimeElementFunction,
-} from '~/plugins/locale';
+} from '~/plugins/locale'
 
 const monthFormat: MonthNames = [
   'siječnja',
@@ -23,7 +23,7 @@ const monthFormat: MonthNames = [
   'listopada',
   'studenoga',
   'prosinca',
-];
+]
 const monthStandalone: MonthNames = [
   'siječanj',
   'veljača',
@@ -37,17 +37,17 @@ const monthStandalone: MonthNames = [
   'listopad',
   'studeni',
   'prosinac',
-];
+]
 
 const months: MonthNamesFunction = (esdayInstance: EsDay, format: string) => {
-  const MONTHS_IN_FORMAT = /D[oD]?(?:\[[^[\]]*\]|\s)+MMMM?/;
+  const MONTHS_IN_FORMAT = /D[oD]?(?:\[[^[\]]*\]|\s)+MMMM?/
   if (MONTHS_IN_FORMAT.test(format)) {
-    return monthFormat[esdayInstance.month()];
+    return monthFormat[esdayInstance.month()]
   }
-  return monthStandalone[esdayInstance.month()];
-};
-months.format = monthFormat;
-months.standalone = monthStandalone;
+  return monthStandalone[esdayInstance.month()]
+}
+months.format = monthFormat
+months.standalone = monthStandalone
 
 const calendar = {
   sameDay: '[danas u] LT',
@@ -55,40 +55,40 @@ const calendar = {
   nextWeek(this: EsDay) {
     switch (this.day()) {
       case 0:
-        return '[u] [nedjelju] [u] LT';
+        return '[u] [nedjelju] [u] LT'
       case 3:
-        return '[u] [srijedu] [u] LT';
+        return '[u] [srijedu] [u] LT'
       case 6:
-        return '[u] [subotu] [u] LT';
+        return '[u] [subotu] [u] LT'
       case 1:
       case 2:
       case 4:
       case 5:
-        return '[u] dddd [u] LT';
+        return '[u] dddd [u] LT'
       default:
-        return '';
+        return ''
     }
   },
   lastDay: '[jučer u] LT',
   lastWeek(this: EsDay) {
     switch (this.day()) {
       case 0:
-        return '[prošlu] [nedjelju] [u] LT';
+        return '[prošlu] [nedjelju] [u] LT'
       case 3:
-        return '[prošlu] [srijedu] [u] LT';
+        return '[prošlu] [srijedu] [u] LT'
       case 6:
-        return '[prošle] [subote] [u] LT';
+        return '[prošle] [subote] [u] LT'
       case 1:
       case 2:
       case 4:
       case 5:
-        return '[prošli] dddd [u] LT';
+        return '[prošli] dddd [u] LT'
       default:
-        return '';
+        return ''
     }
   },
   sameElse: 'L',
-};
+}
 
 const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
@@ -97,78 +97,78 @@ const relativeTimeFormatter: RelativeTimeElementFunction = (
   _isFuture: boolean,
 ) => {
   // function translate(timeValue: string | number, withoutSuffix: boolean, range: string): string {
-  let result = `${timeValue} `;
-  const timeValueAsNumber = +timeValue;
+  let result = `${timeValue} `
+  const timeValueAsNumber = +timeValue
   switch (token) {
     case 'ss':
       if (timeValueAsNumber === 1) {
-        result += 'sekunda';
+        result += 'sekunda'
       } else if (timeValueAsNumber === 2 || timeValueAsNumber === 3 || timeValueAsNumber === 4) {
-        result += 'sekunde';
+        result += 'sekunde'
       } else {
-        result += 'sekundi';
+        result += 'sekundi'
       }
-      return result;
+      return result
     case 'm':
-      return withoutSuffix ? 'jedna minuta' : 'jedne minute';
+      return withoutSuffix ? 'jedna minuta' : 'jedne minute'
     case 'mm':
       if (timeValueAsNumber === 1) {
-        result += 'minuta';
+        result += 'minuta'
       } else if (timeValueAsNumber === 2 || timeValueAsNumber === 3 || timeValueAsNumber === 4) {
-        result += 'minute';
+        result += 'minute'
       } else {
-        result += 'minuta';
+        result += 'minuta'
       }
-      return result;
+      return result
     case 'h':
-      return withoutSuffix ? 'jedan sat' : 'jednog sata';
+      return withoutSuffix ? 'jedan sat' : 'jednog sata'
     case 'hh':
       if (timeValueAsNumber === 1) {
-        result += 'sat';
+        result += 'sat'
       } else if (timeValueAsNumber === 2 || timeValueAsNumber === 3 || timeValueAsNumber === 4) {
-        result += 'sata';
+        result += 'sata'
       } else {
-        result += 'sati';
+        result += 'sati'
       }
-      return result;
+      return result
     case 'dd':
       if (timeValueAsNumber === 1) {
-        result += 'dan';
+        result += 'dan'
       } else {
-        result += 'dana';
+        result += 'dana'
       }
-      return result;
+      return result
     case 'ww':
       if (timeValueAsNumber === 1) {
-        result += 'tjedan';
+        result += 'tjedan'
       } else if (timeValueAsNumber === 2 || timeValueAsNumber === 3 || timeValueAsNumber === 4) {
-        result += 'tjedna';
+        result += 'tjedna'
       } else {
-        result += 'tjedana';
+        result += 'tjedana'
       }
-      return result;
+      return result
     case 'MM':
       if (timeValueAsNumber === 1) {
-        result += 'mjesec';
+        result += 'mjesec'
       } else if (timeValueAsNumber === 2 || timeValueAsNumber === 3 || timeValueAsNumber === 4) {
-        result += 'mjeseca';
+        result += 'mjeseca'
       } else {
-        result += 'mjeseci';
+        result += 'mjeseci'
       }
-      return result;
+      return result
     case 'yy':
       if (timeValueAsNumber === 1) {
-        result += 'godina';
+        result += 'godina'
       } else if (timeValueAsNumber === 2 || timeValueAsNumber === 3 || timeValueAsNumber === 4) {
-        result += 'godine';
+        result += 'godine'
       } else {
-        result += 'godina';
+        result += 'godina'
       }
-      return result;
+      return result
     default:
-      return '';
+      return ''
   }
-};
+}
 
 const localeHr: Readonly<Locale> = {
   name: 'hr',
@@ -227,9 +227,9 @@ const localeHr: Readonly<Locale> = {
   },
   meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Croatian doesn't have AM/PM, so return default values
-    const m = hour < 12 ? 'AM' : 'PM';
-    return isLowercase ? m.toLowerCase() : m;
+    const m = hour < 12 ? 'AM' : 'PM'
+    return isLowercase ? m.toLowerCase() : m
   },
-};
+}
 
-export default localeHr;
+export default localeHr

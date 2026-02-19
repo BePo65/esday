@@ -1,48 +1,48 @@
-import { esday } from 'esday';
-import moment from 'moment/min/moment-with-locales';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import localeDe from '~/locales/de';
-import localeEn from '~/locales/en';
-import localeFr from '~/locales/fr';
-import localeHr from '~/locales/hr';
-import localeKa from '~/locales/ka';
-import localeKu from '~/locales/ku';
-import localeZh from '~/locales/zh';
-import advancedParsePlugin from '~/plugins/advancedParse';
-import type { Locale } from '~/plugins/locale';
-import localePlugin from '~/plugins/locale';
-import localizedParsePlugin from '~/plugins/localizedParse';
-import weekPlugin from '~/plugins/week';
-import { expectSameObject, expectSameValue } from '../util';
+import { esday } from 'esday'
+import moment from 'moment/min/moment-with-locales'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import localeDe from '~/locales/de'
+import localeEn from '~/locales/en'
+import localeFr from '~/locales/fr'
+import localeHr from '~/locales/hr'
+import localeKa from '~/locales/ka'
+import localeKu from '~/locales/ku'
+import localeZh from '~/locales/zh'
+import advancedParsePlugin from '~/plugins/advancedParse'
+import type { Locale } from '~/plugins/locale'
+import localePlugin from '~/plugins/locale'
+import localizedParsePlugin from '~/plugins/localizedParse'
+import weekPlugin from '~/plugins/week'
+import { expectSameObject, expectSameValue } from '../util'
 
 esday
   .extend(advancedParsePlugin)
   .extend(weekPlugin)
   .extend(localizedParsePlugin)
-  .extend(localePlugin);
-esday.registerLocale(localeDe);
-esday.registerLocale(localeEn);
-esday.registerLocale(localeFr);
-esday.registerLocale(localeHr);
-esday.registerLocale(localeKa);
-esday.registerLocale(localeKu);
-esday.registerLocale(localeZh);
+  .extend(localePlugin)
+esday.registerLocale(localeDe)
+esday.registerLocale(localeEn)
+esday.registerLocale(localeFr)
+esday.registerLocale(localeHr)
+esday.registerLocale(localeKa)
+esday.registerLocale(localeKu)
+esday.registerLocale(localeZh)
 
 describe('localizedParse plugin - local mode for "en"', () => {
-  const fakeTimeAsString = '2023-12-17T03:24:46.234'; // 'Sunday 2023-12-17 03:24'
+  const fakeTimeAsString = '2023-12-17T03:24:46.234' // 'Sunday 2023-12-17 03:24'
 
   beforeEach(() => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date(fakeTimeAsString));
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(fakeTimeAsString))
 
     // set global locale
-    esday.locale('en');
-    moment.locale('en');
-  });
+    esday.locale('en')
+    moment.locale('en')
+  })
 
   afterEach(() => {
-    vi.useRealTimers();
-  });
+    vi.useRealTimers()
+  })
 
   it.each([
     {
@@ -142,14 +142,14 @@ describe('localizedParse plugin - local mode for "en"', () => {
     sourceString,
     formatString,
   }) => {
-    expectSameObject((esday) => esday(sourceString, formatString));
-  });
+    expectSameObject((esday) => esday(sourceString, formatString))
+  })
 
   it('parse date string with array of formats', () => {
-    const sourceString = '2024 Dec 23 14:25:36';
-    const formatString = ['YYYY MM DD HH:mm:ss', 'YYYY MMM DD HH:mm:ss'];
-    expectSameObject((esday) => esday(sourceString, formatString));
-  });
+    const sourceString = '2024 Dec 23 14:25:36'
+    const formatString = ['YYYY MM DD HH:mm:ss', 'YYYY MMM DD HH:mm:ss']
+    expectSameObject((esday) => esday(sourceString, formatString))
+  })
 
   it.each([
     {
@@ -160,25 +160,25 @@ describe('localizedParse plugin - local mode for "en"', () => {
     sourceString,
     formatString,
   }) => {
-    expectSameValue((esday) => esday(sourceString, formatString).isValid());
-  });
-});
+    expectSameValue((esday) => esday(sourceString, formatString).isValid())
+  })
+})
 
 describe('localizedParse plugin - local mode for "de"', () => {
-  const fakeTimeAsString = '2023-12-17T03:24:46.234'; // 'Sunday 2023-12-17 03:24'
+  const fakeTimeAsString = '2023-12-17T03:24:46.234' // 'Sunday 2023-12-17 03:24'
 
   beforeEach(() => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date(fakeTimeAsString));
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(fakeTimeAsString))
 
     // set global locale
-    esday.locale('de');
-    moment.locale('de');
-  });
+    esday.locale('de')
+    moment.locale('de')
+  })
 
   afterEach(() => {
-    vi.useRealTimers();
-  });
+    vi.useRealTimers()
+  })
 
   it.each([
     { sourceString: '2024', formatString: 'YYYY' },
@@ -274,8 +274,8 @@ describe('localizedParse plugin - local mode for "de"', () => {
     sourceString,
     formatString,
   }) => {
-    expectSameObject((esday) => esday(sourceString, formatString));
-  });
+    expectSameObject((esday) => esday(sourceString, formatString))
+  })
 
   it.each([
     {
@@ -286,41 +286,41 @@ describe('localizedParse plugin - local mode for "de"', () => {
     sourceString,
     formatString,
   }) => {
-    expectSameValue((esday) => esday(sourceString, formatString).isValid());
-  });
+    expectSameValue((esday) => esday(sourceString, formatString).isValid())
+  })
 
   it('parse in strict mode - good format', () => {
-    const sourceString = '2024 Dez. 24. 8:10:21 PM';
-    const formatString = 'YYYY MMM Do h:mm:ss A';
+    const sourceString = '2024 Dez. 24. 8:10:21 PM'
+    const formatString = 'YYYY MMM Do h:mm:ss A'
 
-    expect(esday(sourceString, formatString, true).isValid()).toBeTruthy();
-    expectSameObject((esday) => esday(sourceString, formatString, true));
-  });
+    expect(esday(sourceString, formatString, true).isValid()).toBeTruthy()
+    expectSameObject((esday) => esday(sourceString, formatString, true))
+  })
 
   it('does not parse in strict mode - bad format', () => {
-    const sourceString = '2024 Dez. 24. Dienstag 8:10:21';
-    const formatString = 'YYYY MMM Do dddd h:mm:ss A';
+    const sourceString = '2024 Dez. 24. Dienstag 8:10:21'
+    const formatString = 'YYYY MMM Do dddd h:mm:ss A'
 
-    expect(esday(sourceString, formatString, true).isValid()).toBeFalsy();
-    expectSameValue((esday) => esday(sourceString, formatString, true).isValid());
-  });
-});
+    expect(esday(sourceString, formatString, true).isValid()).toBeFalsy()
+    expectSameValue((esday) => esday(sourceString, formatString, true).isValid())
+  })
+})
 
 describe('localizedParse plugin - local mode for "hr"', () => {
-  const fakeTimeAsString = '2023-12-17T03:24:46.234'; // 'Sunday 2023-12-17 03:24'
+  const fakeTimeAsString = '2023-12-17T03:24:46.234' // 'Sunday 2023-12-17 03:24'
 
   beforeEach(() => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date(fakeTimeAsString));
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(fakeTimeAsString))
 
     // set global locale
-    esday.locale('hr');
-    moment.locale('hr');
-  });
+    esday.locale('hr')
+    moment.locale('hr')
+  })
 
   afterEach(() => {
-    vi.useRealTimers();
-  });
+    vi.useRealTimers()
+  })
 
   it.each([
     {
@@ -413,9 +413,9 @@ describe('localizedParse plugin - local mode for "hr"', () => {
     sourceString,
     formatString,
   }) => {
-    expectSameObject((esday) => esday(sourceString, formatString));
-    expectSameValue((esday) => esday(sourceString, formatString).locale());
-  });
+    expectSameObject((esday) => esday(sourceString, formatString))
+    expectSameValue((esday) => esday(sourceString, formatString).locale())
+  })
 
   it.each([
     {
@@ -426,42 +426,42 @@ describe('localizedParse plugin - local mode for "hr"', () => {
     sourceString,
     formatString,
   }) => {
-    expectSameValue((esday) => esday(sourceString, formatString).isValid());
-  });
+    expectSameValue((esday) => esday(sourceString, formatString).isValid())
+  })
 
   it('parse in strict mode - good format', () => {
-    const sourceString = '2024 pro. 24. 8:10:21 PM';
-    const formatString = 'YYYY MMM Do h:mm:ss A';
+    const sourceString = '2024 pro. 24. 8:10:21 PM'
+    const formatString = 'YYYY MMM Do h:mm:ss A'
 
-    expect(esday(sourceString, formatString, true).isValid()).toBeTruthy();
-    expectSameObject((esday) => esday(sourceString, formatString, true));
-    expectSameValue((esday) => esday(sourceString, formatString, true).locale());
-  });
+    expect(esday(sourceString, formatString, true).isValid()).toBeTruthy()
+    expectSameObject((esday) => esday(sourceString, formatString, true))
+    expectSameValue((esday) => esday(sourceString, formatString, true).locale())
+  })
 
   it('does not parse in strict mode - bad format', () => {
-    const sourceString = '2024 pro. 24. utorak 8:10:21';
-    const formatString = 'YYYY MMM Do dddd h:mm:ss A';
+    const sourceString = '2024 pro. 24. utorak 8:10:21'
+    const formatString = 'YYYY MMM Do dddd h:mm:ss A'
 
-    expect(esday(sourceString, formatString, true).isValid()).toBeFalsy();
-    expectSameValue((esday) => esday(sourceString, formatString, true).isValid());
-  });
-});
+    expect(esday(sourceString, formatString, true).isValid()).toBeFalsy()
+    expectSameValue((esday) => esday(sourceString, formatString, true).isValid())
+  })
+})
 
 describe('localizedParse plugin - local mode for "ku"', () => {
-  const fakeTimeAsString = '2023-12-17T03:24:46.234'; // 'Sunday 2023-12-17 03:24'
+  const fakeTimeAsString = '2023-12-17T03:24:46.234' // 'Sunday 2023-12-17 03:24'
 
   beforeEach(() => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date(fakeTimeAsString));
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(fakeTimeAsString))
 
     // set global locale
-    esday.locale('ku');
-    moment.locale('ku');
-  });
+    esday.locale('ku')
+    moment.locale('ku')
+  })
 
   afterEach(() => {
-    vi.useRealTimers();
-  });
+    vi.useRealTimers()
+  })
 
   // test preParse methods
   it.each([
@@ -471,26 +471,26 @@ describe('localizedParse plugin - local mode for "ku"', () => {
     sourceString,
     formatString,
   }) => {
-    expectSameObject((esday) => esday(sourceString, formatString));
-    expectSameValue((esday) => esday(sourceString, formatString).locale());
-  });
-});
+    expectSameObject((esday) => esday(sourceString, formatString))
+    expectSameValue((esday) => esday(sourceString, formatString).locale())
+  })
+})
 
 describe('localizedParse plugin - local mode for "ka"', () => {
-  const fakeTimeAsString = '2023-12-17T03:24:46.234'; // 'Sunday 2023-12-17 03:24'
+  const fakeTimeAsString = '2023-12-17T03:24:46.234' // 'Sunday 2023-12-17 03:24'
 
   beforeEach(() => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date(fakeTimeAsString));
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(fakeTimeAsString))
 
     // set global locale
-    esday.locale('ka');
-    moment.locale('ka');
-  });
+    esday.locale('ka')
+    moment.locale('ka')
+  })
 
   afterEach(() => {
-    vi.useRealTimers();
-  });
+    vi.useRealTimers()
+  })
 
   // test standalone weekday names
   it.each([
@@ -501,41 +501,41 @@ describe('localizedParse plugin - local mode for "ka"', () => {
     sourceString,
     formatString,
   }) => {
-    expectSameObject((esday) => esday(sourceString, formatString));
-    expectSameValue((esday) => esday(sourceString, formatString).locale());
-  });
-});
+    expectSameObject((esday) => esday(sourceString, formatString))
+    expectSameValue((esday) => esday(sourceString, formatString).locale())
+  })
+})
 
 describe('localizedParse plugin - local mode for "zh"', () => {
-  const fakeTimeAsString = '2023-12-17T03:24:46.234'; // 'Sunday 2023-12-17 03:24'
+  const fakeTimeAsString = '2023-12-17T03:24:46.234' // 'Sunday 2023-12-17 03:24'
 
   beforeEach(() => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date(fakeTimeAsString));
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(fakeTimeAsString))
 
     // set global locale
-    esday.locale('zh');
-    moment.locale('zh');
-  });
+    esday.locale('zh')
+    moment.locale('zh')
+  })
 
   afterEach(() => {
-    vi.useRealTimers();
-  });
+    vi.useRealTimers()
+  })
 
   it('parse date string with format containing "Do"', () => {
-    const sourceString = '2024 12 23日 14:25:36';
-    const formatString = 'YYYY MM Do HH:mm:ss';
+    const sourceString = '2024 12 23日 14:25:36'
+    const formatString = 'YYYY MM Do HH:mm:ss'
 
-    expectSameObject((esday) => esday(sourceString, formatString));
-  });
-});
+    expectSameObject((esday) => esday(sourceString, formatString))
+  })
+})
 
 describe('localizedParse plugin - local mode using locale given as parameter', () => {
   beforeEach(() => {
     // set global locale
-    esday.locale('en');
-    moment.locale('en');
-  });
+    esday.locale('en')
+    moment.locale('en')
+  })
 
   it.each([
     {
@@ -558,10 +558,10 @@ describe('localizedParse plugin - local mode using locale given as parameter', (
     formatString,
     locale,
   }) => {
-    expect(esday(sourceString, formatString, locale).isValid()).toBeTruthy();
-    expectSameObject((esday) => esday(sourceString, formatString, locale));
-    expectSameValue((esday) => esday(sourceString, formatString, locale).locale());
-  });
+    expect(esday(sourceString, formatString, locale).isValid()).toBeTruthy()
+    expectSameObject((esday) => esday(sourceString, formatString, locale))
+    expectSameValue((esday) => esday(sourceString, formatString, locale).locale())
+  })
 
   it.each([
     {
@@ -584,31 +584,31 @@ describe('localizedParse plugin - local mode using locale given as parameter', (
     formatString,
     locale,
   }) => {
-    expect(esday(sourceString, formatString, locale, true).isValid()).toBeTruthy();
-    expectSameObject((esday) => esday(sourceString, formatString, locale, true));
-    expectSameValue((esday) => esday(sourceString, formatString, locale, true).locale());
-  });
+    expect(esday(sourceString, formatString, locale, true).isValid()).toBeTruthy()
+    expectSameObject((esday) => esday(sourceString, formatString, locale, true))
+    expectSameValue((esday) => esday(sourceString, formatString, locale, true).locale())
+  })
 
   it('parse in strict mode with non-matching format with locale as parameter', () => {
     // Day should not have a trailing decimal point
-    const sourceString = '2024 déc. 24. 8:10:21 AM';
-    const formatString = 'YYYY MMM Do h:mm:ss A';
-    const locale = 'fr';
-    const d = esday(sourceString, formatString, locale, true);
-    const m = moment(sourceString, formatString, locale, true);
+    const sourceString = '2024 déc. 24. 8:10:21 AM'
+    const formatString = 'YYYY MMM Do h:mm:ss A'
+    const locale = 'fr'
+    const d = esday(sourceString, formatString, locale, true)
+    const m = moment(sourceString, formatString, locale, true)
 
-    expect(d.isValid()).toBeFalsy();
-    expect(m.isValid()).toBeFalsy();
-    expectSameValue((esday) => esday(sourceString, formatString, locale, true).locale());
-  });
-});
+    expect(d.isValid()).toBeFalsy()
+    expect(m.isValid()).toBeFalsy()
+    expectSameValue((esday) => esday(sourceString, formatString, locale, true).locale())
+  })
+})
 
 describe('localizedParse plugin - locale without meridiem', () => {
-  const fakeTimeAsString = '2023-12-17T03:24:46.234'; // 'Sunday 2023-12-17 03:24'
+  const fakeTimeAsString = '2023-12-17T03:24:46.234' // 'Sunday 2023-12-17 03:24'
 
   beforeEach(() => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date(fakeTimeAsString));
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(fakeTimeAsString))
 
     esday.registerLocale({
       name: 'test',
@@ -624,15 +624,15 @@ describe('localizedParse plugin - locale without meridiem', () => {
         lll: 'MMM D, YYYY hh:mm',
         llll: 'ddd, MMM D, YYYY hh:mm',
       },
-    } as Locale);
+    } as Locale)
 
     // Set test as test locale
-    esday.locale('test');
-  });
+    esday.locale('test')
+  })
 
   afterEach(() => {
-    vi.useRealTimers();
-  });
+    vi.useRealTimers()
+  })
 
   it.each([
     {
@@ -660,24 +660,24 @@ describe('localizedParse plugin - locale without meridiem', () => {
     formatString,
     expected,
   }) => {
-    const parsedDate = esday(sourceString, formatString);
+    const parsedDate = esday(sourceString, formatString)
 
-    expect(parsedDate.isValid()).toBeTruthy();
-    expect(parsedDate.format().slice(0, -6)).toBe(expected);
-  });
-});
+    expect(parsedDate.isValid()).toBeTruthy()
+    expect(parsedDate.format().slice(0, -6)).toBe(expected)
+  })
+})
 
 describe('localizedParse plugin - edge cases', () => {
-  const fakeTimeAsString = '2023-12-17T03:24:46.234'; // 'Sunday 2023-12-17 03:24'
+  const fakeTimeAsString = '2023-12-17T03:24:46.234' // 'Sunday 2023-12-17 03:24'
 
   beforeEach(() => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date(fakeTimeAsString));
-  });
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(fakeTimeAsString))
+  })
 
   afterEach(() => {
-    vi.useRealTimers();
-  });
+    vi.useRealTimers()
+  })
 
   it('parse day-of-month with input not containing a number', () => {
     // define locale for test
@@ -685,15 +685,15 @@ describe('localizedParse plugin - edge cases', () => {
       name: 'test1',
       dayOfMonthOrdinalParse: /.+/,
       ordinal: (n) => `${n}`,
-    } as Locale);
-    esday.locale('test1');
+    } as Locale)
+    esday.locale('test1')
 
-    const sourceString = 'first';
-    const formatString = 'Do';
+    const sourceString = 'first'
+    const formatString = 'Do'
 
-    expectSameObject((esday) => esday(sourceString, formatString));
-    expect(esday(sourceString, formatString).isValid()).toBeFalsy();
-  });
+    expectSameObject((esday) => esday(sourceString, formatString))
+    expect(esday(sourceString, formatString).isValid()).toBeFalsy()
+  })
 
   it('parse day-of-month with input not being an ordinal number', () => {
     // define locale for test
@@ -701,17 +701,17 @@ describe('localizedParse plugin - edge cases', () => {
       name: 'test2',
       dayOfMonthOrdinalParse: /\d{1,2}([^\s]*)/,
       ordinal: (n) => {
-        const suffices = ['th', 'st', 'nd', 'rd'];
-        const v = n % 100;
-        return `${n}${suffices[(v - 20) % 10] || suffices[v] || suffices[0]}`;
+        const suffices = ['th', 'st', 'nd', 'rd']
+        const v = n % 100
+        return `${n}${suffices[(v - 20) % 10] || suffices[v] || suffices[0]}`
       },
-    } as Locale);
-    esday.locale('test2');
+    } as Locale)
+    esday.locale('test2')
 
-    const sourceString = '23.';
-    const formatString = 'Do';
+    const sourceString = '23.'
+    const formatString = 'Do'
 
     // "en" in moment.js just ignores the string after the number
-    expect(esday(sourceString, formatString).isValid()).toBeFalsy();
-  });
-});
+    expect(esday(sourceString, formatString).isValid()).toBeFalsy()
+  })
+})
