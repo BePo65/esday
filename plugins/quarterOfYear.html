@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plugins - QuarterOfYear</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+    <base href="/esday/" />
+    <link rel="stylesheet" href="esday.css">
+    <link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+    <header>
+        <a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+        <h1 class="header-title">Plugins - QuarterOfYear</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="core/index.html">Core</a>
+            <a href="plugins/index.html">Plugins</a>
+            <a href="locales/index.html">Locales</a>
+        </nav>
+    </header>
+    <div class="container">
+<h1>QuarterOfYear</h1>
+<p>QuarterOfYear adds the <code>quarter</code> method to EsDay and extend the <code>get</code> and <code>set</code> methods to get or set the quarter of year of a date.<br>Setting the quarter does not affect the time of an EsDay instance.</p>
+<p>QuarterOfYear adds support for the formatting Token <code>Q</code>.</p>
+<h3>Method signatures</h3>
+<pre><code class="language-signature">esday().quarter(): number
+esday().quarter(quarterNumber: number): EsDay
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>quarterNumber</td>
+<td>date string to be parsed</td>
+</tr>
+</tbody></table>
+<h3>Added units</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Unit</strong></th>
+<th><strong>Example</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>'Q'</td>
+<td>1-4</td>
+<td>Quarter of year.</td>
+</tr>
+<tr>
+<td>'quarter'</td>
+<td>1-4</td>
+<td>Quarter of year.</td>
+</tr>
+<tr>
+<td>'quarters'</td>
+<td>1-4</td>
+<td>Quarter of year.</td>
+</tr>
+</tbody></table>
+<h3>Added formatting tokens</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Token</strong></th>
+<th><strong>Example</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Q</td>
+<td>1-4</td>
+<td>Quarter of year.</td>
+</tr>
+</tbody></table>
+<h2>Examples</h2>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import quarterOfYearPlugin from 'esday/plugins/quarterOfYear'
+
+esday.extend(quarterOfYearPlugin)
+
+esday('2023-08-14T21:43:12.123').get('Q')
+// Returns 3
+
+esday('2023-08-14T21:43:12.123').quarter()
+// Returns 3
+
+esday('2023-08-14T21:43:12.123').set('quarter', 1)
+// Returns '2023-01-01T21:43:12.123' as EsDay
+
+esday('2023-08-14T21:43:12.123').quarter(1)
+// Returns '2023-01-01T21:43:12.123' as EsDay
+</code></pre>
+<h3>Formatting date using token 'Q'</h3>
+<pre><code class="language-typescript">esday('2023-08-14T21:43:12.123').format('YYYY Q')
+// Returns '2023 3'
+</code></pre>
+
+    </div>
+</body>
+</html>

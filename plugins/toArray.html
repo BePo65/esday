@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plugins - ToArray</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+    <base href="/esday/" />
+    <link rel="stylesheet" href="esday.css">
+    <link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+    <header>
+        <a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+        <h1 class="header-title">Plugins - ToArray</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="core/index.html">Core</a>
+            <a href="plugins/index.html">Plugins</a>
+            <a href="locales/index.html">Locales</a>
+        </nav>
+    </header>
+    <div class="container">
+<h1>ToArray</h1>
+<p>ToArray adds the <code>toArray</code> method to EsDay to get an array containing the parts that make up a date.</p>
+<h2>Usage</h2>
+<h3>Dependencies</h3>
+<p>ToArray has no dependencies on other plugins.</p>
+<h3>Method signatures</h3>
+<pre><code class="language-signature">esday().toArray(): [number, number, number, number, number, number, number]
+</code></pre>
+<h2>Examples</h2>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import toArrayPlugin from 'esday/plugins/toArray'
+
+esday.extend(toArrayPlugin)
+
+esday('2025-01-06T12:34:56.789').toArray()
+// Returns [2025, 0, 6, 12, 34, 56, 789]
+</code></pre>
+
+    </div>
+</body>
+</html>

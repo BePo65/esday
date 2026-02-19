@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plugins - IsBetween</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+    <base href="/esday/" />
+    <link rel="stylesheet" href="esday.css">
+    <link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+    <header>
+        <a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+        <h1 class="header-title">Plugins - IsBetween</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="core/index.html">Core</a>
+            <a href="plugins/index.html">Plugins</a>
+            <a href="locales/index.html">Locales</a>
+        </nav>
+    </header>
+    <div class="container">
+<h1>IsBetween</h1>
+<p>IsBetween adds the <code>isBetween</code> method to EsDay indicating, if a date is between two other dates.</p>
+<h2>Usage</h2>
+<h3>Dependencies</h3>
+<p>IsBetween has no dependencies on other plugins.</p>
+<h3>Method signatures</h3>
+<pre><code class="language-signature">esday().isBetween(
+      from: DateType,
+      to: DateType,
+      unit?: UnitType,
+      inclusivity?: '()' | '[]' | '[)' | '(]'): boolean
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>from</td>
+<td>beginning of the range, the date should be in</td>
+</tr>
+<tr>
+<td>to</td>
+<td>end of therange, the date should be in</td>
+</tr>
+<tr>
+<td>unit</td>
+<td>unit to use for comparisons</td>
+</tr>
+<tr>
+<td>inclusivity</td>
+<td>unit to use for comparisons</td>
+</tr>
+<tr>
+<td></td>
+<td>() = exclude from and to</td>
+</tr>
+<tr>
+<td></td>
+<td>[] = include from and to</td>
+</tr>
+<tr>
+<td></td>
+<td>[) = include from and exclude to</td>
+</tr>
+<tr>
+<td></td>
+<td>(] = exclude from and include to</td>
+</tr>
+</tbody></table>
+<h2>Examples</h2>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import isBetweenPlugin from 'esday/plugins/isBetween'
+
+esday.extend(isBetweenPlugin)
+
+esday('2010-10-20').isBetween('2010-10-19', '2010-10-25', 'day')
+// Returns true
+
+esday('2016-10-30').isBetween('2016-01-01', '2016-10-30', 'day', '[)')
+// Returns true
+</code></pre>
+
+    </div>
+</body>
+</html>

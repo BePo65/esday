@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plugins - IsToday</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+    <base href="/esday/" />
+    <link rel="stylesheet" href="esday.css">
+    <link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+    <header>
+        <a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+        <h1 class="header-title">Plugins - IsToday</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="core/index.html">Core</a>
+            <a href="plugins/index.html">Plugins</a>
+            <a href="locales/index.html">Locales</a>
+        </nav>
+    </header>
+    <div class="container">
+<h1>IsToday</h1>
+<p>IsToday adds the <code>isToday</code> method to EsDay indicating, if a date is today.</p>
+<h2>Usage</h2>
+<h3>Dependencies</h3>
+<p>IsToday has no dependencies on other plugins.</p>
+<h3>Method signatures</h3>
+<pre><code class="language-signature">esday().isToday(): boolean
+</code></pre>
+<h2>Examples</h2>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import isTodayPlugin from 'esday/plugins/isToday'
+
+esday.extend(isTodayPlugin)
+
+esday().isToday()
+// Returns true
+</code></pre>
+
+    </div>
+</body>
+</html>

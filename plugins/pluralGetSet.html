@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plugins - PluralGetSet</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+    <base href="/esday/" />
+    <link rel="stylesheet" href="esday.css">
+    <link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+    <header>
+        <a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+        <h1 class="header-title">Plugins - PluralGetSet</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="core/index.html">Core</a>
+            <a href="plugins/index.html">Plugins</a>
+            <a href="locales/index.html">Locales</a>
+        </nav>
+    </header>
+    <div class="container">
+<h1>PluralGetSet</h1>
+<p>PluralGetSet adds plural getter &amp; setter APIs to <code>esday</code> instances. The getters and setters are:</p>
+<p><code>.milliseconds</code>, <code>.seconds</code>, <code>.minutes</code>, <code>.hours</code>, <code>.days</code>, <code>.dates</code>, <code>.months</code> and <code>.years</code>.</p>
+<h2>Usage</h2>
+<h3>Dependencies</h3>
+<p>PluralGetSet has no dependencies on other plugins.</p>
+<h3>Method signatures</h3>
+<pre><code class="language-signature">esday().years(): number
+esday().years((year: number, month?: number, date?: number): EsDay
+esday().months(): number
+esday().months((month: number, date?: number): EsDay
+esday().dates(): number
+esday().dates((date: number): EsDay
+esday().days(): number
+esday().days((day: number): EsDay
+esday().hours(): number
+esday().hours((hours: number): EsDay
+esday().minutes(): number
+esday().minutes((min: number): EsDay
+esday().seconds(): number
+esday().seconds((sec: number): EsDay
+esday().milliseconds(): number
+esday().milliseconds((ms: number): EsDay
+</code></pre>
+<p><code>date</code> is 'day of month' and <code>day</code> is 'day of week'.</p>
+<h2>Examples</h2>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import pluralGetSetPlugin from 'esday/plugins/pluralGetSet'
+
+esday.extend(pluralGetSetPlugin)
+
+esday('2023-08-14T21:43:12.123').years()
+// Returns '2023'
+
+esday('2023-08-14T21:43:12.123').dates('24')
+// Returns esday instance for '2023-08-24'
+</code></pre>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plugins - AdvancedFormat</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+    <base href="/esday/" />
+    <link rel="stylesheet" href="esday.css">
+    <link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+    <header>
+        <a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+        <h1 class="header-title">Plugins - AdvancedFormat</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="core/index.html">Core</a>
+            <a href="plugins/index.html">Plugins</a>
+            <a href="locales/index.html">Locales</a>
+        </nav>
+    </header>
+    <div class="container">
+<h1>AdvancedFormat</h1>
+<p>AdvancedFormat extends <code>esday.format()</code> to support custom tokens in a formatting template.</p>
+<h2>Usage</h2>
+<h3>Dependencies</h3>
+<p>AdvancedFormat has no dependencies on other plugins.</p>
+<h3>Formatting tokens</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Token</strong></th>
+<th><strong>Example</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>d</td>
+<td>0-6</td>
+<td>Day of the week, with Sunday as 0</td>
+</tr>
+<tr>
+<td>S</td>
+<td>0-9</td>
+<td>Hundreds of milliseconds, 1-digit</td>
+</tr>
+<tr>
+<td>SS</td>
+<td>00-99</td>
+<td>Tens of milliseconds, 2-digits</td>
+</tr>
+<tr>
+<td>ZZ</td>
+<td>-0500</td>
+<td>Compact offset from UTC, 2-digits</td>
+</tr>
+<tr>
+<td>X</td>
+<td>1410715640579</td>
+<td>Unix timestamp</td>
+</tr>
+<tr>
+<td>x</td>
+<td>1410715640579</td>
+<td>Unix ms timestamp</td>
+</tr>
+<tr>
+<td>k</td>
+<td>1-24</td>
+<td>Hour with 0 -&gt; 24</td>
+</tr>
+<tr>
+<td>kk</td>
+<td>01-24</td>
+<td>Hour, 2-digits, with 0 -&gt; 24</td>
+</tr>
+</tbody></table>
+<h2>Examples</h2>
+<h3>Formatting</h3>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import advancedFormatPlugin from 'esday/plugins/advancedFormat'
+
+esday.extend(advancedFormatPlugin)
+
+esday('08-2023-14 21:43:12.123').format('MM-YYYY-DD HH:mm:ss.SS')
+// Returns '2023-08-14T21:43:12.12'
+</code></pre>
+
+    </div>
+</body>
+</html>

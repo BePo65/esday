@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core - Diff</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+    <base href="/esday/" />
+    <link rel="stylesheet" href="esday.css">
+    <link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+    <header>
+        <a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+        <h1 class="header-title">Core - Diff</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="core/index.html">Core</a>
+            <a href="plugins/index.html">Plugins</a>
+            <a href="locales/index.html">Locales</a>
+        </nav>
+    </header>
+    <div class="container">
+<h1>Difference</h1>
+<p>The <code>diff</code> method calculates the difference between two esday objects using the specified unit.</p>
+<p>The default unit is milliseconds.</p>
+<p>To get the difference in another unit of measurement, pass that measurement as the second argument.</p>
+<p>By default <code>diff</code> will truncate the result to an integer. If you want a floating point number, pass true as the third argument.</p>
+<h2>Usage</h2>
+<h3>Method signatures</h3>
+<pre><code class="language-signature">esday().diff(date: EsDay, unit?: UnitTypeAddSub, asFloat?: boolean): number
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>date</td>
+<td>EsDay object to calculate the difference to</td>
+</tr>
+<tr>
+<td>unit</td>
+<td>Unit to use for the calculated difference</td>
+</tr>
+<tr>
+<td>asFloat</td>
+<td>return the result as float  (false= return integer)</td>
+</tr>
+</tbody></table>
+<h3>Available Units in UnitTypeAddSub</h3>
+<p>Short form: 'y', 'Q', 'M', 'w', 'd', 'D', 'h', 'm', 's' and 'ms'.<br>Long form: 'year', 'quarter', 'month', 'week', 'day', 'date', 'hour', 'minute', 'second' and 'millisecond'.<br>Plural form: 'years', 'quarters', 'months', 'weeks', 'days', 'dates', 'hours', 'minutes', 'seconds' and 'milliseconds'.</p>
+<p>Both <code>days</code> and <code>dates</code> (in short, long and plural forms) mean 'days'.</p>
+<h2>Examples</h2>
+<pre><code class="language-typescript">import { esday } from 'esday'
+
+// calculating difference with default unit ('milliseconds')
+esday('2019-01-25').diff(esday('2018-06-05'))
+// Returns 20214000000
+
+// calculating difference with unit 'months'
+esday('2019-01-25').diff(esday('2018-06-05'), 'month')
+// Returns 7
+
+// calculating difference with unit 'months' as float
+esday('2019-01-25').diff(esday('2018-06-05'), 'M', true)
+// Returns 7.645161290322581
+</code></pre>
+
+    </div>
+</body>
+</html>

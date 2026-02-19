@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core - StartOf</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+    <base href="/esday/" />
+    <link rel="stylesheet" href="esday.css">
+    <link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+    <header>
+        <a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+        <h1 class="header-title">Core - StartOf</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="core/index.html">Core</a>
+            <a href="plugins/index.html">Plugins</a>
+            <a href="locales/index.html">Locales</a>
+        </nav>
+    </header>
+    <div class="container">
+<h1>StartOf / EndOf</h1>
+<p>The <code>startOf()</code> method returns an <code>esday</code> object at the start of a unit of time based on the given esday object.</p>
+<p>The <code>endOf()</code> method returns an <code>esday</code> object at the end of a unit of time based on the given esday object.</p>
+<h2>Usage</h2>
+<h3>Method signatures</h3>
+<pre><code class="language-signature">esday().startOf(units: UnitType): EsDay
+</code></pre>
+<pre><code class="language-signature">esday().endOf(units: UnitType): EsDay
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>type</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>unit</td>
+<td>UnitType</td>
+<td>unit for startOf / endOf</td>
+</tr>
+</tbody></table>
+<h3>Available Units in UnitType</h3>
+<table>
+<thead>
+<tr>
+<th>Singular</th>
+<th>Plural</th>
+<th>Shorthand</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>year</td>
+<td>years</td>
+<td>y</td>
+<td></td>
+</tr>
+<tr>
+<td>quarter</td>
+<td>quarters</td>
+<td>Q</td>
+<td></td>
+</tr>
+<tr>
+<td>month</td>
+<td>months</td>
+<td>M</td>
+<td></td>
+</tr>
+<tr>
+<td>isoWeek</td>
+<td>isoWeeks</td>
+<td>W</td>
+<td></td>
+</tr>
+<tr>
+<td>week</td>
+<td>weeks</td>
+<td>w</td>
+<td></td>
+</tr>
+<tr>
+<td>day</td>
+<td>days</td>
+<td>d</td>
+<td>day of week</td>
+</tr>
+<tr>
+<td>date</td>
+<td>dates</td>
+<td>D</td>
+<td>day of month</td>
+</tr>
+<tr>
+<td>hour</td>
+<td>hours</td>
+<td>h</td>
+<td></td>
+</tr>
+<tr>
+<td>minute</td>
+<td>minutes</td>
+<td>m</td>
+<td></td>
+</tr>
+<tr>
+<td>second</td>
+<td>seconds</td>
+<td>s</td>
+<td></td>
+</tr>
+<tr>
+<td>millisecond</td>
+<td>milliseconds</td>
+<td>ms</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>The unit <code>quarter</code> (in short, long and plural forms) requires the plugin <a href="plugins/quarterOfYear.html">QuarterOfYear</a> to be loaded.</p>
+<p>The unit <code>isoWeek</code> (in short, long and plural forms) requires the plugin <a href="plugins/isoWeek.html">IsoWeek</a> to be loaded.</p>
+<h2>Examples</h2>
+<h3>startOf</h3>
+<pre><code class="language-typescript">import { esday } from 'esday'
+
+esday('2023-11-17T03:24:46.234').startOf('y')
+// Returns an instance of EsDay for '2023-01-01T00:00:00.000'
+
+esday('2023-11-17T03:24:46.234').startOf('day')
+// Returns an instance of EsDay for '2023-11-17T00:00:00.000'
+
+esday('2023-11-17T03:24:46.234').startOf('dates')
+// Returns an instance of EsDay for '2023-11-17T00:00:00.000'
+</code></pre>
+<h3>endOf</h3>
+<pre><code class="language-typescript">import { esday } from 'esday'
+
+esday('2023-11-17T03:24:46.234').startOf('y')
+// Returns an instance of EsDay for '2023-12-31T23:59:59.999'
+
+esday('2023-11-17T03:24:46.234').startOf('day')
+// Returns an instance of EsDay for '2023-11-17T23:59:59.999'
+
+esday('2023-11-17T03:24:46.234').startOf('seconds')
+// Returns an instance of EsDay for '2023-11-17T03:24:46.999'
+</code></pre>
+
+    </div>
+</body>
+</html>
