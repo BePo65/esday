@@ -40,12 +40,12 @@ const esday: EsDayFactory = (
 esday.addFormatTokenDefinitions = addFormatTokenDefinitions
 
 esday.extend = (plugin, option) => {
-  // @ts-expect-error plugin
+  // @ts-expect-error - plugin has property $i (indicator that it has already been installed)
   if (!plugin.$i) {
     // install plugin only once
     // biome-ignore lint/suspicious/noExplicitAny: generic method to install any plugin
     plugin((option || {}) as any, EsDay, esday)
-    // @ts-expect-error plugin
+    // @ts-expect-error plugin - create property $i (as an indicator that it has already been installed)
     plugin.$i = true
   }
   return esday

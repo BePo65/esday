@@ -110,6 +110,13 @@ describe('isoWeek plugin - default locale ("en")', () => {
   }) => {
     expectSameObject((esday) => esday(sourceString, formatString))
   })
+
+  it('parse invalid date with isoWeekYear', () => {
+    const sourceString = ''
+    const formatString = 'GG'
+
+    expectSameObject((esday) => esday(sourceString, formatString))
+  })
 })
 
 describe('isoWeek plugin - locale "ar"', () => {

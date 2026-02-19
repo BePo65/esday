@@ -24,16 +24,16 @@
  * esday.extend(advancedParsePlugin).extend(localizedParsePlugin).extend(localePlugin)
  */
 
-import type { DateType, EsDay, EsDayFactory, EsDayPlugin } from 'esday'
-import { isArray, isString, isUndefined } from '~/common'
-import type { ParsedElements, ParseOptions, TokenDefinitions } from '../advancedParse/types'
-import type { Locale, MonthNames, MonthNamesStandaloneFormat } from '../locale'
+import type { DateType, EsDay, EsDayFactory, EsDayPlugin } from 'esday';
+import { isArray, isString, isUndefined } from '~/common';
+import type { ParsedElements, ParseOptions, TokenDefinitions } from '../advancedParse/types';
+import type { Locale, MonthNames, MonthNamesStandaloneFormat } from '../locale';
 
 // Regular expressions for parsing
-const match2 = /\d{2}/
-const match1to2 = /\d\d?/
-const matchWord = /\d*[^-_:/,()\s\d]+/
-const matchDayOfMonthOrdinalDefault = /\d{1,2}/
+const match2 = /\d{2}/;
+const match1to2 = /\d\d?/;
+const matchWord = /\d*[^-_:/,()\s\d]+/;
+const matchDayOfMonthOrdinalDefault = /\d{1,2}/;
 
 /**
  * Update parsing patterns that depend on the locale (e.g. 'Do')
@@ -41,10 +41,10 @@ const matchDayOfMonthOrdinalDefault = /\d{1,2}/
  * @param locale - locale to use
  */
 const updateParsingPatternsFromLocale = (patterns: TokenDefinitions, locale: Locale) => {
-  const dayOfMonthOrdinalPattern = locale.dayOfMonthOrdinalParse
-  patterns.Do[0] = dayOfMonthOrdinalPattern
-  patterns.Do[1] = dayOfMonthOrdinalPattern
-}
+  const dayOfMonthOrdinalPattern = locale.dayOfMonthOrdinalParse;
+  patterns.Do[0] = dayOfMonthOrdinalPattern;
+  patterns.Do[1] = dayOfMonthOrdinalPattern;
+};
 
 /**
  * Add 'input' to parsedElements as 'hours'.
@@ -53,8 +53,8 @@ const updateParsingPatternsFromLocale = (patterns: TokenDefinitions, locale: Loc
  * @param options - parsing options e.g. containing the locale to use
  */
 const addHour = (parsedElements: ParsedElements, input: string, _parseOptions: ParseOptions) => {
-  parsedElements['hours'] = +input
-}
+  parsedElements['hours'] = +input;
+};
 
 /**
  * Convert parsed string to boolean 'afternoon'
@@ -67,21 +67,21 @@ const meridiemMatch = (
   locale: Locale,
   input: string,
   isLowerCase: boolean,
-): boolean | undefined => {
-  let isAfternoon = false
-  const { meridiem } = locale
+): boolean => {
+  let isAfternoon = false;
+  const { meridiem } = locale;
   if (meridiem) {
     for (let i = 1; i <= 24; i += 1) {
       if (input === meridiem(i, 0, isLowerCase)) {
-        isAfternoon = i >= 12
-        break
+        isAfternoon = i >= 12;
+        break;
       }
     }
   } else {
-    isAfternoon = input === (isLowerCase ? 'pm' : 'PM')
+    isAfternoon = input === (isLowerCase ? 'pm' : 'PM');
   }
-  return isAfternoon
-}
+  return isAfternoon;
+};
 
 /**
  * Create a function that will parse the input string as meridiem string and
@@ -96,14 +96,12 @@ const addAfternoon = (isLowerCase: boolean, esday: EsDayFactory) => {
     input: string,
     parseOptions: ParseOptions,
   ) {
-    const localeName = parseOptions['locale'] as string
-    const locale = esday.getLocale(localeName)
-    const meridiem = meridiemMatch(locale, input, isLowerCase)
-    if (!isUndefined(meridiem)) {
-      parsedElements.afternoon = meridiem
-    }
-  }
-}
+    const localeName = parseOptions['locale'] as string;
+    const locale = esday.getLocale(localeName);
+    const meridiem = meridiemMatch(locale, input, isLowerCase);
+    parsedElements.afternoon = meridiem;
+  };
+};
 
 /**
  * Parse day of month as ordinal number.
@@ -118,20 +116,20 @@ const addDayOfMonthOrdinal = (esday: EsDayFactory) => {
     input: string,
     parseOptions: ParseOptions,
   ) {
-    const localeName = parseOptions['locale'] as string
-    const { ordinal } = esday.getLocale(localeName)
-    let dateValue: number | undefined
-    const splittedInput = input.match(/^[^\d]*(\d+)[^\d]*$/)
+    const localeName = parseOptions['locale'] as string;
+    const { ordinal } = esday.getLocale(localeName);
+    let dateValue: number | undefined;
+    const splittedInput = input.match(/^[^\d]*(\d+)[^\d]*$/);
     if (splittedInput !== null) {
-      dateValue = +splittedInput[1]
-      const dateAsOrdinal = ordinal?.(dateValue, 'd')
+      dateValue = +splittedInput[1];
+      const dateAsOrdinal = ordinal?.(dateValue, 'd');
 
       if (dateAsOrdinal === undefined || dateAsOrdinal === input) {
-        parsedElements.date = dateValue
+        parsedElements.date = dateValue;
       }
     }
-  }
-}
+  };
+};
 
 /**
  * Create a function that will convert the value from the input string
@@ -147,20 +145,20 @@ const addMonth = (property: 'months' | 'monthsShort', esday: EsDayFactory) => {
     input: string,
     parseOptions: ParseOptions,
   ) {
-    const localeName = parseOptions['locale'] as string
-    const months = esday.getLocale(localeName)[property]
-    let monthNames: MonthNames
+    const localeName = parseOptions['locale'] as string;
+    const months = esday.getLocale(localeName)[property];
+    let monthNames: MonthNames;
 
     if (isArray(months)) {
-      monthNames = months as MonthNames
+      monthNames = months as MonthNames;
     } else {
-      monthNames = (months as MonthNamesStandaloneFormat).standalone
+      monthNames = (months as MonthNamesStandaloneFormat).standalone;
     }
 
-    const matchIndex = monthNames.indexOf(input) + 1
-    parsedElements.month = matchIndex % 12 || matchIndex
-  }
-}
+    const matchIndex = monthNames.indexOf(input) + 1;
+    parsedElements.month = matchIndex % 12 || matchIndex;
+  };
+};
 
 /**
  * Replace locale dependent token in given format with values from locale definition
@@ -170,16 +168,16 @@ const addMonth = (property: 'months' | 'monthsShort', esday: EsDayFactory) => {
  * @returns format with locale dependent tokens replaced
  */
 const replaceLocaleTokens = (format: string, currentLocale: Locale) => {
-  const localFormattingTokens = /(\[[^[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g
+  const localFormattingTokens = /(\[[^[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g;
   function replaceLongDateFormatTokens(input: string) {
-    return currentLocale.formats[input as keyof typeof currentLocale.formats] ?? input
+    return currentLocale.formats[input as keyof typeof currentLocale.formats] ?? input;
   }
 
-  return format.replace(localFormattingTokens, replaceLongDateFormatTokens)
-}
+  return format.replace(localFormattingTokens, replaceLongDateFormatTokens);
+};
 
 const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
-  const proto = dayClass.prototype
+  const proto = dayClass.prototype;
 
   /**
    * Convert the hours to 24h format.
@@ -190,25 +188,25 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
    * @returns parsedDate with hours converted to 24h format
    */
   function _postParseMeridiem(this: EsDay, parsedDate: Date, parsedElements: ParsedElements) {
-    let modifiedDate = parsedDate
+    let modifiedDate = parsedDate;
 
     // is this a valid date and do we have parsed a meridiem?
     if (!(Number.isNaN(parsedDate.valueOf()) || isUndefined(parsedElements.afternoon))) {
-      let parsedHours: number
+      let parsedHours: number;
       let newEsday = dayFactory(parsedDate, {
         utc: this['$conf'].utc as boolean,
-      })
-      newEsday['$conf'] = structuredClone(this['$conf'])
+      });
+      newEsday['$conf'] = structuredClone(this['$conf']);
 
-      parsedHours = newEsday.hour()
+      parsedHours = newEsday.hour();
       if (parsedHours < 12 && parsedElements.afternoon) {
-        newEsday = newEsday.hour(parsedHours + 12)
+        newEsday = newEsday.hour(parsedHours + 12);
       } else if (parsedHours === 12 && !parsedElements.afternoon) {
-        newEsday = newEsday.hour(0)
+        newEsday = newEsday.hour(0);
       }
-      modifiedDate = newEsday.toDate()
+      modifiedDate = newEsday.toDate();
     }
-    return modifiedDate
+    return modifiedDate;
   }
 
   /**
@@ -232,72 +230,75 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     ],
     MMM: [matchWord, matchWord, addMonth('monthsShort', dayFactory)],
     MMMM: [matchWord, matchWord, addMonth('months', dayFactory)],
-  }
+  };
 
   // add new parsing tokens to existing list of parsing tokens
-  dayFactory.addParseTokenDefinitions(parseTokensDefinitions)
+  dayFactory.addParseTokenDefinitions(parseTokensDefinitions);
 
-  const oldParse = proto['$parse']
+  const oldParse = proto['$parse'];
   proto['$parse'] = function (d?: Exclude<DateType, EsDay>) {
     if (!isString(d)) {
-      oldParse.call(this, d)
-      return
+      oldParse.call(this, d);
+      return;
     }
 
     // only string dates can be parsed
-    const format = this['$conf'].args_1
+    const format = this['$conf'].args_1;
 
     // handle locale name(s) as argument; use the locale of 'this'
     // as the default value, if no locale is given as 3rd calling
     // parameter (1st parameter is the date string, 2nd is the format
     // to use, 3rd may also be the strict flag).
-    let currentLocale = this.localeObject?.()
-    const arg2 = this['$conf'].args_2
+    let currentLocale = this.localeObject?.();
+    const arg2 = this['$conf'].args_2;
     if (!isUndefined(arg2) && typeof arg2 === 'string') {
-      currentLocale = dayFactory.getLocale(arg2)
-      this['$conf'].localeName = arg2
+      currentLocale = dayFactory.getLocale(arg2);
+      this['$conf'].localeName = arg2;
     }
 
     // get parsing patterns from locale
-    updateParsingPatternsFromLocale(parseTokensDefinitions, currentLocale)
+    updateParsingPatternsFromLocale(parseTokensDefinitions, currentLocale);
 
     // create required parseOptions
-    const parseOptions: ParseOptions = (this['$conf'].parseOptions as ParseOptions) ?? {}
-    parseOptions.locale = currentLocale.name
-    this['$conf'].parseOptions = parseOptions
+    const parseOptions: ParseOptions = (this['$conf'].parseOptions as ParseOptions) ?? {};
+    parseOptions.locale = currentLocale.name;
+    this['$conf'].parseOptions = parseOptions;
 
-    let newFormat = format
+    let newFormat = format;
     if (isString(newFormat)) {
-      newFormat = replaceLocaleTokens(newFormat, currentLocale)
+      newFormat = replaceLocaleTokens(newFormat, currentLocale);
     } else if (isArray(newFormat)) {
       // replace locale dependent tokens in all formats (if array)
       for (let i = 0; i < newFormat.length; i++) {
-        newFormat[i] = replaceLocaleTokens(newFormat[i], currentLocale)
+        newFormat[i] = replaceLocaleTokens(newFormat[i], currentLocale);
       }
     }
 
     // use modified format for parsing
-    this['$conf'].args_1 = newFormat
+    this['$conf'].args_1 = newFormat;
 
     // run preParse if exists
-    let newDate = d
+    let newDate = d;
     if (currentLocale.preParse !== undefined) {
-      newDate = currentLocale.preParse(d)
+      newDate = currentLocale.preParse(d);
     }
 
-    oldParse.call(this, newDate)
+    oldParse.call(this, newDate);
 
-    // remove properties required for parsing only from $conf
+    // remove properties required only during parsing from $conf
     if (this['$conf'].parseOptions !== undefined) {
+      // nothing to do, if we do not have "temporary" properties
+      /* istanbul ignore else -- @preserve */
       if (this['$conf'].parseOptions?.locale !== undefined) {
-        delete this['$conf'].parseOptions.locale
+        delete this['$conf'].parseOptions.locale;
       }
 
+      /* istanbul ignore else -- @preserve */
       if (Object.keys(this['$conf'].parseOptions).length === 0) {
-        delete this['$conf'].parseOptions
+        delete this['$conf'].parseOptions;
       }
     }
-  }
-}
+  };
+};
 
-export default localizedParsePlugin
+export default localizedParsePlugin;

@@ -2,13 +2,13 @@
  * Czech [cs]
  */
 
-import type { EsDay } from 'esday'
+import type { EsDay } from 'esday';
 import type {
   Locale,
   MonthNames,
   MonthNamesStandaloneFormat,
   RelativeTimeElementFunction,
-} from '~/plugins/locale'
+} from '~/plugins/locale';
 
 const monthFormat: MonthNames = [
   'ledna',
@@ -23,7 +23,7 @@ const monthFormat: MonthNames = [
   'října',
   'listopadu',
   'prosince',
-]
+];
 const monthStandalone: MonthNames = [
   'leden',
   'únor',
@@ -37,59 +37,59 @@ const monthStandalone: MonthNames = [
   'říjen',
   'listopad',
   'prosinec',
-]
+];
 const months: MonthNamesStandaloneFormat = {
   standalone: monthStandalone,
   format: monthFormat,
   isFormat: /DD?[o.]?(\[[^[\]]*\]|\s)+MMMM/,
-}
+};
 
 const calendar = {
   sameDay: '[dnes v] LT',
   nextDay: '[zítra v] LT',
   nextWeek(this: EsDay) {
-    switch (this.day()) {
+    switch (this?.day()) {
       case 0:
-        return '[v neděli v] LT'
+        return '[v neděli v] LT';
       case 1:
       case 2:
-        return '[v] dddd [v] LT'
+        return '[v] dddd [v] LT';
       case 3:
-        return '[ve středu v] LT'
+        return '[ve středu v] LT';
       case 4:
-        return '[ve čtvrtek v] LT'
+        return '[ve čtvrtek v] LT';
       case 5:
-        return '[v pátek v] LT'
+        return '[v pátek v] LT';
       case 6:
-        return '[v sobotu v] LT'
+        return '[v sobotu v] LT';
       default:
-        return ''
+        return '';
     }
   },
   lastDay: '[včera v] LT',
   lastWeek(this: EsDay) {
-    switch (this.day()) {
+    switch (this?.day()) {
       case 0:
-        return '[minulou neděli v] LT'
+        return '[minulou neděli v] LT';
       case 1:
       case 2:
-        return '[minulé] dddd [v] LT'
+        return '[minulé] dddd [v] LT';
       case 3:
-        return '[minulou středu v] LT'
+        return '[minulou středu v] LT';
       case 4:
       case 5:
-        return '[minulý] dddd [v] LT'
+        return '[minulý] dddd [v] LT';
       case 6:
-        return '[minulou sobotu v] LT'
+        return '[minulou sobotu v] LT';
       default:
-        return ''
+        return '';
     }
   },
   sameElse: 'L',
-}
+};
 
 function usePlural(timeValue: number): boolean {
-  return timeValue > 1 && timeValue < 5
+  return timeValue > 1 && timeValue < 5;
 }
 
 const relativeTimeFormatter: RelativeTimeElementFunction = (
@@ -98,61 +98,61 @@ const relativeTimeFormatter: RelativeTimeElementFunction = (
   token: string,
   isFuture: boolean,
 ) => {
-  const result = `${timeValue} `
+  const result = `${timeValue} `;
   switch (token) {
     case 's': // a few seconds / in a few seconds / a few seconds ago
-      return withoutSuffix || isFuture ? 'pár sekund' : 'pár sekundami'
+      return withoutSuffix || isFuture ? 'pár sekund' : 'pár sekundami';
     case 'ss': // 9 seconds / in 9 seconds / 9 seconds ago
       if (withoutSuffix || isFuture) {
-        return result + (usePlural(+timeValue) ? 'sekundy' : 'sekund')
+        return result + (usePlural(+timeValue) ? 'sekundy' : 'sekund');
       }
-      return `${result}sekundami`
+      return `${result}sekundami`;
     case 'm': // a minute / in a minute / a minute ago
-      return withoutSuffix ? 'minuta' : isFuture ? 'minutu' : 'minutou'
+      return withoutSuffix ? 'minuta' : isFuture ? 'minutu' : 'minutou';
     case 'mm': // 9 minutes / in 9 minutes / 9 minutes ago
       if (withoutSuffix || isFuture) {
-        return result + (usePlural(+timeValue) ? 'minuty' : 'minut')
+        return result + (usePlural(+timeValue) ? 'minuty' : 'minut');
       }
-      return `${result}minutami`
+      return `${result}minutami`;
     case 'h': // an hour / in an hour / an hour ago
-      return withoutSuffix ? 'hodina' : isFuture ? 'hodinu' : 'hodinou'
+      return withoutSuffix ? 'hodina' : isFuture ? 'hodinu' : 'hodinou';
     case 'hh': // 9 hours / in 9 hours / 9 hours ago
       if (withoutSuffix || isFuture) {
-        return result + (usePlural(+timeValue) ? 'hodiny' : 'hodin')
+        return result + (usePlural(+timeValue) ? 'hodiny' : 'hodin');
       }
-      return `${result}hodinami`
+      return `${result}hodinami`;
     case 'd': // a day / in a day / a day ago
-      return withoutSuffix || isFuture ? 'den' : 'dnem'
+      return withoutSuffix || isFuture ? 'den' : 'dnem';
     case 'dd': // 9 days / in 9 days / 9 days ago
       if (withoutSuffix || isFuture) {
-        return result + (usePlural(+timeValue) ? 'dny' : 'dní')
+        return result + (usePlural(+timeValue) ? 'dny' : 'dní');
       }
-      return `${result}dny`
+      return `${result}dny`;
     case 'w': // a day / in a day / a day ago
-      return withoutSuffix || isFuture ? 'týden' : 'týdnem'
+      return withoutSuffix || isFuture ? 'týden' : 'týdnem';
     case 'ww': // 9 days / in 9 days / 9 days ago
       if (withoutSuffix || isFuture) {
-        return result + (usePlural(+timeValue) ? 'týdny' : 'týdnů')
+        return result + (usePlural(+timeValue) ? 'týdny' : 'týdnů');
       }
-      return `${result}týdny`
+      return `${result}týdny`;
     case 'M': // a month / in a month / a month ago
-      return withoutSuffix || isFuture ? 'měsíc' : 'měsícem'
+      return withoutSuffix || isFuture ? 'měsíc' : 'měsícem';
     case 'MM': // 9 months / in 9 months / 9 months ago
       if (withoutSuffix || isFuture) {
-        return result + (usePlural(+timeValue) ? 'měsíce' : 'měsíců')
+        return result + (usePlural(+timeValue) ? 'měsíce' : 'měsíců');
       }
-      return `${result}měsíci`
+      return `${result}měsíci`;
     case 'y': // a year / in a year / a year ago
-      return withoutSuffix || isFuture ? 'rok' : 'rokem'
+      return withoutSuffix || isFuture ? 'rok' : 'rokem';
     case 'yy': // 9 years / in 9 years / 9 years ago
       if (withoutSuffix || isFuture) {
-        return result + (usePlural(+timeValue) ? 'roky' : 'let')
+        return result + (usePlural(+timeValue) ? 'roky' : 'let');
       }
-      return `${result}lety`
+      return `${result}lety`;
     default:
-      return ''
+      return '';
   }
-}
+};
 
 const localeCs: Readonly<Locale> = {
   name: 'cs',
@@ -198,9 +198,9 @@ const localeCs: Readonly<Locale> = {
   },
   meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Czech doesn't have AM/PM, so return default values
-    const m = hour < 12 ? 'AM' : 'PM'
-    return isLowercase ? m.toLowerCase() : m
+    const m = hour < 12 ? 'AM' : 'PM';
+    return isLowercase ? m.toLowerCase() : m;
   },
-}
+};
 
-export default localeCs
+export default localeCs;
