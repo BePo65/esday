@@ -14,7 +14,8 @@
       "!**/node_modules",
       "!**/.git",
       "!**/.pnpm",
-      "!**/.yarn"
+      "!**/.yarn",
+      "!**/*.html"
     ]
   },
   "formatter": {
@@ -56,5 +57,9 @@
       "semicolons": "asNeeded"
     }
   },
-  "html": { "parser": { "interpolation": true } }
+  "html": {
+    "parser": {
+      "interpolation": true
+    }
+  }
 }
