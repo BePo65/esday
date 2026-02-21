@@ -3,7 +3,7 @@ import moment from 'moment/min/moment-with-locales'
 import { expect, it } from 'vitest'
 import durationPlugin from '~/plugins/duration'
 import { objectResultsAsJson } from '../util'
-import { expectSameDuration } from './duration-util'
+import { expectSameDuration } from './duration-test-util'
 
 esday.extend(durationPlugin)
 
