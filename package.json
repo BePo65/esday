@@ -2,7 +2,7 @@
   "name": "esday",
   "type": "module",
   "version": "0.5.0",
-  "packageManager": "pnpm@10.30.0",
+  "packageManager": "pnpm@10.30.2",
   "description": "A simple date library fully written in TypeScript",
   "license": "MIT",
   "homepage": "https://github.com/BePo65/esday",
@@ -72,9 +72,9 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.2",
-    "@commitlint/cli": "^20.4.1",
-    "@commitlint/config-conventional": "^20.4.1",
+    "@biomejs/biome": "2.4.4",
+    "@commitlint/cli": "^20.4.2",
+    "@commitlint/config-conventional": "^20.4.2",
     "@playwright/test": "~1.58.2",
     "@types/node": "^25.3.0",
     "@vitest/browser-playwright": "^4.0.18",
