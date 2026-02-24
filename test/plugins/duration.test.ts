@@ -5,7 +5,7 @@ import { C } from '~/common'
 import { INVALID_DATE_STRING } from '~/common/constants'
 import durationPlugin, { type UnitTypeDuration } from '~/plugins/duration'
 import { expectSameValue } from '../util'
-import { expectSameDuration } from './duration-util'
+import { expectSameDuration } from './duration-test-util'
 
 esday.extend(durationPlugin)
 
