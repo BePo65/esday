@@ -341,7 +341,8 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     if (isObject(value) || unit === undefined) {
       // using UnitsObjectTypeAddSub is implemented in plugin ObjectSupport
       // therefore we ignore the request here.
-      return this.clone()
+      // @ts-expect-error it's compatible with the overload
+      return oldAdd.call(this, value, unit)
     }
 
     if (this['$conf'].utc) {
@@ -357,7 +358,8 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     if (isObject(value) || unit === undefined) {
       // using UnitsObjectTypeAddSub is implemented in plugin ObjectSupport
       // therefore we ignore the request here.
-      return this.clone()
+      // @ts-expect-error it's compatible with the overload
+      return oldSubtract.call(this, value, unit)
     }
 
     if (this['$conf'].utc) {
