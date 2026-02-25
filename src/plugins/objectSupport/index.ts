@@ -90,7 +90,7 @@ const objectSupportPlugin: EsDayPlugin<{}> = (_, dayClass, _dayFactory) => {
             break
         }
       }
-      this['$d'] = this.dateFromDateComponents(...dateArrayTuple)
+      this.$d = this.dateFromDateComponents(...dateArrayTuple)
     } else {
       oldParse.call(this, date)
     }
