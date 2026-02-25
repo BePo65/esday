@@ -482,7 +482,7 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       // format as single string
       if (isString(format)) {
         const parsingResult = parseFormattedInput.call(this, d, format, isStrict, parseOptions)
-        this['$d'] = parsingResult.date
+        this.$d = parsingResult.date
 
         if (
           isStrict &&
@@ -490,7 +490,7 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
             parsingResult.unusedTokens > 0 ||
             !parsingResult.separatorsMatch)
         ) {
-          this['$d'] = invalidDate
+          this.$d = invalidDate
         }
       } else {
         /* istanbul ignore else -- @preserve */
@@ -545,7 +545,7 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
               bestFormatIsValid = true
             }
           }
-          this['$d'] = bestDate
+          this.$d = bestDate
 
           // remove properties required for parsing only from $conf
           if (Object.keys(this['$conf'].parseOptions).length) {

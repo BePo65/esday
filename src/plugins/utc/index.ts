@@ -171,7 +171,7 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   // convert a date to utc
   proto.utc = function (keepLocalTime?: boolean) {
     const inst = this.clone()
-    inst['$d'] = this.toDate()
+    inst.$d = this.toDate()
     inst['$conf'].utc = true
     if (keepLocalTime) {
       return inst.add(this.utcOffset(), C.MIN)
@@ -200,7 +200,7 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   proto.utcOffset = function (offset?: number | string, keepLocalTime?: boolean) {
     if (offset === undefined) {
       // Getter
-      const defaultOffset = -Math.round(this['$d'].getTimezoneOffset())
+      const defaultOffset = -Math.round(this.$d.getTimezoneOffset())
       return utcOffsetGetImpl(this, defaultOffset)
     }
 
@@ -211,7 +211,7 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   const oldValueOf = proto.valueOf
   proto.valueOf = function () {
     if (this['$conf'].utcOffset !== undefined) {
-      const internalDate = this['$d']
+      const internalDate = this.$d
       const offsetToUse = Number(this['$conf'].localOffset ?? internalDate.getTimezoneOffset())
       const addedOffset = Number(this['$conf'].utcOffset) + offsetToUse
       return internalDate.valueOf() - addedOffset * C.MILLISECONDS_A_MINUTE
@@ -300,7 +300,7 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     }
 
     if (this['$conf'].utc) {
-      return getUnitInDateUTC(this['$d'], unit as UnitForGetDate)
+      return getUnitInDateUTC(this.$d, unit as UnitForGetDate)
     }
 
     return oldGet.call(this, unit)
@@ -316,7 +316,7 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
         return this
       }
 
-      const $date = this['$d']
+      const $date = this.$d
       const normalizedUnit = normalizeUnitWithPlurals(unit)
       if (normalizedUnit === C.DAY) {
         // change date to the given day of week as setUnitInDate does not have a setDay() method

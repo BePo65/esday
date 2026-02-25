@@ -307,7 +307,7 @@ export class EsDay {
       return new EsDay(C.INVALID_DATE)
     }
 
-    return -Math.round(this['$d'].getTimezoneOffset())
+    return -Math.round(this.$d.getTimezoneOffset())
   }
 
   get(unit: UnitTypeGetSet) {
