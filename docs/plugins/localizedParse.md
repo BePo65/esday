@@ -43,6 +43,7 @@ esday.utc(date: string, format: string[], locale: string, strict: boolean): EsDa
 | date      | date string to be parsed                 |
 | format    | format string(s) used for parsing `date` |
 | strict    | date string must match format exactly    |
+| locale    | name of the locale to use (e.g. 'en-US') |
 
 If an array of formats is used, `date` will be parsed with the best matching format in this array.
 
