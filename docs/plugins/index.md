@@ -21,6 +21,7 @@ Currently the following plugins are available:
 - [PluralGetSet](./pluralGetSet.md) (PluralGetSet adds plural getter and setter APIs to esday instances - e.g. years())
 - [QuarterOfYear](./quarterOfYear.md) (QuarterOfYear adds .quarter() getter and setter APIs and formatter token 'Q' - handle quarter of year)
 - [RelativeTime](./relativeTime.md) (RelativeTime adds .to(), .from(), .toNow(), .fromNow() API - for formatting time relative to a given date)
+- [Timezone](./timezone.md) (Timezone adds .tz() API - handle dates with a given timezone)
 - [ToArray](./toArray.md) (ToArray adds .toArray() API - get an array with the components of a date)
 - [ToObject](./toObject.md) (ToObject adds .toObject() API - get an object with the components of a date)
 - [Utc](./utc.md) (UTC adds .utc(), .local() and .isUTC APIs - handle dates as UTC)
