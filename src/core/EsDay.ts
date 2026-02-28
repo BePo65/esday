@@ -366,11 +366,21 @@ export class EsDay {
     if (normalizedUnit === C.DAY) {
       // change date to the given day of week as setUnitInDate does not have a setDay() method
       setUnitInDate(this.$d, C.DAY_OF_MONTH, this.date() + (values[0] - this.day()))
+    } else if (normalizedUnit === C.YEAR && values.length === 2) {
+      // Setting year + month (without day-of-month)
+      // Clamping day-of-month to last day of month (see https://momentjs.com/docs/#/get-set/month/)
+      const originalDate = this.date()
+      setUnitInDate(this.$d, C.YEAR, values)
+      if (originalDate > 0 && this.date() !== originalDate) {
+        // reset day-of-month to last day of previous month
+        setUnitInDate(this.$d, C.DAY_OF_MONTH, 0)
+      }
     } else if (normalizedUnit === C.MONTH) {
+      // Clamping day-of-month to last day of month (see https://momentjs.com/docs/#/get-set/month/)
       const originalDate = values.length === 1 ? this.date() : values[1]
       setUnitInDate(this.$d, C.MONTH, values)
       if (originalDate > 0 && this.date() !== originalDate) {
-        // reset date to last day of previous month
+        // reset day-of-month to last day of previous month
         setUnitInDate(this.$d, C.DAY_OF_MONTH, 0)
       }
     } else if (normalizedUnit !== C.QUARTER && normalizedUnit !== C.WEEK) {
