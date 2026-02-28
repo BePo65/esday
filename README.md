@@ -7,7 +7,7 @@
 
 # Repository changing ownership
 
-On the 6th of January 2026 this repository will change ownership to one of it's maintainers, [BePo65](https://github.com/BePo65) to reduce the workload on [g-mero](https://github.com/g-mero).
+On the 6th of January 2026 this repository changed the ownership to one of it's maintainers, [BePo65](https://github.com/BePo65) to reduce the workload on [g-mero](https://github.com/g-mero).
 
 > esday is a JavaScript library inspired by [Day.js](https://github.com/iamkun/dayjs), esday has a largely similar API to Day.js (v1.11.13), but it is written in TypeScript and fully supports es modules.
 
