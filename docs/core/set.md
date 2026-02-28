@@ -82,6 +82,9 @@ The unit `quarter` (in short, long and plural forms) requires the plugin [quarte
 
 When setting the year you can add parameters to set the month and date too. The same goes true for hours, minutes and seconds that can set the corresponding smaller units too.
 
+Setting year/month or month using the `set` operator: if the new month does not have enough days to keep the current day of month (e.g. 31), day is clamped to the end of the target month (see [moment.js](https://momentjs.com/docs/#/get-set/month/).
+
+
 ## Examples
 ```typescript
 import { esday } from 'esday'

@@ -119,6 +119,25 @@ describe('set', () => {
     expect(objectResultsAsJson(esdaySet)).toEqual(objectResultsAsJson(esdayParsed))
   })
 
+  it('year with month - no clamping', () => {
+    const newYear = 2025
+    const newMonth = 5 // June
+    const esdaySet = esday().set('year', newYear, newMonth)
+    const esdayParsed = esday(`${newYear}-${newMonth + 1}-17T13:24:46.234`)
+
+    expect(objectResultsAsJson(esdaySet)).toEqual(objectResultsAsJson(esdayParsed))
+  })
+
+  it('year with month - clamp day-of-month', () => {
+    const timestamp = '2024-07-31 14:25:36'
+    const newYear = 2025
+    const newMonth = 5 // June
+    const esdaySet = esday(timestamp).set('year', newYear, newMonth)
+    const esdayParsed = esday(`${newYear}-${newMonth + 1}-30T14:25:36`)
+
+    expect(objectResultsAsJson(esdaySet)).toEqual(objectResultsAsJson(esdayParsed))
+  })
+
   it('month', () => {
     const newMonth = 5 // June
 
@@ -126,6 +145,13 @@ describe('set', () => {
     expectSameObject((esday) => esday().set('M', newMonth))
     expectSameObject((esday) => esday().set('month', newMonth))
     expectSameObject((esday) => esday().set('months', newMonth))
+  })
+
+  it('set month - clamp day-of-month', () => {
+    const timestamp = '2025-07-31 14:25:36'
+    const newMonth = 5 // June
+
+    expectSameObject((esday) => esday(timestamp).set('month', newMonth))
   })
 
   it('bubble up month', () => {
