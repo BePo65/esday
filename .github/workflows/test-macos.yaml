@@ -30,6 +30,10 @@ jobs:
         node-version: [22.x]
         os: [macos-14] # M1 Mac
 
+    permissions:
+      # Required to checkout the code
+      contents: read
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Checkout

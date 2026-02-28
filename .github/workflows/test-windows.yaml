@@ -30,6 +30,10 @@ jobs:
         node-version: [22.x]
         os: [windows-latest] # windows-latest
 
+    permissions:
+      # Required to checkout the code
+      contents: read
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Git config
