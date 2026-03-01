@@ -1,6 +1,6 @@
-# Utc
+# UTC
 
-Utc adds methods to EsDay and esday to dates as UTC.
+UTC adds methods to EsDay and esday to dates as UTC.
 
 The `utc` method converts an EsDay instance to utc. If the optional parameter `keepLocalTime` is true, then the the local time is not changed.
 The `local` method converts an EsDay instance from utc to the local timezone.
@@ -11,7 +11,7 @@ The `utcOffset` setter sets the offset to utc for the EsDay instance to the give
 ## Usage
 
 ### Dependencies
-Utc has no dependencies on other plugins.
+UTC has no dependencies on other plugins.
 
 ### Method signatures
 Methods added to EsDay instances:
