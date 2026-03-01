@@ -146,6 +146,10 @@ const addLinkTargetOfPageTitle = (content, localLinks) => {
   localLinks.push({ content: title, target: idOfTitle })
 }
 
+const reportProgress = () => {
+  process.stdout.write('.')
+}
+
 const marked = new Marked()
 const originalRenderer = new Renderer()
 originalRenderer.parser = new Parser()
@@ -208,6 +212,7 @@ const entries = await readdir(sourcePath, {
 })
 for (const entry of entries) {
   if (entry.isFile()) {
+    reportProgress()
     localLinks = []
     let content = ''
     const targetFilePath = entry.parentPath.replace(new RegExp(`^${sourcePath}`), targetPath)
