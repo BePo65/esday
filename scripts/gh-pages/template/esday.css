@@ -1,8 +1,9 @@
 body {
+  color: rgb(31, 35, 40);
   font-family: Arial, sans-serif;
+  line-height: 1.4;
   margin: 0;
   padding: 0;
-  color: rgb(31, 35, 40);
 }
 
 header {
@@ -55,6 +56,35 @@ h1,
 h2 {
   margin-top: -6.5rem;
   padding-top: 6.5rem;
+}
+
+li {
+  margin-bottom: 0.5em;
+}
+
+table {
+  border: 1px solid rgb(30 30 30);
+  border-collapse: collapse;
+}
+
+th {
+  border-bottom: 2px solid rgb(30 30 30);
+  padding-right: 0.4em;
+  padding-left: 0.4em;
+}
+
+th:not(:last-child) {
+  border-right: 1px solid rgb(30 30 30);
+}
+
+td {
+  border-bottom: 1px solid rgb(30 30 30);
+  padding-right: 0.4em;
+  padding-left: 0.4em;
+}
+
+td:not(:last-child) {
+  border-right: 1px solid rgb(30 30 30);
 }
 
 pre:has(> code.language-typescript) {
