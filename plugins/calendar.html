@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plugins - Calendar</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+<base href="/esday/" />
+<link rel="stylesheet" href="esday.css">
+<link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+<header>
+<a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+<h1 class="header-title">Plugins - Calendar</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="core/index.html">Core</a>
+<a href="plugins/index.html">Plugins</a>
+<a href="locales/index.html">Locales</a>
+</nav>
+</header>
+<div class="container"><h1>Calendar</h1>
+<p>Calendar adds the <code>calendar</code> method to EsDay to format a date relative to a given reference date.</p>
+<h2>Usage</h2>
+<h3>Dependencies</h3>
+<p>Calendar requires the plugin Locale and at least 1 registered and activated locale.</p>
+<h3>Method signatures</h3>
+<pre><code class="language-signature">calendar(referenceDate?: EsDay | null, formats?: CalendarPartial): string
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>referenceDate</td>
+<td>date used as a base to compare <code>this</code> to</td>
+</tr>
+<tr>
+<td>formats</td>
+<td>format string(s) used for parsing <code>date</code></td>
+</tr>
+</tbody></table>
+<p><code>referenceDate</code> can be null or undefined and defaults to the start of today.</p>
+<p><code>formats</code> is a <code>CalendarPartial</code> object with these 6 properties</p>
+<table>
+<thead>
+<tr>
+<th>property</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>sameDay</td>
+<td>format used, when difference between <code>this</code> and <code>referenceDate</code> is &lt; 1 day</td>
+</tr>
+<tr>
+<td>nextDay</td>
+<td>format used, when difference between <code>this</code> and <code>referenceDate</code> is &lt; 2 day</td>
+</tr>
+<tr>
+<td>nextWeek</td>
+<td>format used, when difference between <code>this</code> and <code>referenceDate</code> is &lt; 7 day</td>
+</tr>
+<tr>
+<td>lastDay</td>
+<td>format used, when difference between <code>this</code> and <code>referenceDate</code> is &lt; 0 day</td>
+</tr>
+<tr>
+<td>lastWeek</td>
+<td>format used, when difference between <code>this</code> and <code>referenceDate</code> is &lt; -1 day</td>
+</tr>
+<tr>
+<td>sameElse</td>
+<td>format used, when difference is 7 days or more</td>
+</tr>
+</tbody></table>
+<p>The property values can be a (format) string like <code>LT</code> or a function with the following signature:</p>
+<pre><code class="language-signature">(this: EsDay, refDate?: EsDay) =&gt; string
+</code></pre>
+<h2>Examples</h2>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import { calendarPlugin, localePlugin, localizedFormatPlugin } from 'esday/plugins'
+
+import localeEnUs from 'esday/locales/en-us'
+
+esday
+  .extend(localePlugin)
+  .extend(localizedFormatPlugin)
+  .extend(calendarPlugin)
+
+esday.registerLocale(localeEnUs)
+
+// set global locale
+esday.locale('en-US')
+
+// All examples presume that current date is '2023-12-17T03:24:46.234'
+
+esday().calendar()
+// Returns 'Today at 3:24 AM' - "sameDay"
+
+esday('2025-06-21T17:24:46.234').calendar(esday('2025-06-21T03:24:46.234'))
+// Returns 'Today at 5:24 PM' - "sameDay" with reference date
+
+esday().add(1, 'day').hour(10).calendar()
+// Returns 'Tomorrow at 10:24 AM' - "nextDay"
+
+esday().add(3, 'day').hour(11).calendar()
+// Returns 'Wednesday at 11:24 AM' - "nextWeek"
+
+esday().subtract(1, 'day').hour(14).calendar()
+// Returns 'Yesterday at 2:24 PM' - "lastDay"
+
+esday().subtract(4, 'day').hour(15).calendar()
+// Returns 'Last Wednesday at 3:24 PM' - "lastWeek"
+
+esday().add(8, 'day').hour(16).calendar()
+// Returns '12/25/2023' - "sameElse (future)"
+
+esday().subtract(8, 'day').hour(17).calendar()
+// Returns '12/09/2023' - "sameElse (past)"
+
+esday().calendar(undefined, { sameDay: '[My Custom Today at] HH:mm' })
+// Returns 'My Custom Today at 03:24' - overriding a format key with a string
+
+const customFormats: CalendarPartial = {
+  nextDay: function (this: EsDay, refDate?: EsDay) {
+    return `[Func: Next Day from ${refDate?.format('YYYY-MM-DD')} at] HHmm`
+  },
+}
+esday().add(1, 'day').hour(10).calendar.calendar(undefined, { sameDay: '[My Custom Today at] HH:mm' })
+// Returns 'My Custom Today at 03:24' - overriding a format key with a string
+</code></pre>
+</div>
+<template id="copyButtonTemplate">
+<button>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1" fill="none">
+<title>Copy to clipboard</title>
+<path fill-rule="evenodd" d="M 4.683594 2.5 C 4.683594 1.855469 5.207031 1.332031 5.847656 1.332031 L 13.5 1.332031 C 14.144531 1.332031 14.667969 1.855469 14.667969 2.5 L 14.667969 10.164062 C 14.667969 10.808594 14.144531 11.332031 13.5 11.332031 L 5.847656 11.332031 C 5.203125 11.332031 4.683594 10.808594 4.683594 10.164062 Z M 5.847656 2.332031 L 5.683594 10.164062 C 5.683594 10.257812 5.757812 10.332031 5.847656 10.332031 L 13.5 10.332031 L 13.667969 2.5 Z M 5.847656 2.332031 "/><path d="M 1.328125 7.164062 C 1.328125 6.519531 1.851562 6 2.496094 6 L 3.5 6 C 3.777344 6 4 6.222656 4 6.5 C 4 6.773438 3.777344 7 3.5 7 L 2.496094 7 L 2.332031 13.5 C 2.332031 13.59375 2.40625 13.667969 2.5 13.667969 L 8.832031 13.667969 L 9 12.492188 C 9 12.21875 9.222656 11.992188 9.5 11.992188 C 9.777344 11.992188 10 12.21875 10 12.492188 L 10 13.5 C 10 14.144531 9.476562 14.667969 8.832031 14.667969 L 2.5 14.667969 C 1.855469 14.667969 1.332031 14.144531 1.332031 13.5 Z M 1.328125 7.164062 "></path>
+</svg>
+</button>
+</template>
+<template id="copiedFeedbackTemplate"><div class="copied">Copied!</div></template>
+<script src="scripts.js"></script>
+</body>
+</html>

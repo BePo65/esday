@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plugins - AdvancedParse</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+<base href="/esday/" />
+<link rel="stylesheet" href="esday.css">
+<link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+<header>
+<a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+<h1 class="header-title">Plugins - AdvancedParse</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="core/index.html">Core</a>
+<a href="plugins/index.html">Plugins</a>
+<a href="locales/index.html">Locales</a>
+</nav>
+</header>
+<div class="container"><h1>AdvancedParse</h1>
+<p>AdvancedParse extends the <code>esday</code> constructor to support custom formats of input strings.</p>
+<h2>Usage</h2>
+<h3>Dependencies</h3>
+<p>AdvancedParse requires no other plugin.</p>
+<p>AdvancedParse can be used together with the plugin Utc. If used together with the plugin Utc, the plugin Utc must be activated using esday.extend(...) before the plugin AdvancedParse.</p>
+<p>If used together with the plugin Locale and/or LocalizedParse, then AdvancedParse must be activated before these plugins, as AdvancedParse "terminates" the parsing chain, if we have a parsing format.</p>
+<h3>Method signatures</h3>
+<pre><code class="language-signature">esday(date: string, format: string): EsDay
+esday(date: string, format: string[]): EsDay
+esday(date: string, format: string, strict: boolean): EsDay
+esday(date: string, format: string[], strict: boolean): EsDay
+</code></pre>
+<p>and for the <code>utc</code> plugin</p>
+<pre><code class="language-signature">esday.utc(date: string, format: string): EsDay
+esday.utc(date: string, format: string[]): EsDay
+esday.utc(date: string, format: string, strict: boolean): EsDay
+esday.utc(date: string, format: string[], strict: boolean): EsDay
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>date</td>
+<td>date string to be parsed</td>
+</tr>
+<tr>
+<td>format</td>
+<td>format string(s) used for parsing <code>date</code></td>
+</tr>
+<tr>
+<td>strict</td>
+<td>date string must match format exactly</td>
+</tr>
+</tbody></table>
+<p>If an array of formats is used, <code>date</code> will be parsed with the best matching format in this array.</p>
+<h3>Parsing tokens</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Token</strong></th>
+<th><strong>Example</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Y</td>
+<td>-25</td>
+<td>Year with any number of digits and sign</td>
+</tr>
+<tr>
+<td>YY</td>
+<td>14</td>
+<td>Two-digit year</td>
+</tr>
+<tr>
+<td>YYYY</td>
+<td>2001</td>
+<td>4 or 2 digit year. Note: Only 4 digit can be parsed in 'strict' mode</td>
+</tr>
+<tr>
+<td>Q</td>
+<td>1-4</td>
+<td>Quarter of year. Sets month to first month in quarter.</td>
+</tr>
+<tr>
+<td>M</td>
+<td>1..12</td>
+<td>Month, beginning at 1</td>
+</tr>
+<tr>
+<td>MM</td>
+<td>01..12</td>
+<td>Month, 2-digits</td>
+</tr>
+<tr>
+<td>D</td>
+<td>1..31</td>
+<td>Day of month</td>
+</tr>
+<tr>
+<td>DD</td>
+<td>01..31</td>
+<td>Day of month, 2-digits</td>
+</tr>
+<tr>
+<td>H</td>
+<td>0..23</td>
+<td>Hours (24 hour time)</td>
+</tr>
+<tr>
+<td>HH</td>
+<td>00..23</td>
+<td>Hours (24 hour time),2-digits</td>
+</tr>
+<tr>
+<td>m</td>
+<td>0..59</td>
+<td>Minutes</td>
+</tr>
+<tr>
+<td>mm</td>
+<td>00..59</td>
+<td>Minutes, 2-digits</td>
+</tr>
+<tr>
+<td>s</td>
+<td>0..59</td>
+<td>Seconds</td>
+</tr>
+<tr>
+<td>ss</td>
+<td>00..59</td>
+<td>Seconds, 2-digits</td>
+</tr>
+<tr>
+<td>S</td>
+<td>0..9</td>
+<td>Hundreds of milliseconds, 1-digit (000 .. 900)</td>
+</tr>
+<tr>
+<td>SS</td>
+<td>00..99</td>
+<td>Tens of milliseconds, 2-digits (000 .. 990</td>
+</tr>
+<tr>
+<td>SSS</td>
+<td>000..999</td>
+<td>Milliseconds, 3-digits</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>+05:00</td>
+<td>Offset from UTC as <code>+-HH:mm</code>, <code>+-HHmm</code>, or <code>Z</code></td>
+</tr>
+<tr>
+<td>ZZ</td>
+<td>-0500</td>
+<td>Compact offset from UTC, 2-digits  as <code>+-HH:mm</code>, <code>+-HHmm</code>, or <code>Z</code></td>
+</tr>
+<tr>
+<td>X</td>
+<td>1410715640579</td>
+<td>Unix timestamp</td>
+</tr>
+<tr>
+<td>x</td>
+<td>1410715640579</td>
+<td>Unix ms timestamp</td>
+</tr>
+</tbody></table>
+<h3>Adding new parsing tokens</h3>
+<pre><code class="language-signature">esday.addTokenDefinitions(newTokens: TokenDefinitions)
+</code></pre>
+<p><strong>Format of TokenDefinitions</strong></p>
+<pre><code class="language-typescript">type TokenDefinitions = Record&lt;string, [RegExp, RegExp, (this: ParsedElements, input: string) =&gt; void]&gt;
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>type</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>token</td>
+<td>string</td>
+<td>token to be parsed (e.g. 'Q')</td>
+</tr>
+<tr>
+<td>regex default mode</td>
+<td>RegExp</td>
+<td>regex used for parsing in default mode</td>
+</tr>
+<tr>
+<td>regex strict mode</td>
+<td>RegExp</td>
+<td>regex used for parsing in strict mode</td>
+</tr>
+<tr>
+<td>setter</td>
+<td>function</td>
+<td>function to add parsed value to result in 'this'</td>
+</tr>
+</tbody></table>
+<p><strong>Parameters of setter</strong></p>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>type</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>this</td>
+<td>ParsedElements</td>
+<td>object for results of parsing</td>
+</tr>
+<tr>
+<td>input</td>
+<td>string</td>
+<td>parsed value</td>
+</tr>
+</tbody></table>
+<p><strong>Format of ParsedElements</strong></p>
+<pre><code class="language-typescript">interface ParsedElements {
+  year?: number
+  month?: number
+  day?: number
+  hours?: number
+  minutes?: number
+  seconds?: number
+  milliseconds?: number
+  zoneOffset?: number
+  unix?: number
+}
+</code></pre>
+<h2>Examples</h2>
+<h3>Parsing</h3>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import advancedParsePlugin from 'esday/plugins/advancedParse'
+import utcPlugin from 'esday/plugins/utc'
+
+esday.extend(utcPlugin)
+esday.extend(advancedParsePlugin)
+
+esday('08-2023-14 21:43:12.123', 'MM-YYYY-DD HH:mm:ss.SSS')
+// Returns an instance containing '2023-08-14T21:43:12.123' in local timezone
+
+esday('08/2023/14 21 43.12 123', 'MM/YYYY/DD HH mm.ss SSS', true)
+// In strict mode the format must match the parsed date (even the separators)
+
+esday.utc('08-2023-14 21:43:12.123', 'MM-YYYY-DD HH:mm:ss.SSS')
+// Returns an instance containing '2023-08-14T21:43:12.123' in utc
+</code></pre>
+<h3>Adding new parsing tokens</h3>
+<p>This functionality is above all for plugin developers</p>
+<pre><code class="language-typescript">const additionalTokens: TokenDefinitions = {
+  PP: [/\d\d?/, /\d{2}/, function (input) {
+    // in this example we don't use the parsed value ('input')
+    this.milliseconds = 987
+  }],
+}
+esday.addTokenDefinitions(additionalTokens)
+
+const parsedDate = esday('2024 3', 'YYYY PP')
+</code></pre>
+</div>
+<template id="copyButtonTemplate">
+<button>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1" fill="none">
+<title>Copy to clipboard</title>
+<path fill-rule="evenodd" d="M 4.683594 2.5 C 4.683594 1.855469 5.207031 1.332031 5.847656 1.332031 L 13.5 1.332031 C 14.144531 1.332031 14.667969 1.855469 14.667969 2.5 L 14.667969 10.164062 C 14.667969 10.808594 14.144531 11.332031 13.5 11.332031 L 5.847656 11.332031 C 5.203125 11.332031 4.683594 10.808594 4.683594 10.164062 Z M 5.847656 2.332031 L 5.683594 10.164062 C 5.683594 10.257812 5.757812 10.332031 5.847656 10.332031 L 13.5 10.332031 L 13.667969 2.5 Z M 5.847656 2.332031 "/><path d="M 1.328125 7.164062 C 1.328125 6.519531 1.851562 6 2.496094 6 L 3.5 6 C 3.777344 6 4 6.222656 4 6.5 C 4 6.773438 3.777344 7 3.5 7 L 2.496094 7 L 2.332031 13.5 C 2.332031 13.59375 2.40625 13.667969 2.5 13.667969 L 8.832031 13.667969 L 9 12.492188 C 9 12.21875 9.222656 11.992188 9.5 11.992188 C 9.777344 11.992188 10 12.21875 10 12.492188 L 10 13.5 C 10 14.144531 9.476562 14.667969 8.832031 14.667969 L 2.5 14.667969 C 1.855469 14.667969 1.332031 14.144531 1.332031 13.5 Z M 1.328125 7.164062 "></path>
+</svg>
+</button>
+</template>
+<template id="copiedFeedbackTemplate"><div class="copied">Copied!</div></template>
+<script src="scripts.js"></script>
+</body>
+</html>

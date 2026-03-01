@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plugins - IsoWeek</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+<base href="/esday/" />
+<link rel="stylesheet" href="esday.css">
+<link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+<header>
+<a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+<h1 class="header-title">Plugins - IsoWeek</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="core/index.html">Core</a>
+<a href="plugins/index.html">Plugins</a>
+<a href="locales/index.html">Locales</a>
+</nav>
+</header>
+<div class="container"><h1>IsoWeek</h1>
+<p>IsoWeek adds the <code>isoWeek</code>, the <code>isoWeeks</code>, the <code>isoWeekDay</code>, the <code>isoWeekYear</code> and the <code>isoWeeksInYear</code> methods to EsDay.</p>
+<p>The <code>isoWeek</code> method gets or sets the ISO week of the year of a date according to the ISO 8601.<br>The <code>isoWeeks</code> method is just an alias for the <code>isoWeek</code> method.<br>The <code>isoWeekDay</code> method gets the ISO day of week of a date.<br>The <code>isoWeekYear</code> method gets the ISO week-year of a date.<br>The <code>isoWeeksInYear</code> method gets the number of weeks in a year according to the ISO 8601.</p>
+<p>IsoWeek adds support for parsing tokens <code>W</code>, <code>WW</code>, <code>E</code>, <code>GG</code> and <code>GGGG</code>.<br>IsoWeek adds support for formatting tokens <code>W</code>, <code>WW</code>, <code>Wo</code>, <code>E</code>, <code>GG</code> and <code>GGGG</code>.</p>
+<h2>Usage</h2>
+<h3>Dependencies</h3>
+<p>In most cases IsoWeek requires no other plugin.</p>
+<p>When using the 'Wo' formatting token, IsoWeek requires the plugins Locale and LocalizedFormat and at least 1 registered and activated locale.</p>
+<p>When using the parsing tokens, the plugin AdvancedParse is required and must be activated using esday.extend(...) before the plugin IsoWeek.</p>
+<p>IsoWeek can be used together with the plugin Utc. If used together with the plugin Utc, the plugin Utc must be activated using esday.extend(...) before the plugin IsoWeek.</p>
+<h3>Method signatures</h3>
+<pre><code class="language-signature">esday().isoWeek(): number
+esday().isoWeek(newIsoWeek: number): EsDay
+esday().isoWeeks(): number
+esday().isoWeeks(newIsoWeek: number): EsDay
+esday().isoWeekday(): number
+esday().isoWeekday(newIsoWeekday: number): EsDay
+esday().isoWeekYear(): number
+esday().isoWeekYear(newIsoWeekYear: number): EsDay
+isoWeeksInYear(): number
+</code></pre>
+<p><strong>isoWeek</strong><br>The ISO week of the year depends on the first day of the week (Monday), and with which day (of the month) the first week of the year starts. According to the ISO 8601 the first week of the year is the the week containing January 4th.</p>
+<p>When <strong>setting</strong> the ISO week of the year, the day of the week is retained.</p>
+<p><strong>isoWeekYear</strong><br>Because the first day of the first week of a year does not always fall on the first day of the year, sometimes the ISO week-year will differ from the "month year".</p>
+<p>For example, in 2022 Jan 1 was a Saturday. Because of this, the first ISO week of the year 2022 starts on Monday Jan 3 and Jan 1 belongs to ISO week year 2021 (ISO week 52).</p>
+<h3>Formatting tokens</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Token</strong></th>
+<th><strong>Example</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>W</td>
+<td>1-53</td>
+<td>ISO week of year.</td>
+</tr>
+<tr>
+<td>WW</td>
+<td>01-53</td>
+<td>ISO week of year (2 digits).</td>
+</tr>
+<tr>
+<td>Wo</td>
+<td>1nd-53rd</td>
+<td>ISO week of year as ordinal number.</td>
+</tr>
+<tr>
+<td>E</td>
+<td>1-7</td>
+<td>ISO day of week.</td>
+</tr>
+<tr>
+<td>GG</td>
+<td>00-99</td>
+<td>ISO week-year (2 digits).</td>
+</tr>
+<tr>
+<td>GGGG</td>
+<td>0000-9999</td>
+<td>ISO week-year.</td>
+</tr>
+</tbody></table>
+<p>When no locale is loaded the token 'Wo' returns the ISO week number as number (instead of an ordinal number).</p>
+<h3>Parsing tokens</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Token</strong></th>
+<th><strong>Example</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>W</td>
+<td>1-53</td>
+<td>ISO week of year.  Sets day of week to Monday (1st day of week).</td>
+</tr>
+<tr>
+<td>WW</td>
+<td>01-53</td>
+<td>2 digits ISO week of year. Sets day of week to Monday (1st day of week).</td>
+</tr>
+<tr>
+<td>E</td>
+<td>1-7</td>
+<td>ISO day of week.</td>
+</tr>
+<tr>
+<td>GG</td>
+<td>00-99</td>
+<td>ISO week-year (2 digits).</td>
+</tr>
+<tr>
+<td>GGGG</td>
+<td>0000-9999</td>
+<td>ISO week-year.</td>
+</tr>
+</tbody></table>
+<p>If the source string (and the format to use) contains a valid day of month, the isoWeek is ignored (like moment.js does).</p>
+<p>If the source string (and the format to use) contains a valid month, the isoWeekday is ignored (like moment.js does).</p>
+<p>If the source string (and the format to use) contains only 'GG' or 'GGGG', the parsed date is set to Monday of the week that contains Jan 1st (like moment.js does).</p>
+<h2>Examples</h2>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import isoWeekPlugin from 'esday/plugins/isoWeek'
+
+esday.extend(isoWeekPlugin)
+
+esday('2021-01-02').isoWeek()
+// Returns 53
+
+esday('2023-04-15').isoWeek(23)
+// Returns esday for '2024-06-10'
+
+esday('2025-04-13').isoWeekday()
+// Returns 7 (Sunday is '7'!)
+
+esday('2025-05-15').isoWeekday(1)
+// Returns esday for '2025-05-12'
+
+esday('2025-12-29').weekYear()
+// Returns 2026
+
+esday('2025-12-29').weekYear(2025)
+// Returns esday for '2025-01-01'
+
+esday('2020-04-25').isoWeeksInYear()
+// Returns 53
+</code></pre>
+<h3>Formatting date using IsoWeek tokens</h3>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import isoWeekPlugin from 'esday/plugins/isoWeek'
+
+esday.extend(isoWeekPlugin)
+
+esday('22024-12-24T14:25:36').format('W')
+// Returns '52'
+
+esday('22024-12-24T14:25:36').format('WW')
+// Returns '52'
+
+esday('22024-12-24T14:25:36').format('Wo')
+// Returns '52'
+
+esday('22024-12-24T14:25:36').format('E')
+// Returns '2'
+
+esday('22024-12-24T14:25:36').format('GG')
+// Returns '24'
+
+esday('22024-12-24T14:25:36').format('GGGG')
+// Returns '2024'
+</code></pre>
+<p>and with a locale loaded:</p>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import { localePlugin, isoWeekPlugin } from 'esday/plugins'
+import localeEn from 'esday/locales/en'
+
+esday.extend(localePlugin)
+esday.extend(isoWeekPlugin)
+
+esday.registerLocale(localeEn)
+
+// set global locale
+esday.locale('en')
+
+esday('22024-12-24T14:25:36').format('Wo')
+// Returns '52nd'
+</code></pre>
+<h3>Parsing date using IsoWeek tokens</h3>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import isoWeekPlugin from 'esday/plugins/isoWeek'
+
+esday.extend(isoWeekPlugin)
+
+esday('2025 2', 'YYYY W')
+// Returns esday for '2025-01-06'
+
+esday('2025-10-24 2', 'YYYY-MM-DD W')
+// Returns esday for '2025-10-24'
+
+esday('2025-09-23 2', 'YYYY-MM-DD W')
+// Returns esday for '2025-09-23'
+
+esday('2025 12', 'YYYY WW')
+// Returns esday for '2025-01-01' as we don't have a locale
+
+esday('2025 4', 'YYYY E')
+// Returns esday for '2025-01-02'
+
+esday("24", "GG")
+// Returns esday for '2024-01-01'
+</code></pre>
+<p>and with a locale loaded:</p>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import { localePlugin, isoWeekPlugin } from 'esday/plugins'
+import localeEn from 'esday/locales/en'
+
+esday.extend(localePlugin)
+esday.extend(isoWeekPlugin)
+
+esday.registerLocale(localeEn)
+
+// set global locale
+esday.locale('en')
+
+esday('2025 12', 'YYYY WW')
+// Returns esday for '2025-03-17'
+</code></pre>
+</div>
+<template id="copyButtonTemplate">
+<button>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1" fill="none">
+<title>Copy to clipboard</title>
+<path fill-rule="evenodd" d="M 4.683594 2.5 C 4.683594 1.855469 5.207031 1.332031 5.847656 1.332031 L 13.5 1.332031 C 14.144531 1.332031 14.667969 1.855469 14.667969 2.5 L 14.667969 10.164062 C 14.667969 10.808594 14.144531 11.332031 13.5 11.332031 L 5.847656 11.332031 C 5.203125 11.332031 4.683594 10.808594 4.683594 10.164062 Z M 5.847656 2.332031 L 5.683594 10.164062 C 5.683594 10.257812 5.757812 10.332031 5.847656 10.332031 L 13.5 10.332031 L 13.667969 2.5 Z M 5.847656 2.332031 "/><path d="M 1.328125 7.164062 C 1.328125 6.519531 1.851562 6 2.496094 6 L 3.5 6 C 3.777344 6 4 6.222656 4 6.5 C 4 6.773438 3.777344 7 3.5 7 L 2.496094 7 L 2.332031 13.5 C 2.332031 13.59375 2.40625 13.667969 2.5 13.667969 L 8.832031 13.667969 L 9 12.492188 C 9 12.21875 9.222656 11.992188 9.5 11.992188 C 9.777344 11.992188 10 12.21875 10 12.492188 L 10 13.5 C 10 14.144531 9.476562 14.667969 8.832031 14.667969 L 2.5 14.667969 C 1.855469 14.667969 1.332031 14.144531 1.332031 13.5 Z M 1.328125 7.164062 "></path>
+</svg>
+</button>
+</template>
+<template id="copiedFeedbackTemplate"><div class="copied">Copied!</div></template>
+<script src="scripts.js"></script>
+</body>
+</html>

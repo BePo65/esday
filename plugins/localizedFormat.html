@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plugins - LocalizedFormat</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+<base href="/esday/" />
+<link rel="stylesheet" href="esday.css">
+<link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+<header>
+<a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+<h1 class="header-title">Plugins - LocalizedFormat</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="core/index.html">Core</a>
+<a href="plugins/index.html">Plugins</a>
+<a href="locales/index.html">Locales</a>
+</nav>
+</header>
+<div class="container"><h1>LocalizedFormat</h1>
+<p>LocalizedFormat extends <code>esday.format()</code> to support localized tokens in a formatting template.</p>
+<h2>Usage</h2>
+<h3>Dependencies</h3>
+<h1>LocalizedFormat</h1>
+<p>LocalizedFormat requires the plugin Locale and at least 1 registered and activated locale.</p>
+<h3>Formatting tokens</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Token</strong></th>
+<th><strong>Example</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MMM</td>
+<td>Jan</td>
+<td>Short form of the name of a month</td>
+</tr>
+<tr>
+<td>MMMM</td>
+<td>January</td>
+<td>Long form of the name of a month</td>
+</tr>
+<tr>
+<td>Do</td>
+<td>2nd</td>
+<td>Day of week as ordinal</td>
+</tr>
+<tr>
+<td>dd</td>
+<td>Su</td>
+<td>Minimal form of day of week</td>
+</tr>
+<tr>
+<td>ddd</td>
+<td>Sun</td>
+<td>Short form of day of week</td>
+</tr>
+<tr>
+<td>dddd</td>
+<td>Sunday</td>
+<td>Long form of day of week</td>
+</tr>
+<tr>
+<td>h</td>
+<td>1-12</td>
+<td>Hour with 1 -&gt; 12</td>
+</tr>
+<tr>
+<td>hh</td>
+<td>01-12</td>
+<td>Hour, 2-digits, with 1 -&gt; 12</td>
+</tr>
+<tr>
+<td>a</td>
+<td>am</td>
+<td>Meridiem of hour (lower case)</td>
+</tr>
+<tr>
+<td>A</td>
+<td>PM</td>
+<td>Meridiem of hour (upper case)</td>
+</tr>
+</tbody></table>
+<h2>Examples</h2>
+<h3>Formatting</h3>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import { localePlugin, localizedFormatPlugin } from 'esday/plugins'
+import localeDe from 'esday/locales/de'
+
+esday.extend(localePlugin)
+esday.extend(localizedFormatPlugin)
+
+esday.registerLocale(localeDe)
+
+// set global locale
+esday.locale('de')
+
+esday('2024-12-24T14:25:36').format('LLLL')
+// Returns "Dienstag, 24. Dezember 2024 14:25"
+</code></pre>
+</div>
+<template id="copyButtonTemplate">
+<button>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1" fill="none">
+<title>Copy to clipboard</title>
+<path fill-rule="evenodd" d="M 4.683594 2.5 C 4.683594 1.855469 5.207031 1.332031 5.847656 1.332031 L 13.5 1.332031 C 14.144531 1.332031 14.667969 1.855469 14.667969 2.5 L 14.667969 10.164062 C 14.667969 10.808594 14.144531 11.332031 13.5 11.332031 L 5.847656 11.332031 C 5.203125 11.332031 4.683594 10.808594 4.683594 10.164062 Z M 5.847656 2.332031 L 5.683594 10.164062 C 5.683594 10.257812 5.757812 10.332031 5.847656 10.332031 L 13.5 10.332031 L 13.667969 2.5 Z M 5.847656 2.332031 "/><path d="M 1.328125 7.164062 C 1.328125 6.519531 1.851562 6 2.496094 6 L 3.5 6 C 3.777344 6 4 6.222656 4 6.5 C 4 6.773438 3.777344 7 3.5 7 L 2.496094 7 L 2.332031 13.5 C 2.332031 13.59375 2.40625 13.667969 2.5 13.667969 L 8.832031 13.667969 L 9 12.492188 C 9 12.21875 9.222656 11.992188 9.5 11.992188 C 9.777344 11.992188 10 12.21875 10 12.492188 L 10 13.5 C 10 14.144531 9.476562 14.667969 8.832031 14.667969 L 2.5 14.667969 C 1.855469 14.667969 1.332031 14.144531 1.332031 13.5 Z M 1.328125 7.164062 "></path>
+</svg>
+</button>
+</template>
+<template id="copiedFeedbackTemplate"><div class="copied">Copied!</div></template>
+<script src="scripts.js"></script>
+</body>
+</html>

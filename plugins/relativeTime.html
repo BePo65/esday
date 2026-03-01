@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plugins - RelativeTime</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+<base href="/esday/" />
+<link rel="stylesheet" href="esday.css">
+<link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+<header>
+<a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+<h1 class="header-title">Plugins - RelativeTime</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="core/index.html">Core</a>
+<a href="plugins/index.html">Plugins</a>
+<a href="locales/index.html">Locales</a>
+</nav>
+</header>
+<div class="container"><h1>RelativeTime</h1>
+<p>RelativeTime adds the <code>fromNow</code>,  <code>toNow</code>, <code>from</code> and the <code>to</code> methods to EsDay to format a date as a relative time string (e.g. '3 hours ago').</p>
+<p>The <code>fromNow</code> method returns a string of a time relative to 'now' (e.g. '4 years ago').<br>The <code>toNow</code> method returns the opposite value of <code>fromNow</code> (e.g. 'in 4 years').<br>The <code>from</code>  method returns a string of a time relative to a given date (e.g. '3 hours ago').<br>The <code>to</code> method returns the opposite value of <code>from</code> (e.g. 'in 3 hours').</p>
+<p>It also adds methods to get the default thresholds <code>formatDifference</code>, <code>defaultThresholds</code> and <code>globalThresholds</code> to esday.</p>
+<p>The <code>formatDifference</code> method formats a given time difference to a relative time string.<br>The <code>defaultThresholds</code> method returns an object containing the default thresholds.<br>The <code>globalThresholds</code> method returns an object containing the currently used global thresholds.</p>
+<p>The thresholds, which define, when a unit is considered a minute, an hour and so on, can be set or gotten with the <code>relativeTimeThreshold</code> function.<br>The used rounding algorithm can be set or gotten with the <code>relativeTimeRounding</code> function.<br>The thresholds and the rounding function can also be set with an option parameter of the <code>esday.extend(relativeTimePlugin)</code> function.</p>
+<h2>Usage</h2>
+<h3>Dependencies</h3>
+<p>RelativeTime requires the plugin Locale and at least 1 registered and activated locale.</p>
+<h3>Method signatures for EsDay instances</h3>
+<pre><code class="language-signature">esday().fromNow(withoutSuffix?: boolean): string
+esday().toNow(withoutSuffix?: boolean): string
+esday().from(referenceDate: DateType, withoutSuffix?: boolean): string
+esday().to(referenceDate: DateType, withoutSuffix?: boolean): string
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>withoutSuffix</td>
+<td>generate relative time without 'in' / 'ago'</td>
+</tr>
+<tr>
+<td>referenceDate</td>
+<td>date to refer to (instead of 'now')</td>
+</tr>
+</tbody></table>
+<p>Passing true as <code>withoutSuffix</code>, the methods return the value without the suffix (e.g. '4 years' instead of 'in 4 years').</p>
+<p>The returned strings are defined by the current locale. <code>future</code> and <code>past</code> define the corresponding suffixes to use (default to 'in' / 'ago').</p>
+<p>Time is rounded to the nearest second.</p>
+<p>The breakdown of which string is displayed for each length of time is outlined in the table below<br>('key' is the key in the definition of <code>relativeTime</code> in the current locale):</p>
+<table>
+<thead>
+<tr>
+<th>Range</th>
+<th>Key</th>
+<th>Sample Output</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0 to 44 seconds</td>
+<td>s</td>
+<td>a few seconds ago</td>
+</tr>
+<tr>
+<td>45 to 89 seconds</td>
+<td>m</td>
+<td>a minute ago</td>
+</tr>
+<tr>
+<td>90 seconds to 44 minutes</td>
+<td>mm</td>
+<td>2 minutes ago ... 44 minutes ago</td>
+</tr>
+<tr>
+<td>45 to 89 minutes</td>
+<td>h</td>
+<td>an hour ago</td>
+</tr>
+<tr>
+<td>90 minutes to 21 hours</td>
+<td>hh</td>
+<td>2 hours ago ... 21 hours ago</td>
+</tr>
+<tr>
+<td>22 to 35 hours</td>
+<td>d</td>
+<td>a day ago</td>
+</tr>
+<tr>
+<td>36 hours to 25 days</td>
+<td>dd</td>
+<td>2 days ago ... 25 days ago</td>
+</tr>
+<tr>
+<td>26 to 45 days</td>
+<td>M</td>
+<td>a month ago</td>
+</tr>
+<tr>
+<td>45 to 319 days</td>
+<td>MM</td>
+<td>2 months ago ... 10 months ago</td>
+</tr>
+<tr>
+<td>320 to 547 days (1.5 years)</td>
+<td>y</td>
+<td>a year ago</td>
+</tr>
+<tr>
+<td>548 days+</td>
+<td>yy</td>
+<td>2 years ago ... 20 years ago</td>
+</tr>
+</tbody></table>
+<p><strong>Thresholds</strong></p>
+<p>The RelativeTime plugin uses a list of thresholds, which define, when a unit is considered a minute, an hour and so on. For example, by default more than 45 seconds is considered a minute, more than 22 hours is considered a day and so on.</p>
+<p>The used thresholds can be overwritten, when activating the plugin by using an object with a property named <code>thresholds</code> as second parameter.</p>
+<p>The default threshold list (of type <code>ThresholdRelativeTime</code>) looks like this;</p>
+<pre><code class="language-typescript">{
+  ss: 44,
+  s: 45,
+  m: 45,
+  h: 22,
+  d: 26,
+  w: null,
+  M: 11,
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>unit</th>
+<th>meaning</th>
+<th>usage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ss</td>
+<td>a few seconds</td>
+<td>least number of seconds to be counted in seconds, minus 1.</td>
+</tr>
+<tr>
+<td>s</td>
+<td>seconds</td>
+<td>least number of seconds to be considered a minute.</td>
+</tr>
+<tr>
+<td>m</td>
+<td>minutes</td>
+<td>least number of minutes to be considered an hour.</td>
+</tr>
+<tr>
+<td>h</td>
+<td>hours</td>
+<td>least number of hours to be considered a day.</td>
+</tr>
+<tr>
+<td>d</td>
+<td>days</td>
+<td>least number of days to be considered a week.</td>
+</tr>
+<tr>
+<td>w</td>
+<td>weeks</td>
+<td>least number of weeks to be considered a month. Not used by default.</td>
+</tr>
+<tr>
+<td>M</td>
+<td>months</td>
+<td>least number of months to be considered a year.</td>
+</tr>
+</tbody></table>
+<p>By default, the unit 'w' is not used (set to null). It can be set it to a non-null value to activate it. Optionally 'd' can be set to a lower value, so that transitions from days to weeks get earlier.</p>
+<h3>Method signatures for EsDay</h3>
+<p><strong>Getters</strong></p>
+<pre><code class="language-signature">esday.relativeTimeThreshold(unit: ThresholdRelativeTimeKeys): boolean | number | null
+esday.relativeTimeThreshold(unit: ThresholdRelativeTimeKeys, limit: number | null): boolean
+esday.relativeTimeRounding(): RelativeTimeRound
+esday.relativeTimeRounding(roundingFunction: RelativeTimeRound): boolean
+esday.defaultThresholds(): ThresholdRelativeTime
+esday.globalThresholds(): ThresholdRelativeTime
+esday.formatDifference: (
+      diffAsUnits: DiffAsUnit,
+      withoutSuffix: boolean,
+      locale: Locale,
+      thresholds?: ThresholdRelativeTime,
+    ): string
+</code></pre>
+<p><code>type roundingFunction = (value: number) =&gt; number</code><br><code>type ThresholdRelativeTimeKeys = 'ss' | 's' | 'm' | 'h' | 'd' | 'w' | 'M'</code></p>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>unit</td>
+<td>unit to get or set the threshold for</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>new value of the threshold of the given unit</td>
+</tr>
+<tr>
+<td>roundingFunction</td>
+<td>new rounding function to set</td>
+</tr>
+<tr>
+<td>diffAsUnits</td>
+<td>object containing the time differences calculated for several units (s, m, h, d, w, M, y)</td>
+</tr>
+<tr>
+<td>withoutSuffix</td>
+<td>generate relative time without 'in' / 'ago'</td>
+</tr>
+<tr>
+<td>locale</td>
+<td>object containing the locale data to use</td>
+</tr>
+<tr>
+<td>thresholds</td>
+<td>object containing the thresholds to use (defaults to the default thresholds listed above)</td>
+</tr>
+</tbody></table>
+<p><strong>Setters</strong></p>
+<pre><code class="language-signature">esday.relativeTimeThreshold(unit: ThresholdRelativeTimeKeys, limit: number | null): boolean
+esday.relativeTimeRounding(roundingFunction: RelativeTimeRound): boolean
+</code></pre>
+<p>The setters return true, if the setting the value / the function was successful, otherwise false.</p>
+<h3>Using options in esday.extend</h3>
+<p>The thresholds can also be set using the options property of the esday extend function.</p>
+<p>The structure of the options property is as follows:</p>
+<pre><code class="language-typescript">{
+  thresholds?: ThresholdRelativeTime
+  rounding?: RelativeTimeRound
+}
+</code></pre>
+<h2>Examples</h2>
+<pre><code class="language-typescript">import { localePlugin, relativeTimePlugin } from 'esday/plugins'
+import localeEn from 'esday/locales/en'
+
+esday.extend(localePlugin)
+esday.extend(relativeTimePlugin)
+
+esday.registerLocale(localeEn)
+
+esday([2007, 0, 29]).fromNow()
+// Returns '4 years ago'
+
+esday([2007, 0, 29]).fromNow(true)
+// Returns '4 years'
+
+const dateA = esday([2007, 0, 28]);
+const dateB = esday([2007, 0, 29]);
+dateA.to(dateB)
+// Returns 'in a day'
+
+const startDate = esday([2007, 0, 5]);
+const endDate = esday([2007, 0, 10]);
+endDate.to(startDate, true)
+// Returns '5 days'
+
+esday.relativeTimeThreshold('m')
+// Returns 45
+
+esday.relativeTimeThreshold('m', 50)
+// Sets threshold for 'minutes' to 50
+
+esday.relativeTimeRounding()
+// Returns current rounding function used for RelativeTime plugin
+
+esday.relativeTimeRounding(Math.floor)
+// Sets rounding function to 'Math.floor'
+</code></pre>
+<p><strong>Overwrite threshold list</strong>:</p>
+<pre><code class="language-typescript">import { localePlugin, relativeTimePlugin } from 'esday/plugins'
+import localeEn from 'esday/locales/en'
+
+esday.extend(localePlugin)
+esday.registerLocale(localeEn)
+const options = {
+  thresholds: {
+    ss: 44,
+    s: 45,
+    m: 50, // modified; default: 45
+    h: 22,
+    d: 26,
+    w: null,
+    M: 11,
+  } as ThresholdRelativeTime,
+}
+esday.extend(relativeTimePlugin, options)
+</code></pre>
+</div>
+<template id="copyButtonTemplate">
+<button>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1" fill="none">
+<title>Copy to clipboard</title>
+<path fill-rule="evenodd" d="M 4.683594 2.5 C 4.683594 1.855469 5.207031 1.332031 5.847656 1.332031 L 13.5 1.332031 C 14.144531 1.332031 14.667969 1.855469 14.667969 2.5 L 14.667969 10.164062 C 14.667969 10.808594 14.144531 11.332031 13.5 11.332031 L 5.847656 11.332031 C 5.203125 11.332031 4.683594 10.808594 4.683594 10.164062 Z M 5.847656 2.332031 L 5.683594 10.164062 C 5.683594 10.257812 5.757812 10.332031 5.847656 10.332031 L 13.5 10.332031 L 13.667969 2.5 Z M 5.847656 2.332031 "/><path d="M 1.328125 7.164062 C 1.328125 6.519531 1.851562 6 2.496094 6 L 3.5 6 C 3.777344 6 4 6.222656 4 6.5 C 4 6.773438 3.777344 7 3.5 7 L 2.496094 7 L 2.332031 13.5 C 2.332031 13.59375 2.40625 13.667969 2.5 13.667969 L 8.832031 13.667969 L 9 12.492188 C 9 12.21875 9.222656 11.992188 9.5 11.992188 C 9.777344 11.992188 10 12.21875 10 12.492188 L 10 13.5 C 10 14.144531 9.476562 14.667969 8.832031 14.667969 L 2.5 14.667969 C 1.855469 14.667969 1.332031 14.144531 1.332031 13.5 Z M 1.328125 7.164062 "></path>
+</svg>
+</button>
+</template>
+<template id="copiedFeedbackTemplate"><div class="copied">Copied!</div></template>
+<script src="scripts.js"></script>
+</body>
+</html>

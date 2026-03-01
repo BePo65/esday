@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Core - Format</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+<base href="/esday/" />
+<link rel="stylesheet" href="esday.css">
+<link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+<header>
+<a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+<h1 class="header-title">Core - Format</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="core/index.html">Core</a>
+<a href="plugins/index.html">Plugins</a>
+<a href="locales/index.html">Locales</a>
+</nav>
+</header>
+<div class="container"><h1>Formatting</h1>
+<p>The <code>format()</code> method returns a string representing an <code>esday</code> object.</p>
+<h2>Usage</h2>
+<h3>Method signatures</h3>
+<h4>Formatting using a given format template</h4>
+<pre><code class="language-signature">esday().format(formatTemplate: string): string
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>formatTemplate</td>
+<td>template used for formatting the EsDay object</td>
+</tr>
+</tbody></table>
+<h4>Adding new formatting tokens</h4>
+<pre><code class="language-signature">esday.addTokenDefinitions(newTokens: TokenDefinitions)
+</code></pre>
+<p><strong>Format of TokenDefinitions</strong></p>
+<pre><code class="language-typescript">type TokenDefinitions = Record&lt;token, [regexDefaultMode, regexStrictMode, setterFn]&gt;
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>type</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>token</td>
+<td>string</td>
+<td>token to be parsed (e.g. 'Q')</td>
+</tr>
+<tr>
+<td>regexDefaultMode</td>
+<td>RegExp</td>
+<td>regex used for parsing in default mode</td>
+</tr>
+<tr>
+<td>regexStrictMode</td>
+<td>RegExp</td>
+<td>regex used for parsing in strict mode</td>
+</tr>
+<tr>
+<td>setterFn</td>
+<td>function</td>
+<td>function to add parsed value to result in 'this'</td>
+</tr>
+</tbody></table>
+<p>Signature of <code>setterFn</code></p>
+<pre><code class="language-signature">(this: ParsedElements, input: string) =&gt; void
+</code></pre>
+<p><strong>Parameters of setter</strong></p>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>type</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>this</td>
+<td>ParsedElements</td>
+<td>object for results of parsing</td>
+</tr>
+<tr>
+<td>input</td>
+<td>string</td>
+<td>parsed value</td>
+</tr>
+</tbody></table>
+<p><strong>Format of ParsedElements</strong></p>
+<pre><code class="language-typescript">interface ParsedElements {
+  year?: number
+  month?: number
+  day?: number
+  hours?: number
+  minutes?: number
+  seconds?: number
+  milliseconds?: number
+  zoneOffset?: number
+  unix?: number
+}
+</code></pre>
+<h2>Parsing tokens</h2>
+<table>
+<thead>
+<tr>
+<th><strong>Token</strong></th>
+<th><strong>Example</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>YY</td>
+<td>1</td>
+<td>Two-digit year</td>
+</tr>
+<tr>
+<td>YYYY</td>
+<td>2001</td>
+<td>Four-digit year</td>
+</tr>
+<tr>
+<td>M</td>
+<td>1-12</td>
+<td>Month, beginning at 1</td>
+</tr>
+<tr>
+<td>MM</td>
+<td>01-12</td>
+<td>Month, 2-digits</td>
+</tr>
+<tr>
+<td>D</td>
+<td>1-31</td>
+<td>Day of month</td>
+</tr>
+<tr>
+<td>DD</td>
+<td>01-31</td>
+<td>Day of month, 2-digits</td>
+</tr>
+<tr>
+<td>H</td>
+<td>0-23</td>
+<td>Hours</td>
+</tr>
+<tr>
+<td>HH</td>
+<td>00-23</td>
+<td>Hours, 2-digits</td>
+</tr>
+<tr>
+<td>m</td>
+<td>0-59</td>
+<td>Minutes</td>
+</tr>
+<tr>
+<td>mm</td>
+<td>00-59</td>
+<td>Minutes, 2-digits</td>
+</tr>
+<tr>
+<td>s</td>
+<td>0-59</td>
+<td>Seconds</td>
+</tr>
+<tr>
+<td>ss</td>
+<td>00-59</td>
+<td>Seconds, 2-digits</td>
+</tr>
+<tr>
+<td>SSS</td>
+<td>000-999</td>
+<td>Milliseconds, 3-digits</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>+05:00:00</td>
+<td>Offset from UTC</td>
+</tr>
+</tbody></table>
+<p>To use one of the supported tokens as test between the date elements, these characters must be escaped (i.e.wrapped in square brackets).<br>An example for a formatting string with escaped test is <code>YYY-MM-DD [MM] HH [any other text] mm [m]b</code>.</p>
+<h2>Examples</h2>
+<h3>Formatting</h3>
+<pre><code class="language-typescript">import { esday } from 'esday'
+
+esday('08-2023-14 21:43:12.123').format('MM-YYYY-DD HH:mm:ss.SSS')
+// Returns '2023-08-14T21:43:12.123'
+</code></pre>
+<h3>Adding new formatting tokens</h3>
+<p>This functionality is above all for plugin developers</p>
+<pre><code class="language-typescript">const additionalTokens: TokenDefinitions = {
+  PP: [/\d\d?/, /\d{2}/, function (input) {
+    // in this example we don't use the parsed value ('input')
+    this.milliseconds = 987
+  }],
+}
+esday.addTokenDefinitions(additionalTokens)
+
+esday('2024 3').format('YYYY PP')
+// Returns '2023-08-14T21:43:12.123'
+</code></pre>
+</div>
+<template id="copyButtonTemplate">
+<button>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1" fill="none">
+<title>Copy to clipboard</title>
+<path fill-rule="evenodd" d="M 4.683594 2.5 C 4.683594 1.855469 5.207031 1.332031 5.847656 1.332031 L 13.5 1.332031 C 14.144531 1.332031 14.667969 1.855469 14.667969 2.5 L 14.667969 10.164062 C 14.667969 10.808594 14.144531 11.332031 13.5 11.332031 L 5.847656 11.332031 C 5.203125 11.332031 4.683594 10.808594 4.683594 10.164062 Z M 5.847656 2.332031 L 5.683594 10.164062 C 5.683594 10.257812 5.757812 10.332031 5.847656 10.332031 L 13.5 10.332031 L 13.667969 2.5 Z M 5.847656 2.332031 "/><path d="M 1.328125 7.164062 C 1.328125 6.519531 1.851562 6 2.496094 6 L 3.5 6 C 3.777344 6 4 6.222656 4 6.5 C 4 6.773438 3.777344 7 3.5 7 L 2.496094 7 L 2.332031 13.5 C 2.332031 13.59375 2.40625 13.667969 2.5 13.667969 L 8.832031 13.667969 L 9 12.492188 C 9 12.21875 9.222656 11.992188 9.5 11.992188 C 9.777344 11.992188 10 12.21875 10 12.492188 L 10 13.5 C 10 14.144531 9.476562 14.667969 8.832031 14.667969 L 2.5 14.667969 C 1.855469 14.667969 1.332031 14.144531 1.332031 13.5 Z M 1.328125 7.164062 "></path>
+</svg>
+</button>
+</template>
+<template id="copiedFeedbackTemplate"><div class="copied">Copied!</div></template>
+<script src="scripts.js"></script>
+</body>
+</html>

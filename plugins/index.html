@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESday - Plugins</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+<base href="/esday/" />
+<link rel="stylesheet" href="esday.css">
+<link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+<header>
+<a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+<h1 class="header-title">ESday - Plugins</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="core/index.html">Core</a>
+<a href="plugins/index.html">Plugins</a>
+<a href="locales/index.html">Locales</a>
+</nav>
+</header>
+<div class="container"><p>Currently the following plugins are available:</p>
+<ul>
+<li><a href="plugins/advancedFormat.html">AdvancedFormat</a> (for formatting using a custom template)</li>
+<li><a href="plugins/advancedParse.html">AdvancedParse</a> (for parsing arbitrary formatted date and time strings)</li>
+<li><a href="plugins/calendar.html">Calendar</a> (Calendar adds .calendar() API - for formatting time relative to a given reference day)</li>
+<li><a href="plugins/dayOfYear.html">DayOfYear</a> (DayOfYear adds .dayOfYear() API - number indicating the day of the year)</li>
+<li><a href="plugins/duration.html">Duration</a> (Duration implements duration objects)</li>
+<li><a href="plugins/isBetween.html">IsBetween</a> (IsBetween adds .isBetween() API - is date between two other dates)</li>
+<li><a href="plugins/isLeapYear.html">IsLeapYear</a> (IsLeapYear adds .isLeapYear() API - is year a leap year)</li>
+<li><a href="plugins/isoWeek.html">IsoWeek</a> (IsoWeek adds .isoWeek API and formatting and parsing tokens)</li>
+<li><a href="plugins/isSameOrAfter.html">IsSameOrAfter</a> (IsSameOrAfter adds .isSameOrAfter() API - is date the same or after another date)</li>
+<li><a href="plugins/isSameOrBefore.html">IsSameOrBefore</a> (IsSameOrBefore adds .isSameOrBefore() API - is date the same or before another date)</li>
+<li><a href="plugins/isToday.html">IsToday</a> (IsToday adds .isToday() API - is date today)</li>
+<li><a href="plugins/isTomorrow.html">IsTomorrow</a> (IsToday adds .isTomorrow() API - is date tomorrow)</li>
+<li><a href="plugins/isYesterday.html">IsYesterday</a> (IsYesterday adds .isYesterday() API - is date yesterday)</li>
+<li><a href="plugins/locale.html">Locale</a> (add locale functions to EsDay)</li>
+<li><a href="plugins/localeData.html">LocaleData</a> (add .localeData() API - access locale properties)</li>
+<li><a href="plugins/localizedFormat.html">LocalizedFormat</a> (for formatting with locale dependant tokens in template)</li>
+<li><a href="plugins/localizedParse.html">LocalizedParse</a> (for parsing locale dependant tokens in arbitrary formatted date and time strings)</li>
+<li><a href="plugins/minMay.html">MinMax</a> (MinMax adds .min() and .max() APIs - find the minimum or maximum of several dates)</li>
+<li><a href="plugins/objectSupport.html">ObjectSupport</a> (ObjectSupport adds input of type object to esday(), .add(), .subtract() and .set())</li>
+<li><a href="plugins/pluralGetSet.html">PluralGetSet</a> (PluralGetSet adds plural getter and setter APIs to esday instances - e.g. years())</li>
+<li><a href="plugins/quarterOfYear.html">QuarterOfYear</a> (QuarterOfYear adds .quarter() getter and setter APIs and formatter token 'Q' - handle quarter of year)</li>
+<li><a href="plugins/relativeTime.html">RelativeTime</a> (RelativeTime adds .to(), .from(), .toNow(), .fromNow() API - for formatting time relative to a given date)</li>
+<li><a href="plugins/toArray.html">ToArray</a> (ToArray adds .toArray() API - get an array with the components of a date)</li>
+<li><a href="plugins/toObject.html">ToObject</a> (ToObject adds .toObject() API - get an object with the components of a date)</li>
+<li><a href="plugins/utc.html">Utc</a> (UTC adds .utc(), .local() and .isUTC APIs - handle dates as UTC)</li>
+<li><a href="plugins/week.html">Week</a> (Week adds .week() and .weekYear() API - locale aware)</li>
+</ul>
+</div>
+<template id="copyButtonTemplate">
+<button>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1" fill="none">
+<title>Copy to clipboard</title>
+<path fill-rule="evenodd" d="M 4.683594 2.5 C 4.683594 1.855469 5.207031 1.332031 5.847656 1.332031 L 13.5 1.332031 C 14.144531 1.332031 14.667969 1.855469 14.667969 2.5 L 14.667969 10.164062 C 14.667969 10.808594 14.144531 11.332031 13.5 11.332031 L 5.847656 11.332031 C 5.203125 11.332031 4.683594 10.808594 4.683594 10.164062 Z M 5.847656 2.332031 L 5.683594 10.164062 C 5.683594 10.257812 5.757812 10.332031 5.847656 10.332031 L 13.5 10.332031 L 13.667969 2.5 Z M 5.847656 2.332031 "/><path d="M 1.328125 7.164062 C 1.328125 6.519531 1.851562 6 2.496094 6 L 3.5 6 C 3.777344 6 4 6.222656 4 6.5 C 4 6.773438 3.777344 7 3.5 7 L 2.496094 7 L 2.332031 13.5 C 2.332031 13.59375 2.40625 13.667969 2.5 13.667969 L 8.832031 13.667969 L 9 12.492188 C 9 12.21875 9.222656 11.992188 9.5 11.992188 C 9.777344 11.992188 10 12.21875 10 12.492188 L 10 13.5 C 10 14.144531 9.476562 14.667969 8.832031 14.667969 L 2.5 14.667969 C 1.855469 14.667969 1.332031 14.144531 1.332031 13.5 Z M 1.328125 7.164062 "></path>
+</svg>
+</button>
+</template>
+<template id="copiedFeedbackTemplate"><div class="copied">Copied!</div></template>
+<script src="scripts.js"></script>
+</body>
+</html>

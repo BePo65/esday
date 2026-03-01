@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Core - Get</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+<base href="/esday/" />
+<link rel="stylesheet" href="esday.css">
+<link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+<header>
+<a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+<h1 class="header-title">Core - Get</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="core/index.html">Core</a>
+<a href="plugins/index.html">Plugins</a>
+<a href="locales/index.html">Locales</a>
+</nav>
+</header>
+<div class="container"><h1>Get</h1>
+<p>EsDay has 2 methods to get the elements of a date: the specific getter (<code>year()</code>, <code>month()</code> etc.) and the generic getter (<code>get</code>).</p>
+<p>The <code>year()</code> method gets the year of the date.</p>
+<p>The <code>month()</code> method gets the month of the date (0-based, i.e. 0..11).</p>
+<p>The <code>date()</code> method gets the day of the month of a date.</p>
+<p>The <code>day()</code> method gets the day of the week of a date (0 .. 6). If a locale is loaded, '0' is the first day of the week as defined in the locale settings. Otherwise '0' is Sunday,'1' is Monday etc.</p>
+<p>The <code>hour()</code> method gets the hour of the date (0..23).</p>
+<p>The <code>minute()</code> method gets the minute of the date.</p>
+<p>The <code>second()</code> method gets the second of the date.</p>
+<p>The <code>millisecond()</code> method gets the millisecond of the date.</p>
+<p>The <code>get</code> method takes a unit parameter to define, which value to extract from a date.</p>
+<h2>Usage</h2>
+<h3>Method signatures</h3>
+<pre><code class="language-signature">esday().get(unit: UnitTypeGetSet): number
+esday().year(): number
+esday().month(): number
+esday().date(): number
+esday().day(): number
+esday().hour(): number
+esday().minute(): number
+esday().second(): number
+esday().millisecond(): number
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>unit</td>
+<td>Unit to use for the getter</td>
+</tr>
+</tbody></table>
+<h3>Available Units in UnitTypeGetSet</h3>
+<table>
+<thead>
+<tr>
+<th>Singular</th>
+<th>Plural</th>
+<th>Shorthand</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>year</td>
+<td>years</td>
+<td>y</td>
+<td></td>
+</tr>
+<tr>
+<td>quarter</td>
+<td>quarters</td>
+<td>Q</td>
+<td></td>
+</tr>
+<tr>
+<td>month</td>
+<td>months</td>
+<td>M</td>
+<td></td>
+</tr>
+<tr>
+<td>isoWeek</td>
+<td>isoWeeks</td>
+<td>W</td>
+<td></td>
+</tr>
+<tr>
+<td>week</td>
+<td>weeks</td>
+<td>w</td>
+<td></td>
+</tr>
+<tr>
+<td>day</td>
+<td>days</td>
+<td>d</td>
+<td>day of week</td>
+</tr>
+<tr>
+<td>date</td>
+<td>dates</td>
+<td>D</td>
+<td>day of month</td>
+</tr>
+<tr>
+<td>hour</td>
+<td>hours</td>
+<td>h</td>
+<td></td>
+</tr>
+<tr>
+<td>minute</td>
+<td>minutes</td>
+<td>m</td>
+<td></td>
+</tr>
+<tr>
+<td>second</td>
+<td>seconds</td>
+<td>s</td>
+<td></td>
+</tr>
+<tr>
+<td>millisecond</td>
+<td>milliseconds</td>
+<td>ms</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>The unit <code>week</code> (in short, long and plural forms) requires the plugin <a href="plugins/week.html">week</a> to be loaded.</p>
+<p>The unit <code>quarter</code> (in short, long and plural forms) requires the plugin <a href="plugins/quarterOfYear.html">quarterOfYear</a> to be loaded.</p>
+<p><code>date</code> is 'day of month' and <code>day</code> is 'day of week'.</p>
+<h2>Examples</h2>
+<pre><code class="language-typescript">import { esday } from 'esday'
+
+esday('2019-01-25').year()
+// Returns 2019
+
+esday('2019-03-25').get(esday('month')
+// Returns 2 as the result is 0-based
+
+esday('2019-01-25').get(esday('D')
+// Returns 25
+
+esday('2019-01-25').get(esday('d')
+// Returns 5 for Friday, as no locale is loaded
+</code></pre>
+</div>
+<template id="copyButtonTemplate">
+<button>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1" fill="none">
+<title>Copy to clipboard</title>
+<path fill-rule="evenodd" d="M 4.683594 2.5 C 4.683594 1.855469 5.207031 1.332031 5.847656 1.332031 L 13.5 1.332031 C 14.144531 1.332031 14.667969 1.855469 14.667969 2.5 L 14.667969 10.164062 C 14.667969 10.808594 14.144531 11.332031 13.5 11.332031 L 5.847656 11.332031 C 5.203125 11.332031 4.683594 10.808594 4.683594 10.164062 Z M 5.847656 2.332031 L 5.683594 10.164062 C 5.683594 10.257812 5.757812 10.332031 5.847656 10.332031 L 13.5 10.332031 L 13.667969 2.5 Z M 5.847656 2.332031 "/><path d="M 1.328125 7.164062 C 1.328125 6.519531 1.851562 6 2.496094 6 L 3.5 6 C 3.777344 6 4 6.222656 4 6.5 C 4 6.773438 3.777344 7 3.5 7 L 2.496094 7 L 2.332031 13.5 C 2.332031 13.59375 2.40625 13.667969 2.5 13.667969 L 8.832031 13.667969 L 9 12.492188 C 9 12.21875 9.222656 11.992188 9.5 11.992188 C 9.777344 11.992188 10 12.21875 10 12.492188 L 10 13.5 C 10 14.144531 9.476562 14.667969 8.832031 14.667969 L 2.5 14.667969 C 1.855469 14.667969 1.332031 14.144531 1.332031 13.5 Z M 1.328125 7.164062 "></path>
+</svg>
+</button>
+</template>
+<template id="copiedFeedbackTemplate"><div class="copied">Copied!</div></template>
+<script src="scripts.js"></script>
+</body>
+</html>
