@@ -23,6 +23,7 @@ header {
 
 .header-symbol {
   grid-area: symbol;
+  margin-bottom: 0.25rem;
   padding-left: 0.5rem;
 }
 
@@ -54,6 +55,7 @@ nav a {
 
 h1,
 h2 {
+  margin-bottom: 0.75rem;
   margin-top: -6.5rem;
   padding-top: 6.5rem;
 }
