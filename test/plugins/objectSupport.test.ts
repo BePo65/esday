@@ -223,6 +223,11 @@ describe('objectSupport plugin', () => {
       description: 'h-m-s',
     },
     {
+      value: { hours: 1, minutes: undefined, seconds: 3 },
+      expected: '2025-07-17T04:24:49',
+      description: 'h-m-s',
+    },
+    {
       value: { years: 1, months: 2, days: 3, hours: 1, minutes: 2, seconds: 3 },
       expected: '2026-09-20T04:26:49',
       description: 'all',
@@ -247,6 +252,11 @@ describe('objectSupport plugin', () => {
     {
       value: { years: 1, months: 2, days: -3 },
       expected: '2024-05-20T03:24:46',
+      description: 'y-M-D',
+    },
+    {
+      value: { years: 1, months: 2, days: undefined },
+      expected: '2024-05-17T03:24:46',
       description: 'y-M-D',
     },
     { value: { hours: 1 }, expected: '2025-07-17T02:24:46', description: 'h' },
@@ -292,6 +302,11 @@ describe('objectSupport plugin', () => {
     {
       value: { year: 2024, month: 4, date: 20 },
       expected: '2024-05-20T03:24:46',
+      description: 'y-M-D',
+    },
+    {
+      value: { year: 2024, month: undefined, date: 20 },
+      expected: '2024-07-20T03:24:46',
       description: 'y-M-D',
     },
     { value: { hour: 2 }, expected: '2025-07-17T02:24:46', description: 'h' },
