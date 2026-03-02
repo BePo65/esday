@@ -307,6 +307,7 @@ describe('localizedParse plugin - parsed as utc for "de"', () => {
       sourceString: '2024 12 24 [L lll ka] 14:25:36',
       formatString: 'YYYY MM DD [L lll ka] LTS',
     },
+    { sourceString: '2024 Donnerstag', formatString: 'YYYY dddd' },
   ])('parse date string "$sourceString" with format "$formatString"', ({
     sourceString,
     formatString,
