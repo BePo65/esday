@@ -1,15 +1,14 @@
-## esday
+## EsDay
 
 [![npm](https://img.shields.io/npm/v/esday)](https://www.npmjs.com/package/esday)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?cacheSeconds=2592000)](https://github.com/kessler/license-report/blob/master/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/BePo65/esday?tab=readme-ov-file#contribute)
-
-> 🚧 working in progress
 
 # Repository changing ownership
 
 On the 6th of January 2026 this repository changed the ownership to one of it's maintainers, [BePo65](https://github.com/BePo65) to reduce the workload on [g-mero](https://github.com/g-mero).
 
-> esday is a JavaScript library inspired by [Day.js](https://github.com/iamkun/dayjs), esday has a largely similar API to Day.js (v1.11.13), but it is written in TypeScript and fully supports es modules.
+> EsDay is a JavaScript library inspired by [Day.js](https://github.com/iamkun/dayjs), esday has a largely similar API to Day.js (v1.11.13), but it is written in TypeScript and fully supports es modules. Being compatible to Day.js, EsDay is also a good replacement for Moment.js.
 
 ```javascript
 import { esday } from 'esday'
