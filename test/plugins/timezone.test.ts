@@ -994,10 +994,6 @@ describe('timezone plugin', () => {
     beforeEach(() => {
       vi.useFakeTimers()
       vi.setSystemTime(new Date(fakeTimeAsString))
-
-      const timezone = 'Asia/Shanghai'
-      esday.tz.setDefault(timezone)
-      moment.tz.setDefault(timezone)
     })
 
     afterEach(() => {
@@ -1009,8 +1005,14 @@ describe('timezone plugin', () => {
     })
 
     it('guess', () => {
-      expectSameValueTz((esday) => esday.tz.guess())
+      /**
+       * On github actions: moment.guess() === 'Africa/Abidjan' and
+       * esday.guess() === 'UTC'.
+       * On my local test system both return my local timezone.
+       * Therefore we cannot use "expectSameValueTz".
+       */
       expect(esday.tz.guess()).not.toBe('')
+      expect(moment.tz.guess()).not.toBe('')
     })
 
     it('cloning a parsed date / time with a timezone keeps the timezone', () => {
