@@ -994,6 +994,10 @@ describe('timezone plugin', () => {
     beforeEach(() => {
       vi.useFakeTimers()
       vi.setSystemTime(new Date(fakeTimeAsString))
+
+      const timezone = 'Asia/Shanghai'
+      esday.tz.setDefault(timezone)
+      moment.tz.setDefault(timezone)
     })
 
     afterEach(() => {
