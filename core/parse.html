@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Core - Parse</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+<base href="/esday/" />
+<link rel="stylesheet" href="esday.css">
+<link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+<header>
+<a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+<h1 class="header-title">Core - Parse</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="core/index.html">Core</a>
+<a href="plugins/index.html">Plugins</a>
+<a href="locales/index.html">Locales</a>
+</nav>
+</header>
+<div class="container"><h1>Parsing</h1>
+<p>The <code>esday()</code> method returns an <code>esday</code> object defined by the method parameter.</p>
+<h2>Usage</h2>
+<h3>Method signatures</h3>
+<pre><code class="language-signature">esday(): EsDay
+esday(dateString: string): EsDay
+esday(dateObject: Date): EsDay
+esday(timestamp: number): EsDay
+esday(esdayObject: EsDay): EsDay
+esday(dateArray: number[]): EsDay
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>dateString</td>
+<td>ISO8601 date string (with date, time and offset)</td>
+</tr>
+<tr>
+<td>dateString</td>
+<td>RFC2822 date string (with date, time and offset)</td>
+</tr>
+<tr>
+<td>dateObject</td>
+<td>javascript Date object</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>unix timestamp (as seconds or milliseconds)</td>
+</tr>
+<tr>
+<td>esdayObject</td>
+<td>EsDay object</td>
+</tr>
+<tr>
+<td>dateArray</td>
+<td>array with date elements (year, month, etc. )</td>
+</tr>
+</tbody></table>
+<p>More signature types are available, when using a plugin (like <a href="plugins/advancedParse.html">AdvancedParse</a> or <a href="plugins/localizedParse.html">LocalizedParse</a>).</p>
+<h2>Examples</h2>
+<pre><code class="language-typescript">import { esday } from 'esday'
+
+esday()
+// Returns an instance of EsDay for the current date/time
+
+esday({})
+// Returns an instance of EsDay for the current date/time
+
+esday([])
+// Returns an instance of EsDay for the current date/time
+
+esday('2024-04-24T16:27:38.456Z')
+// Returns an instance of EsDay for '2024-04-24T16:27:38.456Z'
+
+esday('Sun, 11 Feb 2024 09:46:50 GMT+1')
+// Returns an instance of EsDay for '2024-02-11T09:46:50+01:00'
+
+esday(1722173696234)
+// Returns an instance of EsDay for '2024-07-28T13:34:56.234Z'
+
+esday(1722173696)
+// Returns an instance of EsDay for '2024-07-28T13:34:56.000Z'
+
+esday(new Date('2024-04-24T16:27:38.456Z'))
+// Returns an instance of EsDay for '2024-04-24T16:27:38.456Z'
+
+esday([2024, 5, 1, 13, 14, 15, 99])
+// Returns an instance of EsDay for '2024-06-01T13:14:15.099'
+
+esday([2024, 5, 1])
+// Returns an instance of EsDay for '2024-06-01T00:00:00.000'
+</code></pre>
+<p>Parameters that return invalid dates (<code>esday(invalidParameter).valid() === false</code>)</p>
+<pre><code class="language-typescript">esday(null)
+esday(Number.NaN)
+esday(Number.POSITIVE_INFINITY)
+esday('not-a-date-string')
+</code></pre>
+</div>
+<template id="copyButtonTemplate">
+<button>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1" fill="none">
+<title>Copy to clipboard</title>
+<path fill-rule="evenodd" d="M 4.683594 2.5 C 4.683594 1.855469 5.207031 1.332031 5.847656 1.332031 L 13.5 1.332031 C 14.144531 1.332031 14.667969 1.855469 14.667969 2.5 L 14.667969 10.164062 C 14.667969 10.808594 14.144531 11.332031 13.5 11.332031 L 5.847656 11.332031 C 5.203125 11.332031 4.683594 10.808594 4.683594 10.164062 Z M 5.847656 2.332031 L 5.683594 10.164062 C 5.683594 10.257812 5.757812 10.332031 5.847656 10.332031 L 13.5 10.332031 L 13.667969 2.5 Z M 5.847656 2.332031 "/><path d="M 1.328125 7.164062 C 1.328125 6.519531 1.851562 6 2.496094 6 L 3.5 6 C 3.777344 6 4 6.222656 4 6.5 C 4 6.773438 3.777344 7 3.5 7 L 2.496094 7 L 2.332031 13.5 C 2.332031 13.59375 2.40625 13.667969 2.5 13.667969 L 8.832031 13.667969 L 9 12.492188 C 9 12.21875 9.222656 11.992188 9.5 11.992188 C 9.777344 11.992188 10 12.21875 10 12.492188 L 10 13.5 C 10 14.144531 9.476562 14.667969 8.832031 14.667969 L 2.5 14.667969 C 1.855469 14.667969 1.332031 14.144531 1.332031 13.5 Z M 1.328125 7.164062 "></path>
+</svg>
+</button>
+</template>
+<template id="copiedFeedbackTemplate"><div class="copied">Copied!</div></template>
+<script src="scripts.js"></script>
+</body>
+</html>

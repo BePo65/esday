@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plugins - Locale</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+<base href="/esday/" />
+<link rel="stylesheet" href="esday.css">
+<link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+<header>
+<a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+<h1 class="header-title">Plugins - Locale</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="core/index.html">Core</a>
+<a href="plugins/index.html">Plugins</a>
+<a href="locales/index.html">Locales</a>
+</nav>
+</header>
+<div class="container"><h1>Locale</h1>
+<p>Locale extends <code>esday</code> to support locales by adding the <code>locale</code>, the <code>registerLocale</code> and the <code>unregisterLocale</code> methods.</p>
+<p><code>EsDay</code> objects get the <code>locale</code> and the <code>localeObject</code> methods.</p>
+<p>The locale to use can be loaded from the corresponding locale file (<a href="locales/locales.html">list of supported locales</a>).</p>
+<p>If used together with the plugin AdvancedParse, then Locale must be activated after AdvancedParse, as AdvancedParse "terminates" the parsing chain, if we have a parsing format.</p>
+<p><strong>Note</strong>: the name of the locale (e.g. used for setting the locale) is case sensitive.</p>
+<h2>Usage</h2>
+<h3>Dependencies</h3>
+<p>Locale has no dependencies on other plugins.</p>
+<h3>Public functions</h3>
+<pre><code class="language-signature">cloneLocale(source: Locale): Locale
+setLocaleProperty(targetLocale: Locale, propName: string, newValue: any)
+</code></pre>
+<h3>Method signatures</h3>
+<p>For esday ('global')</p>
+<pre><code class="language-signature">// get / set name of global locale
+esday.locale(): string
+esday.locale(localeName: string): EsDay
+
+// add a locale to the list of available locales
+esday.registerLocale(locale: Locale, newName?: string): esday
+
+// remove a locale to the list of available locales
+esday.unregisterLocale(localeName: string): esday
+
+// get object of existing locale
+esday.getLocale: (localeName: string): Locale
+
+// modify existing locale
+esday.updateLocale: (localeName: string, newLocale: Partial&lt;Locale&gt;): esday
+</code></pre>
+<p>For EsDay instances ('local')</p>
+<pre><code class="language-signature">// get / set the locale of an esday instance
+esday().locale(): string
+esday().locale(localeName: string): EsDay
+
+// get the locale object from the name of the locale
+esday.localeObject(): Locale
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>locale</td>
+<td>Locale</td>
+<td>locale object to use</td>
+</tr>
+<tr>
+<td>localeName</td>
+<td>string</td>
+<td>name of the locale to use</td>
+</tr>
+<tr>
+<td>newName</td>
+<td>string</td>
+<td>name to use for the locale</td>
+</tr>
+</tbody></table>
+<h2>Locale object</h2>
+<p>Locales are defined in locale files that contain an object with all required Properties.</p>
+<h3>Properties</h3>
+<p>Properties of the <code>Locale</code> object:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>name</td>
+<td>string</td>
+<td>Name of the locale (e.g. <code>en-US</code>)</td>
+</tr>
+<tr>
+<td>weekdays | DayNamesStandaloneFormat</td>
+<td>DayNames</td>
+<td>Array of the full day names (e.g. <code>['Sunday', 'Monday', ... ]</code>)</td>
+</tr>
+<tr>
+<td>weekdaysShort</td>
+<td>DayNames</td>
+<td>Array of the short day names (e.g. <code>['Sun', 'Mon', ... ]</code>)</td>
+</tr>
+<tr>
+<td>weekdaysMin</td>
+<td>DayNames</td>
+<td>Array of the short day names (e.g. <code>['Su', 'Mo', ... ]</code>)</td>
+</tr>
+<tr>
+<td>months</td>
+<td>MonthNames | MonthNamesStandaloneFormat | MonthNamesFunction</td>
+<td>Array of the full month names (e.g. <code>['January', 'February', ... ]</code>)</td>
+</tr>
+<tr>
+<td>monthsShort</td>
+<td>MonthNames | MonthNamesStandaloneFormat | MonthNamesFunction</td>
+<td>Array of the short month names (e.g. <code>['Jan', 'Feb', ... ]</code>)</td>
+</tr>
+<tr>
+<td>dayOfMonthOrdinalParse</td>
+<td>RegExp</td>
+<td>Regular expression for parsing the day-of-month as an ordinal number</td>
+</tr>
+<tr>
+<td>ordinal</td>
+<td>function</td>
+<td>Get the ordinal form of a number (e.g. <code>ordinal(1) // returns '1st'</code>)</td>
+</tr>
+<tr>
+<td>weekStart</td>
+<td>number</td>
+<td>Which is the 1st day of the week - 0=Sunday, 1=Monday etc. (e.g. <code>1</code> for Monday)</td>
+</tr>
+<tr>
+<td>yearStart</td>
+<td>number</td>
+<td>Which date <strong>must</strong> be part of the 1st week of the year (e.g. <code>4</code> for Jan 4th)</td>
+</tr>
+<tr>
+<td>formats</td>
+<td>object</td>
+<td>Localized format tokens for parsing and formatting (e.g. <code>LT</code> or <code>LL</code>)</td>
+</tr>
+<tr>
+<td>calendar</td>
+<td>object</td>
+<td>Object containing the required format definitions</td>
+</tr>
+<tr>
+<td>relativeTime</td>
+<td>&lt;Relative, string</td>
+<td>RelativeTimeElementFunction&gt;[] | Replacement strings for relative time values (e.g. <code>future: 'in %s'</code>)</td>
+</tr>
+<tr>
+<td>meridiem</td>
+<td>function</td>
+<td>Get meridiem string for a time value (e.g. <code>pm</code>)</td>
+</tr>
+<tr>
+<td>preParse</td>
+<td>function</td>
+<td>Optional function that gets called before the input gets parsed</td>
+</tr>
+<tr>
+<td>postFormat</td>
+<td>function</td>
+<td>Optional function that gets called after the date got formatted</td>
+</tr>
+</tbody></table>
+<p>All properties are readonly.</p>
+<h3>Months / MonthsShort / Weekdays</h3>
+<p><code>months</code>, <code>monthsShort</code> and <code>weekdays</code> can have several formats.</p>
+<ul>
+<li>Array of strings</li>
+<li>Object with properties 'format', 'standalone' and 'isFormat'. For <code>months</code> and <code>monthsShort</code> 'isFormat' is optional.</li>
+<li>A function object with properties 'format' and 'standalone'. The signature of this function is <code>(esdayInstance: EsDay, format: string): string</code>.</li>
+</ul>
+<p>The object and function variants are for cases, when more processing is required, to get the name of a month / weekday  (e.g., if the grammar is different for different formats).</p>
+<ul>
+<li><code>standalone</code> is the subjective form.</li>
+<li><code>format</code> is the nominative form.</li>
+</ul>
+<p><code>isFormat</code> is a regular expression that is used to check, whether a 'format' string conforms to the requirements to use the <code>format</code> list of names. The default value is <code>/D[oD]?(\[[^\[\]]*\]|\s+)+MMMM?/</code>.</p>
+<p>The function variant of <code>months</code> and <code>monthsShort</code> return the name of the month that matches the 'month' property of the given esdayInstance.</p>
+<h2>Examples</h2>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import localeZhCn from 'esday/locales/zh-cn'
+import localePlugin from 'esday/plugins/locale'
+import { cloneLocale, setLocaleProperty } from 'esday/plugins/locale'
+
+esday.extend(localePlugin)
+esday.registerLocale(localeZhCn)
+
+esday.locale('zh-CN')
+// set global locale to 'zh-CN'
+
+esday.locale()
+// returns  'zh-cn' (name of the global locale)
+
+esday.getLocale('en')
+// returns object for locale 'en'
+
+const newMonths = [
+      '1月',
+      '2月',
+      '3月',
+      '4月',
+      '5月',
+      '6月',
+      '7月',
+      '8月',
+      '9月',
+      '10月',
+      '11月',
+      '12月',
+    ] as const
+esday.updateLocale('en', { months: newMonths })
+// changes globally month names in locale 'en'
+
+const mySpecialLocale = cloneLocale(esday.getLocale('en'))
+setLocaleProperty(mySpecialLocale, 'name', 'en-MY')
+setLocaleProperty(mySpecialLocale, 'months', newMonths)
+
+
+const day = esday('2021-01-01').locale('en')
+// set the locale of the esday object
+</code></pre>
+</div>
+<template id="copyButtonTemplate">
+<button>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1" fill="none">
+<title>Copy to clipboard</title>
+<path fill-rule="evenodd" d="M 4.683594 2.5 C 4.683594 1.855469 5.207031 1.332031 5.847656 1.332031 L 13.5 1.332031 C 14.144531 1.332031 14.667969 1.855469 14.667969 2.5 L 14.667969 10.164062 C 14.667969 10.808594 14.144531 11.332031 13.5 11.332031 L 5.847656 11.332031 C 5.203125 11.332031 4.683594 10.808594 4.683594 10.164062 Z M 5.847656 2.332031 L 5.683594 10.164062 C 5.683594 10.257812 5.757812 10.332031 5.847656 10.332031 L 13.5 10.332031 L 13.667969 2.5 Z M 5.847656 2.332031 "/><path d="M 1.328125 7.164062 C 1.328125 6.519531 1.851562 6 2.496094 6 L 3.5 6 C 3.777344 6 4 6.222656 4 6.5 C 4 6.773438 3.777344 7 3.5 7 L 2.496094 7 L 2.332031 13.5 C 2.332031 13.59375 2.40625 13.667969 2.5 13.667969 L 8.832031 13.667969 L 9 12.492188 C 9 12.21875 9.222656 11.992188 9.5 11.992188 C 9.777344 11.992188 10 12.21875 10 12.492188 L 10 13.5 C 10 14.144531 9.476562 14.667969 8.832031 14.667969 L 2.5 14.667969 C 1.855469 14.667969 1.332031 14.144531 1.332031 13.5 Z M 1.328125 7.164062 "></path>
+</svg>
+</button>
+</template>
+<template id="copiedFeedbackTemplate"><div class="copied">Copied!</div></template>
+<script src="scripts.js"></script>
+</body>
+</html>

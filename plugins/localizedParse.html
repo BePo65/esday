@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plugins - LocalizedParse</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+<base href="/esday/" />
+<link rel="stylesheet" href="esday.css">
+<link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+<header>
+<a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+<h1 class="header-title">Plugins - LocalizedParse</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="core/index.html">Core</a>
+<a href="plugins/index.html">Plugins</a>
+<a href="locales/index.html">Locales</a>
+</nav>
+</header>
+<div class="container"><h1>LocalizedParse</h1>
+<p>LocalizedParse extends the <code>esday</code> constructor to support localized formats of input strings.</p>
+<p>The locale to use for parsing can be defined as 3rd parameter. If no locale is given, then the current global locale is used (defaults to 'en', which is a duplicate of 'en-US').</p>
+<p>If used together with the plugin AdvancedParse, then LocalizedParse must be activated after AdvancedParse, as AdvancedParse "terminates" the parsing chain, if we have a parsing format.</p>
+<h2>Usage</h2>
+<h3>Dependencies</h3>
+<p>LocalizedParse requires the plugins AdvancedParse and Locale and at least 1 registered and activated locale. For using the 'd', 'dd', 'ddd' or the 'dddd' tokens the plugin Week is required too.</p>
+<p>The plugin AdvancedParse must be loaded using esday.extend(...) before the plugin LocalizedParse. If used, the plugin Week must be loaded after the plugin AdvancedParse.</p>
+<p>LocalizedParse can be used together with the plugin Utc which must be loaded using esday.extend(...) before the plugin AdvancedParse.</p>
+<h3>Method signatures</h3>
+<pre><code class="language-signature">esday(date: string, format: string): EsDay
+esday(date: string, format: string[]): EsDay
+esday(date: string, format: string, strict: boolean): EsDay
+esday(date: string, format: string[], strict: boolean): EsDay
+esday(date: string, format: string, locale: string): EsDay
+esday(date: string, format: string[], locale: string): EsDay
+esday(date: string, format: string, locale: string, strict: boolean): EsDay
+esday(date: string, format: string[], locale: string, strict: boolean): EsDay
+</code></pre>
+<p>and for the <code>utc</code> plugin</p>
+<pre><code class="language-signature">esday.utc(date: string, format: string): EsDay
+esday.utc(date: string, format: string[]): EsDay
+esday.utc(date: string, format: string, strict: boolean): EsDay
+esday.utc(date: string, format: string[], strict: boolean): EsDay
+esday.utc(date: string, format: string, locale: string): EsDay
+esday.utc(date: string, format: string[], locale: string): EsDay
+esday.utc(date: string, format: string, locale: string, strict: boolean): EsDay
+esday.utc(date: string, format: string[], locale: string, strict: boolean): EsDay
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>date</td>
+<td>date string to be parsed</td>
+</tr>
+<tr>
+<td>format</td>
+<td>format string(s) used for parsing <code>date</code></td>
+</tr>
+<tr>
+<td>strict</td>
+<td>date string must match format exactly</td>
+</tr>
+<tr>
+<td>locale</td>
+<td>name of the locale to use (e.g. 'en-US')</td>
+</tr>
+</tbody></table>
+<p>If an array of formats is used, <code>date</code> will be parsed with the best matching format in this array.</p>
+<h3>Parsing tokens</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Token</strong></th>
+<th><strong>Example</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>h</td>
+<td>1...12</td>
+<td>Hours, 12-hour clock</td>
+</tr>
+<tr>
+<td>hh</td>
+<td>01...12</td>
+<td>Hours, 12-hour clock, 2-digits</td>
+</tr>
+<tr>
+<td>A</td>
+<td>AM PM</td>
+<td>Post or ante meridiem, upper-case</td>
+</tr>
+<tr>
+<td>a</td>
+<td>am pm</td>
+<td>Post or ante meridiem, lower-case</td>
+</tr>
+<tr>
+<td>Do</td>
+<td>1st...31st</td>
+<td>Day of Month with ordinal</td>
+</tr>
+<tr>
+<td>MMM</td>
+<td>Jan...Dec</td>
+<td>Month name (short form)</td>
+</tr>
+<tr>
+<td>MMMM</td>
+<td>January...December</td>
+<td>Month name (long form)</td>
+</tr>
+<tr>
+<td>LT</td>
+<td>8:02 PM</td>
+<td>Time</td>
+</tr>
+<tr>
+<td>LTS</td>
+<td>8:30:25 PM</td>
+<td>Time with seconds</td>
+</tr>
+<tr>
+<td>L</td>
+<td>09/04/1986</td>
+<td>Month numeral, day of month, year</td>
+</tr>
+<tr>
+<td>LL</td>
+<td>September 4, 1986</td>
+<td>Month name, day of month, year</td>
+</tr>
+<tr>
+<td>LLL</td>
+<td>September 4, 1986 8:30 PM</td>
+<td>Month name, day of month, year, time</td>
+</tr>
+<tr>
+<td>LLLL</td>
+<td>Thursday, September 4, 1986 8:30 PM</td>
+<td>Month name, day of month, day of week, year, time</td>
+</tr>
+<tr>
+<td>l</td>
+<td>9/4/1986</td>
+<td>Month numeral, day of month, year</td>
+</tr>
+<tr>
+<td>ll</td>
+<td>Sep 4, 1986</td>
+<td>Month name, day of month, year</td>
+</tr>
+<tr>
+<td>lll</td>
+<td>Sep 4, 1986 8:30 PM</td>
+<td>Month name, day of month, year, time</td>
+</tr>
+<tr>
+<td>llll</td>
+<td>Thu, Sep 4, 1986 8:30 PM</td>
+<td>Month name, day of month, day of week, year, time</td>
+</tr>
+</tbody></table>
+<h2>Examples</h2>
+<p>Basic example with some localized tokens.</p>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import { advancedParsePlugin, localePlugin, localizedParsePlugin } from 'esday/plugins'
+import localeZhCn from 'esday/locales/zh-cn'
+
+esday.extend(advancedParsePlugin)
+esday.extend(localePlugin)
+esday.extend(localizedParsePlugin)
+
+esday.registerLocale(localeZhCn)
+
+// set global locale
+esday.locale('zh-cn')
+
+const parsedDate = esday('2024 12月 24日 星期二 8:10:21 早上', 'YYYY MMM Do dddd H:mm:ss A')
+</code></pre>
+<p>Example with locale given as parameter of esday.</p>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import { advancedParsePlugin, localePlugin, localizedParsePlugin } from 'esday/plugins'
+import localeZhCn from 'esday/locales/zh-cn'
+
+esday.extend(advancedParsePlugin)
+esday.extend(localePlugin)
+esday.extend(localizedParsePlugin)
+
+esday.registerLocale(localeEn-US)
+esday.registerLocale(localeZhCn)
+
+// default global locale is 'en' (i.e. 'en-US')
+
+const parsedDate = esday('2024 12月 24日 星期二 8:10:21 早上', 'YYYY MMM Do dddd H:mm:ss A', 'zh-CN')
+</code></pre>
+</div>
+<template id="copyButtonTemplate">
+<button>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1" fill="none">
+<title>Copy to clipboard</title>
+<path fill-rule="evenodd" d="M 4.683594 2.5 C 4.683594 1.855469 5.207031 1.332031 5.847656 1.332031 L 13.5 1.332031 C 14.144531 1.332031 14.667969 1.855469 14.667969 2.5 L 14.667969 10.164062 C 14.667969 10.808594 14.144531 11.332031 13.5 11.332031 L 5.847656 11.332031 C 5.203125 11.332031 4.683594 10.808594 4.683594 10.164062 Z M 5.847656 2.332031 L 5.683594 10.164062 C 5.683594 10.257812 5.757812 10.332031 5.847656 10.332031 L 13.5 10.332031 L 13.667969 2.5 Z M 5.847656 2.332031 "/><path d="M 1.328125 7.164062 C 1.328125 6.519531 1.851562 6 2.496094 6 L 3.5 6 C 3.777344 6 4 6.222656 4 6.5 C 4 6.773438 3.777344 7 3.5 7 L 2.496094 7 L 2.332031 13.5 C 2.332031 13.59375 2.40625 13.667969 2.5 13.667969 L 8.832031 13.667969 L 9 12.492188 C 9 12.21875 9.222656 11.992188 9.5 11.992188 C 9.777344 11.992188 10 12.21875 10 12.492188 L 10 13.5 C 10 14.144531 9.476562 14.667969 8.832031 14.667969 L 2.5 14.667969 C 1.855469 14.667969 1.332031 14.144531 1.332031 13.5 Z M 1.328125 7.164062 "></path>
+</svg>
+</button>
+</template>
+<template id="copiedFeedbackTemplate"><div class="copied">Copied!</div></template>
+<script src="scripts.js"></script>
+</body>
+</html>
