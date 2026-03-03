@@ -36,6 +36,7 @@ describe('localizedParse plugin - parsed as utc for "en"', () => {
     vi.useRealTimers()
   })
 
+  // Tests with format containing "YYYY dddd" may fail with US american timezone
   it.each([
     { sourceString: '2024', formatString: 'YYYY' },
     { sourceString: '2024 16', formatString: 'YYYY DD' },
@@ -307,6 +308,7 @@ describe('localizedParse plugin - parsed as utc for "de"', () => {
       sourceString: '2024 12 24 [L lll ka] 14:25:36',
       formatString: 'YYYY MM DD [L lll ka] LTS',
     },
+    { sourceString: '2024 Donnerstag', formatString: 'YYYY dddd' },
   ])('parse date string "$sourceString" with format "$formatString"', ({
     sourceString,
     formatString,

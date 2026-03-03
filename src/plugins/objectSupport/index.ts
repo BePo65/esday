@@ -102,14 +102,17 @@ const objectSupportPlugin: EsDayPlugin<{}> = (_, dayClass, _dayFactory) => {
       const keys = Object.keys(unit)
       const valuesToSet = unit as UnitsObjectTypeSet
       let result = this
+
       for (const stringKey of keys) {
         const key = stringKey as keyof UnitsObjectTypeSet
         const valueToSet = valuesToSet[key]
-        // @ts-expect-error it's compatible with the overload
-        result = old$set.call(result, key, [valueToSet])
+        if (valueToSet !== undefined) {
+          result = result.set(key, valueToSet)
+        }
       }
       return result
     }
+
     return old$set.call(this, unit, values)
   }
 
@@ -121,8 +124,9 @@ const objectSupportPlugin: EsDayPlugin<{}> = (_, dayClass, _dayFactory) => {
       for (const stringKey of keys) {
         const key = stringKey as keyof UnitsObjectTypeAddSub
         const valueToAdd = value[key]
-        // @ts-expect-error it's compatible with the overload
-        result = oldAdd.call(result, valueToAdd, key)
+        if (valueToAdd !== undefined) {
+          result = result.add(valueToAdd, key)
+        }
       }
       return result
     }
@@ -139,8 +143,9 @@ const objectSupportPlugin: EsDayPlugin<{}> = (_, dayClass, _dayFactory) => {
       for (const stringKey of keys) {
         const key = stringKey as keyof UnitsObjectTypeAddSub
         const valueToSubtract = value[key]
-        // @ts-expect-error it's compatible with the overload
-        result = oldSubtract.call(result, valueToSubtract, key)
+        if (valueToSubtract !== undefined) {
+          result = result.subtract(valueToSubtract, key)
+        }
       }
       return result
     }
