@@ -36,6 +36,7 @@ describe('localizedParse plugin - parsed as utc for "en"', () => {
     vi.useRealTimers()
   })
 
+  // Tests with format containing "YYYY dddd" may fail with US american timezone
   it.each([
     { sourceString: '2024', formatString: 'YYYY' },
     { sourceString: '2024 16', formatString: 'YYYY DD' },
