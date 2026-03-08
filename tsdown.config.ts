@@ -2,7 +2,7 @@ import { defineConfig } from 'tsdown'
 
 export default defineConfig({
   target: 'es2020',
-  platform: 'node',
+  platform: 'neutral',
   clean: true,
   dts: true,
   entry: ['src/index.ts', 'src/plugins/*/index.ts', 'src/locales/*.ts'],
