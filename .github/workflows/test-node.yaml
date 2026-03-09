@@ -30,13 +30,13 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: "Install Pnpm"
         run: corepack enable
 
       - name: "Setup Node.js"
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 22.x
 
@@ -50,13 +50,13 @@ jobs:
           npx vitest run --coverage.enabled --coverage.reporter=json --coverage.reporter=json-summary
 
       - name: "Upload coverage"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-pull-request
           path: coverage
 
       - name: "Upload vitest config"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: pull-request-vitest.config.ts
           path: vitest.config.ts
