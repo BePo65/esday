@@ -104,7 +104,7 @@ function utcOffsetSetImpl(that: EsDay, offset: number | string, keepLocalTime?: 
     }
 
     instance['$conf'].utcOffset = offsetAsMinutes
-    instance['$conf'].localOffset = localTimezoneOffset
+    instance['$conf'].localOffset = -1 * localTimezoneOffset
     return instance
   }
 
@@ -116,7 +116,7 @@ function utcOffsetSetImpl(that: EsDay, offset: number | string, keepLocalTime?: 
     // switch away from utc mode
     const instance = that.local().add(offsetAsMinutes + localTimezoneOffset, C.MIN)
     instance['$conf'].utcOffset = offsetAsMinutes
-    instance['$conf'].localOffset = localTimezoneOffset
+    instance['$conf'].localOffset = -1 * localTimezoneOffset
     return instance
   }
   return that.utc()
@@ -212,8 +212,8 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   proto.valueOf = function () {
     if (this['$conf'].utcOffset !== undefined) {
       const internalDate = this.$d
-      const offsetToUse = Number(this['$conf'].localOffset ?? internalDate.getTimezoneOffset())
-      const addedOffset = Number(this['$conf'].utcOffset) + offsetToUse
+      const offsetToUse = Number(this['$conf'].localOffset ?? -1 * internalDate.getTimezoneOffset())
+      const addedOffset = Number(this['$conf'].utcOffset) - offsetToUse
       return internalDate.valueOf() - addedOffset * C.MILLISECONDS_A_MINUTE
     }
     return oldValueOf.call(this)
