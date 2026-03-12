@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plugins - Week</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+<base href="/esday/" />
+<link rel="stylesheet" href="esday.css">
+<link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+<header>
+<a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+<h1 class="header-title">Plugins - Week</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="core/index.html">Core</a>
+<a href="plugins/index.html">Plugins</a>
+<a href="locales/index.html">Locales</a>
+</nav>
+</header>
+<div class="container"><h1>Week</h1>
+<p>Week adds the <code>week</code>, the <code>weeks</code>, the <code>weekDay</code>, the <code>weekYear</code> and the <code>weeksInYear</code> methods to EsDay.  Extend the <code>get</code> and <code>set</code> methods to handle the unit 'week'.</p>
+<p>The <code>week</code> method gets or sets the week of the year of a date according to the active locale.<br>The <code>weeks</code> method is just an alias for the <code>week</code> method.<br>The <code>weekDay</code> method gets the day of week of a date according to the active locale.<br>The <code>weekYear</code> method gets the week-year of a date according to the active locale.<br>The <code>weeksInYear</code> method gets the number of weeks in a year according to the active locale.</p>
+<p>Week adds support for parsing tokens <code>w</code>, <code>ww</code>, <code>e</code>, <code>gg</code> and <code>gggg</code>.<br>Week adds support for formatting tokens <code>w</code>, <code>ww</code>, <code>wo</code>, <code>e</code>, <code>gg</code> and <code>gggg</code>.</p>
+<h2>Usage</h2>
+<h3>Dependencies</h3>
+<p>Week requires the plugin Locale and at least 1 registered and activated locale.</p>
+<p>When using the week formatting tokens together with other formatting tokens, the plugin localizedFormat is required and must be loaded using esday.extend(...) before the plugin Week.</p>
+<p>When using the week parsing tokens, the plugin advancedParse is required and must be loaded using esday.extend(...) before the plugin Week.</p>
+<p>Week can be used together with the plugin Utc. If used together with the plugin Utc, the plugin Utc must be activated using esday.extend(...) before the plugin Week.</p>
+<h3>Method signatures</h3>
+<pre><code class="language-signature">esday().week(): number
+esday().week(week: number): EsDay
+esday().weeks(): number
+esday().weeks(week: number): EsDay
+esday().weekday(): number
+esday().weekday(newIsoWeekday: number): EsDay
+esday().weekYear(): number
+esday().weekYear(newIsoWeekYear: number): EsDay
+weeksInYear(): number
+</code></pre>
+<p><strong>week</strong><br>The week of the year varies depending on which day is the first day of the week (Sunday, Monday, etc), and with which day (of the month) starts the first week of the year.</p>
+<p>For example, in the US, Sunday is the first day of the week. The week with January 1st in it is the first week of the year.</p>
+<p>In France, Monday is the first day of the week, and the week with January 4th is the first week of the year.</p>
+<p>When <strong>setting</strong> the week of the year, the day of the week is retained.</p>
+<p><strong>weekYear</strong><br>Because the first day of the first week of a year does not always fall on the first day of the year, sometimes the week-year will differ from the month year.<br>Because the first day of the first week of a year does not always fall on the first day of the year, sometimes the week-year will differ from the month year.</p>
+<p>For example, in the US, the week that contains Jan 1st is always the first week. In the US, weeks also start on Sunday.<br>If Jan 1 was a Monday, Dec 31 would belong to the same week as Jan 1, and thus the same week-year as Jan 1 (e.g. 2024).<br>Dec 30 would have a different week-year than Dec 31 (in the previous case it would be 2023).</p>
+<h3>Added units</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Unit</strong></th>
+<th><strong>Example</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>'w'</td>
+<td>1-53</td>
+<td>Week of year.</td>
+</tr>
+<tr>
+<td>'week'</td>
+<td>1-53</td>
+<td>Week of year.</td>
+</tr>
+<tr>
+<td>'weeks'</td>
+<td>1-53</td>
+<td>Week of year.</td>
+</tr>
+</tbody></table>
+<h3>Added formatting tokens</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Token</strong></th>
+<th><strong>Example</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>w</td>
+<td>1-53</td>
+<td>Week of year.</td>
+</tr>
+<tr>
+<td>ww</td>
+<td>01-53</td>
+<td>Week of year (2 digits).</td>
+</tr>
+<tr>
+<td>wo</td>
+<td>1nd-53rd</td>
+<td>Week of year as ordinal number.</td>
+</tr>
+<tr>
+<td>e</td>
+<td>1-7</td>
+<td>Day of week.</td>
+</tr>
+<tr>
+<td>gg</td>
+<td>00-99</td>
+<td>Week-year (2 digits).</td>
+</tr>
+<tr>
+<td>gggg</td>
+<td>0000-9999</td>
+<td>Week-year.</td>
+</tr>
+</tbody></table>
+<p>When no locale is loaded the token 'wo' returns the week number as number (instead of an ordinal number).</p>
+<h3>Added parsing tokens</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Token</strong></th>
+<th><strong>Example</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>w</td>
+<td>1-53</td>
+<td>Week of year. Sets day of week to 1st day of week.</td>
+</tr>
+<tr>
+<td>ww</td>
+<td>01-53</td>
+<td>Week of year. Sets day of week to 1st day of week (2 digits).</td>
+</tr>
+<tr>
+<td>d</td>
+<td>0..6</td>
+<td>Day of week (numeric form)</td>
+</tr>
+<tr>
+<td>dd</td>
+<td>Su...Sa</td>
+<td>Day of week (minimal form)</td>
+</tr>
+<tr>
+<td>ddd</td>
+<td>Sun...Sat</td>
+<td>Day of week (short form)</td>
+</tr>
+<tr>
+<td>dddd</td>
+<td>Sunday...Saturday</td>
+<td>Day of week (long form)</td>
+</tr>
+<tr>
+<td>e</td>
+<td>1-7</td>
+<td>Day of week (evaluating start-of-week).</td>
+</tr>
+<tr>
+<td>gg</td>
+<td>00-99</td>
+<td>Week-year (2 digits).</td>
+</tr>
+<tr>
+<td>gggg</td>
+<td>0000-9999</td>
+<td>Week-year.</td>
+</tr>
+</tbody></table>
+<p>If the source string (and the format to use) contains a valid day of month, the week is ignored (like moment.js does).</p>
+<p>If the source string (and the format to use) contains a valid month, the weekday is ignored (like moment.js does).</p>
+<p><strong>Differences to Moment.js</strong></p>
+<p>When parsing a string consisting of a year only with a weekYear token ('gg' or 'gggg') or a year and day-of-week ('2022 2) with a weekday token ('YYYY e'), moment.js returns the start of the week before the expected date on the first 4 days of a week (when start-of-year is not '1').</p>
+<p>As an example:<br><code>esday('2025', 'gggg)</code> should return '2025-07-21' when the current date is Wednesday '2022-07-24' and the locale is 'de' (start-of-year is '4'). But '2025-07-14' is returned.</p>
+<p>While <code>esday('2025', 'gggg)</code> returns '2025-07-21' as expected when the current date is Thursday '2022-07-25' and the locale is 'de'.</p>
+<h2>Examples</h2>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import { advancedParsePlugin, localePlugin, localizedFormatPlugin, weekPlugin } from 'esday/plugins'
+
+import localeEnUs from 'esday/locales/en-us'
+
+esday
+  .extend(localePlugin)
+  .extend(advancedParsePlugin)
+  .extend(localizedFormatPlugin)
+  .extend(weekPlugin)
+
+esday.registerLocale(localeEnUs)
+
+// set global locale
+esday.locale('en-US')
+
+esday('2024-01-01').week()
+// Returns 1
+
+esday('2024-01-01').get('week')
+// Returns 1
+
+esday('2024-02-14').week(1)
+// Returns esday for '2024-01-03'
+
+esday('2024-02-14').set('w', 1)
+// Returns esday for '2024-01-03'
+
+esday('2025-10-01').weekday()
+// Returns 3 (Sunday is '0'!)
+
+esday('2025-05-15').weekday(1)
+// Returns esday for '2025-05-12'
+
+esday('2023-12-30').weekYear()
+// Returns 2023
+
+esday('2023-12-31').weekYear()
+// Returns 2024
+
+esday('2024-01-01').weekYear()
+// Returns 2024
+
+esday('2016-04-25').weeksInYear()
+// Returns 53
+</code></pre>
+<h3>Formatting date using week tokens</h3>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import { localePlugin, localizedFormatPlugin, weekPlugin } from 'esday/plugins'
+
+import localeEnUs from 'esday/locales/en-us'
+
+esday
+  .extend(localePlugin)
+  .extend(localizedFormatPlugin)
+  .extend(weekPlugin)
+
+esday.registerLocale(localeEnUs)
+
+// set global locale
+esday.locale('en-US')
+
+esday('2024-12-24T14:25:36').format('w')
+// Returns '52'
+
+esday('22024-12-24T14:25:36').format('ww')
+// Returns '52'
+
+esday('22024-12-24T14:25:36').format('wo')
+// Returns '52nd'
+
+esday('22024-12-24T14:25:36').format('e')
+// Returns '2'
+
+esday('22024-12-24T14:25:36').format('gg')
+// Returns '24'
+
+esday('22024-12-24T14:25:36').format('gggg')
+// Returns '2024'
+</code></pre>
+<h3>Parsing date using IsoWeek tokens</h3>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import { advancedParsePlugin, localePlugin, weekPlugin } from 'esday/plugins'
+
+import localeEnUs from 'esday/locales/en-us'
+
+esday
+  .extend(localePlugin)
+  .extend(advancedParsePlugin)
+  .extend(weekPlugin)
+
+esday.registerLocale(localeEnUs)
+
+// set global locale
+esday.locale('en-US')
+
+esday('2025 2', 'YYYY w')
+// Returns esday for '2025-01-05'
+
+esday('2025-10-24 2', 'YYYY-MM-DD w')
+// Returns esday for '2025-10-24'
+
+esday('2025 02', 'YYYY ww')
+// Returns esday for '2025-01-05'
+
+esday('2025 12', 'YYYY ww')
+// Returns esday for '2025-03-16'
+
+esday('2025 4', 'YYYY d')
+// Returns esday for '2025-12-18' when current date is '2023-12-17'
+// '4' is Thursday; month and week is taken from current date
+
+esday('2025 4', 'YYYY e')
+// Returns esday for '2025-12-17' when current date is '2023-12-17'
+// '4' is Wednesday (weekday); month and week is taken from current date
+
+esday("24", "gg")
+// Returns esday for '2024-12-15' when current date is '2023-12-17'
+// month and week is taken from current date; '15' is 1st day of the week
+
+esday("24", "gggg")
+// Returns esday for '2024-12-15' when current date is '2023-12-17'
+// month and week is taken from current date; '15' is 1st day of the week
+</code></pre>
+</div>
+<template id="copyButtonTemplate">
+<button>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1" fill="none">
+<title>Copy to clipboard</title>
+<path fill-rule="evenodd" d="M 4.683594 2.5 C 4.683594 1.855469 5.207031 1.332031 5.847656 1.332031 L 13.5 1.332031 C 14.144531 1.332031 14.667969 1.855469 14.667969 2.5 L 14.667969 10.164062 C 14.667969 10.808594 14.144531 11.332031 13.5 11.332031 L 5.847656 11.332031 C 5.203125 11.332031 4.683594 10.808594 4.683594 10.164062 Z M 5.847656 2.332031 L 5.683594 10.164062 C 5.683594 10.257812 5.757812 10.332031 5.847656 10.332031 L 13.5 10.332031 L 13.667969 2.5 Z M 5.847656 2.332031 "/><path d="M 1.328125 7.164062 C 1.328125 6.519531 1.851562 6 2.496094 6 L 3.5 6 C 3.777344 6 4 6.222656 4 6.5 C 4 6.773438 3.777344 7 3.5 7 L 2.496094 7 L 2.332031 13.5 C 2.332031 13.59375 2.40625 13.667969 2.5 13.667969 L 8.832031 13.667969 L 9 12.492188 C 9 12.21875 9.222656 11.992188 9.5 11.992188 C 9.777344 11.992188 10 12.21875 10 12.492188 L 10 13.5 C 10 14.144531 9.476562 14.667969 8.832031 14.667969 L 2.5 14.667969 C 1.855469 14.667969 1.332031 14.144531 1.332031 13.5 Z M 1.328125 7.164062 "></path>
+</svg>
+</button>
+</template>
+<template id="copiedFeedbackTemplate"><div class="copied">Copied!</div></template>
+<script src="scripts.js"></script>
+</body>
+</html>

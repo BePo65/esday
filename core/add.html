@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Core - Add</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+<base href="/esday/" />
+<link rel="stylesheet" href="esday.css">
+<link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+<header>
+<a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+<h1 class="header-title">Core - Add</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="core/index.html">Core</a>
+<a href="plugins/index.html">Plugins</a>
+<a href="locales/index.html">Locales</a>
+</nav>
+</header>
+<div class="container"><h1>Add / Subtract</h1>
+<p>The <code>add()</code> method adds a value to an <code>esday</code> object.</p>
+<p>The <code>subtract()</code> method subtracts a value from an <code>esday</code> object.</p>
+<h2>Usage</h2>
+<h3>Method signatures</h3>
+<pre><code class="language-signature">esday().add(value: number, unit: UnitTypeAddSub): EsDay
+</code></pre>
+<pre><code class="language-signature">esday().subtract(value: number, unit: UnitTypeAddSub): EsDay
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>type</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>value</td>
+<td>number</td>
+<td>number of units to add / subtract</td>
+</tr>
+<tr>
+<td>unit</td>
+<td>UnitTypeAddSub</td>
+<td>unit for add / subtract</td>
+</tr>
+</tbody></table>
+<h3>Available Units in UnitTypeAddSub</h3>
+<table>
+<thead>
+<tr>
+<th>Singular</th>
+<th>Plural</th>
+<th>Shorthand</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>year</td>
+<td>years</td>
+<td>y</td>
+</tr>
+<tr>
+<td>quarter</td>
+<td>quarters</td>
+<td>Q</td>
+</tr>
+<tr>
+<td>month</td>
+<td>months</td>
+<td>M</td>
+</tr>
+<tr>
+<td>week</td>
+<td>weeks</td>
+<td>w</td>
+</tr>
+<tr>
+<td>day</td>
+<td>days</td>
+<td>d</td>
+</tr>
+<tr>
+<td>hour</td>
+<td>hours</td>
+<td>h</td>
+</tr>
+<tr>
+<td>minute</td>
+<td>minutes</td>
+<td>m</td>
+</tr>
+<tr>
+<td>second</td>
+<td>seconds</td>
+<td>s</td>
+</tr>
+<tr>
+<td>millisecond</td>
+<td>milliseconds</td>
+<td>ms</td>
+</tr>
+</tbody></table>
+<p>The unit <code>quarter</code> (in short, long and plural forms) requires the plugin <a href="plugins/quarterOfYear.html">QuarterOfYear</a> to be loaded.</p>
+<p>Adding multiple values in one step requires the plugin <a href="plugins/objectSupport.html">ObjectSupport</a>.</p>
+<h2>Examples</h2>
+<h3>add</h3>
+<pre><code class="language-typescript">import { esday } from 'esday'
+
+esday('2025-07-17T03:24:46.234').add(2, 'M')
+// Returns an instance of EsDay for '2025-09-17T03:24:46.234'
+
+esday('2024-01-31T13:24:35.789').add(1, 'day')
+// Returns an instance of EsDay for '2024-02-01T13:24:35.789'
+
+esday('2024-01-31T13:24:35.789').add(15, 'seconds')
+// Returns an instance of EsDay for '2024-01-31T13:24:50.789'
+</code></pre>
+<h3>subtract</h3>
+<pre><code class="language-typescript">import { esday } from 'esday'
+
+esday('2025-07-17T03:24:46.234').subtract(2, 'M')
+// Returns an instance of EsDay for '2025-05-17T03:24:46.234'
+
+esday('2024-01-31T13:24:35.789').subtract(1, 'day')
+// Returns an instance of EsDay for '2024-01-30T13:24:35.789'
+
+esday('2024-01-31T13:24:35.789').subtract(15, 'seconds')
+// Returns an instance of EsDay for '2024-01-31T13:24:20.789'
+</code></pre>
+</div>
+<template id="copyButtonTemplate">
+<button>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1" fill="none">
+<title>Copy to clipboard</title>
+<path fill-rule="evenodd" d="M 4.683594 2.5 C 4.683594 1.855469 5.207031 1.332031 5.847656 1.332031 L 13.5 1.332031 C 14.144531 1.332031 14.667969 1.855469 14.667969 2.5 L 14.667969 10.164062 C 14.667969 10.808594 14.144531 11.332031 13.5 11.332031 L 5.847656 11.332031 C 5.203125 11.332031 4.683594 10.808594 4.683594 10.164062 Z M 5.847656 2.332031 L 5.683594 10.164062 C 5.683594 10.257812 5.757812 10.332031 5.847656 10.332031 L 13.5 10.332031 L 13.667969 2.5 Z M 5.847656 2.332031 "/><path d="M 1.328125 7.164062 C 1.328125 6.519531 1.851562 6 2.496094 6 L 3.5 6 C 3.777344 6 4 6.222656 4 6.5 C 4 6.773438 3.777344 7 3.5 7 L 2.496094 7 L 2.332031 13.5 C 2.332031 13.59375 2.40625 13.667969 2.5 13.667969 L 8.832031 13.667969 L 9 12.492188 C 9 12.21875 9.222656 11.992188 9.5 11.992188 C 9.777344 11.992188 10 12.21875 10 12.492188 L 10 13.5 C 10 14.144531 9.476562 14.667969 8.832031 14.667969 L 2.5 14.667969 C 1.855469 14.667969 1.332031 14.144531 1.332031 13.5 Z M 1.328125 7.164062 "></path>
+</svg>
+</button>
+</template>
+<template id="copiedFeedbackTemplate"><div class="copied">Copied!</div></template>
+<script src="scripts.js"></script>
+</body>
+</html>

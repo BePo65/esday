@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plugins - Duration</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+<base href="/esday/" />
+<link rel="stylesheet" href="esday.css">
+<link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+<header>
+<a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+<h1 class="header-title">Plugins - Duration</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="core/index.html">Core</a>
+<a href="plugins/index.html">Plugins</a>
+<a href="locales/index.html">Locales</a>
+</nav>
+</header>
+<div class="container"><h1 id="duration">Duration</h1>
+<p>Duration extends the <code>esday</code> constructor to create a Duration object.</p>
+<p>Where an EsDay is defined as a single point in time, a duration is defined as a length of time.</p>
+<p>Durations do not have a defined beginning and end date. They are contextless.</p>
+<p>A duration is conceptually more similar to '2 hours' than to 'between 2 and 4 pm today'. As such, they are not a good solution to converting between units that depend on context. For example, a year can be defined as 366 days, 365 days, 365.25 days, 12 months, or 52 weeks. Trying to convert years to days makes no sense without context (which year, which month etc.). It is much better to use EsDay.diff for calculating days or years between two EsDays than to use Durations.</p>
+<p>Durations are immutable.</p>
+<h2>Content</h2>
+<ul>
+<li><a href="plugins/duration.html#dependencies">Dependencies</a></li>
+<li><a href="plugins/duration.html#create-a-duration">Create a duration</a></li>
+<li><a href="plugins/duration.html#clone-a-duration">Clone a duration</a></li>
+<li><a href="plugins/duration.html#get-a-part-of-a-duration">Get a part of a duration</a></li>
+<li><a href="plugins/duration.html#get-a-duration-as-unit">Get a duration as unit</a></li>
+<li><a href="plugins/duration.html#humanize-a-duration">Humanize a duration</a></li>
+<li><a href="plugins/duration.html#locale-of-a-duration">Locale of a duration</a></li>
+<li><a href="plugins/duration.html#add--subtract-a-duration">Add / Subtract a duration</a></li>
+<li><a href="plugins/duration.html#format-a-duration">Format a duration</a></li>
+<li><a href="plugins/duration.html#inspect">Inspect</a></li>
+</ul>
+<h2 id="dependencies">Dependencies</h2>
+<p>To use the Duration humanize method or any of the Duration locale methods, the plugin Locale, a loaded locale and the plugin RelativeTime are required.</p>
+<p><a href="plugins/duration.html#duration">↑ Goto top</a></p>
+<h2 id="create-a-duration">Create a duration</h2>
+<p>Create a duration with a given length of time.</p>
+<pre><code class="language-signature">esday.duration(): Duration
+esday.duration(input: string): Duration
+esday.duration(input: string, unit: UnitTypeDuration): Duration
+esday.duration(input: number): Duration
+esday.duration(input: number, unit: UnitTypeDuration): Duration
+esday.duration(input: Duration): Duration
+esday.duration(input: object): Duration
+</code></pre>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>parameters</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>---</td>
+<td>create a duration of 0ms</td>
+</tr>
+<tr>
+<td>string</td>
+<td>create a duration of given time in milliseconds</td>
+</tr>
+<tr>
+<td>string</td>
+<td>create a duration of given ISO 8601 string</td>
+</tr>
+<tr>
+<td>string</td>
+<td>create a duration of given ASP.NET style time span string</td>
+</tr>
+<tr>
+<td>string, UnitTypeDuration</td>
+<td>create a duration of given time in given units</td>
+</tr>
+<tr>
+<td>number</td>
+<td>create a duration of given time in milliseconds</td>
+</tr>
+<tr>
+<td>number, UnitTypeDuration</td>
+<td>create a duration of given time in given units</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>create a duration from the given duration</td>
+</tr>
+<tr>
+<td>object</td>
+<td>create a duration from the given duration</td>
+</tr>
+</tbody></table>
+<h3>Types</h3>
+<p><strong>UnitTypeDuration</strong></p>
+<table>
+<thead>
+<tr>
+<th>Short</th>
+<th>Long</th>
+<th>Plural</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>'y'</td>
+<td>'year'</td>
+<td>'years'</td>
+</tr>
+<tr>
+<td>'Q'</td>
+<td>'quarter'</td>
+<td>'quarters'</td>
+</tr>
+<tr>
+<td>'M'</td>
+<td>'month'</td>
+<td>'months'</td>
+</tr>
+<tr>
+<td>'w'</td>
+<td>'week'</td>
+<td>'weeks'</td>
+</tr>
+<tr>
+<td>'d'</td>
+<td>'day'</td>
+<td>'days'</td>
+</tr>
+<tr>
+<td>'h'</td>
+<td>'hour'</td>
+<td>'hours'</td>
+</tr>
+<tr>
+<td>'m'</td>
+<td>'minute'</td>
+<td>'minutes'</td>
+</tr>
+<tr>
+<td>'s'</td>
+<td>'second'</td>
+<td>'seconds'</td>
+</tr>
+<tr>
+<td>'ms'</td>
+<td>'millisecond'</td>
+<td>'milliseconds'</td>
+</tr>
+</tbody></table>
+<p>The ASP.NET style time span format is an hour, minute, second string separated by colons like 23:59:59.<br>The number of days can be prefixed with a dot separator like so 7.23:59:59 or with a space as separator.<br>Partial seconds are supported as well 23:59:59.999.</p>
+<p>The object used for defining a duration uses the UnitTypeDuration values as keys.</p>
+<h3>Examples</h3>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import durationPlugin, { type UnitTypeDuration } from '~/plugins/duration'
+
+esday.extend(durationPlugin)
+
+esday.duration()
+// Returns duration object for milliseconds
+
+esday.duration(123)
+// Returns duration object for 123 milliseconds
+
+esday.duration(5, 'h')
+// Returns duration object for 5 hours
+
+esday.duration('P7Y6MT3H')
+// Returns duration object for 7 years, 6 months, 3 hours
+
+esday.duration('7 26:45:25')
+// Returns duration object for 7 days, 26 hours, 45 minutes 25 seconds
+
+esday.duration({ y: 6, M: 2 })
+// Returns duration object for 6 years, 2 months
+
+esday.duration(Number.NaN).isValid()
+// Returns false
+</code></pre>
+<p><a href="plugins/duration.html#duration">↑ Goto top</a></p>
+<h2 id="clone-a-duration">Clone a duration</h2>
+<p>Create a clone of a duration.</p>
+<pre><code class="language-signature">esday.duration().clone(): Duration
+</code></pre>
+<h3>Example</h3>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import durationPlugin, { type UnitTypeDuration } from '~/plugins/duration'
+
+esday.extend(durationPlugin)
+
+esday.duration(2, 'days').clone()
+// Returns a copy of the original duration object
+</code></pre>
+<p><a href="plugins/duration.html#duration">↑ Goto top</a></p>
+<h2 id="get-a-part-of-a-duration">Get a part of a duration</h2>
+<p>Get a part of the length of a duration. E.g. <code>.seconds()</code> gets the number of seconds in a duration.</p>
+<pre><code class="language-signature">esday.duration(&lt;length&gt;).milliseconds(): number
+esday.duration(&lt;length&gt;).seconds(): number
+esday.duration(&lt;length&gt;).minutes(): number
+esday.duration(&lt;length&gt;).hours(): number
+esday.duration(&lt;length&gt;).days(): number
+esday.duration(&lt;length&gt;).weeks(): number
+esday.duration(&lt;length&gt;).months(): number
+esday.duration(&lt;length&gt;).quarters(): number
+esday.duration(&lt;length&gt;).years(): number
+esday.duration(&lt;length&gt;).get(unit: UnitTypeDuration): number
+</code></pre>
+<p><strong>Note</strong>: the values from the duration definition ripple up to higher units (e.g. "25 hours" will get "1 day, 1 hour"). This way, the returned pars are limited to the following  ranges.</p>
+<p><strong>Exception</strong>: <code>.weeks()</code> unlike the other getters for duration, weeks are counted as a subset of the days, and are not taken off the days count (i.e. 10 days will get <code>.weeks() === 1</code> and <code>.days() === 10</code>).</p>
+<p>The same goes true for <code>.quarters()</code> (i.e. 5 months will get <code>.quarters() === 1</code> and <code>.months() === 5</code>).</p>
+<h3>Types</h3>
+<p><strong>UnitTypeDuration</strong></p>
+<table>
+<thead>
+<tr>
+<th>Short</th>
+<th>Long</th>
+<th>Plural</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>'y'</td>
+<td>'year'</td>
+<td>'years'</td>
+</tr>
+<tr>
+<td>'Q'</td>
+<td>'quarter'</td>
+<td>'quarters'</td>
+</tr>
+<tr>
+<td>'M'</td>
+<td>'month'</td>
+<td>'months'</td>
+</tr>
+<tr>
+<td>'w'</td>
+<td>'week'</td>
+<td>'weeks'</td>
+</tr>
+<tr>
+<td>'d'</td>
+<td>'day'</td>
+<td>'days'</td>
+</tr>
+<tr>
+<td>'h'</td>
+<td>'hour'</td>
+<td>'hours'</td>
+</tr>
+<tr>
+<td>'m'</td>
+<td>'minute'</td>
+<td>'minutes'</td>
+</tr>
+<tr>
+<td>'s'</td>
+<td>'second'</td>
+<td>'seconds'</td>
+</tr>
+<tr>
+<td>'ms'</td>
+<td>'millisecond'</td>
+<td>'milliseconds'</td>
+</tr>
+</tbody></table>
+<h3>Range of output values</h3>
+<table>
+<thead>
+<tr>
+<th>unit</th>
+<th>range</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>seconds()</td>
+<td>0 ... 59</td>
+</tr>
+<tr>
+<td>minutes()</td>
+<td>0 ... 59</td>
+</tr>
+<tr>
+<td>hours()</td>
+<td>0 ... 23</td>
+</tr>
+<tr>
+<td>days()</td>
+<td>0 ... 30</td>
+</tr>
+<tr>
+<td>weeks()</td>
+<td>0 ... 4</td>
+</tr>
+<tr>
+<td>months()</td>
+<td>0 ... 11</td>
+</tr>
+<tr>
+<td>quarters()</td>
+<td>0 ... 3</td>
+</tr>
+<tr>
+<td>years()</td>
+<td>0 ... 9999</td>
+</tr>
+</tbody></table>
+<h3>Example</h3>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import durationPlugin, { type UnitTypeDuration } from '~/plugins/duration'
+
+esday.extend(durationPlugin)
+
+esday.duration(2, 'days').days()
+// Returns 2
+
+esday.duration(4, 'months').get('months')
+// Returns 4
+</code></pre>
+<p><a href="plugins/duration.html#duration">↑ Goto top</a></p>
+<h2 id="get-a-duration-as-unit">Get a duration as unit</h2>
+<p>Get the number of milliseconds, seconds etc. of a duration. E.g. <code>.asSeconds()</code> gets the length of the duration as seconds.</p>
+<pre><code class="language-signature">esday.duration(&lt;length&gt;).asMilliseconds(): number
+esday.duration(&lt;length&gt;).asSeconds(): number
+esday.duration(&lt;length&gt;).asMinutes(): number
+esday.duration(&lt;length&gt;).asHours(): number
+esday.duration(&lt;length&gt;).asDays(): number
+esday.duration(&lt;length&gt;).asWeeks(): number
+esday.duration(&lt;length&gt;).asMonths(): number
+esday.duration(&lt;length&gt;).asQuarters(): number
+esday.duration(&lt;length&gt;).asYears(): number
+esday.duration(&lt;length&gt;).as(unit: UnitTypeDuration): number
+</code></pre>
+<h3>Types</h3>
+<p><strong>UnitTypeDuration</strong></p>
+<table>
+<thead>
+<tr>
+<th>Short</th>
+<th>Long</th>
+<th>Plural</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>'y'</td>
+<td>'year'</td>
+<td>'years'</td>
+</tr>
+<tr>
+<td>'Q'</td>
+<td>'quarter'</td>
+<td>'quarters'</td>
+</tr>
+<tr>
+<td>'M'</td>
+<td>'month'</td>
+<td>'months'</td>
+</tr>
+<tr>
+<td>'w'</td>
+<td>'week'</td>
+<td>'weeks'</td>
+</tr>
+<tr>
+<td>'d'</td>
+<td>'day'</td>
+<td>'days'</td>
+</tr>
+<tr>
+<td>'h'</td>
+<td>'hour'</td>
+<td>'hours'</td>
+</tr>
+<tr>
+<td>'m'</td>
+<td>'minute'</td>
+<td>'minutes'</td>
+</tr>
+<tr>
+<td>'s'</td>
+<td>'second'</td>
+<td>'seconds'</td>
+</tr>
+<tr>
+<td>'ms'</td>
+<td>'millisecond'</td>
+<td>'milliseconds'</td>
+</tr>
+</tbody></table>
+<h3>Example</h3>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import durationPlugin, { type UnitTypeDuration } from '~/plugins/duration'
+
+esday.extend(durationPlugin)
+
+const duration = esday.duration(2, 'days')
+duration.asWeeks()  // Returns 0.2857
+duration.asDays()  // Returns 2
+duration.asHours()  // Returns 48
+duration.asMinutes()  // Returns 2,880
+</code></pre>
+<p><a href="plugins/duration.html#duration">↑ Goto top</a></p>
+<h2 id="humanize-a-duration">Humanize a duration</h2>
+<p>Formt a Duration as a length of time (e.g. 'in 5 days') using the plugins <a href="plugins/locale.html">Locale</a> and <a href="plugins/relativeTime.html">RelativeTime</a>.</p>
+<p>For suffixes before now (e.g. '5 days ago'), pass in a negative number.</p>
+<p>Invalid durations are humanized to <code>Invalid Date</code>.</p>
+<p>Humanize output can be configured with relative time thresholds.</p>
+<pre><code class="language-signature">esday.duration(&lt;length&gt;).humanize(): string
+esday.duration(&lt;length&gt;).humanize(withSuffix: boolean): string
+esday.duration(&lt;length&gt;).humanize(thresholds: ThresholdRelativeTime): string
+esday.duration(&lt;length&gt;).humanize(withSuffix: boolean, thresholds: ThresholdRelativeTime): string
+</code></pre>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>parameters</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>---</td>
+<td>format a duration as length of time (e.g. '5 days')</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>format a duration with suffix ('in 5 days' or '5 days ago')</td>
+</tr>
+<tr>
+<td>ThresholdRelativeTime</td>
+<td>format a duration using the given thresholds</td>
+</tr>
+<tr>
+<td>boolean, ThresholdRelativeTime</td>
+<td>format a duration with suffix using the given thresholds</td>
+</tr>
+</tbody></table>
+<h3>Types</h3>
+<p><strong>ThresholdRelativeTime</strong></p>
+<table>
+<thead>
+<tr>
+<th>unit</th>
+<th>meaning</th>
+<th>usage</th>
+<th>default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ss</td>
+<td>a few seconds</td>
+<td>least number of seconds to be counted in seconds, minus 1</td>
+<td>44</td>
+</tr>
+<tr>
+<td>s</td>
+<td>seconds</td>
+<td>least number of seconds to be considered a minute</td>
+<td>45</td>
+</tr>
+<tr>
+<td>m</td>
+<td>minutes</td>
+<td>least number of minutes to be considered an hour</td>
+<td>45</td>
+</tr>
+<tr>
+<td>h</td>
+<td>hours</td>
+<td>least number of hours to be considered a day</td>
+<td>22</td>
+</tr>
+<tr>
+<td>d</td>
+<td>days</td>
+<td>least number of days to be considered a week</td>
+<td>26</td>
+</tr>
+<tr>
+<td>w</td>
+<td>weeks</td>
+<td>least number of weeks to be considered a month; not used by default</td>
+<td>null</td>
+</tr>
+<tr>
+<td>M</td>
+<td>months</td>
+<td>least number of months to be considered a year</td>
+<td>11</td>
+</tr>
+</tbody></table>
+<h3>Example</h3>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import durationPlugin, { type UnitTypeDuration } from '~/plugins/duration'
+
+esday.extend(durationPlugin)
+
+esday.duration(45, 'seconds').humanize()
+// Returns 'a minute'
+
+esday.duration(45, 'seconds').humanize(true)
+// Returns 'in a minute'
+
+esday.duration(-45, 'seconds').humanize(true)
+// Returns 'a minute ago'
+
+esday.duration(20, 'hours').humanize()
+// Returns '20 hours'
+</code></pre>
+<p><a href="plugins/duration.html#duration">↑ Goto top</a></p>
+<h2 id="locale-of-a-duration">Locale of a duration</h2>
+<p>Get or set the Locale to use for .humanize function or get the currently used Locale object.</p>
+<pre><code class="language-signature">esday.duration(&lt;length&gt;).locale(): string
+esday.duration(&lt;length&gt;).locale(locale: string): Duration
+esday.duration(&lt;length&gt;).localeObject(): Locale
+</code></pre>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>locale</td>
+<td>name of the Locale to use</td>
+</tr>
+</tbody></table>
+<h3>Example</h3>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import localeEn from '~/locales/en'
+import localeFr from '~/locales/fr'
+import durationPlugin from '~/plugins/duration'
+import localePlugin from '~/plugins/locale'
+
+esday.extend(localePlugin).extend(durationPlugin)
+esday.registerLocale(localeEn).registerLocale(localeFr)
+
+esday.duration().locale()
+// Returns 'en' (default Locale)
+
+esday.duration().locale('fr').locale()
+// Returns 'fr'
+
+esday.duration().locale('fr').localeObject()
+// Returns Locale object for locale 'fr'
+</code></pre>
+<p><a href="plugins/duration.html#duration">↑ Goto top</a></p>
+<h2 id="add--subtract-a-duration">Add / Subtract a duration</h2>
+<p>Add or subtract a value to a duration.</p>
+<pre><code class="language-signature">esday.duration(&lt;length&gt;).add(input: number | UnitsObjectTypeDuration | Duration, unit?: UnitTypeDuration): Duration
+esday.duration(&lt;length&gt;).subtract(input: number | UnitsObjectTypeDuration | Duration, unit?: UnitTypeDuration): Duration
+</code></pre>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>input</td>
+<td>value to add</td>
+</tr>
+<tr>
+<td>unit</td>
+<td>unit of input value (defaults to milliseconds)</td>
+</tr>
+</tbody></table>
+<h3>Types</h3>
+<p><strong>UnitsObjectTypeDuration</strong></p>
+<p>object of values to add / subtract with the following properties (all properties are optional and of type <code>string</code> or <code>number</code>)</p>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>years</td>
+<td>years to add</td>
+</tr>
+<tr>
+<td>quarters</td>
+<td>quarters to add</td>
+</tr>
+<tr>
+<td>months</td>
+<td>months to add</td>
+</tr>
+<tr>
+<td>weeks</td>
+<td>weeks to add</td>
+</tr>
+<tr>
+<td>days</td>
+<td>days to add</td>
+</tr>
+<tr>
+<td>hours</td>
+<td>hours to add</td>
+</tr>
+<tr>
+<td>minutes</td>
+<td>minutes to add</td>
+</tr>
+<tr>
+<td>seconds</td>
+<td>seconds to add</td>
+</tr>
+<tr>
+<td>milliseconds</td>
+<td>milliseconds to add</td>
+</tr>
+</tbody></table>
+<p><strong>UnitTypeDuration</strong></p>
+<table>
+<thead>
+<tr>
+<th>Short</th>
+<th>Long</th>
+<th>Plural</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>'y'</td>
+<td>'year'</td>
+<td>'years'</td>
+</tr>
+<tr>
+<td>'Q'</td>
+<td>'quarter'</td>
+<td>'quarters'</td>
+</tr>
+<tr>
+<td>'M'</td>
+<td>'month'</td>
+<td>'months'</td>
+</tr>
+<tr>
+<td>'w'</td>
+<td>'week'</td>
+<td>'weeks'</td>
+</tr>
+<tr>
+<td>'d'</td>
+<td>'day'</td>
+<td>'days'</td>
+</tr>
+<tr>
+<td>'h'</td>
+<td>'hour'</td>
+<td>'hours'</td>
+</tr>
+<tr>
+<td>'m'</td>
+<td>'minute'</td>
+<td>'minutes'</td>
+</tr>
+<tr>
+<td>'s'</td>
+<td>'second'</td>
+<td>'seconds'</td>
+</tr>
+<tr>
+<td>'ms'</td>
+<td>'millisecond'</td>
+<td>'milliseconds'</td>
+</tr>
+</tbody></table>
+<p><a href="plugins/duration.html#duration">↑ Goto top</a></p>
+<h2 id="format-a-duration">Format a duration</h2>
+<pre><code class="language-signature">// Alias for 'toISOString'
+esday.duration(&lt;length&gt;).toString(): string
+
+// Format as string using given format string
+esday.duration(&lt;length&gt;).format(formatStr?: string): string
+
+// Format as ISO 8601 string
+esday.duration(&lt;length&gt;).toISOString(): string
+
+// Alias for 'toISOString'
+esday.duration(&lt;length&gt;).toJSON(): string
+
+// Get all parts of duration as stringified JSON
+esday.duration(&lt;length&gt;).asStringifiedJSON(): string
+</code></pre>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>parameters</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>formatStr</td>
+<td>optional parameter to define output format</td>
+</tr>
+<tr>
+<td></td>
+<td>default value: 'YYYY-MM-DDTHH:mm:ss.SSS'</td>
+</tr>
+</tbody></table>
+<h3>Available format tokens</h3>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Output-</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Y</code></td>
+<td>18</td>
+<td>years</td>
+</tr>
+<tr>
+<td><code>YY</code></td>
+<td>18</td>
+<td>years, 2-digits</td>
+</tr>
+<tr>
+<td><code>YYYY</code></td>
+<td>2018</td>
+<td>years, 4-digits</td>
+</tr>
+<tr>
+<td><code>M</code></td>
+<td>1-12</td>
+<td>months, beginning at 1</td>
+</tr>
+<tr>
+<td><code>MM</code></td>
+<td>01-12</td>
+<td>months, 2-digits</td>
+</tr>
+<tr>
+<td><code>D</code></td>
+<td>1-31</td>
+<td>days</td>
+</tr>
+<tr>
+<td><code>DD</code></td>
+<td>01-31</td>
+<td>days, 2-digits</td>
+</tr>
+<tr>
+<td><code>H</code></td>
+<td>0-23</td>
+<td>hours</td>
+</tr>
+<tr>
+<td><code>HH</code></td>
+<td>00-23</td>
+<td>hours, 2-digits</td>
+</tr>
+<tr>
+<td><code>m</code></td>
+<td>0-59</td>
+<td>minutes</td>
+</tr>
+<tr>
+<td><code>mm</code></td>
+<td>00-59</td>
+<td>minutes, 2-digits</td>
+</tr>
+<tr>
+<td><code>s</code></td>
+<td>0-59</td>
+<td>seconds</td>
+</tr>
+<tr>
+<td><code>ss</code></td>
+<td>00-59</td>
+<td>seconds, 2-digits</td>
+</tr>
+<tr>
+<td><code>SSS</code></td>
+<td>000-999</td>
+<td>milliseconds, 3-digits</td>
+</tr>
+</tbody></table>
+<h3>Example</h3>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import durationPlugin, { type UnitTypeDuration } from '~/plugins/duration'
+
+esday.extend(durationPlugin)
+
+esday.duration({ s: 6, m: 5, h: 4, d: 3, M: 2, y: 1 }).toString()
+// Returns 'P1Y2M3DT4H5M6S'
+
+esday.duration({ ms: 7, s: 6, m: 5, h: 4, d: 3, M: 2, y: 1 }).format()
+// Returns '0001-02-03T04:05:06.007'
+
+esday.duration({ d: 3, M: 2, y: 1 }).format('YY-M-D')
+// Returns '01-2-3'
+
+esday.duration({ ms: 7, s: 6, m: 5, h: 4 }).format('HH:mm:ss.SSS)
+// Returns '04:05:06.007'
+
+esday.duration({ s: 6, m: 5, h: 4, d: 3, M: 2, y: 1 }).toISOString()
+// Returns 'P1Y2M3DT4H5M6S'
+
+esday.duration({ s: 6, m: 5, h: 4, d: 3, M: 2, y: 1 }).toJSON()
+// Returns 'P1Y2M3DT4H5M6S'
+
+esday.duration({ ms:7, s: 6, m: 5, h: 4, d: 3, M: 2, y: 1 }).asStringifiedJSON()
+// Returns '{"years":1,"months":2,"days":3,"hours":4,"minutes":5,"seconds":6,"milliseconds":0}'
+</code></pre>
+<p><a href="plugins/duration.html#duration">↑ Goto top</a></p>
+<h2 id="inspect">Inspect</h2>
+<pre><code class="language-signature">// Is a duration valid?
+esday.duration(&lt;length&gt;).isValid(): boolean
+
+// Is a given element a duration?
+esday.isDuration(d?: any): boolean
+</code></pre>
+<h3>Example</h3>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import durationPlugin, { type UnitTypeDuration } from '~/plugins/duration'
+
+esday.extend(durationPlugin)
+
+esday.duration().isValid()
+// Returns true
+
+esday.duration(Number.NaN).isValid()
+// Returns false
+
+esday.isDuration(esday.duration())
+// Returns true
+
+esday.isDuration(esday.duration(esday()))
+// Returns false
+</code></pre>
+<p><a href="plugins/duration.html#duration">↑ Goto top</a></p>
+</div>
+<template id="copyButtonTemplate">
+<button>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1" fill="none">
+<title>Copy to clipboard</title>
+<path fill-rule="evenodd" d="M 4.683594 2.5 C 4.683594 1.855469 5.207031 1.332031 5.847656 1.332031 L 13.5 1.332031 C 14.144531 1.332031 14.667969 1.855469 14.667969 2.5 L 14.667969 10.164062 C 14.667969 10.808594 14.144531 11.332031 13.5 11.332031 L 5.847656 11.332031 C 5.203125 11.332031 4.683594 10.808594 4.683594 10.164062 Z M 5.847656 2.332031 L 5.683594 10.164062 C 5.683594 10.257812 5.757812 10.332031 5.847656 10.332031 L 13.5 10.332031 L 13.667969 2.5 Z M 5.847656 2.332031 "/><path d="M 1.328125 7.164062 C 1.328125 6.519531 1.851562 6 2.496094 6 L 3.5 6 C 3.777344 6 4 6.222656 4 6.5 C 4 6.773438 3.777344 7 3.5 7 L 2.496094 7 L 2.332031 13.5 C 2.332031 13.59375 2.40625 13.667969 2.5 13.667969 L 8.832031 13.667969 L 9 12.492188 C 9 12.21875 9.222656 11.992188 9.5 11.992188 C 9.777344 11.992188 10 12.21875 10 12.492188 L 10 13.5 C 10 14.144531 9.476562 14.667969 8.832031 14.667969 L 2.5 14.667969 C 1.855469 14.667969 1.332031 14.144531 1.332031 13.5 Z M 1.328125 7.164062 "></path>
+</svg>
+</button>
+</template>
+<template id="copiedFeedbackTemplate"><div class="copied">Copied!</div></template>
+<script src="scripts.js"></script>
+</body>
+</html>

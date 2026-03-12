@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Core - Diff</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+<base href="/esday/" />
+<link rel="stylesheet" href="esday.css">
+<link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+<header>
+<a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+<h1 class="header-title">Core - Diff</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="core/index.html">Core</a>
+<a href="plugins/index.html">Plugins</a>
+<a href="locales/index.html">Locales</a>
+</nav>
+</header>
+<div class="container"><h1>Difference</h1>
+<p>The <code>diff</code> method calculates the difference between two esday objects using the specified unit.</p>
+<p>The default unit is milliseconds.</p>
+<p>To get the difference in another unit of measurement, pass that measurement as the second argument.</p>
+<p>By default <code>diff</code> will truncate the result to an integer. If you want a floating point number, pass true as the third argument.</p>
+<h2>Usage</h2>
+<h3>Method signatures</h3>
+<pre><code class="language-signature">esday().diff(date: EsDay, unit?: UnitTypeAddSub, asFloat?: boolean): number
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>date</td>
+<td>EsDay object to calculate the difference to</td>
+</tr>
+<tr>
+<td>unit</td>
+<td>Unit to use for the calculated difference</td>
+</tr>
+<tr>
+<td>asFloat</td>
+<td>return the result as float  (false= return integer)</td>
+</tr>
+</tbody></table>
+<h3>Available Units in UnitTypeAddSub</h3>
+<p>Short form: 'y', 'Q', 'M', 'w', 'd', 'D', 'h', 'm', 's' and 'ms'.<br>Long form: 'year', 'quarter', 'month', 'week', 'day', 'date', 'hour', 'minute', 'second' and 'millisecond'.<br>Plural form: 'years', 'quarters', 'months', 'weeks', 'days', 'dates', 'hours', 'minutes', 'seconds' and 'milliseconds'.</p>
+<p>Both <code>days</code> and <code>dates</code> (in short, long and plural forms) mean 'days'.</p>
+<h2>Examples</h2>
+<pre><code class="language-typescript">import { esday } from 'esday'
+
+// calculating difference with default unit ('milliseconds')
+esday('2019-01-25').diff(esday('2018-06-05'))
+// Returns 20214000000
+
+// calculating difference with unit 'months'
+esday('2019-01-25').diff(esday('2018-06-05'), 'month')
+// Returns 7
+
+// calculating difference with unit 'months' as float
+esday('2019-01-25').diff(esday('2018-06-05'), 'M', true)
+// Returns 7.645161290322581
+</code></pre>
+</div>
+<template id="copyButtonTemplate">
+<button>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1" fill="none">
+<title>Copy to clipboard</title>
+<path fill-rule="evenodd" d="M 4.683594 2.5 C 4.683594 1.855469 5.207031 1.332031 5.847656 1.332031 L 13.5 1.332031 C 14.144531 1.332031 14.667969 1.855469 14.667969 2.5 L 14.667969 10.164062 C 14.667969 10.808594 14.144531 11.332031 13.5 11.332031 L 5.847656 11.332031 C 5.203125 11.332031 4.683594 10.808594 4.683594 10.164062 Z M 5.847656 2.332031 L 5.683594 10.164062 C 5.683594 10.257812 5.757812 10.332031 5.847656 10.332031 L 13.5 10.332031 L 13.667969 2.5 Z M 5.847656 2.332031 "/><path d="M 1.328125 7.164062 C 1.328125 6.519531 1.851562 6 2.496094 6 L 3.5 6 C 3.777344 6 4 6.222656 4 6.5 C 4 6.773438 3.777344 7 3.5 7 L 2.496094 7 L 2.332031 13.5 C 2.332031 13.59375 2.40625 13.667969 2.5 13.667969 L 8.832031 13.667969 L 9 12.492188 C 9 12.21875 9.222656 11.992188 9.5 11.992188 C 9.777344 11.992188 10 12.21875 10 12.492188 L 10 13.5 C 10 14.144531 9.476562 14.667969 8.832031 14.667969 L 2.5 14.667969 C 1.855469 14.667969 1.332031 14.144531 1.332031 13.5 Z M 1.328125 7.164062 "></path>
+</svg>
+</button>
+</template>
+<template id="copiedFeedbackTemplate"><div class="copied">Copied!</div></template>
+<script src="scripts.js"></script>
+</body>
+</html>
