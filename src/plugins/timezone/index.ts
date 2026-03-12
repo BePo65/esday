@@ -388,7 +388,7 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
 
     const result = esdayFactory.utc(targetTimestamp, ...others)
     result['$conf'].utcOffset = targetOffset
-    result['$conf'].localOffset = result.toDate().getTimezoneOffset()
+    result['$conf'].localOffset = -1 * result.toDate().getTimezoneOffset()
     result['$conf'].utc = targetOffset === 0
 
     if (result['$conf'].localeName !== undefined && parsedInput['$conf'].localeName !== undefined) {
@@ -420,7 +420,7 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
     // Setter - convert EsDay instance to timezone
     const result = this.clone()
     const tzOffsetTarget = tzOffset(this.valueOf(), timezone)
-    const localOffset = this.toDate().getTimezoneOffset()
+    const localOffset = -1 * this.toDate().getTimezoneOffset()
 
     result['$conf'].localOffset = localOffset
     result['$conf'].utcOffset = tzOffsetTarget
@@ -433,7 +433,7 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
       // if source is in UTC mode then tzOffsetSource = 0
       let tzOffsetSource = 0
       if (!this['$conf'].utc) {
-        tzOffsetSource = this['$conf'].timezone ? Number(this['$conf'].utcOffset) : -1 * localOffset
+        tzOffsetSource = this['$conf'].timezone ? Number(this['$conf'].utcOffset) : localOffset
       }
 
       const [timestampFixed, tzOffsetFixed] = fixOffsetConvert(
@@ -534,7 +534,7 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
 
     this.$d = new Date(timestampFixed)
     this['$conf'].utcOffset = tzOffsetFixed
-    this['$conf'].localOffset = this.$d.getTimezoneOffset()
+    this['$conf'].localOffset = -1 * this.$d.getTimezoneOffset()
     this['$conf'].utc = tzOffsetFixed === 0
 
     return this
@@ -602,7 +602,7 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
 
     newValue.$d = new Date(timestampFixed)
     newValue['$conf'].utcOffset = tzOffsetFixed
-    newValue['$conf'].localOffset = newValue.$d.getTimezoneOffset()
+    newValue['$conf'].localOffset = -1 * newValue.$d.getTimezoneOffset()
     newValue['$conf'].utc = tzOffsetFixed === 0
 
     return newValue
