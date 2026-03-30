@@ -542,7 +542,7 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
 
   const oldStartOf = dayClass.prototype.startOf
   proto.startOf = function (units) {
-    if (!this['$conf'] || !this['$conf']['timezone']) {
+    if (!this['$conf']?.['timezone']) {
       return oldStartOf.call(this, units)
     }
 
@@ -553,7 +553,7 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
 
   const oldEndOf = dayClass.prototype.endOf
   proto.endOf = function (units) {
-    if (!this['$conf'] || !this['$conf']['timezone']) {
+    if (!this['$conf']?.['timezone']) {
       return oldEndOf.call(this, units)
     }
 
