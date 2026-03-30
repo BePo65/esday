@@ -14,8 +14,7 @@
       "!**/node_modules",
       "!**/.git",
       "!**/.pnpm",
-      "!**/.yarn",
-      "!**/*.html"
+      "!**/.yarn"
     ]
   },
   "formatter": {
