@@ -105,7 +105,8 @@ function weekdayNameToNumber(shortWeekdayName: string) {
       return 5
     case 'Sat':
       return 6
-    /* istanbul ignore next line */
+    // next line does not work - see vitest issue #9918
+    /* v8 ignore next -- @preserve */
     default:
       return -1
   }
@@ -542,7 +543,7 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
 
   const oldStartOf = dayClass.prototype.startOf
   proto.startOf = function (units) {
-    if (!this['$conf'] || !this['$conf']['timezone']) {
+    if (!this['$conf']?.['timezone']) {
       return oldStartOf.call(this, units)
     }
 
@@ -553,7 +554,7 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
 
   const oldEndOf = dayClass.prototype.endOf
   proto.endOf = function (units) {
-    if (!this['$conf'] || !this['$conf']['timezone']) {
+    if (!this['$conf']?.['timezone']) {
       return oldEndOf.call(this, units)
     }
 

@@ -3,12 +3,11 @@
     "target": "ES2020",
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "baseUrl": ".",
     "module": "ES2020",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "paths": {
-      "~/*": ["src/*"],
-      "esday": ["src/index"]
+      "~/*": ["./src/*"],
+      "esday": ["./src/index"]
     },
     "declaration": true,
     "declarationDir": "dist/types",
