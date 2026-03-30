@@ -105,7 +105,8 @@ function weekdayNameToNumber(shortWeekdayName: string) {
       return 5
     case 'Sat':
       return 6
-    /* istanbul ignore next line */
+    // next line does not work - see vitest issue #9918
+    /* v8 ignore next -- @preserve */
     default:
       return -1
   }
