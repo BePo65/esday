@@ -21,6 +21,7 @@ import type {
   UnitYears,
 } from '~/common/units'
 import type {
+  ConfigurationObject,
   DateType,
   UnitsObjectTypeAddSub,
   UnitsObjectTypeSet,
@@ -54,7 +55,7 @@ export class EsDay {
    * mainly for plugin compatibility
    * store data such as locale name, utc mode, etc.
    */
-  private $conf: SimpleObject = {}
+  private $conf: ConfigurationObject = {}
 
   constructor(d: Exclude<DateType, EsDay>, conf?: SimpleObject) {
     if (!isUndefined(conf)) {

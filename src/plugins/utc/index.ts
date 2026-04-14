@@ -45,6 +45,12 @@ declare module 'esday' {
       ...others: (SimpleType | string[] | { [key: string]: SimpleType })[]
     ) => EsDay
   }
+
+  interface ConfigurationObject {
+    utc?: boolean
+    utcOffset?: number
+    localOffset?: number
+  }
 }
 
 function offsetFromString(value = '') {

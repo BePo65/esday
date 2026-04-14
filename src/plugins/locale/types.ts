@@ -28,6 +28,10 @@ declare module 'esday' {
     // update locale object in list of available Locales
     updateLocale: (localeName: string, newLocale: Partial<Locale>) => EsDayFactory
   }
+
+  interface ConfigurationObject {
+    localeName?: string
+  }
 }
 
 export type DayNames<T = string> = ReadonlyTuple<T, 7>

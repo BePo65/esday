@@ -4,7 +4,7 @@ import type { SimpleObject, SimpleType } from '~/types/util-types'
 import { EsDay } from './EsDay'
 import { addFormatTokenDefinitions } from './Impl/format'
 
-// @ts-expect-error plugin declare may cause ts-type-checke error, but it's ok
+// @ts-expect-error plugin declare may cause ts-type-check error, but it's ok
 const esday: EsDayFactory = (
   d?: DateType,
   ...others: (SimpleType | string[] | { [key: string]: SimpleType })[]
@@ -26,10 +26,11 @@ const esday: EsDayFactory = (
   })
   const result = new EsDay(d, conf)
 
-  // remove properties required for parsing only from $conf
+  // remove properties required for parsing-only from $conf
   const resultConf = result['$conf']
   for (const property in resultConf) {
     if (property.startsWith('args_')) {
+      // @ts-expect-error as we delete properties from a literal object
       delete resultConf[property]
     }
   }

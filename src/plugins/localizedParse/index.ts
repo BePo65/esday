@@ -256,7 +256,7 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     updateParsingPatternsFromLocale(parseTokensDefinitions, currentLocale)
 
     // create required parseOptions
-    const parseOptions: ParseOptions = (this['$conf'].parseOptions as ParseOptions) ?? {}
+    const parseOptions: ParseOptions = this['$conf'].parseOptions ?? {}
     parseOptions.locale = currentLocale.name
     this['$conf'].parseOptions = parseOptions
 

@@ -25,4 +25,8 @@ declare module 'esday' {
       guess: () => string
     }
   }
+
+  interface ConfigurationObject {
+    timezone?: string
+  }
 }
