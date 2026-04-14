@@ -2,3 +2,4 @@ onlyBuiltDependencies:
   - '@biomejs/biome'
   - esbuild
   - msw
+minimumReleaseAge: 10080
