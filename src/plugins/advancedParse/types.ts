@@ -7,6 +7,10 @@ declare module 'esday' {
      */
     addParseTokenDefinitions: (newTokens: TokenDefinitions) => void
   }
+
+  interface ConfigurationObject {
+    parseOptions?: ParseOptions
+  }
 }
 
 export interface ParsedElements {

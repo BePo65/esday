@@ -113,10 +113,10 @@ export function cloneLocale(source: Locale): Locale {
 
 function getSetPrivateLocaleName(inst: EsDay, newLocaleName?: string): string {
   if (newLocaleName) {
-    inst['$conf']['localeName'] = newLocaleName
+    inst['$conf'].localeName = newLocaleName
   }
 
-  return (inst['$conf']['localeName'] as string) || ''
+  return inst['$conf'].localeName || ''
 }
 
 const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {

@@ -94,3 +94,10 @@ export type ParsingObjectPlurals = {
   milliseconds?: number | string
 }
 export type ParsingObject = ParsingObjectShort | ParsingObjectLong | ParsingObjectPlurals
+
+// Type for configuration parameters of plugins
+export interface ConfigurationObject {
+  args_1?: SimpleType | string[] | Record<string, SimpleType>
+  args_2?: SimpleType | string[] | Record<string, SimpleType>
+  args_3?: SimpleType | string[] | Record<string, SimpleType>
+}

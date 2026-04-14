@@ -189,7 +189,7 @@ const weekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       isUndefined(parsedElements.date)
     ) {
       let newEsday = dayFactory(parsedDate, {
-        utc: this['$conf'].utc as boolean,
+        utc: this['$conf'].utc,
       })
       newEsday['$conf'] = structuredClone(this['$conf'])
 

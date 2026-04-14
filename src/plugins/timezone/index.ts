@@ -478,7 +478,7 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
     }
 
     if (this['$conf']?.timezone) {
-      const timezone = this['$conf'].timezone as string
+      const timezone = this['$conf'].timezone
       const dateComponents = timestampToDateTimeComponents(this.valueOf(), timezone)
 
       if (normalizedUnit === C.MS) {
