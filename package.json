@@ -89,7 +89,7 @@
     "moment-timezone": "^0.6.1",
     "moment": "^2.30.1",
     "playwright": "~1.59.1",
-    "tsdown": "^0.21.10",
+    "tsdown": "^0.22.0",
     "typescript": "^6.0.3",
     "ultracite": "7.6.1",
     "vite": "^8.0.10",
