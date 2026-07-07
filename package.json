@@ -93,7 +93,7 @@
     "typescript": "^6.0.3",
     "ultracite": "7.8.0",
     "vite": "^8.0.14",
-    "vitest": "4.1.7"
+    "vitest": "4.1.9"
   },
   "commit-and-tag-version": {
     "packageFiles": [
