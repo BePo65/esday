@@ -79,7 +79,7 @@
     "@types/node": "^25.9.1",
     "@vitest/browser-playwright": "^4.1.7",
     "@vitest/coverage-v8": "4.1.7",
-    "@vitest/ui": "4.1.7",
+    "@vitest/ui": "4.1.9",
     "commit-and-tag-version": "^12.7.3",
     "cpy-cli": "^7.0.0",
     "dompurify": "^3.4.7",
