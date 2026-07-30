@@ -1,7 +1,7 @@
 {
   "name": "esday",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "packageManager": "pnpm@11.16.0",
   "description": "A simple date library fully written in TypeScript",
   "license": "MIT",
