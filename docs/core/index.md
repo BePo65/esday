@@ -1,4 +1,6 @@
-EsDay has many integrated functions:
+How to create EsDay instances is documented in the `parse` section.
+
+The integrated methods of EsDay are:
 - [add](./add.md): adds a value to an esday object.
 - clone: creates a copy of an esday object (example: `esday().clone()`).
 - [diff](./diff.md): calculates the difference between 2 esday objects based on a given unit.
