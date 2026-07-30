@@ -1,14 +1,27 @@
-## EsDay
+# EsDay
 
 [![npm](https://img.shields.io/npm/v/esday)](https://www.npmjs.com/package/esday)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?cacheSeconds=2592000)](https://github.com/kessler/license-report/blob/master/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/BePo65/esday?tab=readme-ov-file#contribute)
 
-# Repository changing ownership
+## Repository changing ownership
 
 On the 6th of January 2026 this repository changed the ownership to one of it's maintainers, [BePo65](https://github.com/BePo65) to reduce the workload on [g-mero](https://github.com/g-mero).
 
-> EsDay is a JavaScript library inspired by [Day.js](https://github.com/iamkun/dayjs), esday has a largely similar API to Day.js (v1.11.13), but it is written in TypeScript and fully supports es modules. Being compatible to Day.js, EsDay is also a good replacement for Moment.js.
+## Concepts
+
+EsDay is a JavaScript library inspired by [Day.js](https://github.com/iamkun/dayjs).
+
+Esday has an API largely similar to Day.js (v1.11.13), but it is written in TypeScript and fully supports es modules.
+
+Being compatible to Day.js, EsDay is also a good replacement for Moment.js.
+
+**Highlights**
+
+- **Modern API**: Provides the same API as Day.js, with some features moved to plugins for a simpler core.
+- **Immutable**: esday is immutable, which means that all operations will return a new instance of esday.
+
+## Basic use
 
 ```javascript
 import { esday } from 'esday'
@@ -20,11 +33,6 @@ esday('2024-12-10').set('year', 2025).add(1, 'month').isToday()
 ```
 
 For detailed information see the [full documentation](https://bepo65.github.io/esday/).
-
-## Concepts
-
-- **Modern API**: Provides the same API as Day.js, with some features moved to plugins for a simpler core.
-- **Immutable**: esday is immutable, which means that all operations will return a new instance of esday.
 
 ## Differences to Day.js
 
