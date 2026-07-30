@@ -1,4 +1,5 @@
 import { esday } from 'esday'
+import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
 import type { UnitTypeAddSub } from '~/common/units'
@@ -19,10 +20,42 @@ describe('Difference', () => {
   it.each([
     { sourceString: '20240101' },
     { sourceString: '2023-02-08' },
-  ])('diff for "$sourceString"with default parameters (returns milliseconds)', ({
+  ])('diff for "$sourceString" with default parameters (returns milliseconds)', ({
     sourceString,
   }) => {
     expectSameValue((esday) => esday().diff(esday(sourceString)))
+  })
+
+  it('diff for number as source with default parameters', () => {
+    const sourceString = '2025-01-19T04:23:42.214'
+    const source = esday(sourceString).valueOf()
+
+    expectSameValue((esday) => esday().diff(source))
+  })
+
+  it('diff for Date object as source with default parameters', () => {
+    const sourceString = '2025-01-19T04:23:42.214'
+    const source = esday(sourceString).toDate()
+
+    expectSameValue((esday) => esday().diff(source))
+  })
+
+  it('diff for EsDay object as source with default parameters', () => {
+    const sourceString = '2025-01-19T04:23:42.214'
+    const resultEsday = esday().diff(esday(sourceString))
+    const resultMoment = moment().diff(moment(sourceString))
+
+    expect(resultEsday).toBe(resultMoment)
+  })
+
+  it('diff for date array as source with default parameters', () => {
+    const source = [2025, 1, 19, 4, 23, 42, 214] as const
+
+    expectSameValue((esday) => esday().diff(source))
+  })
+
+  it('diff for date array as source with default parameters', () => {
+    expectSameValue((esday) => esday().diff(undefined))
   })
 
   it.each([
