@@ -40,7 +40,7 @@ EsDay is extensible by plugins. A list of all available plugins can be found in 
 
 ## Differences to Moment.js
 
-Esday uses moment@2.30.1 as api reference.
+Reference: Esday uses Moment.js V2.30.1 as api reference.
 
 - **toString**: conforms to Day.js and uses Date.toUTCString() (returning the date in RFC 7231 format 'ddd, DD MMM YYYY HH:mm:ss [GMT]') while moment uses the format 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ'.
 - **toISOString**: conforms to Day.js and returns 'Invalid date' when called on an invalid date. In that case moment returns null (see [moment pr#3710](https://github.com/moment/moment/pull/3710)).

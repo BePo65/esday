@@ -16,7 +16,7 @@ Currently the following plugins are available:
 - [LocaleData](./localeData.md) (add .localeData() API - access locale properties)
 - [LocalizedFormat](./localizedFormat.md) (for formatting with locale dependant tokens in template)
 - [LocalizedParse](./localizedParse.md) (for parsing locale dependant tokens in arbitrary formatted date and time strings)
-- [MinMax](./minMay.md) (MinMax adds .min() and .max() APIs - find the minimum or maximum of several dates)
+- [MinMax](./minMax.md) (MinMax adds .min() and .max() APIs - find the minimum or maximum of several dates)
 - [ObjectSupport](./objectSupport.md) (ObjectSupport adds input of type object to esday(), .add(), .subtract() and .set())
 - [PluralGetSet](./pluralGetSet.md) (PluralGetSet adds plural getter and setter APIs to esday instances - e.g. years())
 - [QuarterOfYear](./quarterOfYear.md) (QuarterOfYear adds .quarter() getter and setter APIs and formatter token 'Q' - handle quarter of year)
