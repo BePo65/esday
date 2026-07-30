@@ -7,6 +7,14 @@ EsDay has an API largely similar to [Moment.js](https://momentjs.com/docs/) (v2.
 ## Core functions
 The EsDay core module has many integrated functions. Details see documentation of [Core](./core/index.md).
 
+## Create an esday object
+
+```javascript
+import { esday } from 'esday'
+
+const date = esday('2024-12-10')
+```
+
 ## Locales
 EsDay supports many locales. A list of the supported locales can be found in the [details page](./locales/index.md).
 
