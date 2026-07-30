@@ -46,15 +46,14 @@ describe('localizedParse plugin - other plugin sequence', () => {
       formatString: 'YYYY MMM Do h:mm:ss A',
       locale: 'fr',
     },
-  ])('parse in "en" with "$locale" as locale parameter', ({
-    sourceString,
-    formatString,
-    locale,
-  }) => {
-    expect(esday(sourceString, formatString, locale).isValid()).toBeTruthy()
-    expectSameObject((esday) => esday(sourceString, formatString, locale))
-    expectSameValue((esday) => esday(sourceString, formatString, locale).locale())
-  })
+  ])(
+    'parse in "en" with "$locale" as locale parameter',
+    ({ sourceString, formatString, locale }) => {
+      expect(esday(sourceString, formatString, locale).isValid()).toBeTruthy()
+      expectSameObject((esday) => esday(sourceString, formatString, locale))
+      expectSameValue((esday) => esday(sourceString, formatString, locale).locale())
+    },
+  )
 
   it.each([
     {
@@ -72,15 +71,14 @@ describe('localizedParse plugin - other plugin sequence', () => {
       formatString: 'YYYY MMM Do h:mm:ss A',
       locale: 'fr',
     },
-  ])('parse in strict mode in "en" with "$locale" as locale parameter', ({
-    sourceString,
-    formatString,
-    locale,
-  }) => {
-    expect(esday(sourceString, formatString, locale, true).isValid()).toBeTruthy()
-    expectSameObject((esday) => esday(sourceString, formatString, locale, true))
-    expectSameValue((esday) => esday(sourceString, formatString, locale, true).locale())
-  })
+  ])(
+    'parse in strict mode in "en" with "$locale" as locale parameter',
+    ({ sourceString, formatString, locale }) => {
+      expect(esday(sourceString, formatString, locale, true).isValid()).toBeTruthy()
+      expectSameObject((esday) => esday(sourceString, formatString, locale, true))
+      expectSameValue((esday) => esday(sourceString, formatString, locale, true).locale())
+    },
+  )
 
   it('parse in strict mode with non-matching format with locale as parameter', () => {
     // Day should not have a trailing decimal point

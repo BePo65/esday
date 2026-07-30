@@ -200,15 +200,16 @@ describe('parse', () => {
     expect(parsedDate.millisecond()).toBe(dateArray[6] || 0)
   })
 
-  it.each([{ timestamp: {} }, { timestamp: [] }])('parses "$value" as empty element', ({
-    timestamp,
-  }) => {
-    const nowAsIsoString = new Date(fakeTimeAsString).toISOString()
+  it.each([{ timestamp: {} }, { timestamp: [] }])(
+    'parses "$value" as empty element',
+    ({ timestamp }) => {
+      const nowAsIsoString = new Date(fakeTimeAsString).toISOString()
 
-    expectSameObject((esday) => esday(timestamp))
-    expect(esday(timestamp).isValid()).toBeTruthy()
-    expect(esday(timestamp).toISOString()).toBe(nowAsIsoString)
-  })
+      expectSameObject((esday) => esday(timestamp))
+      expect(esday(timestamp).isValid()).toBeTruthy()
+      expect(esday(timestamp).toISOString()).toBe(nowAsIsoString)
+    },
+  )
 
   it('parses without input parameter', () => {
     const nowAsIsoString = new Date(fakeTimeAsString).toISOString()

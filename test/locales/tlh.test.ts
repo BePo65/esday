@@ -136,19 +136,15 @@ describe('locale tlh', () => {
       future: false,
       expected: 'wej pIq',
     },
-  ])('should format relativeTime for "future" with "$value", "$key", "$noSuffix", "$future"', ({
-    token,
-    value,
-    noSuffix,
-    key,
-    future,
-    expected,
-  }) => {
-    const tokenKey = token as keyof RelativeTimeElementFunction
-    const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
+  ])(
+    'should format relativeTime for "future" with "$value", "$key", "$noSuffix", "$future"',
+    ({ token, value, noSuffix, key, future, expected }) => {
+      const tokenKey = token as keyof RelativeTimeElementFunction
+      const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
 
-    expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
-  })
+      expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
+    },
+  )
 
   it.each([
     {
@@ -191,19 +187,15 @@ describe('locale tlh', () => {
       future: false,
       expected: 'wej ret',
     },
-  ])('should format relativeTime for "past" with "$value", "$key", "$noSuffix", "$future"', ({
-    token,
-    value,
-    noSuffix,
-    key,
-    future,
-    expected,
-  }) => {
-    const tokenKey = token as keyof RelativeTimeElementFunction
-    const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
+  ])(
+    'should format relativeTime for "past" with "$value", "$key", "$noSuffix", "$future"',
+    ({ token, value, noSuffix, key, future, expected }) => {
+      const tokenKey = token as keyof RelativeTimeElementFunction
+      const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
 
-    expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
-  })
+      expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
+    },
+  )
 
   it.each([
     {
@@ -318,19 +310,15 @@ describe('locale tlh', () => {
       future: true,
       expected: 'wa’vatlh wa’maH wa’ lup',
     },
-  ])('should format relativeTime for "ss" with "$value", "$key", "$noSuffix", "$future"', ({
-    token,
-    value,
-    noSuffix,
-    key,
-    future,
-    expected,
-  }) => {
-    const tokenKey = token as keyof RelativeTimeElementFunction
-    const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
+  ])(
+    'should format relativeTime for "ss" with "$value", "$key", "$noSuffix", "$future"',
+    ({ token, value, noSuffix, key, future, expected }) => {
+      const tokenKey = token as keyof RelativeTimeElementFunction
+      const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
 
-    expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
-  })
+      expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
+    },
+  )
 
   it.each([
     {
@@ -445,19 +433,15 @@ describe('locale tlh', () => {
       future: true,
       expected: 'wa’vatlh wa’maH wa’ tup',
     },
-  ])('should format relativeTime for "mm" with "$value", "$key", "$noSuffix", "$future"', ({
-    token,
-    value,
-    noSuffix,
-    key,
-    future,
-    expected,
-  }) => {
-    const tokenKey = token as keyof RelativeTimeElementFunction
-    const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
+  ])(
+    'should format relativeTime for "mm" with "$value", "$key", "$noSuffix", "$future"',
+    ({ token, value, noSuffix, key, future, expected }) => {
+      const tokenKey = token as keyof RelativeTimeElementFunction
+      const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
 
-    expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
-  })
+      expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
+    },
+  )
 
   it.each([
     {
@@ -572,19 +556,15 @@ describe('locale tlh', () => {
       future: true,
       expected: 'wa’vatlh wa’maH wa’ rep',
     },
-  ])('should format relativeTime for "hh" with "$value", "$key", "$noSuffix", "$future"', ({
-    token,
-    value,
-    noSuffix,
-    key,
-    future,
-    expected,
-  }) => {
-    const tokenKey = token as keyof RelativeTimeElementFunction
-    const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
+  ])(
+    'should format relativeTime for "hh" with "$value", "$key", "$noSuffix", "$future"',
+    ({ token, value, noSuffix, key, future, expected }) => {
+      const tokenKey = token as keyof RelativeTimeElementFunction
+      const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
 
-    expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
-  })
+      expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
+    },
+  )
 
   it.each([
     {
@@ -699,19 +679,15 @@ describe('locale tlh', () => {
       future: true,
       expected: 'wa’vatlh wa’maH wa’ jaj',
     },
-  ])('should format relativeTime for "dd" with "$value", "$key", "$noSuffix", "$future"', ({
-    token,
-    value,
-    noSuffix,
-    key,
-    future,
-    expected,
-  }) => {
-    const tokenKey = token as keyof RelativeTimeElementFunction
-    const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
+  ])(
+    'should format relativeTime for "dd" with "$value", "$key", "$noSuffix", "$future"',
+    ({ token, value, noSuffix, key, future, expected }) => {
+      const tokenKey = token as keyof RelativeTimeElementFunction
+      const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
 
-    expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
-  })
+      expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
+    },
+  )
   it.each([
     {
       token: 'ww',
@@ -825,19 +801,15 @@ describe('locale tlh', () => {
       future: true,
       expected: 'wa’vatlh wa’maH wa’ puj',
     },
-  ])('should format relativeTime for "ww" with "$value", "$key", "$noSuffix", "$future"', ({
-    token,
-    value,
-    noSuffix,
-    key,
-    future,
-    expected,
-  }) => {
-    const tokenKey = token as keyof RelativeTimeElementFunction
-    const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
+  ])(
+    'should format relativeTime for "ww" with "$value", "$key", "$noSuffix", "$future"',
+    ({ token, value, noSuffix, key, future, expected }) => {
+      const tokenKey = token as keyof RelativeTimeElementFunction
+      const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
 
-    expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
-  })
+      expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
+    },
+  )
 
   it.each([
     {
@@ -952,19 +924,15 @@ describe('locale tlh', () => {
       future: true,
       expected: 'wa’vatlh wa’maH wa’ jar',
     },
-  ])('should format relativeTime for "MM" with "$value", "$key", "$noSuffix", "$future"', ({
-    token,
-    value,
-    noSuffix,
-    key,
-    future,
-    expected,
-  }) => {
-    const tokenKey = token as keyof RelativeTimeElementFunction
-    const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
+  ])(
+    'should format relativeTime for "MM" with "$value", "$key", "$noSuffix", "$future"',
+    ({ token, value, noSuffix, key, future, expected }) => {
+      const tokenKey = token as keyof RelativeTimeElementFunction
+      const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
 
-    expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
-  })
+      expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
+    },
+  )
 
   it.each([
     {
@@ -1079,19 +1047,15 @@ describe('locale tlh', () => {
       future: true,
       expected: 'wa’vatlh wa’maH wa’ DIS',
     },
-  ])('should format relativeTime for "yy" with "$value", "$key", "$noSuffix", "$future"', ({
-    token,
-    value,
-    noSuffix,
-    key,
-    future,
-    expected,
-  }) => {
-    const tokenKey = token as keyof RelativeTimeElementFunction
-    const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
+  ])(
+    'should format relativeTime for "yy" with "$value", "$key", "$noSuffix", "$future"',
+    ({ token, value, noSuffix, key, future, expected }) => {
+      const tokenKey = token as keyof RelativeTimeElementFunction
+      const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
 
-    expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
-  })
+      expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
+    },
+  )
 
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
