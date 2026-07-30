@@ -12,14 +12,14 @@ By default `diff` will truncate the result to an integer. If you want a floating
 
 ### Method signatures
 ```signature
-esday().diff(date: EsDay, unit?: UnitTypeAddSub, asFloat?: boolean): number
+esday().diff(date: DateType, unit?: UnitTypeAddSub, asFloat?: boolean): number
 ```
 
-| parameter | description                                         |
-| --------- | --------------------------------------------------- |
-| date      | EsDay object to calculate the difference to         |
-| unit      | Unit to use for the calculated difference           |
-| asFloat   | return the result as float  (false= return integer) |
+| parameter | description                                                           |
+| --------- | --------------------------------------------------------------------- |
+| date      | Element convertible to an esday object to calculate the difference to |
+| unit      | Unit to use for the calculated difference                             |
+| asFloat   | return the result as float  (false= return integer)                   |
 
 ### Available Units in UnitTypeAddSub
 
