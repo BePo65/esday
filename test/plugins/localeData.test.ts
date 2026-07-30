@@ -226,24 +226,21 @@ describe('locale en - local', () => {
       isFuture: true,
       expected: '5 minutes',
     },
-  ])('should format value "$value" as relative time using "$token", withoutSuffix "$withoutSuffix", , isFuture "$isFuture"', ({
-    value,
-    token,
-    withoutSuffix,
-    isFuture,
-    expected,
-  }) => {
-    expect(
-      esday()
-        .localeData()
-        .relativeTime(value, withoutSuffix, token as RelativeTimeKeys, isFuture),
-    ).toBe(expected)
-    expectSameValue((esday) =>
-      esday()
-        .localeData()
-        .relativeTime(value, withoutSuffix, token as RelativeTimeKeys, isFuture),
-    )
-  })
+  ])(
+    'should format value "$value" as relative time using "$token", withoutSuffix "$withoutSuffix", , isFuture "$isFuture"',
+    ({ value, token, withoutSuffix, isFuture, expected }) => {
+      expect(
+        esday()
+          .localeData()
+          .relativeTime(value, withoutSuffix, token as RelativeTimeKeys, isFuture),
+      ).toBe(expected)
+      expectSameValue((esday) =>
+        esday()
+          .localeData()
+          .relativeTime(value, withoutSuffix, token as RelativeTimeKeys, isFuture),
+      )
+    },
+  )
 
   it('should update string with preParse', () => {
     expect(esday().localeData().preParse).toBeUndefined()
@@ -456,24 +453,21 @@ describe('locale hr - local', () => {
       isFuture: true,
       expected: '5 minuta',
     },
-  ])('should format value "$value" as relative time using "$token", withoutSuffix "$withoutSuffix", , isFuture "$isFuture"', ({
-    value,
-    token,
-    withoutSuffix,
-    isFuture,
-    expected,
-  }) => {
-    expect(
-      esday()
-        .localeData()
-        .relativeTime(value, withoutSuffix, token as RelativeTimeKeys, isFuture),
-    ).toBe(expected)
-    expectSameValue((esday) =>
-      esday()
-        .localeData()
-        .relativeTime(value, withoutSuffix, token as RelativeTimeKeys, isFuture),
-    )
-  })
+  ])(
+    'should format value "$value" as relative time using "$token", withoutSuffix "$withoutSuffix", , isFuture "$isFuture"',
+    ({ value, token, withoutSuffix, isFuture, expected }) => {
+      expect(
+        esday()
+          .localeData()
+          .relativeTime(value, withoutSuffix, token as RelativeTimeKeys, isFuture),
+      ).toBe(expected)
+      expectSameValue((esday) =>
+        esday()
+          .localeData()
+          .relativeTime(value, withoutSuffix, token as RelativeTimeKeys, isFuture),
+      )
+    },
+  )
 })
 
 // tests with MonthNamesFunction
@@ -621,14 +615,13 @@ describe('locale ru - local', () => {
   it.each([
     { key: 'sameDay', dateString: '2023-12-13T04:24:46', expected: '[Сегодня, в] LT' },
     { key: 'nextWeek', dateString: '2023-12-19T04:24:46', expected: '[В следующий] dddd, [в] LT' },
-  ])('should get calendar format for "$key" with date "$dateString"', ({
-    key,
-    dateString,
-    expected,
-  }) => {
-    const typedKey = key as keyof Calendar
-    expect(esday().localeData().calendar(typedKey, esday(dateString))).toBe(expected)
-  })
+  ])(
+    'should get calendar format for "$key" with date "$dateString"',
+    ({ key, dateString, expected }) => {
+      const typedKey = key as keyof Calendar
+      expect(esday().localeData().calendar(typedKey, esday(dateString))).toBe(expected)
+    },
+  )
 })
 
 // tests ordinal with period

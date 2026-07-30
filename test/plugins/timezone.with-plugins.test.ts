@@ -34,15 +34,14 @@ describe('with plugin advancedParse', () => {
     },
     { timestamp: '31.12.2019', timezone: 'Europe/Paris', formatString: 'DD.MM.YYYY' },
     { timestamp: '2025 14 05', timezone: 'Asia/Taipei', formatString: 'YYYY DD MM' },
-  ])('parse "$timestamp" in "$timezone" with format "$formatString"', ({
-    timestamp,
-    timezone,
-    formatString,
-  }) => {
-    expectSameObjectTz((esday) => esday.tz(timestamp, formatString, timezone))
-    expect(esday.tz(timestamp, formatString, timezone).isValid()).toBeTruthy()
-    expectSameValueTz((esday) => esday.tz(timestamp, formatString, timezone).format())
-  })
+  ])(
+    'parse "$timestamp" in "$timezone" with format "$formatString"',
+    ({ timestamp, timezone, formatString }) => {
+      expectSameObjectTz((esday) => esday.tz(timestamp, formatString, timezone))
+      expect(esday.tz(timestamp, formatString, timezone).isValid()).toBeTruthy()
+      expectSameValueTz((esday) => esday.tz(timestamp, formatString, timezone).format())
+    },
+  )
 
   it.each([
     {
@@ -52,15 +51,14 @@ describe('with plugin advancedParse', () => {
     },
     { timestamp: '31.12.2019', timezone: 'Europe/Paris', formatString: 'DD.MM.YYYY' },
     { timestamp: '2025 14 05', timezone: 'Asia/Taipei', formatString: 'YYYY DD MM' },
-  ])('parse in matching strict mode "$timestamp" in "$timezone" with format "$formatString"', ({
-    timestamp,
-    timezone,
-    formatString,
-  }) => {
-    expectSameObjectTz((esday) => esday.tz(timestamp, formatString, true, timezone))
-    expect(esday.tz(timestamp, formatString, true, timezone).isValid()).toBeTruthy()
-    expectSameValueTz((esday) => esday.tz(timestamp, formatString, true, timezone).format())
-  })
+  ])(
+    'parse in matching strict mode "$timestamp" in "$timezone" with format "$formatString"',
+    ({ timestamp, timezone, formatString }) => {
+      expectSameObjectTz((esday) => esday.tz(timestamp, formatString, true, timezone))
+      expect(esday.tz(timestamp, formatString, true, timezone).isValid()).toBeTruthy()
+      expectSameValueTz((esday) => esday.tz(timestamp, formatString, true, timezone).format())
+    },
+  )
 
   it.each([
     {
@@ -79,14 +77,13 @@ describe('with plugin advancedParse', () => {
       formatString: 'M-YY-D H:m:s',
     },
     { timestamp: '31.12.2019', timezone: 'America/Toronto', formatString: 'DD.MM.YY' },
-  ])('parse in non-matching strict mode "$timestamp" in "$timezone" with format "$formatString"', ({
-    timestamp,
-    timezone,
-    formatString,
-  }) => {
-    expect(esday.tz(timestamp, formatString, true, timezone).isValid()).toBeFalsy()
-    expect(moment.tz(timestamp, formatString, true, timezone).isValid()).toBeFalsy()
-  })
+  ])(
+    'parse in non-matching strict mode "$timestamp" in "$timezone" with format "$formatString"',
+    ({ timestamp, timezone, formatString }) => {
+      expect(esday.tz(timestamp, formatString, true, timezone).isValid()).toBeFalsy()
+      expect(moment.tz(timestamp, formatString, true, timezone).isValid()).toBeFalsy()
+    },
+  )
 
   it('parse literal object', () => {
     const timestamp = { y: 2024, M: 4, d: 14, h: 15, m: 13, s: 34 }

@@ -400,14 +400,14 @@ describe('timezone plugin', () => {
         timezone: 'Asia/Amman',
         comment: 'just after fall back DST overlap',
       },
-    ])('parse non existing time / overlap with DST for "$timestamp" in "$timezone"', ({
-      timestamp,
-      timezone,
-    }) => {
-      expectSameObjectTz((esday) => esday.tz(timestamp, timezone))
-      expect(esday.tz(timestamp, timezone).isValid()).toBeTruthy()
-      expectSameValueTz((esday) => esday.tz(timestamp, timezone).format())
-    })
+    ])(
+      'parse non existing time / overlap with DST for "$timestamp" in "$timezone"',
+      ({ timestamp, timezone }) => {
+        expectSameObjectTz((esday) => esday.tz(timestamp, timezone))
+        expect(esday.tz(timestamp, timezone).isValid()).toBeTruthy()
+        expectSameValueTz((esday) => esday.tz(timestamp, timezone).format())
+      },
+    )
 
     it('parse number (unix timestamp as milliseconds)', () => {
       const time = 1762066800000
@@ -626,13 +626,13 @@ describe('timezone plugin', () => {
         timezone: 'Europe/Prague',
         comment: 'dayjs issue#2753',
       },
-    ])('convert from UTC with keepLocalTime "$timestamp" to "$timezone"', ({
-      timestamp,
-      timezone,
-    }) => {
-      expectSameObjectTz((esday) => esday.utc(timestamp).tz(timezone, true))
-      expect(esday.utc(timestamp).tz(timezone, true).isValid()).toBeTruthy()
-    })
+    ])(
+      'convert from UTC with keepLocalTime "$timestamp" to "$timezone"',
+      ({ timestamp, timezone }) => {
+        expectSameObjectTz((esday) => esday.utc(timestamp).tz(timezone, true))
+        expect(esday.utc(timestamp).tz(timezone, true).isValid()).toBeTruthy()
+      },
+    )
 
     it('convert returns new instance', () => {
       const timestamp = '2025-07-13 17:05'
@@ -696,15 +696,14 @@ describe('timezone plugin', () => {
         timezoneOld: 'America/Toronto',
         timezoneNew: 'Europe/Berlin',
       },
-    ])('update timezone without keepLocalTime for "$timestamp" from "$timezoneOld" to "$timezoneNew"', ({
-      timestamp,
-      timezoneOld,
-      timezoneNew,
-    }) => {
-      expectSameObjectTz((esday) => esday.tz(timestamp, timezoneOld).tz(timezoneNew))
-      expect(esday.tz(timestamp, timezoneOld).tz(timezoneNew).isValid()).toBeTruthy()
-      expectSameValueTz((esday) => esday.tz(timestamp, timezoneOld).tz(timezoneNew).format())
-    })
+    ])(
+      'update timezone without keepLocalTime for "$timestamp" from "$timezoneOld" to "$timezoneNew"',
+      ({ timestamp, timezoneOld, timezoneNew }) => {
+        expectSameObjectTz((esday) => esday.tz(timestamp, timezoneOld).tz(timezoneNew))
+        expect(esday.tz(timestamp, timezoneOld).tz(timezoneNew).isValid()).toBeTruthy()
+        expectSameValueTz((esday) => esday.tz(timestamp, timezoneOld).tz(timezoneNew).format())
+      },
+    )
 
     it.each([
       {
@@ -821,21 +820,20 @@ describe('timezone plugin', () => {
         timezoneNew: 'Europe/Berlin',
         comment: 'convert with DST ("summer") in Cairo (DST switches at 00:00)',
       },
-    ])('update timezone with keepLocalTime for "$timestamp" from "$timezoneOld" to "$timezoneNew"', ({
-      timestamp,
-      timezoneOld,
-      timezoneNew,
-    }) => {
-      const dConverted = esday.tz(timestamp, timezoneOld).tz(timezoneNew, true)
-      const dConvertedResults = objectResultsAsJsonTz(dConverted)
-      const dParsed = esday.tz(timestamp, timezoneNew)
-      const dParsedResults = objectResultsAsJsonTz(dParsed)
+    ])(
+      'update timezone with keepLocalTime for "$timestamp" from "$timezoneOld" to "$timezoneNew"',
+      ({ timestamp, timezoneOld, timezoneNew }) => {
+        const dConverted = esday.tz(timestamp, timezoneOld).tz(timezoneNew, true)
+        const dConvertedResults = objectResultsAsJsonTz(dConverted)
+        const dParsed = esday.tz(timestamp, timezoneNew)
+        const dParsedResults = objectResultsAsJsonTz(dParsed)
 
-      expectSameObjectTz((esday) => esday.tz(timestamp, timezoneOld))
-      expectSameObjectTz((esday) => esday.tz(timestamp, timezoneOld).tz(timezoneNew, true))
-      expect(esday.tz(timestamp, timezoneOld).tz(timezoneNew, true).isValid()).toBeTruthy()
-      expect(dConvertedResults).toEqual(dParsedResults)
-    })
+        expectSameObjectTz((esday) => esday.tz(timestamp, timezoneOld))
+        expectSameObjectTz((esday) => esday.tz(timestamp, timezoneOld).tz(timezoneNew, true))
+        expect(esday.tz(timestamp, timezoneOld).tz(timezoneNew, true).isValid()).toBeTruthy()
+        expect(dConvertedResults).toEqual(dParsedResults)
+      },
+    )
 
     // we fixed moment-timezone issue 1017, 935, 871, 649 and pr 1124 concerning DST handling
     it.each([
@@ -905,19 +903,18 @@ describe('timezone plugin', () => {
         timezoneNew: 'Australia/Canberra',
         comment: 'convert to DST fall back overlap in Canberra',
       },
-    ])('fix errors in moment-timezone - update timezone with keepLocalTime for "$timestamp" from "$timezoneOld" to "$timezoneNew"', ({
-      timestamp,
-      timezoneOld,
-      timezoneNew,
-    }) => {
-      const dConverted = esday.tz(timestamp, timezoneOld).tz(timezoneNew, true)
-      const dConvertedResults = objectResultsAsJsonTz(dConverted)
-      const dParsed = esday.tz(timestamp, timezoneNew)
-      const dParsedResults = objectResultsAsJsonTz(dParsed)
+    ])(
+      'fix errors in moment-timezone - update timezone with keepLocalTime for "$timestamp" from "$timezoneOld" to "$timezoneNew"',
+      ({ timestamp, timezoneOld, timezoneNew }) => {
+        const dConverted = esday.tz(timestamp, timezoneOld).tz(timezoneNew, true)
+        const dConvertedResults = objectResultsAsJsonTz(dConverted)
+        const dParsed = esday.tz(timestamp, timezoneNew)
+        const dParsedResults = objectResultsAsJsonTz(dParsed)
 
-      expect(dConverted.isValid()).toBeTruthy()
-      expect(dConvertedResults).toEqual(dParsedResults)
-    })
+        expect(dConverted.isValid()).toBeTruthy()
+        expect(dConvertedResults).toEqual(dParsedResults)
+      },
+    )
   })
 
   describe('default timezone', () => {
@@ -1313,16 +1310,14 @@ describe('timezone plugin', () => {
         value: 2,
         comment: 'jump into overlap',
       },
-    ])('set "$unit" to "$value" for "$timestamp" in "$timezone', ({
-      timestamp,
-      timezone,
-      unit,
-      value,
-    }) => {
-      expectSameObjectTz((esday) =>
-        esday.tz(timestamp, timezone).set(unit as UnitTypeGetSet, value),
-      )
-    })
+    ])(
+      'set "$unit" to "$value" for "$timestamp" in "$timezone',
+      ({ timestamp, timezone, unit, value }) => {
+        expectSameObjectTz((esday) =>
+          esday.tz(timestamp, timezone).set(unit as UnitTypeGetSet, value),
+        )
+      },
+    )
 
     it('set month - clamp day-of-month', () => {
       const timestamp = '2025-07-31 14:25:36'
@@ -1341,21 +1336,18 @@ describe('timezone plugin', () => {
         targetTimestamp: '2025-03-09 03:15:00',
         comment: 'jump into gap',
       },
-    ])('fix errors in moment-timezone - set "$unit" to "$value" for "$timestamp" in "$timezone', ({
-      timestamp,
-      timezone,
-      unit,
-      value,
-      targetTimestamp,
-    }) => {
-      const dSetValue = esday.tz(timestamp, timezone).set(unit as UnitTypeGetSet, value)
-      const dSetValueResults = objectResultsAsJsonTz(dSetValue)
-      const dParsed = esday.tz(targetTimestamp, timezone)
-      const dParsedResults = objectResultsAsJsonTz(dParsed)
+    ])(
+      'fix errors in moment-timezone - set "$unit" to "$value" for "$timestamp" in "$timezone',
+      ({ timestamp, timezone, unit, value, targetTimestamp }) => {
+        const dSetValue = esday.tz(timestamp, timezone).set(unit as UnitTypeGetSet, value)
+        const dSetValueResults = objectResultsAsJsonTz(dSetValue)
+        const dParsed = esday.tz(targetTimestamp, timezone)
+        const dParsedResults = objectResultsAsJsonTz(dParsed)
 
-      expect(dSetValue.isValid()).toBeTruthy()
-      expect(dSetValueResults).toEqual(dParsedResults)
-    })
+        expect(dSetValue.isValid()).toBeTruthy()
+        expect(dSetValueResults).toEqual(dParsedResults)
+      },
+    )
 
     it('set year, month, day-of-month - offset unchanged - fix errors in moment-timezone', () => {
       const timestamp = '2025-09-04 14:25:36'
@@ -1772,22 +1764,19 @@ describe('timezone plugin', () => {
         expectedDiffMinutes: 30,
         comment: 'add 30 minutes within DST fall back overlap',
       },
-    ])('add around DST for "$diffValue $diffUnit" to "$timestamp" in "$tz"', ({
-      timestamp,
-      tz,
-      diffValue,
-      diffUnit,
-      expectedDiffMinutes,
-    }) => {
-      const dateBeforeDST = esday.tz(timestamp, tz)
-      const diffInUnit = dateBeforeDST.add(diffValue, diffUnit).diff(dateBeforeDST, 'minutes')
+    ])(
+      'add around DST for "$diffValue $diffUnit" to "$timestamp" in "$tz"',
+      ({ timestamp, tz, diffValue, diffUnit, expectedDiffMinutes }) => {
+        const dateBeforeDST = esday.tz(timestamp, tz)
+        const diffInUnit = dateBeforeDST.add(diffValue, diffUnit).diff(dateBeforeDST, 'minutes')
 
-      expectSameObjectTz((esday) => esday.tz(timestamp, tz).add(diffValue, diffUnit))
-      expect(diffInUnit).toBe(expectedDiffMinutes)
-      expectSameValueTz((esday) =>
-        esday.tz(timestamp, tz).add(diffValue, diffUnit).diff(esday.tz(timestamp, tz)),
-      )
-    })
+        expectSameObjectTz((esday) => esday.tz(timestamp, tz).add(diffValue, diffUnit))
+        expect(diffInUnit).toBe(expectedDiffMinutes)
+        expectSameValueTz((esday) =>
+          esday.tz(timestamp, tz).add(diffValue, diffUnit).diff(esday.tz(timestamp, tz)),
+        )
+      },
+    )
 
     it.each([
       {
@@ -1838,17 +1827,15 @@ describe('timezone plugin', () => {
         diffValue: 1,
         diffUnit: 'millisecond' as const,
       },
-    ])('add without DST "$diffValue $diffUnit" to "$timestamp" in "$tz"', ({
-      timestamp,
-      tz,
-      diffValue,
-      diffUnit,
-    }) => {
-      expectSameObjectTz((esday) => esday.tz(timestamp, tz).add(diffValue, diffUnit))
-      expectSameValueTz((esday) =>
-        esday.tz(timestamp, tz).add(diffValue, diffUnit).diff(esday.tz(timestamp, tz)),
-      )
-    })
+    ])(
+      'add without DST "$diffValue $diffUnit" to "$timestamp" in "$tz"',
+      ({ timestamp, tz, diffValue, diffUnit }) => {
+        expectSameObjectTz((esday) => esday.tz(timestamp, tz).add(diffValue, diffUnit))
+        expectSameValueTz((esday) =>
+          esday.tz(timestamp, tz).add(diffValue, diffUnit).diff(esday.tz(timestamp, tz)),
+        )
+      },
+    )
 
     it('add preserves timezone context (dayjs pr#2961)', () => {
       const timestamp = '2025-07-21 14:25:36'
@@ -1920,22 +1907,21 @@ describe('timezone plugin', () => {
         expectedDiffMinutes: -30,
         comment: 'add 30 minutes within DST fall back overlap',
       },
-    ])('subtract around DST for "$diffValue $diffUnit" to "$timestamp" in "$tz"', ({
-      timestamp,
-      tz,
-      diffValue,
-      diffUnit,
-      expectedDiffMinutes,
-    }) => {
-      const dateBeforeDST = esday.tz(timestamp, tz)
-      const diffInUnit = dateBeforeDST.subtract(diffValue, diffUnit).diff(dateBeforeDST, 'minutes')
+    ])(
+      'subtract around DST for "$diffValue $diffUnit" to "$timestamp" in "$tz"',
+      ({ timestamp, tz, diffValue, diffUnit, expectedDiffMinutes }) => {
+        const dateBeforeDST = esday.tz(timestamp, tz)
+        const diffInUnit = dateBeforeDST
+          .subtract(diffValue, diffUnit)
+          .diff(dateBeforeDST, 'minutes')
 
-      expectSameObjectTz((esday) => esday.tz(timestamp, tz).subtract(diffValue, diffUnit))
-      expect(diffInUnit).toBe(expectedDiffMinutes)
-      expectSameValueTz((esday) =>
-        esday.tz(timestamp, tz).subtract(diffValue, diffUnit).diff(esday.tz(timestamp, tz)),
-      )
-    })
+        expectSameObjectTz((esday) => esday.tz(timestamp, tz).subtract(diffValue, diffUnit))
+        expect(diffInUnit).toBe(expectedDiffMinutes)
+        expectSameValueTz((esday) =>
+          esday.tz(timestamp, tz).subtract(diffValue, diffUnit).diff(esday.tz(timestamp, tz)),
+        )
+      },
+    )
 
     it('subtract does not break other implementations', () => {
       const timestamp = '2025-07-21 14:25:36'

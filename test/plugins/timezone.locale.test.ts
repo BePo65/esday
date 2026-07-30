@@ -47,22 +47,20 @@ describe('timezone plugin - with locale', () => {
       formatString: 'YYYY MMM Do h:mm:ss A',
       locale: 'fr',
     },
-  ])('parse "$timestamp" with locale "$locale" and timezone "$timezone" using format "$formatString"', ({
-    timestamp,
-    timezone,
-    formatString,
-    locale,
-  }) => {
-    // set locale to use
-    moment.locale(locale)
+  ])(
+    'parse "$timestamp" with locale "$locale" and timezone "$timezone" using format "$formatString"',
+    ({ timestamp, timezone, formatString, locale }) => {
+      // set locale to use
+      moment.locale(locale)
 
-    expectSameObjectTz((esday) => esday.tz(timestamp, formatString, locale, timezone))
-    expect(esday.tz(timestamp, formatString, locale, timezone).isValid()).toBeTruthy()
-    expectSameValueTz((esday) => esday.tz(timestamp, formatString, locale, timezone).tz())
-    expectSameValueTz((esday) =>
-      esday.tz(timestamp, formatString, locale, timezone).locale().toLowerCase(),
-    )
-  })
+      expectSameObjectTz((esday) => esday.tz(timestamp, formatString, locale, timezone))
+      expect(esday.tz(timestamp, formatString, locale, timezone).isValid()).toBeTruthy()
+      expectSameValueTz((esday) => esday.tz(timestamp, formatString, locale, timezone).tz())
+      expectSameValueTz((esday) =>
+        esday.tz(timestamp, formatString, locale, timezone).locale().toLowerCase(),
+      )
+    },
+  )
 
   it.each([
     {
@@ -83,22 +81,20 @@ describe('timezone plugin - with locale', () => {
       formatString: 'YYYY MMM Do h:mm:ss A',
       locale: 'fr',
     },
-  ])('parse strict "$timestamp" with locale "$locale" and timezone "$timezone" using format "$formatString"', ({
-    timestamp,
-    timezone,
-    formatString,
-    locale,
-  }) => {
-    // set locale to use
-    moment.locale(locale)
+  ])(
+    'parse strict "$timestamp" with locale "$locale" and timezone "$timezone" using format "$formatString"',
+    ({ timestamp, timezone, formatString, locale }) => {
+      // set locale to use
+      moment.locale(locale)
 
-    expectSameObjectTz((esday) => esday.tz(timestamp, formatString, locale, true, timezone))
-    expect(esday.tz(timestamp, formatString, locale, true, timezone).isValid()).toBeTruthy()
-    expectSameValueTz((esday) => esday.tz(timestamp, formatString, locale, true, timezone).tz())
-    expectSameValueTz((esday) =>
-      esday.tz(timestamp, formatString, locale, true, timezone).locale().toLowerCase(),
-    )
-  })
+      expectSameObjectTz((esday) => esday.tz(timestamp, formatString, locale, true, timezone))
+      expect(esday.tz(timestamp, formatString, locale, true, timezone).isValid()).toBeTruthy()
+      expectSameValueTz((esday) => esday.tz(timestamp, formatString, locale, true, timezone).tz())
+      expectSameValueTz((esday) =>
+        esday.tz(timestamp, formatString, locale, true, timezone).locale().toLowerCase(),
+      )
+    },
+  )
 
   it('parse with format, locale and strict with non-matching format', () => {
     const timestamp = '2024 déc. 24. 8:10:21 AM'
@@ -158,18 +154,17 @@ describe('timezone plugin - with locale', () => {
     { timestamp: '2025-07-09 11:15:09', timezone: 'Europe/Paris', expected: 'GMT+2' },
     { timestamp: '2025-02-09 11:15:09', timezone: 'Australia/Canberra', expected: 'GMT+11' },
     { timestamp: '2025-07-09 11:15:09', timezone: 'Australia/Canberra', expected: 'GMT+10' },
-  ])('format "$timestamp" for "$timezone" for default locale en', ({
-    timestamp,
-    timezone,
-    expected,
-  }) => {
-    // set global locale to use; only 'en' has names for timezone independent of locale of runtime
-    const locale = 'en'
-    esday.locale(locale)
-    moment.locale(locale)
+  ])(
+    'format "$timestamp" for "$timezone" for default locale en',
+    ({ timestamp, timezone, expected }) => {
+      // set global locale to use; only 'en' has names for timezone independent of locale of runtime
+      const locale = 'en'
+      esday.locale(locale)
+      moment.locale(locale)
 
-    expect(esday.tz(timestamp, timezone).format('z')).toBe(expected)
-  })
+      expect(esday.tz(timestamp, timezone).format('z')).toBe(expected)
+    },
+  )
 
   it.each([
     { timestamp: '2025-02-09 11:15:09', timezone: 'America/Toronto', expected: 'EST' },
