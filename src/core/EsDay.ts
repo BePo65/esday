@@ -286,8 +286,9 @@ export class EsDay {
     return this.clone()
   }
 
-  diff(date: EsDay, units?: UnitTypeAddSub, asFloat = false): number {
-    return diffImpl(this, date, units, asFloat)
+  diff(date: DateType, units?: UnitTypeAddSub, asFloat = false): number {
+    const parsedDate = esday(date)
+    return diffImpl(this, parsedDate, units, asFloat)
   }
 
   /**
