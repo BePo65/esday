@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.0.1](https://github.com/BePo65/esday/compare/v1.0.0...v1.0.1) (2026-07-30)
+
+### Bug Fixes
+
+* allow other types beside EsDay as first argument to diff() ([198f9da](https://github.com/BePo65/esday/commit/198f9dab0453ce6e60ec9071629197f209f36fd9))
 ## [1.0.0](https://github.com/BePo65/esday/compare/v0.6.3...v1.0.0) (2026-06-04)
 
 ## [0.6.3](https://github.com/BePo65/esday/compare/v0.6.2...v0.6.3) (2026-03-08)
