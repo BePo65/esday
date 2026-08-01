@@ -23,7 +23,7 @@ Being compatible to Day.js, EsDay is also a good replacement for Moment.js.
 
 ## Basic use
 
-```javascript
+```typescript
 import { esday } from 'esday'
 import { isTodayPlugin } from 'esday/plugins/isToday'
 
