@@ -5,7 +5,7 @@ export default defineConfig({
   platform: 'neutral',
   clean: true,
   dts: true,
-  entry: ['src/index.ts', 'src/plugins/*/index.ts', 'src/locales/*.ts'],
+  entry: ['src/index.ts', 'src/plugins/index.ts', 'src/plugins/*/index.ts', 'src/locales/*.ts'],
   outDir: 'dist/',
   treeshake: true,
   outputOptions: {
