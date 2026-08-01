@@ -4,21 +4,21 @@
 
 All plugins are exported as default export from the corresponding subdirectory. They can be imported like that:
 
-'''typescript
+```typescript
 import { esday } from 'esday'
 import utc from 'esday/plugins/utc'
 
 esday.extend(utc)
-'''
+```
 
 or using destructuring like that:
 
-'''typescript
+```typescript
 import { esday } from 'esday'
 import { advancedParse, utc } from 'esday/plugins'
 
 esday.extend(utcPlugin).extend(advancedParsePlugin)
-'''
+```
 
 ## Available plugins
 
