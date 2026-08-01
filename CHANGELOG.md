@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.0](https://github.com/BePo65/esday/compare/v1.0.1...v1.1.0) (2026-08-01)
+
+### Features
+
+* add index file to plugins folder for destructuring imports ([2e2f097](https://github.com/BePo65/esday/commit/2e2f097d6c1334dc7c891ded5b4ce6d859d8ae5c))
 ## [1.0.1](https://github.com/BePo65/esday/compare/v1.0.0...v1.0.1) (2026-07-30)
 
 ### Bug Fixes
