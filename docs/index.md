@@ -11,7 +11,7 @@ The EsDay core module has many integrated functions. Details see documentation o
 
 ## Create an esday object
 
-```javascript
+```typescript
 import { esday } from 'esday'
 
 // Get current date and time

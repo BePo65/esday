@@ -10,11 +10,11 @@ To migrate to EsDay you have to replace the import statement.
 
 So replace this:
 
-```javascript
+```typescript
 import moment from 'moment';
 ```
 with this:
-```javascript
+```typescript
 import { esday } from 'esday'
 ```
 
@@ -27,7 +27,7 @@ There are really only two things to know when migrating from Moment.js to EsDay:
 ### Here an example for using plugins:
 when you want to get the weekday of an EsDay object, you’ll need to import and register the AdvancedFormat plugin.
 
-```javascript
+```typescript
 import { esday } from 'esday'
 import localePlugin from 'esday/plugins/locale'
 import weekPlugin from 'esday/plugins/week'
@@ -46,14 +46,14 @@ When after migration EsDay does not behave like Moment.js in your program, the  
 ### Here an example concerning immutability:
 As EsDay objects are immutable, so using an EsDay method that changes the object, you get a new object. So anything like this:
 
-```javascript
+```typescript
 var foo = moment()
 foo.add(1, 'day')
 ```
 
 must be changed to this:
 
-```javascript
+```typescript
 let foo = esday()
 foo = foo.add(1, 'day')
 ```
@@ -75,11 +75,11 @@ To migrate to EsDay you have to replace the import statement.
 
 So replace this:
 
-```javascript
+```typescript
 import dayjs from 'dayjs/esm';
 ```
 with this:
-```javascript
+```typescript
 import { esday } from 'esday'
 ```
 
