@@ -36,6 +36,10 @@
       "types": "./index.d.ts",
       "default": "./index.js"
     },
+    "./plugins": {
+      "types": "./plugins/index.d.ts",
+      "default": "./plugins/index.js"
+    },
     "./plugins/*": {
       "types": "./plugins/*/index.d.ts",
       "default": "./plugins/*/index.js"
