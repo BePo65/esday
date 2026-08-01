@@ -4,6 +4,8 @@ EsDay is a JavaScript library inspired by [Day.js](https://github.com/iamkun/day
 
 EsDay has an API largely similar to [Moment.js](https://momentjs.com/docs/) (v2.30.1) and Day.js (v1.11.13), but it is written in TypeScript and fully supports es modules. When there are differences between Moment.js and Day.js, the functionality of Moment.js is usually preferred.
 
+For migration of Moment.js or Day.js see the [migration guide](./migrate.md).
+
 ## Core functions
 The EsDay core module has many integrated functions. Details see documentation of [Core](./core/index.md).
 
@@ -12,7 +14,11 @@ The EsDay core module has many integrated functions. Details see documentation o
 ```javascript
 import { esday } from 'esday'
 
-const date = esday('2024-12-10')
+// Get current date and time
+const date = esday()
+
+// Write formatted date and time to the console
+console.log(date.format('MM-YYYY-DD HH:mm:ss.SSS')).
 ```
 
 ## Locales
