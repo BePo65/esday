@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Migrate</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+<base href="/esday/" />
+<link rel="stylesheet" href="esday.css">
+<link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+</head>
+<body>
+<header>
+<a href="index.html"><img class="header-symbol" src="assets/esday.png" alt="ESday project icon" /></a>
+<h1 class="header-title">Migrate</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="core/index.html">Core</a>
+<a href="plugins/index.html">Plugins</a>
+<a href="locales/index.html">Locales</a>
+</nav>
+</header>
+<div class="container"><h1>Migration guide</h1>
+<h2>Migrate from Moment.js to EsDay</h2>
+<h3>Change imports</h3>
+<p><strong>Important:</strong> EsDay replaces "Moment.js" as well as "Moment Timezone", as timezone functionality is implemented by a plugin.</p>
+<p>To migrate to EsDay you have to replace the import statement.</p>
+<p>So replace this:</p>
+<pre><code class="language-typescript">import moment from 'moment';
+</code></pre>
+<p>with this:</p>
+<pre><code class="language-typescript">import { esday } from 'esday'
+</code></pre>
+<h3>Review code</h3>
+<p>There are really only two things to know when migrating from Moment.js to EsDay:</p>
+<ul>
+<li>EsDay core includes only very basic methods, while other methods are added with plugins.</li>
+<li>EsDay objects are immutable.</li>
+</ul>
+<h3>Here an example for using plugins:</h3>
+<p>when you want to get the weekday of an EsDay object, you’ll need to import and register the AdvancedFormat plugin.</p>
+<pre><code class="language-typescript">import { esday } from 'esday'
+import localePlugin from 'esday/plugins/locale'
+import weekPlugin from 'esday/plugins/week'
+
+esday.extend(localePlugin).extend(weekPlugin)
+
+const dayOfWeek = esday('2026-07-27).weekday()
+</code></pre>
+<p>After migration there will be a few of these plugins.</p>
+<p><strong>Important hint</strong></p>
+<p>When after migration EsDay does not behave like Moment.js in your program, the  most common reason is one or more missing plugins or a sequence of <code>.extend(...)</code> that does not follow the recommendations in the EsDay documentation of the plugins used.</p>
+<h3>Here an example concerning immutability:</h3>
+<p>As EsDay objects are immutable, so using an EsDay method that changes the object, you get a new object. So anything like this:</p>
+<pre><code class="language-typescript">var foo = moment()
+foo.add(1, 'day')
+</code></pre>
+<p>must be changed to this:</p>
+<pre><code class="language-typescript">let foo = esday()
+foo = foo.add(1, 'day')
+</code></pre>
+<h3>Differences to Moment.js</h3>
+<p>Reference: Esday uses Moment.js V2.30.1 as api reference.</p>
+<ul>
+<li><strong>toString</strong>: conforms to Day.js and uses Date.toUTCString() (returning the date in RFC 7231 format 'ddd, DD MMM YYYY HH:mm:ss [GMT]') while moment uses the format 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ'.</li>
+<li><strong>toISOString</strong>: conforms to Day.js and returns 'Invalid date' when called on an invalid date. In that case moment returns null (see <a href="https://github.com/moment/moment/pull/3710">moment pr#3710</a>).</li>
+</ul>
+<h2>Migrate from Day.js to EsDay</h2>
+<p>Day.js uses the same base concepts of immutability and a plugin system like EsDay, so migration is quite easy. The main difference is what method is part of what plugin.</p>
+<h3>Change imports</h3>
+<p>To migrate to EsDay you have to replace the import statement.</p>
+<p>So replace this:</p>
+<pre><code class="language-typescript">import dayjs from 'dayjs/esm';
+</code></pre>
+<p>with this:</p>
+<pre><code class="language-typescript">import { esday } from 'esday'
+</code></pre>
+<h3>Differences to Day.js</h3>
+<ul>
+<li><strong>Locale</strong>: Locale  is a Plugin; no default locale! Dayjs uses 'en-US' as default.</li>
+<li><strong>'Start of Week'</strong>: Default 'Start of Week' is 1 ('Monday') as defined by ISO 8601. Dayjs uses 0 ('Sunday') as (as defined by the dafault locale 'en-US').</li>
+<li><strong>'Start of Year'</strong>: Default 'Start of Year' is 4 (Jan 4th must be in the 1st week of the year) as defined by ISO 8601. Dayjs uses 1 (Jan 1st) as (as defined by the dafault locale 'en-US').</li>
+<li><strong>Invalid Date</strong>: conforms to Moment.js and uses <code>Invalid date</code> instead of <code>Invalid Date</code>.</li>
+<li><strong>clamping month on set</strong>: when changing the month and the new month does not have enough days to keep the current day of month, esday behaves like moment.js and clamps to the end of the target month</li>
+<li><strong>Invalid Date</strong>: conforms to Moment.js and uses <code>Invalid date</code> instead of <code>Invalid Date</code>.</li>
+<li><strong>plugin AdvancedParse</strong> got replaced by CustomParseFormat.</li>
+<li><strong>plugin ArraySupport</strong>: functionality is part of esday core.</li>
+<li><strong>plugin IsoWeeksInYear</strong>: functionality is part of plugin IsoWeek.</li>
+<li><strong>plugin PreParsePostFormat</strong>: functionality is part of esday core.</li>
+<li><strong>plugin UpdateLocale</strong>: functionality is part of plugin Locale.</li>
+<li><strong>plugin weekOfYear</strong>: functionality is part of plugin Week.</li>
+<li><strong>plugin WeekYear</strong>: functionality is part of plugin Week.</li>
+<li><strong>plugin Weekday</strong>: functionality is part of plugin Week.</li>
+</ul>
+</div>
+<template id="copyButtonTemplate">
+<button type="button">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1" fill="none">
+<title>Copy to clipboard</title>
+<path fill-rule="evenodd" d="M 4.683594 2.5 C 4.683594 1.855469 5.207031 1.332031 5.847656 1.332031 L 13.5 1.332031 C 14.144531 1.332031 14.667969 1.855469 14.667969 2.5 L 14.667969 10.164062 C 14.667969 10.808594 14.144531 11.332031 13.5 11.332031 L 5.847656 11.332031 C 5.203125 11.332031 4.683594 10.808594 4.683594 10.164062 Z M 5.847656 2.332031 L 5.683594 10.164062 C 5.683594 10.257812 5.757812 10.332031 5.847656 10.332031 L 13.5 10.332031 L 13.667969 2.5 Z M 5.847656 2.332031 "/><path d="M 1.328125 7.164062 C 1.328125 6.519531 1.851562 6 2.496094 6 L 3.5 6 C 3.777344 6 4 6.222656 4 6.5 C 4 6.773438 3.777344 7 3.5 7 L 2.496094 7 L 2.332031 13.5 C 2.332031 13.59375 2.40625 13.667969 2.5 13.667969 L 8.832031 13.667969 L 9 12.492188 C 9 12.21875 9.222656 11.992188 9.5 11.992188 C 9.777344 11.992188 10 12.21875 10 12.492188 L 10 13.5 C 10 14.144531 9.476562 14.667969 8.832031 14.667969 L 2.5 14.667969 C 1.855469 14.667969 1.332031 14.144531 1.332031 13.5 Z M 1.328125 7.164062 "></path>
+</svg>
+</button>
+</template>
+<template id="copiedFeedbackTemplate"><div class="copied">Copied!</div></template>
+<script src="scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+body {
+  color: rgb(31, 35, 40);
+  font-family: Arial, sans-serif;
+  line-height: 1.4;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  align-items: center;
+  background-color: #fff;
+  border-bottom: 1px solid rgb(220, 220, 220);
+  display: grid;
+  grid-template-columns: 100px 1rem 1fr 1rem auto;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  grid-template-areas: "symbol . title . navigation";
+  margin: 0 0 1rem 0;
+  padding: 1rem 0.5rem 0 0;
+  position: sticky;
+  top: 0;
+}
+
+.header-symbol {
+  grid-area: symbol;
+  margin-bottom: 0.25rem;
+  padding-left: 0.5rem;
+}
+
+.header-title {
+  grid-area: title;
+}
+
+nav {
+  display: inline-block;
+  grid-area: navigation;
+  padding: 0.5rem 0;
+  text-align: center;
+}
+
+nav a {
+  color: rgb(34, 34, 34);
+  font-weight: bolder;
+  padding: 0 1rem;
+  text-decoration: none;
+}
+
+.container {
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  margin: 0.5rem 1rem 0.75rem 0.5rem;
+  max-width: 55rem;
+  padding: 1rem 0.5rem;
+}
+
+h1,
+h2 {
+  margin-bottom: 0.75rem;
+  margin-top: -6.5rem;
+  padding-top: 6.5rem;
+}
+
+li {
+  margin-bottom: 0.5em;
+}
+
+table {
+  border: 1px solid rgb(30 30 30);
+  border-collapse: collapse;
+}
+
+th {
+  border-bottom: 2px solid rgb(30 30 30);
+  padding-right: 0.4em;
+  padding-left: 0.4em;
+}
+
+th:not(:last-child) {
+  border-right: 1px solid rgb(30 30 30);
+}
+
+td {
+  border-bottom: 1px solid rgb(30 30 30);
+  padding-right: 0.4em;
+  padding-left: 0.4em;
+}
+
+td:not(:last-child) {
+  border-right: 1px solid rgb(30 30 30);
+}
+
+pre:has(> code.language-typescript) {
+  background: rgba(34, 34, 34, 0.03);
+  border: 1px solid rgba(34, 34, 34, 0.2);
+  border-radius: 4px;
+  color: #222;
+  margin: 0 0 1.5em;
+  padding: 1rem;
+  white-space: pre;
+  word-wrap: normal;
+}
+
+pre:has(> code.language-signature) {
+  background: rgba(97, 178, 167, 0.15);
+  border: 1px solid rgba(97, 178, 167, 0.7);
+  border-radius: 4px;
+  color: #222;
+  margin: 0 0 1.5em;
+  padding: 1rem;
+  white-space: pre;
+  word-wrap: normal;
+}
+
+.code-buttons {
+  position: relative;
+  text-align: right;
+  overflow: visible;
+  width: 100%;
+  height: 1rem;
+}
+
+.code-buttons button {
+  position: absolute;
+  top: 1.25rem;
+  right: 0.1rem;
+  border: 0 solid white;
+  border-radius: 5px;
+  transition: all 0.2s;
+  opacity: 0.2;
+  z-index: 100;
+}
+
+.code-buttons button:hover {
+  opacity: 0.8;
+}
+
+.code-buttons button svg {
+  margin: auto;
+  stroke: black;
+  transition: all 0.2s;
+}
+
+.code-buttons button.clicked {
+  color: #0f0;
+}
+
+.code-buttons button.clicked svg {
+  stroke: #0f0;
+}
+
+.copied {
+  position: absolute;
+  top: 48px;
+  right: 0.5em;
+  z-index: 100;
+  background-color: rgb(50 50 50 / 0.6);
+  color: white;
+  border: 1px solid #777;
+  border-radius: 5px;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+@media only screen and (min-width: 960px) {
+  .copied {
+    top: 0.5em;
+    right: -90px;
+  }
+}
