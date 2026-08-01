@@ -1,3 +1,27 @@
+# Plugins
+
+## Importing plugins
+
+All plugins are exported as default export from the corresponding subdirectory. They can be imported like that:
+
+'''typescript
+import { esday } from 'esday'
+import utc from 'esday/plugins/utc'
+
+esday.extend(utc)
+'''
+
+or using destructuring like that:
+
+'''typescript
+import { esday } from 'esday'
+import { advancedParse, utc } from 'esday/plugins'
+
+esday.extend(utcPlugin).extend(advancedParsePlugin)
+'''
+
+## Available plugins
+
 Currently the following plugins are available:
 - [AdvancedFormat](./advancedFormat.md) (for formatting using a custom template)
 - [AdvancedParse](./advancedParse.md) (for parsing arbitrary formatted date and time strings)
