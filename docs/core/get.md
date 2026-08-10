@@ -68,12 +68,12 @@ import { esday } from 'esday'
 esday('2019-01-25').year()
 // Returns 2019
 
-esday('2019-03-25').get(esday('month')
+esday('2019-03-25').get('month')
 // Returns 2 as the result is 0-based
 
-esday('2019-01-25').get(esday('D')
+esday('2019-01-25').get('D')
 // Returns 25
 
-esday('2019-01-25').get(esday('d')
+esday('2019-01-25').get('d')
 // Returns 5 for Friday, as no locale is loaded
 ```
