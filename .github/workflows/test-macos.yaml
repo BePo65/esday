@@ -28,7 +28,7 @@ jobs:
     strategy:
       matrix:
         node-version: [24.x]
-        os: [macos-14] # M1 Mac
+        os: [macos-15]
 
     permissions:
       # Required to checkout the code
