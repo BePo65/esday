@@ -6,8 +6,8 @@ export default defineConfig({
   test: {
     exclude: [...configDefaults.exclude, 'dev/*'],
     alias: {
-      '~/': `${path.resolve(__dirname, 'src')}/`,
-      esday: `${path.resolve(__dirname, 'src')}`,
+      '~/': `${path.resolve(import.meta.dirname, 'src')}/`,
+      esday: `${path.resolve(import.meta.dirname, 'src')}`,
     },
     coverage: {
       exclude: [
