@@ -69,3 +69,6 @@ This project also partially contains code derived or copied from the following p
 
 - [Day.js](https://github.com/iamkun/dayjs)
 - [Moment.js](https://github.com/moment/moment)
+
+## Hints
+`typescript` cannot be updated to version 7.0, as this tsdown does not run with typescript@7.0 (requires typescript@7.1).
