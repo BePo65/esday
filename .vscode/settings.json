@@ -16,7 +16,7 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
-  "cSpell.words": ["funcs"],
+  "cSpell.words": ["funcs", "ultracite"],
   "[javascript]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
