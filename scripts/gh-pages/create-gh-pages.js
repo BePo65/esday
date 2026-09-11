@@ -14,7 +14,7 @@ import { Marked, Parser, Renderer } from 'marked'
 const templatesNotInTarget = [path.normalize('scripts/gh-pages/template/template.html')]
 
 const sourcePath = 'docs'
-const targetPath = 'gh_pages'
+const targetPath = 'ghpages'
 
 const templatePath = new URL('./template/template.html', import.meta.url)
 const templateHtml = await readFile(templatePath, { encoding: 'utf8' })
