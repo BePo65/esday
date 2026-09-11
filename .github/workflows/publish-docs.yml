@@ -18,6 +18,9 @@ jobs:
       - name: Check out
         uses: actions/checkout@v7.0.1
 
+      - name: Install Pnpm
+        run: corepack enable
+
       - name: Use Node V24
         uses: actions/setup-node@v7
         with:
