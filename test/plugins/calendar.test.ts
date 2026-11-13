@@ -53,8 +53,6 @@ describe('calendar plugin - locale "en"', () => {
     expectSameValue((esday) => esday().calendar(null))
   })
 
-  it('should format "sameDay" without arguments', () => {})
-
   it('should format "sameDay" with reference date', () => {
     const otherFakeTimeAsString = '2025-06-21T03:24:46.234' // 'Wednesday 2025-06-21 13:24'
     const referenceDateEsday = esday(otherFakeTimeAsString)

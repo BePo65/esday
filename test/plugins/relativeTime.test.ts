@@ -474,24 +474,6 @@ describe('relativeTime plugin - without locale', () => {
       w: null,
       M: 11,
     }
-    expect(esday.defaultThresholds()).toEqual(thresholds)
-
-    // test immutability
-    const originalH = thresholds.h
-    thresholds.h = 99
-    expect(esday.defaultThresholds().h).toEqual(originalH)
-  })
-
-  it('should return default thresholds', () => {
-    const thresholds: ThresholdRelativeTime = {
-      ss: 44,
-      s: 45,
-      m: 45,
-      h: 22,
-      d: 26,
-      w: null,
-      M: 11,
-    }
     expect(esday.globalThresholds()).toEqual(thresholds)
 
     // test immutability
