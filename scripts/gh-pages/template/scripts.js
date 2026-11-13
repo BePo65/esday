@@ -2,7 +2,7 @@ function makeCopier(block, button, feedback) {
   const code = block.querySelector('code')
 
   async function copier() {
-    await navigator.clipboard.writeText(code.innerText)
+    await navigator.clipboard.writeText(code.textContent)
     button.classList.add('clicked')
     feedback.style.display = 'block'
 
