@@ -5,19 +5,22 @@ IsSameOrAfter adds the `isSameOrAfter` method to EsDay indicating, if a date is 
 ## Usage
 
 ### Dependencies
+
 IsSameOrAfter has no dependencies on other plugins.
 
 ### Method signatures
+
 ```signature
 esday().isSameOrAfter(date: DateType, unit?: UnitType): boolean
 ```
 
-| parameter   | description                |
-| ----------- | -------------------------- |
-| date        | date to compare with       |
-| unit        | unit to use for comparison |
+| parameter | description                |
+| --------- | -------------------------- |
+| date      | date to compare with       |
+| unit      | unit to use for comparison |
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 import isSameOrAfterPlugin from 'esday/plugins/isSameOrAfter'

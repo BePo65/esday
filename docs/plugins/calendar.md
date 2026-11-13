@@ -5,9 +5,11 @@ Calendar adds the `calendar` method to EsDay to format a date relative to a give
 ## Usage
 
 ### Dependencies
+
 Calendar requires the plugin Locale and at least 1 registered and activated locale.
 
 ### Method signatures
+
 ```signature
 calendar(referenceDate?: EsDay | null, formats?: CalendarPartial): string
 ```
@@ -21,8 +23,8 @@ calendar(referenceDate?: EsDay | null, formats?: CalendarPartial): string
 
 `formats` is a `CalendarPartial` object with these 6 properties
 
-| property | description                              |
-| ------------ | ---------------------------------------- |
+| property | description                                                                 |
+| -------- | --------------------------------------------------------------------------- |
 | sameDay  | format used, when difference between `this` and `referenceDate` is < 1 day  |
 | nextDay  | format used, when difference between `this` and `referenceDate` is < 2 day  |
 | nextWeek | format used, when difference between `this` and `referenceDate` is < 7 day  |
@@ -31,21 +33,20 @@ calendar(referenceDate?: EsDay | null, formats?: CalendarPartial): string
 | sameElse | format used, when difference is 7 days or more                              |
 
 The property values can be a (format) string like `LT` or a function with the following signature:
+
 ```signature
 (this: EsDay, refDate?: EsDay) => string
 ```
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 import { calendarPlugin, localePlugin, localizedFormatPlugin } from 'esday/plugins'
 
 import localeEnUs from 'esday/locales/en-us'
 
-esday
-  .extend(localePlugin)
-  .extend(localizedFormatPlugin)
-  .extend(calendarPlugin)
+esday.extend(localePlugin).extend(localizedFormatPlugin).extend(calendarPlugin)
 
 esday.registerLocale(localeEnUs)
 
@@ -86,6 +87,9 @@ const customFormats: CalendarPartial = {
     return `[Func: Next Day from ${refDate?.format('YYYY-MM-DD')} at] HHmm`
   },
 }
-esday().add(1, 'day').hour(10).calendar.calendar(undefined, { sameDay: '[My Custom Today at] HH:mm' })
+esday()
+  .add(1, 'day')
+  .hour(10)
+  .calendar.calendar(undefined, { sameDay: '[My Custom Today at] HH:mm' })
 // Returns 'My Custom Today at 03:24' - overriding a format key with a string
 ```

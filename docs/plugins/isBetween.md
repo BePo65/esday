@@ -5,9 +5,11 @@ IsBetween adds the `isBetween` method to EsDay indicating, if a date is between 
 ## Usage
 
 ### Dependencies
+
 IsBetween has no dependencies on other plugins.
 
 ### Method signatures
+
 ```signature
 esday().isBetween(
       from: DateType,
@@ -22,12 +24,13 @@ esday().isBetween(
 | to          | end of therange, the date should be in        |
 | unit        | unit to use for comparisons                   |
 | inclusivity | unit to use for comparisons                   |
-|             |   () = exclude from and to                    |
-|             |   [] = include from and to                    |
-|             |   [) = include from and exclude to            |
-|             |   (] = exclude from and include to            |
+|             | () = exclude from and to                      |
+|             | [] = include from and to                      |
+|             | [) = include from and exclude to              |
+|             | (] = exclude from and include to              |
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 import isBetweenPlugin from 'esday/plugins/isBetween'

@@ -11,9 +11,10 @@ To migrate to EsDay you have to replace the import statement.
 So replace this:
 
 ```typescript
-import moment from 'moment';
+import moment from 'moment'
 ```
 with this:
+
 ```typescript
 import { esday } from 'esday'
 ```
@@ -21,10 +22,12 @@ import { esday } from 'esday'
 ### Review code
 
 There are really only two things to know when migrating from Moment.js to EsDay:
+
 - EsDay core includes only very basic methods, while other methods are added with plugins.
 - EsDay objects are immutable.
 
 ### Here an example for using plugins:
+
 when you want to get the weekday of an EsDay object, you’ll need to import and register the AdvancedFormat plugin.
 
 ```typescript
@@ -41,9 +44,10 @@ After migration there will be a few of these plugins.
 
 **Important hint**
 
-When after migration EsDay does not behave like Moment.js in your program, the  most common reason is one or more missing plugins or a sequence of `.extend(...)` that does not follow the recommendations in the EsDay documentation of the plugins used.
+When after migration EsDay does not behave like Moment.js in your program, the most common reason is one or more missing plugins or a sequence of `.extend(...)` that does not follow the recommendations in the EsDay documentation of the plugins used.
 
 ### Here an example concerning immutability:
+
 As EsDay objects are immutable, so using an EsDay method that changes the object, you get a new object. So anything like this:
 
 ```typescript
@@ -76,16 +80,17 @@ To migrate to EsDay you have to replace the import statement.
 So replace this:
 
 ```typescript
-import dayjs from 'dayjs/esm';
+import dayjs from 'dayjs/esm'
 ```
 with this:
+
 ```typescript
 import { esday } from 'esday'
 ```
 
 ### Differences to Day.js
 
-- **Locale**: Locale  is a Plugin; no default locale! Dayjs uses 'en-US' as default.
+- **Locale**: Locale is a Plugin; no default locale! Dayjs uses 'en-US' as default.
 - **'Start of Week'**: Default 'Start of Week' is 1 ('Monday') as defined by ISO 8601. Dayjs uses 0 ('Sunday') as (as defined by the dafault locale 'en-US').
 - **'Start of Year'**: Default 'Start of Year' is 4 (Jan 4th must be in the 1st week of the year) as defined by ISO 8601. Dayjs uses 1 (Jan 1st) as (as defined by the dafault locale 'en-US').
 - **Invalid Date**: conforms to Moment.js and uses `Invalid date` instead of `Invalid Date`.

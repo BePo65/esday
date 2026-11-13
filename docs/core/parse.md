@@ -5,6 +5,7 @@ The `esday()` method returns an `esday` object defined by the method parameter.
 ## Usage
 
 ### Method signatures
+
 ```signature
 esday(): EsDay
 esday(dateString: string): EsDay
@@ -26,6 +27,7 @@ esday(dateArray: number[]): EsDay
 More signature types are available, when using a plugin (like [AdvancedParse](../plugins/advancedParse.md) or [LocalizedParse](../plugins/localizedParse.md)).
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 
@@ -61,6 +63,7 @@ esday([2024, 5, 1])
 ```
 
 Parameters that return invalid dates (`esday(invalidParameter).valid() === false`)
+
 ```typescript
 esday(null)
 esday(Number.NaN)

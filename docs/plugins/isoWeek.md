@@ -14,6 +14,7 @@ IsoWeek adds support for formatting tokens `W`, `WW`, `Wo`, `E`, `GG` and `GGGG`
 ## Usage
 
 ### Dependencies
+
 In most cases IsoWeek requires no other plugin.
 
 When using the 'Wo' formatting token, IsoWeek requires the plugins Locale and LocalizedFormat and at least 1 registered and activated locale.
@@ -23,6 +24,7 @@ When using the parsing tokens, the plugin AdvancedParse is required and must be 
 IsoWeek can be used together with the plugin Utc. If used together with the plugin Utc, the plugin Utc must be activated using esday.extend(...) before the plugin IsoWeek.
 
 ### Method signatures
+
 ```signature
 esday().isoWeek(): number
 esday().isoWeek(newIsoWeek: number): EsDay
@@ -46,8 +48,9 @@ Because the first day of the first week of a year does not always fall on the fi
 For example, in 2022 Jan 1 was a Saturday. Because of this, the first ISO week of the year 2022 starts on Monday Jan 3 and Jan 1 belongs to ISO week year 2021 (ISO week 52).
 
 ### Formatting tokens
+
 | **Token** | **Example** | **Description**                     |
-| --------- | ----------- | ------------------------------------|
+| --------- | ----------- | ----------------------------------- |
 | W         | 1-53        | ISO week of year.                   |
 | WW        | 01-53       | ISO week of year (2 digits).        |
 | Wo        | 1nd-53rd    | ISO week of year as ordinal number. |
@@ -58,6 +61,7 @@ For example, in 2022 Jan 1 was a Saturday. Because of this, the first ISO week o
 When no locale is loaded the token 'Wo' returns the ISO week number as number (instead of an ordinal number).
 
 ### Parsing tokens
+
 | **Token** | **Example** | **Description**                                                          |
 | --------- | ----------- | ------------------------------------------------------------------------ |
 | W         | 1-53        | ISO week of year.  Sets day of week to Monday (1st day of week).         |
@@ -73,6 +77,7 @@ If the source string (and the format to use) contains a valid month, the isoWeek
 If the source string (and the format to use) contains only 'GG' or 'GGGG', the parsed date is set to Monday of the week that contains Jan 1st (like moment.js does).
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 import isoWeekPlugin from 'esday/plugins/isoWeek'
@@ -102,6 +107,7 @@ esday('2020-04-25').isoWeeksInYear()
 ```
 
 ### Formatting date using IsoWeek tokens
+
 ```typescript
 import { esday } from 'esday'
 import isoWeekPlugin from 'esday/plugins/isoWeek'
@@ -147,6 +153,7 @@ esday('22024-12-24T14:25:36').format('Wo')
 ```
 
 ### Parsing date using IsoWeek tokens
+
 ```typescript
 import { esday } from 'esday'
 import isoWeekPlugin from 'esday/plugins/isoWeek'
@@ -168,7 +175,7 @@ esday('2025 12', 'YYYY WW')
 esday('2025 4', 'YYYY E')
 // Returns esday for '2025-01-02'
 
-esday("24", "GG")
+esday('24', 'GG')
 // Returns esday for '2024-01-01'
 ```
 

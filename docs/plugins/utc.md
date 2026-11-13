@@ -11,10 +11,13 @@ The `utcOffset` setter sets the offset to utc for the EsDay instance to the give
 ## Usage
 
 ### Dependencies
+
 UTC has no dependencies on other plugins.
 
 ### Method signatures
+
 Methods added to EsDay instances:
+
 ```signature
 esday().utc(keepLocalTime?: boolean): EsDay
 esday().local(): EsDay
@@ -33,6 +36,7 @@ If the first parameter of utcOffset is less than 16 and greater than -16, it wil
 utcOffset will take a string as input value; EsDay will search the string for the last match of +00 -00 +00:00 +0000 -00:00 -0000 Z, so you can even pass an ISO8601 formatted string to offset and esday will set that UTC offset. If the string does not include 'Z', it must include the + or - character.
 
 Methods added to esday:
+
 ```signature
 esday.utc(date: DateType): EsDay
 ```
@@ -44,6 +48,7 @@ When setting the year you can add parameters to set the month and date too. The 
 Setting year/month or month using the `set` operator: if the new month does not have enough days to keep the current day of month (e.g. 31), day is clamped to the end of the target month (see [moment.js](https://momentjs.com/docs/#/get-set/month/).
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 import utcPlugin from 'esday/plugins/utc'

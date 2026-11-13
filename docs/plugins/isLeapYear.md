@@ -5,14 +5,17 @@ IsLeapYear adds the `isLeapYear` method to EsDay indicating, if a date is a leap
 ## Usage
 
 ### Dependencies
+
 IsLeapYear has no dependencies on other plugins.
 
 ### Method signatures
+
 ```signature
 esday().isLeapYear(): boolean
 ```
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 import isLeapYearPlugin from 'esday/plugins/isLeapYear'

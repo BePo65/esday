@@ -5,14 +5,17 @@ IsTomorrow adds the `isTomorrow` method to EsDay indicating, if a date is tomorr
 ## Usage
 
 ### Dependencies
+
 IsTomorrow has no dependencies on other plugins.
 
 ### Method signatures
+
 ```signature
 esday().isTomorrow(): boolean
 ```
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 import isTomorrowPlugin from 'esday/plugins/isTomorrow'

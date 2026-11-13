@@ -25,6 +25,7 @@ All setters will bubble up to the next higher unit, If the range is exceeded. I.
 ## Usage
 
 ### Method signatures
+
 ```signature
 esday().set(unit: UnitYears, year: number, month?: number, date?: number): EsDay
 esday().set(unit: UnitQuarters, quarter: number): EsDay
@@ -84,6 +85,7 @@ When setting the year you can add parameters to set the month and date too. The 
 Setting year/month or month using the `set` operator: if the new month does not have enough days to keep the current day of month (e.g. 31), day is clamped to the end of the target month (see [moment.js](https://momentjs.com/docs/#/get-set/month/).
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 

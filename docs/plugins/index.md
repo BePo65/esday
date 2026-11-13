@@ -23,6 +23,7 @@ esday.extend(utcPlugin).extend(advancedParsePlugin)
 ## Available plugins
 
 Currently the following plugins are available:
+
 - [AdvancedFormat](./advancedFormat.md) (for formatting using a custom template)
 - [AdvancedParse](./advancedParse.md) (for parsing arbitrary formatted date and time strings)
 - [Calendar](./calendar.md) (Calendar adds .calendar() API - for formatting time relative to a given reference day)

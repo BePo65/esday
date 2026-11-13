@@ -5,14 +5,17 @@ ToObject adds the `toObject` method to EsDay to get an object containing the par
 ## Usage
 
 ### Dependencies
+
 ToObject has no dependencies on other plugins.
 
 ### Method signatures
+
 ```signature
 esday().toObject(): { years, months, date, hours, minutes, seconds, milliseconds }
 ```
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 import toObjectPlugin from 'esday/plugins/toObject'

@@ -11,6 +11,7 @@ ObjectSupport has no dependencies on other plugins.
 ObjectSupport can be used together with the plugin Utc that must be loaded using esday.extend(...) before the plugin ObjectSupport.
 
 ### Method signatures
+
 ```signature
 esday(value: ParsingObject): EsDay
 esday.utc(value: ParsingObject): EsDay
@@ -94,6 +95,7 @@ type UnitsObjectTypeAddSub = {
 ```
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 import objectSupportPlugin from 'esday/plugins/objectSupportPlugin'

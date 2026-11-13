@@ -5,19 +5,22 @@ IsSameOrBefore adds the `isSameOrBefore` method to EsDay indicating, if a date i
 ## Usage
 
 ### Dependencies
+
 IsSameOrBefore has no dependencies on other plugins.
 
 ### Method signatures
+
 ```signature
 esday().isSameOrBefore(date: DateType, unit?: UnitType): boolean
 ```
 
-| parameter   | description                |
-| ----------- | -------------------------- |
-| date        | date to compare with       |
-| unit        | unit to use for comparison |
+| parameter | description                |
+| --------- | -------------------------- |
+| date      | date to compare with       |
+| unit      | unit to use for comparison |
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 import isSameOrBeforePlugin from 'esday/plugins/isSameOrBefore'

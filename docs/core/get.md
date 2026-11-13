@@ -23,6 +23,7 @@ The `get` method takes a unit parameter to define, which value to extract from a
 ## Usage
 
 ### Method signatures
+
 ```signature
 esday().get(unit: UnitTypeGetSet): number
 esday().year(): number
@@ -62,6 +63,7 @@ The unit `quarter` (in short, long and plural forms) requires the plugin [quarte
 `date` is 'day of month' and `day` is 'day of week'.
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 

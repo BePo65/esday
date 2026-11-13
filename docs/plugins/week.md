@@ -1,6 +1,6 @@
 # Week
 
-Week adds the `week`, the `weeks`, the `weekDay`, the `weekYear` and the `weeksInYear` methods to EsDay.  Extend the `get` and `set` methods to handle the unit 'week'.
+Week adds the `week`, the `weeks`, the `weekDay`, the `weekYear` and the `weeksInYear` methods to EsDay. Extend the `get` and `set` methods to handle the unit 'week'.
 
 The `week` method gets or sets the week of the year of a date according to the active locale.
 The `weeks` method is just an alias for the `week` method.
@@ -14,6 +14,7 @@ Week adds support for formatting tokens `w`, `ww`, `wo`, `e`, `gg` and `gggg`.
 ## Usage
 
 ### Dependencies
+
 Week requires the plugin Locale and at least 1 registered and activated locale.
 
 When using the week formatting tokens together with other formatting tokens, the plugin localizedFormat is required and must be loaded using esday.extend(...) before the plugin Week.
@@ -23,6 +24,7 @@ When using the week parsing tokens, the plugin advancedParse is required and mus
 Week can be used together with the plugin Utc. If used together with the plugin Utc, the plugin Utc must be activated using esday.extend(...) before the plugin Week.
 
 ### Method signatures
+
 ```signature
 esday().week(): number
 esday().week(week: number): EsDay
@@ -53,6 +55,7 @@ If Jan 1 was a Monday, Dec 31 would belong to the same week as Jan 1, and thus t
 Dec 30 would have a different week-year than Dec 31 (in the previous case it would be 2023).
 
 ### Added units
+
 | **Unit** | **Example** | **Description** |
 | -------- | ----------- | --------------- |
 | 'w'      | 1-53        | Week of year.   |
@@ -60,8 +63,9 @@ Dec 30 would have a different week-year than Dec 31 (in the previous case it wou
 | 'weeks'  | 1-53        | Week of year.   |
 
 ### Added formatting tokens
+
 | **Token** | **Example** | **Description**                 |
-| --------- | ----------- | --------------------------------|
+| --------- | ----------- | ------------------------------- |
 | w         | 1-53        | Week of year.                   |
 | ww        | 01-53       | Week of year (2 digits).        |
 | wo        | 1nd-53rd    | Week of year as ordinal number. |
@@ -72,6 +76,7 @@ Dec 30 would have a different week-year than Dec 31 (in the previous case it wou
 When no locale is loaded the token 'wo' returns the week number as number (instead of an ordinal number).
 
 ### Added parsing tokens
+
 | **Token** | **Example**       | **Description**                                               |
 | --------- | ----------------- | ------------------------------------------------------------- |
 | w         | 1-53              | Week of year. Sets day of week to 1st day of week.            |
@@ -98,6 +103,7 @@ As an example:
 While `esday('2025', 'gggg)` returns '2025-07-21' as expected when the current date is Thursday '2022-07-25' and the locale is 'de'.
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 import { advancedParsePlugin, localePlugin, localizedFormatPlugin, weekPlugin } from 'esday/plugins'
@@ -147,16 +153,14 @@ esday('2016-04-25').weeksInYear()
 ```
 
 ### Formatting date using week tokens
+
 ```typescript
 import { esday } from 'esday'
 import { localePlugin, localizedFormatPlugin, weekPlugin } from 'esday/plugins'
 
 import localeEnUs from 'esday/locales/en-us'
 
-esday
-  .extend(localePlugin)
-  .extend(localizedFormatPlugin)
-  .extend(weekPlugin)
+esday.extend(localePlugin).extend(localizedFormatPlugin).extend(weekPlugin)
 
 esday.registerLocale(localeEnUs)
 
@@ -183,16 +187,14 @@ esday('22024-12-24T14:25:36').format('gggg')
 ```
 
 ### Parsing date using IsoWeek tokens
+
 ```typescript
 import { esday } from 'esday'
 import { advancedParsePlugin, localePlugin, weekPlugin } from 'esday/plugins'
 
 import localeEnUs from 'esday/locales/en-us'
 
-esday
-  .extend(localePlugin)
-  .extend(advancedParsePlugin)
-  .extend(weekPlugin)
+esday.extend(localePlugin).extend(advancedParsePlugin).extend(weekPlugin)
 
 esday.registerLocale(localeEnUs)
 
@@ -219,11 +221,11 @@ esday('2025 4', 'YYYY e')
 // Returns esday for '2025-12-17' when current date is '2023-12-17'
 // '4' is Wednesday (weekday); month and week is taken from current date
 
-esday("24", "gg")
+esday('24', 'gg')
 // Returns esday for '2024-12-15' when current date is '2023-12-17'
 // month and week is taken from current date; '15' is 1st day of the week
 
-esday("24", "gggg")
+esday('24', 'gggg')
 // Returns esday for '2024-12-15' when current date is '2023-12-17'
 // month and week is taken from current date; '15' is 1st day of the week
 ```

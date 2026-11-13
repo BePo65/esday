@@ -9,6 +9,7 @@ If used together with the plugin AdvancedParse, then LocalizedParse must be acti
 ## Usage
 
 ### Dependencies
+
 LocalizedParse requires the plugins AdvancedParse and Locale and at least 1 registered and activated locale. For using the 'd', 'dd', 'ddd' or the 'dddd' tokens the plugin Week is required too.
 
 The plugin AdvancedParse must be loaded using esday.extend(...) before the plugin LocalizedParse. If used, the plugin Week must be loaded after the plugin AdvancedParse.
@@ -16,6 +17,7 @@ The plugin AdvancedParse must be loaded using esday.extend(...) before the plugi
 LocalizedParse can be used together with the plugin Utc which must be loaded using esday.extend(...) before the plugin AdvancedParse.
 
 ### Method signatures
+
 ```signature
 esday(date: string, format: string): EsDay
 esday(date: string, format: string[]): EsDay
@@ -27,6 +29,7 @@ esday(date: string, format: string, locale: string, strict: boolean): EsDay
 esday(date: string, format: string[], locale: string, strict: boolean): EsDay
 ```
 and for the `utc` plugin
+
 ```signature
 esday.utc(date: string, format: string): EsDay
 esday.utc(date: string, format: string[]): EsDay
@@ -48,6 +51,7 @@ esday.utc(date: string, format: string[], locale: string, strict: boolean): EsDa
 If an array of formats is used, `date` will be parsed with the best matching format in this array.
 
 ### Parsing tokens
+
 | **Token** | **Example**                         | **Description**                                   |
 | --------- | ----------------------------------- | ------------------------------------------------- |
 | h         | 1...12                              | Hours, 12-hour clock                              |
@@ -69,7 +73,9 @@ If an array of formats is used, `date` will be parsed with the best matching for
 | llll      | Thu, Sep 4, 1986 8:30 PM            | Month name, day of month, day of week, year, time |
 
 ## Examples
+
 Basic example with some localized tokens.
+
 ```typescript
 import { esday } from 'esday'
 import { advancedParsePlugin, localePlugin, localizedParsePlugin } from 'esday/plugins'
@@ -88,6 +94,7 @@ const parsedDate = esday('2024 12月 24日 星期二 8:10:21 早上', 'YYYY MMM 
 ```
 
 Example with locale given as parameter of esday.
+
 ```typescript
 import { esday } from 'esday'
 import { advancedParsePlugin, localePlugin, localizedParsePlugin } from 'esday/plugins'
@@ -97,10 +104,14 @@ esday.extend(advancedParsePlugin)
 esday.extend(localePlugin)
 esday.extend(localizedParsePlugin)
 
-esday.registerLocale(localeEn-US)
+esday.registerLocale(localeEn - US)
 esday.registerLocale(localeZhCn)
 
 // default global locale is 'en' (i.e. 'en-US')
 
-const parsedDate = esday('2024 12月 24日 星期二 8:10:21 早上', 'YYYY MMM Do dddd H:mm:ss A', 'zh-CN')
+const parsedDate = esday(
+  '2024 12月 24日 星期二 8:10:21 早上',
+  'YYYY MMM Do dddd H:mm:ss A',
+  'zh-CN',
+)
 ```

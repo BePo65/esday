@@ -9,6 +9,7 @@ The `isAfter()` method checks if one `esday` object is after an esday object giv
 ## Usage
 
 ### Method signatures
+
 ```signature
 esday().isBefore(units: UnitType = C.MS): boolean
 ```
@@ -44,12 +45,15 @@ The unit `quarter` (in short, long and plural forms) requires the plugin [Quarte
 The unit `isoWeek` (in short, long and plural forms) requires the plugin [IsoWeek](../plugins/isoWeek.md) to be loaded.
 
 ### Granularity
+
 If you want to limit the granularity to a unit other than milliseconds, pass the units as the second parameter.
 
 The second parameter determines the **precision** and not just a single value to check. I.e. using 'hour' as a unit will not just compare the values of the hour, but will also check for year, month and day.
 
 ## Examples
+
 ### isBefore
+
 ```typescript
 import { esday } from 'esday'
 
@@ -60,6 +64,7 @@ date1.isBefore(date2, 'y')
 ```
 
 ### isSame
+
 ```typescript
 import { esday } from 'esday'
 
@@ -70,6 +75,7 @@ date1.isSame(date2, 'month')
 ```
 
 ### isAfter
+
 ```typescript
 import { esday } from 'esday'
 
