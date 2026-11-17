@@ -42,6 +42,20 @@ describe('locale ca', () => {
     expect(months.format.length).toBe(12)
     expect(months.isFormat).toBeDefined()
     expect(months.isFormat).toBeInstanceOf(RegExp)
+    expect(months.format).toMatchObject([
+      'de gener',
+      'de febrer',
+      'de març',
+      'd’abril',
+      'de maig',
+      'de juny',
+      'de juliol',
+      'd’agost',
+      'de setembre',
+      'd’octubre',
+      'de novembre',
+      'de desembre',
+    ])
   })
 
   it('should have 12 short month names', () => {

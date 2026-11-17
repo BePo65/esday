@@ -7,7 +7,7 @@ import type { Locale } from '~/plugins/locale'
 const localeSv: Readonly<Locale> = {
   name: 'sv',
   weekdays: ['söndag', 'måndag', 'tisdag', 'onsdag', 'torsdag', 'fredag', 'lördag'],
-  weekdaysShort: ['sön', 'mån', 'tis', 'ons', 'tor', 'fre', 'lör'],
+  weekdaysShort: ['sön', 'mån', 'tis', 'ons', 'tors', 'fre', 'lör'],
   weekdaysMin: ['sö', 'må', 'ti', 'on', 'to', 'fr', 'lö'],
   months: [
     'januari',

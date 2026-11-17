@@ -80,7 +80,7 @@ const relativeTimeFormatter: RelativeTimeElementFunction = (
 
 const localeUk: Readonly<Locale> = {
   name: 'uk',
-  weekdays: ['неділя', 'понеділок', 'вівторок', 'середа', 'четвер', 'п’ятниця', 'субота'],
+  weekdays: ['неділя', 'понеділок', 'вівторок', 'середа', 'четвер', 'пʼятниця', 'субота'],
   weekdaysShort: ['ндл', 'пнд', 'втр', 'срд', 'чтв', 'птн', 'сбт'],
   weekdaysMin: ['нд', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'],
   months,

@@ -23,7 +23,7 @@ const localeId: Readonly<Locale> = {
     'November',
     'Desember',
   ],
-  monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'],
+  monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
   dayOfMonthOrdinalParse: /\d{1,2}/,
   ordinal: (n) => `${n}.`,
   weekStart: 1, // Monday is the first day of the week.

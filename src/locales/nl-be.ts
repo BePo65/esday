@@ -8,8 +8,8 @@ import { cloneLocale, setLocaleProperty } from '~/plugins/locale'
 const localeNlBe = cloneLocale(localeNl)
 
 const formats = structuredClone(localeNlBe.formats)
-formats.L = 'DD/MM/YYYY'
-formats.l = 'DD/MM/YYYY'
+formats.L = 'D/MM/YYYY'
+formats.l = 'D/MM/YYYY'
 
 // Use 'setLocaleProperty' as all properties are 'readonly'
 setLocaleProperty(localeNlBe, 'name', 'nl-BE')
