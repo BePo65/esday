@@ -401,7 +401,6 @@ describe('week plugin - locale "de"', () => {
   )
 
   it.each([
-    { sourceString: '2025 12 2', formatString: 'YYYY MM d' },
     {
       sourceString: '2024 12 24 Mi. 14:25:36',
       formatString: 'YYYY MM DD ddd HH:mm:ss',
@@ -451,6 +450,17 @@ describe('week plugin - locale "de"', () => {
       const parsedDate = esday(sourceString, formatString)
 
       expect(parsedDate.format().slice(0, 10)).toBe(expected)
+    },
+  )
+
+  it.each([{ sourceString: '2025 12 2', formatString: 'YYYY MM d' }])(
+    'difference to moment - date string "$sourceString" with format "$formatString"',
+    ({ sourceString, formatString }) => {
+      const d = esday(sourceString, formatString)
+      const m = moment(sourceString, formatString)
+
+      expect(d.isValid()).toBeFalsy()
+      expect(m.isValid()).toBeTruthy()
     },
   )
 })

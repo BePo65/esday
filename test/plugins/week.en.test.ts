@@ -404,15 +404,17 @@ describe('week plugin - locale "en"', () => {
   )
 
   it.each([
-    { sourceString: '2025 12 2', formatString: 'YYYY MM d' },
     {
       sourceString: '2024 12 24 Wed 14:25:36',
       formatString: 'YYYY MM DD ddd HH:mm:ss',
     },
-  ])('parse illegal day-of-week value', ({ sourceString, formatString }) => {
-    expectSameValue((esday) => esday(sourceString, formatString).isValid())
-    expect(esday(sourceString, formatString).isValid()).toBeFalsy()
-  })
+  ])(
+    'parse "$sourceString" using "$formatString" as illegal day-of-week value',
+    ({ sourceString, formatString }) => {
+      expectSameValue((esday) => esday(sourceString, formatString).isValid())
+      expect(esday(sourceString, formatString).isValid()).toBeFalsy()
+    },
+  )
 
   it('parse in strict mode - good format', () => {
     const sourceString = '2024 Dec 24th Tuesday 8:10:21 PM'
@@ -426,8 +428,8 @@ describe('week plugin - locale "en"', () => {
     const sourceString = '2024 Dec 24th Tuesday 8:10:21'
     const formatString = 'YYYY MMM Do dddd h:mm:ss A'
 
-    expect(esday(sourceString, formatString, true).isValid()).toBeFalsy()
     expectSameValue((esday) => esday(sourceString, formatString, true).isValid())
+    expect(esday(sourceString, formatString, true).isValid()).toBeFalsy()
   })
 
   it.each([
@@ -454,6 +456,18 @@ describe('week plugin - locale "en"', () => {
     'should parse "$sourceString" with weekYear token in "$formatString"',
     ({ sourceString, formatString }) => {
       expectSameObject((esday) => esday(sourceString, formatString))
+      expect(esday(sourceString, formatString).isValid()).toBeTruthy()
+    },
+  )
+
+  it.each([{ sourceString: '2025 12 2', formatString: 'YYYY MM d' }])(
+    'difference to moment - date string "$sourceString" with format "$formatString"',
+    ({ sourceString, formatString }) => {
+      const d = esday(sourceString, formatString)
+      const m = moment(sourceString, formatString)
+
+      expect(d.isValid()).toBeFalsy()
+      expect(m.isValid()).toBeTruthy()
     },
   )
 })
