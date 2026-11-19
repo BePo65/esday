@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.1](https://github.com/BePo65/esday/compare/v1.1.0...v1.1.1) (2026-11-19)
+
+### Bug Fixes
+
+* change .innerText to .textContent ([40ff34b](https://github.com/BePo65/esday/commit/40ff34b84939deb3b263d28528672996595d691c))
+* fix error parsing date string with format ([7606e61](https://github.com/BePo65/esday/commit/7606e618509b994449cd68575768dc316ee170d3))
+* update locales to changes in moment@2.31.0 ([05a9409](https://github.com/BePo65/esday/commit/05a94097f6e3204292da1c7f6e3454f9ef380b52))
+
 ## [1.1.0](https://github.com/BePo65/esday/compare/v1.0.1...v1.1.0) (2026-08-01)
 
 ### Features
