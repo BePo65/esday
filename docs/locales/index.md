@@ -53,7 +53,7 @@
 | eu       | Basque                        | `import locale from 'esday/locales/eu'`       |
 | fa       | Persian                       | `import locale from 'esday/locales/fa'`       |
 | fi       | Finnish                       | `import locale from 'esday/locales/fi'`       |
-| fil      | Filipino                      | `import locale from 'esday/locales/fil'`       |
+| fil      | Filipino                      | `import locale from 'esday/locales/fil'`      |
 | fo       | Faroese                       | `import locale from 'esday/locales/fo'`       |
 | fr-CA    | French (Canada)               | `import locale from 'esday/locales/fr-ca'`    |
 | fr-CH    | French (Switzerland)          | `import locale from 'esday/locales/fr-ch'`    |

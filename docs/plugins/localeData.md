@@ -15,6 +15,7 @@ LocaleData requires the plugin Locale and at least 1 registered and activated lo
 The plugin Locale must be loaded using esday.extend(...) before the plugin LocaleData.
 
 ### Method signatures
+
 ```signature
 esday().localeData(): LocaleData
 esday.localeData(localeName?: string): LocaleData
@@ -25,8 +26,9 @@ esday.localeData(localeName?: string): LocaleData
 | localeName | name of the locale to use |
 
 ### Properties of LocaleData
-| property                                                 |  Description                                    |
-| -------------------------------------------------------- |  ---------------------------------------------- |
+
+| property                                                 | Description                                     |
+| -------------------------------------------------------- | ----------------------------------------------- |
 | weekdays()                                               | Get the list of all weekday names               |
 | weekdays(date: EsDay, format?: string)                   | Format a date as weekday name                   |
 | weekdaysShort()                                          | Get the list of all short weekday names         |
@@ -42,15 +44,15 @@ esday.localeData(localeName?: string): LocaleData
 | firstDayOfYear()                                         | Get the day of month of the 1st day of the year |
 | longDateFormat(keyF: LocaleFormatKeys)                   | Get the full format of abbreviated format       |
 | calendar(keyL?: string, date?: EsDay, now?: EsDay)       | Get format for calendar representation          |
-| relativeTime(value?: string | number,                    | Get format for calendar representation          |
-|    withoutSuffix: boolean, token: RelativeTimeKeys       | Get relative time string                        |
-|    isFuture: boolean)                                    |                                                 |
+| relativeTime(value?: string                              | number,                                         | Get format for calendar representation |
+| withoutSuffix: boolean, token: RelativeTimeKeys          | Get relative time string                        |
+| isFuture: boolean)                                       |                                                 |
 | meridiem(hour: number, minute: number, isLower: boolean) | Get the am/pm string for particular time        |
 | preParse?(dateString: string)                            | Modify unformatted date string before parsing   |
 | postFormat?(formattedDate: string)                       | Modify formatted date                           |
 
-| parameter | description                                      |
-| --------- | ------------------------------------------------ |
+| parameter     | description                                  |
+| ------------- | -------------------------------------------- |
 | date          | date to format                               |
 | now           | reference date                               |
 | format        | format to use to select a names list;        |
@@ -67,6 +69,7 @@ esday.localeData(localeName?: string): LocaleData
 | isLower       | format result as lower case string           |
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 import localeDataPlugin from 'esday/plugins/localeData'

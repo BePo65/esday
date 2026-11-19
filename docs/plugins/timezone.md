@@ -24,6 +24,7 @@ The UTC offset of a timezone is then reset to the 'standard value' in autumn cre
 ## Usage
 
 ### Dependencies
+
 Timezone requires the `utc` plugin.
 
 This plugin can handle the 'locale' plugin.
@@ -31,7 +32,9 @@ This plugin can handle the 'locale' plugin.
 When parsing with a locale then the 'advancedParse' plugin, the 'localizedParse' plugin and at least one registered locale are required.
 
 ### Method signatures
+
 Methods added to EsDay instances:
+
 ```signature
 esday().tz(): string | undefined
 esday().tz(timezone: string, keepLocalTime?: boolean): EsDay
@@ -43,6 +46,7 @@ esday().tz(timezone: string, keepLocalTime?: boolean): EsDay
 | keepLocalTime | keep the existing time of day |
 
 Methods added to esday:
+
 ```signature
 esday.tz(date: DateType, timezone?: string): EsDay
 esday.tz(date: DateType, format: string, timezone?: string): EsDay
@@ -54,19 +58,20 @@ esday.tz.setDefault(timezone?: string): void
 esday.tz.getDefault(): string | undefined
 ```
 
-| parameter     | description                              |
-| ------------- | ---------------------------------------- |
-| date          | element to parse as a date/time          |
-| timezone      | timezone to use                          |
-| format        | format string(s) used for parsing `date` |
-| strict        | date string must match format exactly    |
-| locale        | name of the locale to use (e.g. 'en-US') |
+| parameter | description                              |
+| --------- | ---------------------------------------- |
+| date      | element to parse as a date/time          |
+| timezone  | timezone to use                          |
+| format    | format string(s) used for parsing `date` |
+| strict    | date string must match format exactly    |
+| locale    | name of the locale to use (e.g. 'en-US') |
 
 ### Parsing tokens
-| **Token** | **Example**   | **Description**                            |
-| --------- | ------------- | ------------------------------------------ |
-| z         | PST           | Short form of the timezone (same as 'zz')  |
-| zz        | GMT+2         | Short form of the timezone (same as 'zz')  |
+
+| **Token** | **Example** | **Description**                           |
+| --------- | ----------- | ----------------------------------------- |
+| z         | PST         | Short form of the timezone (same as 'zz') |
+| zz        | GMT+2       | Short form of the timezone (same as 'zz') |
 
 `z` and `zz`: both format the timezone in a "short" Version.
 
@@ -88,6 +93,7 @@ This plugin solves the issues that exist in DayJs for dates with timezones using
 - Setting year, month or day-of-month using the `set` operator will keep the time part of the date by adjusting the UTC offset if required by the DST rules of the timezone used.
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 import utcPlugin from 'esday/plugins/utc'

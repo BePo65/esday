@@ -247,7 +247,7 @@ function makeParser(format: string, isStrict: boolean): { parser: Parser; postPa
         if (isStrict && separatorsMatch) {
           separatorsMatch &&= input.substring(0, separatorLength) === token
         }
-        input = input.slice(separatorLength)
+        input = input.slice(0, start) + input.slice(start + separatorLength)
       } else {
         const { regex, updater } = token
         const part = input.slice(start)
@@ -256,6 +256,7 @@ function makeParser(format: string, isStrict: boolean): { parser: Parser; postPa
           const value = match[0]
           input = input.replace(value, '')
           updater(parsedDateElements, value, parseOptions)
+          start += match.index
         }
       }
     }

@@ -63,10 +63,10 @@ describe('localizedParse plugin - parsed as utc for "en"', () => {
     },
     { sourceString: '2024 Tuesday', formatString: 'YYYY dddd' },
     { sourceString: '2024 Tuesday 15:26', formatString: 'YYYY dddd HH:mm' },
-    { sourceString: '2024 12 Tuesday', formatString: 'YYYY MM dddd' },
-    { sourceString: '2024 Dec Tuesday', formatString: 'YYYY MMM dddd' },
+    { sourceString: '2024 12 Sunday', formatString: 'YYYY MM dddd' },
+    { sourceString: '2024 Dec Sunday', formatString: 'YYYY MMM dddd' },
     {
-      sourceString: '2024 Dec Tuesday 15:26',
+      sourceString: '2024 Dec Sunday 15:26',
       formatString: 'YYYY MMM dddd HH:mm',
     },
     {
@@ -133,20 +133,24 @@ describe('localizedParse plugin - parsed as utc for "en"', () => {
       sourceString: '2024-02-29 8:10:21 xy',
       formatString: 'YYYY-MM-DD h:mm:ss A',
     },
+    {
+      sourceString: '2024-02-29 08:10:21 PM',
+      formatString: 'YYYY-MM-DD hh:mm:ss A',
+    },
     { sourceString: '2024 12 24 4:25 PM', formatString: 'YYYY MM DD LT' },
     { sourceString: '2024 12 24 4:25:36 PM', formatString: 'YYYY MM DD LTS' },
     { sourceString: '12/24/2024', formatString: 'L' },
-    { sourceString: '4 [de] December [de] 2024', formatString: 'LL' },
-    { sourceString: '4 [de] December [de] 2024 4:25 PM', formatString: 'LLL' },
+    { sourceString: 'December 4, 2024', formatString: 'LL' },
+    { sourceString: 'December 4, 2024 4:25 PM', formatString: 'LLL' },
     {
-      sourceString: 'Wednesday, 4 [de] December [de] 2024 4:25 PM',
+      sourceString: 'Wednesday, December 4, 2024 4:25 PM',
       formatString: 'LLLL',
     },
     { sourceString: '12/24/2024', formatString: 'l' },
-    { sourceString: '4 [de] December [de] 2024', formatString: 'll' },
-    { sourceString: '4 [de] December [de] 2024 4:25 PM', formatString: 'lll' },
+    { sourceString: 'Dec 4, 2024', formatString: 'll' },
+    { sourceString: 'Dec 4, 2024 4:25 PM', formatString: 'lll' },
     {
-      sourceString: 'Wednesday, 4 [de] December [de] 2024 4:25 PM',
+      sourceString: 'Wed, Dec 4, 2024 4:25 PM',
       formatString: 'llll',
     },
     {
@@ -157,22 +161,21 @@ describe('localizedParse plugin - parsed as utc for "en"', () => {
     'parse date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString }) => {
       expectSameObject((esday) => esday.utc(sourceString, formatString))
+      expect(esday.utc(sourceString, formatString).isValid()).toBeTruthy()
     },
   )
 
   it.each([
+    { sourceString: '2024 12 24 24:25:36', formatString: 'YYYY MM DD LTS' },
     {
       sourceString: '2024 12 24 Wed 14:25:36',
       formatString: 'YYYY MM DD ddd HH:mm:ss',
-    },
-    {
-      sourceString: '2024-02-29 08:10:21 pM',
-      formatString: 'YYYY-MM-DD hh:mm:ss a',
     },
   ])(
     'parse date string "$sourceString" with format "$formatString" as invalid date',
     ({ sourceString, formatString }) => {
       expectSameValue((esday) => esday.utc(sourceString, formatString).isValid())
+      expect(esday.utc(sourceString, formatString).isValid()).toBeFalsy()
     },
   )
 
@@ -180,17 +183,56 @@ describe('localizedParse plugin - parsed as utc for "en"', () => {
     const sourceString = '2024 Dec 24th Tuesday 8:10:21 PM'
     const formatString = 'YYYY MMM Do dddd h:mm:ss A'
 
-    expect(esday.utc(sourceString, formatString, true).isValid()).toBeTruthy()
     expectSameObject((esday) => esday.utc(sourceString, formatString, true))
+    expect(esday.utc(sourceString, formatString, true).isValid()).toBeTruthy()
   })
 
   it('does not parse in strict mode - bad format', () => {
     const sourceString = '2024 Dec 24th Tuesday 8:10:21'
     const formatString = 'YYYY MMM Do dddd h:mm:ss A'
 
-    expect(esday.utc(sourceString, formatString, true).isValid()).toBeFalsy()
     expectSameValue((esday) => esday.utc(sourceString, formatString, true).isValid())
+    expect(esday.utc(sourceString, formatString, true).isValid()).toBeFalsy()
   })
+
+  it.each([
+    {
+      sourceString: '2024-02-29 08:10:21 pM',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29 08:10:21 pM',
+      formatString: 'YYYY-MM-DD hh:mm:ss A',
+    },
+  ])('difference to moment - date string "$sourceString" using "$formatString" as am', () => {
+    const sourceString = '2024-02-29 08:10:21 pM'
+    const formatString = 'YYYY-MM-DD hh:mm:ss a'
+    const d = esday.utc(sourceString, formatString)
+    const m = moment.utc(sourceString, formatString)
+
+    expect(d.isValid()).toBeTruthy()
+    expect(m.isValid()).toBeTruthy()
+    expect(d.hour()).toBe(8)
+    expect(m.hour()).toBe(20)
+  })
+
+  it.each([
+    { sourceString: '2024 12 Tuesday', formatString: 'YYYY MM dddd' },
+    { sourceString: '2024 Dec Tuesday', formatString: 'YYYY MMM dddd' },
+    {
+      sourceString: '2024 Dec Tuesday 15:26',
+      formatString: 'YYYY MMM dddd HH:mm',
+    },
+  ])(
+    'difference to moment - date string "$sourceString" with format "$formatString"',
+    ({ sourceString, formatString }) => {
+      const d = esday.utc(sourceString, formatString)
+      const m = moment.utc(sourceString, formatString)
+
+      expect(d.isValid()).toBeFalsy()
+      expect(m.isValid()).toBeTruthy()
+    },
+  )
 })
 
 describe('localizedParse plugin - parsed as utc for "de"', () => {
@@ -299,11 +341,11 @@ describe('localizedParse plugin - parsed as utc for "de"', () => {
     { sourceString: '24.12.2024', formatString: 'L' },
     { sourceString: '24. Dezember 2024', formatString: 'LL' },
     { sourceString: '24. Dezember 2024 14:25', formatString: 'LLL' },
-    { sourceString: 'Mittwoch, 24. Dezember 2024 14:25', formatString: 'LLLL' },
+    { sourceString: 'Dienstag, 24. Dezember 2024 14:25', formatString: 'LLLL' },
     { sourceString: '24.12.2024', formatString: 'l' },
     { sourceString: '24. Dez. 2024', formatString: 'll' },
     { sourceString: '24. Dez. 2024 14:25', formatString: 'lll' },
-    { sourceString: 'Mittwoch, 24. Dez. 2024 14:25', formatString: 'llll' },
+    { sourceString: 'Di., 24. Dez. 2024 14:25', formatString: 'llll' },
     {
       sourceString: '2024 12 24 [L lll ka] 14:25:36',
       formatString: 'YYYY MM DD [L lll ka] LTS',
@@ -313,22 +355,21 @@ describe('localizedParse plugin - parsed as utc for "de"', () => {
     'parse date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString }) => {
       expectSameObject((esday) => esday.utc(sourceString, formatString))
+      expect(esday.utc(sourceString, formatString).isValid()).toBeTruthy()
     },
   )
 
   it.each([
+    { sourceString: '2024 12 24 24:25:36', formatString: 'YYYY MM DD LTS' },
     {
       sourceString: '2024 12 24 Mi. 14:25:36',
       formatString: 'YYYY MM DD ddd HH:mm:ss',
-    },
-    {
-      sourceString: '2024-02-29 08:10:21 pM',
-      formatString: 'YYYY-MM-DD hh:mm:ss a',
     },
   ])(
     'parse date string "$sourceString" with format "$formatString" as invalid date',
     ({ sourceString, formatString }) => {
       expectSameValue((esday) => esday.utc(sourceString, formatString).isValid())
+      expect(esday.utc(sourceString, formatString).isValid()).toBeFalsy()
     },
   )
 
@@ -336,17 +377,56 @@ describe('localizedParse plugin - parsed as utc for "de"', () => {
     const sourceString = '2024 Dez. 24. Dienstag 8:10:21 PM'
     const formatString = 'YYYY MMM Do dddd h:mm:ss A'
 
-    expect(esday.utc(sourceString, formatString, true).isValid()).toBeTruthy()
     expectSameObject((esday) => esday.utc(sourceString, formatString, true))
+    expect(esday.utc(sourceString, formatString, true).isValid()).toBeTruthy()
   })
 
   it('does not parse in strict mode - bad format', () => {
     const sourceString = '2024 Dez. 24. Dienstag 8:10:21'
     const formatString = 'YYYY MMM Do dddd h:mm:ss A'
 
-    expect(esday.utc(sourceString, formatString, true).isValid()).toBeFalsy()
     expectSameValue((esday) => esday.utc(sourceString, formatString, true).isValid())
+    expect(esday.utc(sourceString, formatString, true).isValid()).toBeFalsy()
   })
+
+  it.each([
+    {
+      sourceString: '2024-02-29 08:10:21 pM',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29 08:10:21 pM',
+      formatString: 'YYYY-MM-DD hh:mm:ss A',
+    },
+  ])('difference to moment - date string "$sourceString" using "$formatString" as am', () => {
+    const sourceString = '2024-02-29 08:10:21 pM'
+    const formatString = 'YYYY-MM-DD hh:mm:ss a'
+    const d = esday.utc(sourceString, formatString)
+    const m = moment.utc(sourceString, formatString)
+
+    expect(d.isValid()).toBeTruthy()
+    expect(m.isValid()).toBeTruthy()
+    expect(d.hour()).toBe(8)
+    expect(m.hour()).toBe(20)
+  })
+
+  it.each([
+    { sourceString: '2024 12 Tuesday', formatString: 'YYYY MM dddd' },
+    { sourceString: '2024 Dec Tuesday', formatString: 'YYYY MMM dddd' },
+    {
+      sourceString: '2024 Dec Tuesday 15:26',
+      formatString: 'YYYY MMM dddd HH:mm',
+    },
+  ])(
+    'difference to moment - date string "$sourceString" with format "$formatString"',
+    ({ sourceString, formatString }) => {
+      const d = esday.utc(sourceString, formatString)
+      const m = moment.utc(sourceString, formatString)
+
+      expect(d.isValid()).toBeFalsy()
+      expect(m.isValid()).toBeTruthy()
+    },
+  )
 })
 
 describe('localizedParse plugin - parsed as utc for "hr"', () => {
@@ -451,7 +531,7 @@ describe('localizedParse plugin - parsed as utc for "hr"', () => {
       formatString: 'YYYY-MM-DD h:mm:ss A',
     },
     { sourceString: '2024 12 24 14:25', formatString: 'YYYY MM DD LT' },
-    { sourceString: '2024 12 24 24:25:36', formatString: 'YYYY MM DD LTS' },
+    { sourceString: '2024 12 24 23:25:36', formatString: 'YYYY MM DD LTS' },
     { sourceString: '24.12.2024', formatString: 'L' },
     { sourceString: '24. prosinac 2024', formatString: 'LL' },
     { sourceString: '24. prosinac 2024 8:25', formatString: 'LLL' },
@@ -468,22 +548,21 @@ describe('localizedParse plugin - parsed as utc for "hr"', () => {
     'parse date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString }) => {
       expectSameObject((esday) => esday.utc(sourceString, formatString))
+      expect(esday.utc(sourceString, formatString).isValid()).toBeTruthy()
     },
   )
 
   it.each([
+    { sourceString: '2024 12 24 24:25:36', formatString: 'YYYY MM DD LTS' },
     {
       sourceString: '2024 12 24 sri 14:25:36',
       formatString: 'YYYY MM DD ddd HH:mm:ss',
-    },
-    {
-      sourceString: '2024-02-29 08:10:21 pM',
-      formatString: 'YYYY-MM-DD hh:mm:ss a',
     },
   ])(
     'parse date string "$sourceString" with format "$formatString" as invalid date',
     ({ sourceString, formatString }) => {
       expectSameValue((esday) => esday.utc(sourceString, formatString).isValid())
+      expect(esday.utc(sourceString, formatString).isValid()).toBeFalsy()
     },
   )
 
@@ -491,17 +570,56 @@ describe('localizedParse plugin - parsed as utc for "hr"', () => {
     const sourceString = '2024 pro. 24. utorak 8:10:21 PM'
     const formatString = 'YYYY MMM Do dddd h:mm:ss A'
 
-    expect(esday.utc(sourceString, formatString, true).isValid()).toBeTruthy()
     expectSameObject((esday) => esday.utc(sourceString, formatString, true))
+    expect(esday.utc(sourceString, formatString, true).isValid()).toBeTruthy()
   })
 
   it('does not parse in strict mode - bad format', () => {
     const sourceString = '2024 pro. 24. utorak 8:10:21'
     const formatString = 'YYYY MMM Do dddd h:mm:ss A'
 
-    expect(esday.utc(sourceString, formatString, true).isValid()).toBeFalsy()
     expectSameValue((esday) => esday.utc(sourceString, formatString, true).isValid())
+    expect(esday.utc(sourceString, formatString, true).isValid()).toBeFalsy()
   })
+
+  it.each([
+    {
+      sourceString: '2024-02-29 08:10:21 pM',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29 08:10:21 pM',
+      formatString: 'YYYY-MM-DD hh:mm:ss A',
+    },
+  ])('difference to moment - date string "$sourceString" using "$formatString" as am', () => {
+    const sourceString = '2024-02-29 08:10:21 pM'
+    const formatString = 'YYYY-MM-DD hh:mm:ss a'
+    const d = esday.utc(sourceString, formatString)
+    const m = moment.utc(sourceString, formatString)
+
+    expect(d.isValid()).toBeTruthy()
+    expect(m.isValid()).toBeTruthy()
+    expect(d.hour()).toBe(8)
+    expect(m.hour()).toBe(20)
+  })
+
+  it.each([
+    { sourceString: '2024 12 Tuesday', formatString: 'YYYY MM dddd' },
+    { sourceString: '2024 Dec Tuesday', formatString: 'YYYY MMM dddd' },
+    {
+      sourceString: '2024 Dec Tuesday 15:26',
+      formatString: 'YYYY MMM dddd HH:mm',
+    },
+  ])(
+    'difference to moment - date string "$sourceString" with format "$formatString"',
+    ({ sourceString, formatString }) => {
+      const d = esday.utc(sourceString, formatString)
+      const m = moment.utc(sourceString, formatString)
+
+      expect(d.isValid()).toBeFalsy()
+      expect(m.isValid()).toBeTruthy()
+    },
+  )
 })
 
 describe('localizedParse plugin - local mode using locale given as parameter', () => {
@@ -525,8 +643,8 @@ describe('localizedParse plugin - local mode using locale given as parameter', (
   ])(
     'parse in "en" with "$locale" as locale parameter',
     ({ sourceString, formatString, locale }) => {
-      expect(esday.utc(sourceString, formatString, locale).isValid()).toBeTruthy()
       expectSameObject((esday) => esday.utc(sourceString, formatString, locale))
+      expect(esday.utc(sourceString, formatString, locale).isValid()).toBeTruthy()
     },
   )
 })

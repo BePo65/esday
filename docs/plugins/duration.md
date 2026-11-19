@@ -61,7 +61,7 @@ esday.duration(input: object): Duration
 
 **UnitTypeDuration**
 
-| Short | Long	        | Plural	       |
+| Short | Long          | Plural         |
 | ----- | ------------- | -------------- |
 | 'y'   | 'year'        | 'years'        |
 | 'Q'   | 'quarter'     | 'quarters'     |
@@ -150,7 +150,7 @@ esday.duration(<length>).years(): number
 esday.duration(<length>).get(unit: UnitTypeDuration): number
 ```
 
-**Note**: the values from the duration definition ripple up to higher units (e.g. "25 hours" will get "1 day, 1 hour"). This way, the returned pars are limited to the following  ranges.
+**Note**: the values from the duration definition ripple up to higher units (e.g. "25 hours" will get "1 day, 1 hour"). This way, the returned pars are limited to the following ranges.
 
 **Exception**: `.weeks()` unlike the other getters for duration, weeks are counted as a subset of the days, and are not taken off the days count (i.e. 10 days will get `.weeks() === 1` and `.days() === 10`).
 
@@ -160,7 +160,7 @@ The same goes true for `.quarters()` (i.e. 5 months will get `.quarters() === 1`
 
 **UnitTypeDuration**
 
-| Short | Long	        | Plural	       |
+| Short | Long          | Plural         |
 | ----- | ------------- | -------------- |
 | 'y'   | 'year'        | 'years'        |
 | 'Q'   | 'quarter'     | 'quarters'     |
@@ -174,16 +174,16 @@ The same goes true for `.quarters()` (i.e. 5 months will get `.quarters() === 1`
 
 ### Range of output values
 
-| unit           | range      |
-| -------------- | ---------- |
-| seconds()      | 0 ... 59   |
-| minutes()      | 0 ... 59   |
-| hours()        | 0 ... 23   |
-| days()         | 0 ... 30   |
-| weeks()        | 0 ... 4    |
-| months()       | 0 ... 11   |
-| quarters()     | 0 ... 3    |
-| years()        | 0 ... 9999 |
+| unit       | range      |
+| ---------- | ---------- |
+| seconds()  | 0 ... 59   |
+| minutes()  | 0 ... 59   |
+| hours()    | 0 ... 23   |
+| days()     | 0 ... 30   |
+| weeks()    | 0 ... 4    |
+| months()   | 0 ... 11   |
+| quarters() | 0 ... 3    |
+| years()    | 0 ... 9999 |
 
 ### Example
 
@@ -223,7 +223,7 @@ esday.duration(<length>).as(unit: UnitTypeDuration): number
 
 **UnitTypeDuration**
 
-| Short | Long	        | Plural	       |
+| Short | Long          | Plural         |
 | ----- | ------------- | -------------- |
 | 'y'   | 'year'        | 'years'        |
 | 'Q'   | 'quarter'     | 'quarters'     |
@@ -244,10 +244,10 @@ import durationPlugin, { type UnitTypeDuration } from '~/plugins/duration'
 esday.extend(durationPlugin)
 
 const duration = esday.duration(2, 'days')
-duration.asWeeks()  // Returns 0.2857
-duration.asDays()  // Returns 2
-duration.asHours()  // Returns 48
-duration.asMinutes()  // Returns 2,880
+duration.asWeeks() // Returns 0.2857
+duration.asDays() // Returns 2
+duration.asHours() // Returns 48
+duration.asMinutes() // Returns 2,880
 ```
 
 [&#8593; Goto top](#duration)
@@ -282,15 +282,15 @@ esday.duration(<length>).humanize(withSuffix: boolean, thresholds: ThresholdRela
 
 **ThresholdRelativeTime**
 
-|unit | meaning       | usage                                                               | default |
-| --- | ------------- | ------------------------------------------------------------------- | ------- |
-|ss   | a few seconds | least number of seconds to be counted in seconds, minus 1           | 44      |
-|s    | seconds       | least number of seconds to be considered a minute                   | 45      |
-|m    | minutes       | least number of minutes to be considered an hour                    | 45      |
-|h    | hours         | least number of hours to be considered a day                        | 22      |
-|d    | days          | least number of days to be considered a week                        | 26      |
-|w    | weeks         | least number of weeks to be considered a month; not used by default | null    |
-|M    | months        | least number of months to be considered a year                      | 11      |
+| unit | meaning       | usage                                                               | default |
+| ---- | ------------- | ------------------------------------------------------------------- | ------- |
+| ss   | a few seconds | least number of seconds to be counted in seconds, minus 1           | 44      |
+| s    | seconds       | least number of seconds to be considered a minute                   | 45      |
+| m    | minutes       | least number of minutes to be considered an hour                    | 45      |
+| h    | hours         | least number of hours to be considered a day                        | 22      |
+| d    | days          | least number of days to be considered a week                        | 26      |
+| w    | weeks         | least number of weeks to be considered a month; not used by default | null    |
+| M    | months        | least number of months to be considered a year                      | 11      |
 
 ### Example
 
@@ -377,8 +377,8 @@ esday.duration(<length>).subtract(input: number | UnitsObjectTypeDuration | Dura
 
 object of values to add / subtract with the following properties (all properties are optional and of type `string` or `number`)
 
-| parameter    | description          |
-| ------------ | -------------------- |
+| parameter    | description         |
+| ------------ | ------------------- |
 | years        | years to add        |
 | quarters     | quarters to add     |
 | months       | months to add       |
@@ -391,7 +391,7 @@ object of values to add / subtract with the following properties (all properties
 
 **UnitTypeDuration**
 
-| Short | Long	        | Plural	       |
+| Short | Long          | Plural         |
 | ----- | ------------- | -------------- |
 | 'y'   | 'year'        | 'years'        |
 | 'Q'   | 'quarter'     | 'quarters'     |
@@ -402,7 +402,6 @@ object of values to add / subtract with the following properties (all properties
 | 'm'   | 'minute'      | 'minutes'      |
 | 's'   | 'second'      | 'seconds'      |
 | 'ms'  | 'millisecond' | 'milliseconds' |
-
 
 [&#8593; Goto top](#duration)
 
@@ -430,7 +429,7 @@ esday.duration(<length>).asStringifiedJSON(): string
 | parameters | description                                |
 | ---------- | ------------------------------------------ |
 | formatStr  | optional parameter to define output format |
-|            |   default value: 'YYYY-MM-DDTHH:mm:ss.SSS' |
+|            | default value: 'YYYY-MM-DDTHH:mm:ss.SSS'   |
 
 ### Available format tokens
 
@@ -450,7 +449,6 @@ esday.duration(<length>).asStringifiedJSON(): string
 | `s`    | 0-59    | seconds                |
 | `ss`   | 00-59   | seconds, 2-digits      |
 | `SSS`  | 000-999 | milliseconds, 3-digits |
-
 
 ### Example
 

@@ -52,7 +52,7 @@ describe('Difference', () => {
     expectSameValue((esday) => esday().diff(source))
   })
 
-  it('diff for date array as source with default parameters', () => {
+  it('diff for "undefined" as source with default parameters', () => {
     expectSameValue((esday) => esday().diff(undefined))
   })
 

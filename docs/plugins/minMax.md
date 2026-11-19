@@ -5,9 +5,11 @@ MinMax adds the `min` and the `max` methods to esday, calculating the minimum or
 ## Usage
 
 ### Dependencies
+
 MinMax has no dependencies on other plugins.
 
 ### Method signatures
+
 ```signature
 esday.min(EsDay[,EsDay...]): EsDay
 esday.min(string[]): EsDay
@@ -16,6 +18,7 @@ esday.max(string[]): EsDay
 ```
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 import minMaxPlugin from 'esday/plugins/minMax'

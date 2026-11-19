@@ -7,6 +7,7 @@ The `endOf()` method returns an `esday` object at the end of a unit of time base
 ## Usage
 
 ### Method signatures
+
 ```signature
 esday().startOf(units: UnitType): EsDay
 ```
@@ -39,7 +40,9 @@ The unit `quarter` (in short, long and plural forms) requires the plugin [Quarte
 The unit `isoWeek` (in short, long and plural forms) requires the plugin [IsoWeek](../plugins/isoWeek.md) to be loaded.
 
 ## Examples
+
 ### startOf
+
 ```typescript
 import { esday } from 'esday'
 
@@ -54,6 +57,7 @@ esday('2023-11-17T03:24:46.234').startOf('dates')
 ```
 
 ### endOf
+
 ```typescript
 import { esday } from 'esday'
 

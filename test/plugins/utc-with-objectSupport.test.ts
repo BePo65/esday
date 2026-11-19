@@ -25,11 +25,4 @@ describe('plugin utc with plugin objectSupport', () => {
 
     expectSameObject((esday) => esday(timestamp).add(subValues))
   })
-
-  it('add does not break object as value', () => {
-    const timestamp = '2025-07-21 14:25:36'
-    const subValues = { years: 1, months: 2, days: 3, hours: 1, minutes: 2, seconds: 3 }
-
-    expectSameObject((esday) => esday(timestamp).add(subValues))
-  })
 })

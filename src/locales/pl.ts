@@ -39,7 +39,7 @@ const monthStandalone: MonthNames = [
   'grudzień',
 ]
 
-const MONTHS_IN_FORMAT = /D MMMM/
+const MONTHS_IN_FORMAT = /D\.? MMMM/
 
 const months: MonthNamesFunction = (esdayInstance: EsDay, format: string) => {
   // function months(dayjsInstance, format) {

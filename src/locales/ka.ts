@@ -66,11 +66,11 @@ const localeKa: Readonly<Locale> = {
   formats: {
     LT: 'HH:mm',
     LTS: 'HH:mm:ss',
-    L: 'DD/MM/YYYY',
+    L: 'DD.MM.YYYY',
     LL: 'D MMMM YYYY',
     LLL: 'D MMMM YYYY HH:mm',
     LLLL: 'dddd, D MMMM YYYY HH:mm',
-    l: 'DD/MM/YYYY',
+    l: 'DD.MM.YYYY',
     ll: 'D MMMM YYYY',
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',

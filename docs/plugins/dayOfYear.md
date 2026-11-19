@@ -5,15 +5,18 @@ DayOfYear adds the `dayOfYear` getter and setter to EsDay to get or set the day 
 ## Usage
 
 ### Dependencies
+
 DayOfYear has no dependencies on other plugins.
 
 ### Method signatures
+
 ```signature
 esday().dayOfYear(): number
 esday().dayOfYear(dayOfYear: number): EsDay
 ```
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 import dayOfYearPlugin from 'esday/plugins/weekOfYear'

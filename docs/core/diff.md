@@ -11,6 +11,7 @@ By default `diff` will truncate the result to an integer. If you want a floating
 ## Usage
 
 ### Method signatures
+
 ```signature
 esday().diff(date: DateType, unit?: UnitTypeAddSub, asFloat?: boolean): number
 ```
@@ -30,6 +31,7 @@ Plural form: 'years', 'quarters', 'months', 'weeks', 'days', 'dates', 'hours', '
 Both `days` and `dates` (in short, long and plural forms) mean 'days'.
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 

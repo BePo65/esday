@@ -17,4 +17,4 @@
 2. Adapt this new locale file to te requirements of the new locale.
 3. Copy the file `template-locale.test.ts` from `/dev/templates/` to the folder `/test/locales` and rename it to the new locale.
 4. Adapt this new test file to te requirements of the new locale.
-5. Add the new locale to the list of all locales in  (`/docs/locales/locales.md`) and adapt it to the new locale.
+5. Add the new locale to the list of all locales in (`/docs/locales/locales.md`) and adapt it to the new locale.

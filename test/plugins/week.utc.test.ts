@@ -218,17 +218,19 @@ describe('week plugin - locale de', () => {
   ])(
     'parse "$sourceString" with day-of-week token in "$formatString"',
     ({ sourceString, formatString }) => {
-      expectSameObject((esday) => esday(sourceString, formatString))
-      expect(esday(sourceString, formatString).isValid()).toBeTruthy()
+      expectSameObject((esday) => esday.utc(sourceString, formatString))
+      expect(esday.utc(sourceString, formatString).isValid()).toBeTruthy()
     },
   )
 
-  it('parse illegal day-of-week value', () => {
-    const sourceString = '2025 12 2'
-    const formatString = 'YYYY MM d'
-
-    expectSameValue((esday) => esday(sourceString, formatString).isValid())
-    expect(esday(sourceString, formatString).isValid()).toBeFalsy()
+  it.each([
+    {
+      sourceString: '2024 12 24 Mi. 14:25:36',
+      formatString: 'YYYY MM DD ddd HH:mm:ss',
+    },
+  ])('parse illegal day-of-week value in "$sourceString"', ({ sourceString, formatString }) => {
+    expectSameValue((esday) => esday.utc(sourceString, formatString).isValid())
+    expect(esday.utc(sourceString, formatString).isValid()).toBeFalsy()
   })
 
   it.each([
@@ -254,6 +256,17 @@ describe('week plugin - locale de', () => {
     'should parse "$sourceString" with weekYear token in "$formatString"',
     ({ sourceString, formatString }) => {
       expectSameObject((esday) => esday.utc(sourceString, formatString))
+    },
+  )
+
+  it.each([{ sourceString: '2025 12 2', formatString: 'YYYY MM d' }])(
+    'difference to moment - date string "$sourceString" with format "$formatString"',
+    ({ sourceString, formatString }) => {
+      const d = esday.utc(sourceString, formatString)
+      const m = moment.utc(sourceString, formatString)
+
+      expect(d.isValid()).toBeFalsy()
+      expect(m.isValid()).toBeTruthy()
     },
   )
 })

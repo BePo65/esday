@@ -7,6 +7,7 @@ The `subtract()` method subtracts a value from an `esday` object.
 ## Usage
 
 ### Method signatures
+
 ```signature
 esday().add(value: number, unit: UnitTypeAddSub): EsDay
 ```
@@ -38,7 +39,9 @@ The unit `quarter` (in short, long and plural forms) requires the plugin [Quarte
 Adding multiple values in one step requires the plugin [ObjectSupport](../plugins/objectSupport.md).
 
 ## Examples
+
 ### add
+
 ```typescript
 import { esday } from 'esday'
 
@@ -53,6 +56,7 @@ esday('2024-01-31T13:24:35.789').add(15, 'seconds')
 ```
 
 ### subtract
+
 ```typescript
 import { esday } from 'esday'
 

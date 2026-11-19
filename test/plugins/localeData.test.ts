@@ -297,7 +297,7 @@ describe('locale ca - local', () => {
   it('should format date as month name using test-format', () => {
     const formattedDateEsday = esday().localeData().months(esday('2025-08-02'), 'DD MMMM')
 
-    expect(formattedDateEsday).toBe("d'agost")
+    expect(formattedDateEsday).toBe('d’agost')
     expectSameValue((esday) => esday().localeData().months(esday('2025-08-02'), 'DD MMMM'))
   })
 

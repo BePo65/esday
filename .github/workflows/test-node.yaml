@@ -1,4 +1,4 @@
-name: "Test (Vitest)"
+name: 'Test (Vitest)'
 
 # Prevent that corepack looks for latest version of pnpm
 # HACK to work around issue nodejs/corepack#625
@@ -29,33 +29,33 @@ jobs:
       contents: read
 
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v7.0.1
 
-      - name: "Install Pnpm"
+      - name: 'Install Pnpm'
         run: corepack enable
 
-      - name: "Setup Node.js"
+      - name: 'Setup Node.js'
         uses: actions/setup-node@v7
         with:
           node-version: 24.x
 
-      - name: "Install dependencies"
+      - name: 'Install dependencies'
         run: pnpm install
 
-      - name: "Run tests"
+      - name: 'Run tests'
         run: |
           pnpm run test:run:tz1
           pnpm run test:run:tz2
           npx vitest run --coverage.enabled --coverage.reporter=json --coverage.reporter=json-summary
 
-      - name: "Upload coverage"
+      - name: 'Upload coverage'
         uses: actions/upload-artifact@v7
         with:
           name: coverage-pull-request
           path: coverage
 
-      - name: "Upload vitest config"
+      - name: 'Upload vitest config'
         uses: actions/upload-artifact@v7
         with:
           name: pull-request-vitest.config.ts

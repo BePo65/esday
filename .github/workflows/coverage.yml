@@ -1,4 +1,4 @@
-name: "Report Coverage"
+name: 'Report Coverage'
 
 # Prevent that corepack looks for latest version of pnpm
 # HACK to work around issue nodejs/corepack#625
@@ -7,7 +7,7 @@ env:
 
 on:
   workflow_run:
-    workflows: ["Test (Vitest)"]
+    workflows: ['Test (Vitest)']
     types:
       - completed
 
@@ -19,28 +19,28 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v7.0.1
 
-      - name: "Install Pnpm"
+      - name: 'Install Pnpm'
         run: corepack enable
 
-      - name: "Setup Node.js"
+      - name: 'Setup Node.js'
         uses: actions/setup-node@v7
         with:
           node-version: 24.x
 
-      - name: "Install dependencies"
+      - name: 'Install dependencies'
         run: pnpm install
 
-      - name: "Run tests"
+      - name: 'Run tests'
         run: npx vitest run --coverage.enabled --coverage.reporter=json --coverage.reporter=json-summary
 
-      - name: "rename coverage directory"
+      - name: 'rename coverage directory'
         run: |
           mv coverage coverage-main
 
-      - name: "Download coverage artifacts of pull request"
+      - name: 'Download coverage artifacts of pull request'
         uses: actions/download-artifact@v8
         with:
           name: coverage-pull-request
@@ -48,7 +48,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
 
-      - name: "Download vitest configuration of pull request"
+      - name: 'Download vitest configuration of pull request'
         uses: actions/download-artifact@v8
         with:
           name: pull-request-vitest.config.ts
@@ -56,7 +56,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
 
-      - name: "Report coverage"
+      - name: 'Report coverage'
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           json-summary-compare-path: coverage-main/coverage-summary.json

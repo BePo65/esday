@@ -5,14 +5,17 @@ ToArray adds the `toArray` method to EsDay to get an array containing the parts 
 ## Usage
 
 ### Dependencies
+
 ToArray has no dependencies on other plugins.
 
 ### Method signatures
+
 ```signature
 esday().toArray(): [number, number, number, number, number, number, number]
 ```
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 import toArrayPlugin from 'esday/plugins/toArray'

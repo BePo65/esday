@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.5.11/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.6.5/schema.json",
   "vcs": {
     "enabled": false,
     "clientKind": "git",
@@ -20,7 +20,8 @@
   "formatter": {
     "enabled": true,
     "lineWidth": 100,
-    "indentStyle": "space"
+    "indentStyle": "space",
+    "includes": ["**", "!CHANGELOG.md"]
   },
   "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
@@ -61,5 +62,24 @@
     "parser": {
       "interpolation": true
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": [".vscode/**"],
+      "json": {
+        "parser": {
+          "allowComments": true,
+          "allowTrailingCommas": true
+        }
+      }
+    },
+    {
+      "includes": ["**/*.yml", "**/*.yaml"],
+      "yaml": {
+        "formatter": {
+          "quoteStyle": "single"
+        }
+      }
+    }
+  ]
 }

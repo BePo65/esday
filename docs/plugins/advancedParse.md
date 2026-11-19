@@ -5,6 +5,7 @@ AdvancedParse extends the `esday` constructor to support custom formats of input
 ## Usage
 
 ### Dependencies
+
 AdvancedParse requires no other plugin.
 
 AdvancedParse can be used together with the plugin Utc. If used together with the plugin Utc, the plugin Utc must be activated using esday.extend(...) before the plugin AdvancedParse.
@@ -12,6 +13,7 @@ AdvancedParse can be used together with the plugin Utc. If used together with th
 If used together with the plugin Locale and/or LocalizedParse, then AdvancedParse must be activated before these plugins, as AdvancedParse "terminates" the parsing chain, if we have a parsing format.
 
 ### Method signatures
+
 ```signature
 esday(date: string, format: string): EsDay
 esday(date: string, format: string[]): EsDay
@@ -19,6 +21,7 @@ esday(date: string, format: string, strict: boolean): EsDay
 esday(date: string, format: string[], strict: boolean): EsDay
 ```
 and for the `utc` plugin
+
 ```signature
 esday.utc(date: string, format: string): EsDay
 esday.utc(date: string, format: string[]): EsDay
@@ -35,6 +38,7 @@ esday.utc(date: string, format: string[], strict: boolean): EsDay
 If an array of formats is used, `date` will be parsed with the best matching format in this array.
 
 ### Parsing tokens
+
 | **Token** | **Example**   | **Description**                                                      |
 | --------- | ------------- | -------------------------------------------------------------------- |
 | Y         | -25           | Year with any number of digits and sign                              |
@@ -60,13 +64,18 @@ If an array of formats is used, `date` will be parsed with the best matching for
 | x         | 1410715640579 | Unix ms timestamp                                                    |
 
 ### Adding new parsing tokens
+
 ```signature
 esday.addTokenDefinitions(newTokens: TokenDefinitions)
 ```
 
 **Format of TokenDefinitions**
+
 ```typescript
-type TokenDefinitions = Record<string, [RegExp, RegExp, (this: ParsedElements, input: string) => void]>
+type TokenDefinitions = Record<
+  string,
+  [RegExp, RegExp, (this: ParsedElements, input: string) => void]
+>
 ```
 
 | parameter          | type     | description                                      |
@@ -77,12 +86,14 @@ type TokenDefinitions = Record<string, [RegExp, RegExp, (this: ParsedElements, i
 | setter             | function | function to add parsed value to result in 'this' |
 
 **Parameters of setter**
+
 | parameter | type           | description                   |
 | --------- | -------------- | ----------------------------- |
 | this      | ParsedElements | object for results of parsing |
 | input     | string         | parsed value                  |
 
 **Format of ParsedElements**
+
 ```typescript
 interface ParsedElements {
   year?: number
@@ -98,7 +109,9 @@ interface ParsedElements {
 ```
 
 ## Examples
+
 ### Parsing
+
 ```typescript
 import { esday } from 'esday'
 import advancedParsePlugin from 'esday/plugins/advancedParse'
@@ -118,13 +131,19 @@ esday.utc('08-2023-14 21:43:12.123', 'MM-YYYY-DD HH:mm:ss.SSS')
 ```
 
 ### Adding new parsing tokens
+
 This functionality is above all for plugin developers
+
 ```typescript
 const additionalTokens: TokenDefinitions = {
-  PP: [/\d\d?/, /\d{2}/, function (input) {
-    // in this example we don't use the parsed value ('input')
-    this.milliseconds = 987
-  }],
+  PP: [
+    /\d\d?/,
+    /\d{2}/,
+    function (input) {
+      // in this example we don't use the parsed value ('input')
+      this.milliseconds = 987
+    },
+  ],
 }
 esday.addTokenDefinitions(additionalTokens)
 

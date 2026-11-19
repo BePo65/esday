@@ -5,14 +5,17 @@ IsYesterday adds the `isYesterday` method to EsDay indicating, if a date is tomo
 ## Usage
 
 ### Dependencies
+
 IsYesterday has no dependencies on other plugins.
 
 ### Method signatures
+
 ```signature
 esday().isYesterday(): boolean
 ```
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 import isYesterdayPlugin from 'esday/plugins/isYesterday'

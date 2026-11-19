@@ -10,6 +10,7 @@ The `method2` method gets a new date in the middle of the next week for a date.
 ## Usage
 
 ### Dependencies
+
 // TODO describe dependencies from other plugins and sequence of plugins, if applicable
 
 <NewPluginName> has no dependencies on other plugins.
@@ -17,31 +18,39 @@ The `method2` method gets a new date in the middle of the next week for a date.
 <NewPluginName> can be used together with the plugin Utc that must be loaded using esday.extend(...) before the plugin <NewPluginName>.
 
 ### Method signatures
+
 // TODO add all new and/or modified signatures here
+
 ```signature
 esday().myPlugin(): string
 esday().myPlugin(format: string): EsDay
 ```
 
 // TODO describe parameters used in signatures here
+
 | parameter | description                              |
 | --------- | ---------------------------------------- |
 | format    | format string(s) used for parsing `date` |
 
 // TODO describe all new formatting tokens here, if any are defined
+
 ### Formatting tokens
+
 | Token | Example | Description                     |
-| ----- | ------- | --------------------------------|
+| ----- | ------- | ------------------------------- |
 | a     | 1-99    | Calculated a of date.           |
 | b     | 01-99   | Calculated a of date (2-digit). |
 
 // TODO describe all new parsing tokens here, if any are defined
+
 ### Parsing tokens
+
 | Token | Example | Description             |
 | ----- | ------- | ----------------------- |
 | bb    | 1-99    | Calculated abb of date. |
 
 ## Examples
+
 ```typescript
 import { esday } from 'esday'
 import myNewPlugin from 'esday/plugins/myNew'
@@ -58,6 +67,7 @@ esday('08/2023/14 21 43.12 123').myPlugin('24')
 ### Adding new parsing tokens
 
 ### Formatting date using <NewPluginName> tokens
+
 ```typescript
 import { esday } from 'esday'
 import myNewPlugin from 'esday/plugins/myNew'
@@ -72,6 +82,7 @@ esday('22024-12-24T14:25:36').format('b')
 ```
 
 ### Parsing date using <NewPluginName> tokens
+
 ```typescript
 import { esday } from 'esday'
 import myNewPlugin from 'esday/plugins/myNew'
