@@ -72,6 +72,12 @@ If an array of formats is used, `date` will be parsed with the best matching for
 | lll       | Sep 4, 1986 8:30 PM                 | Month name, day of month, year, time              |
 | llll      | Thu, Sep 4, 1986 8:30 PM            | Month name, day of month, day of week, year, time |
 
+**Differences to Moment.js**
+
+Using the meridiem token ('a' or 'A') require that all letters to be parsed must be uppercase (e.g. 'AM') or lowercase (e.g. 'am'). Otherwise the parsed string is ignored.
+
+moment.js ignores casing of the token ('a' behaves the same as 'A') and also of the parsed string ('pm', 'pM'. 'Pm' and 'PM' all return a time value after noon).
+
 ## Examples
 
 Basic example with some localized tokens.

@@ -102,6 +102,8 @@ As an example:
 
 While `esday('2025', 'gggg)` returns '2025-07-21' as expected when the current date is Thursday '2022-07-25' and the locale is 'de'.
 
+When parsing a string consisting of a year and month plus a day-of-week token (e.g. parsing '2024 12 Thursday' with 'YYYY MM dddd'), starting from version 2.31.0 moment.js ignores a mismatching day-of-week, while esday expects the day-of-week to match the day-of-week of '2024/12/01' ('Sunday').
+
 ## Examples
 
 ```typescript
